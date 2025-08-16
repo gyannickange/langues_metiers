@@ -1,0 +1,8 @@
+fr:
+  hello: "Bonjour"
+  devise:
+    sessions:
+      signed_in: "Connexion réussie."
+      signed_out: "Déconnexion réussie."
+
+

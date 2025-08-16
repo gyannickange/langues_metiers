@@ -1,0 +1,18 @@
+<% content_for :page_title, "Admin Dashboard" %>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+  <div class="bg-white rounded-lg shadow p-4">
+    <h3 class="font-semibold mb-2">Users</h3>
+    <p><%= User.count %></p>
+  </div>
+  <div class="bg-white rounded-lg shadow p-4">
+    <h3 class="font-semibold mb-2">Skills</h3>
+    <p><%= Skill.count %></p>
+  </div>
+  <div class="bg-white rounded-lg shadow p-4">
+    <h3 class="font-semibold mb-2">Categories</h3>
+    <p><%= Category.count %></p>
+  </div>
+</div>
+
+

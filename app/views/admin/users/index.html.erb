@@ -1,0 +1,12 @@
+<% content_for :page_title, t("Users") %>
+
+<%= render "shared/table",
+  columns: [
+    { header: "Email",  cell: ->(r){ r.email } },
+    { header: "Role",   cell: ->(r){ r.role } },
+    { header: "Created", cell: ->(r){ l(r.created_at, format: :short) } }
+  ],
+  rows: @users,
+  pagy: @pagy %>
+
+
