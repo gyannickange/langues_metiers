@@ -1,0 +1,37 @@
+<% content_for :title, t("Register") %>
+
+<div class="min-h-screen flex items-center justify-center p-4">
+  <div class="w-full max-w-md bg-white shadow rounded p-6">
+    <h1 class="text-xl font-semibold mb-4"><%= t("Register") %></h1>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <%= render "users/shared/error_messages", resource: resource %>
+
+      <div class="mb-4">
+        <%= f.label :email, class: "block text-sm font-medium mb-1" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full border rounded px-3 py-2" %>
+      </div>
+
+      <div class="mb-4">
+        <%= f.label :password, class: "block text-sm font-medium mb-1" %>
+        <% if @minimum_password_length %>
+          <em class="text-xs text-gray-500">(<%= @minimum_password_length %> <%= t("characters minimum") %>)</em>
+        <% end %>
+        <%= f.password_field :password, autocomplete: "new-password", class: "w-full border rounded px-3 py-2" %>
+      </div>
+
+      <div class="mb-4">
+        <%= f.label :password_confirmation, class: "block text-sm font-medium mb-1" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "w-full border rounded px-3 py-2" %>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <%= f.submit t("Sign up"), class: "inline-flex items-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+        <%= link_to t("Log in"), new_session_path(resource_name), class: "text-sm text-blue-600 hover:underline" %>
+      </div>
+    <% end %>
+
+    <div class="mt-4">
+      <%= render "users/shared/links" %>
+    </div>
+  </div>
+</div>

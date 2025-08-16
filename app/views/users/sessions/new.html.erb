@@ -1,0 +1,36 @@
+<% content_for :title, t("Log in") %>
+
+<div class="min-h-screen flex items-center justify-center p-4">
+  <div class="w-full max-w-md bg-white shadow rounded p-6">
+    <h1 class="text-xl font-semibold mb-4"><%= t("Log in") %></h1>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <%= render "users/shared/error_messages", resource: resource %>
+
+      <div class="mb-4">
+        <%= f.label :email, class: "block text-sm font-medium mb-1" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full border rounded px-3 py-2" %>
+      </div>
+
+      <div class="mb-4">
+        <%= f.label :password, class: "block text-sm font-medium mb-1" %>
+        <%= f.password_field :password, autocomplete: "current-password", class: "w-full border rounded px-3 py-2" %>
+      </div>
+
+      <% if devise_mapping.rememberable? %>
+        <div class="mb-4 flex items-center gap-2">
+          <%= f.check_box :remember_me %>
+          <%= f.label :remember_me, class: "text-sm" %>
+        </div>
+      <% end %>
+
+      <div class="flex items-center justify-between">
+        <%= f.submit t("Log in"), class: "inline-flex items-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+        <%= link_to t("Forgot your password?"), new_password_path(resource_name), class: "text-sm text-blue-600 hover:underline" %>
+      </div>
+    <% end %>
+
+    <div class="mt-4">
+      <%= render "users/shared/links" %>
+    </div>
+  </div>
+</div>
