@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
 class Users::SessionsController < Devise::SessionsController
-  layout 'application'
+  layout "auth"
 
   def create
     super do |user|
-      flash[:notice] = t('devise.sessions.signed_in')
+      flash[:notice] = t("devise.sessions.signed_in")
     end
   end
 
   def destroy
     super do
-      flash[:notice] = t('devise.sessions.signed_out')
+      flash[:notice] = t("devise.sessions.signed_out")
     end
   end
 
