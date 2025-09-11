@@ -1,7 +1,459 @@
-<div class="prose mx-auto mt-10">
-  <h1 class="text-2xl font-bold">Bienvenue</h1>
-  <p>
-    <%= link_to "Sign up", new_user_registration_path, class: "underline" %> ·
-    <%= link_to "Log in", new_user_session_path, class: "underline" %>
-  </p>
-</div>
+<section class="relative bg-cover bg-center bg-fixed h-screen" style="background-image: url('https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=2400&q=80');">
+  <div class="absolute inset-0 bg-black opacity-50"></div>
+  <div class="relative z-10 text-white">
+    <header class="container mx-auto px-6 py-8">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <svg class="w-10 h-10 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+          <span class="text-2xl font-bold">Langues & Métiers</span>
+        </div>
+        <nav class="hidden md:flex items-center space-x-8">
+          <a class="hover:text-gray-300 flex items-center" href="#"><%= t('home.navigation.home') %></a>
+          <%= link_to t('home.navigation.fields'), fields_path, class: "hover:text-gray-300 flex items-center" %>
+          <a class="hover:text-gray-300 flex items-center" href="#"><%= t('home.navigation.blog') %></a>
+          <a class="hover:text-gray-300 flex items-center" href="#"><%= t('home.navigation.about') %></a>
+          <a class="hover:text-gray-300" href="#"><%= t('home.navigation.contact') %></a>
+        </nav>
+        <div class="flex items-center space-x-6">
+          <a class="flex items-center hover:text-gray-300" href="#">
+            <span class="material-icons mr-2">phone</span>
+            <span>+68 585 88666</span>
+          </a>
+          <%= link_to t('home.navigation.login'), new_user_session_path, class: "border border-white rounded-full px-6 py-2 text-sm font-semibold hover:bg-white hover:text-black transition duration-300" %>
+        </div>
+      </div>
+    </header>
+    <main class="container mx-auto px-6 mt-32 text-center">
+      <div class="inline-block bg-white/20 backdrop-blur-sm text-white text-xs font-semibold px-4 py-2 rounded-full mb-6">
+        <%= t('home.hero.badge') %>
+      </div>
+      <h1 class="text-5xl md:text-6xl font-bold leading-tight mb-12"><%= t('home.hero.title') %></h1>
+      <div class="bg-white rounded-full p-2 max-w-2xl mx-auto flex items-center shadow-lg" data-controller="field-selector">
+        <%= select_tag :field_id, 
+            options_for_select([[t('home.hero.field_placeholder'), ""]] + @fields.map { |field| [field.name, field_path(field)] }),
+            class: "w-full bg-transparent text-gray-700 px-6 py-3 rounded-full focus:outline-none appearance-none cursor-pointer",
+            data: { field_selector_target: "select", action: "change->field-selector#redirect" } %>
+        <div class="bg-secondary-700 text-white p-4 rounded-full flex items-center justify-center">
+          <span class="material-icons text-white">arrow_drop_down</span>
+        </div>
+      </div>
+    </main>
+  </div>
+</section>
+
+<!-- Section Pourquoi langue et métier ? -->
+<section class="relative min-h-screen flex items-center">
+  <div class="w-full grid lg:grid-cols-2 gap-0">
+    <!-- Image à gauche - plein écran à la moitié -->
+    <div class="relative h-screen lg:h-auto lg:min-h-screen">
+      <div 
+        class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style="background-image: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80');">
+        <div class="absolute inset-0 bg-gradient-to-r from-green-900/20 to-blue-900/20"></div>
+      </div>
+    </div>
+    
+    <!-- Contenu texte à droite -->
+    <div class="flex items-center justify-center px-8 lg:px-16 py-16 lg:py-24">
+      <div class="max-w-xl">
+        <div class="mb-6">
+          <span class="inline-block bg-secondary-100 text-secondary-800 text-sm font-semibold px-4 py-2 rounded-full mb-4">
+            <%= t('home.why_section.subtitle') %>
+          </span>
+          <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight mb-6">
+            <%= t('home.why_section.title') %>
+          </h2>
+        </div>
+        
+        <p class="text-lg text-gray-600 leading-relaxed mb-8">
+          <%= t('home.why_section.content') %>
+        </p>
+        
+        <div class="space-y-4">
+          <% t('home.why_section.benefits').each do |benefit| %>
+            <div class="flex items-start">
+              <div class="flex-shrink-0 w-6 h-6 bg-secondary-600 rounded-full flex items-center justify-center mr-3 mt-1">
+                <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                </svg>
+              </div>
+              <p class="text-gray-700 font-medium"><%= benefit %></p>
+            </div>
+          <% end %>
+        </div>
+        
+        <div class="mt-10">
+          <%= link_to fields_path, class: "inline-flex items-center bg-secondary-700 hover:bg-secondary-800 text-white font-semibold px-8 py-4 rounded-lg transition duration-300 transform hover:scale-105" do %>
+            <span><%= t('home.why_section.action_button') %></span>
+            <svg class="w-5 h-5 ml-2" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+            </svg>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section Comment ça fonctionne ? -->
+<section class="py-20 bg-primary-100">
+  <div class="container mx-auto px-6">
+    <!-- En-tête de section -->
+    <div class="text-center mb-16">
+      <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">
+        <%= t('home.how_it_works.title') %>
+      </h2>
+    </div>
+
+    <!-- Grille des 3 étapes -->
+    <div class="grid md:grid-cols-3 gap-8 lg:gap-12">
+      <% t('home.how_it_works.steps').each_with_index do |step, index| %>
+        <div class="text-center group">
+          <!-- Container pour l'icône avec numérotation -->
+          <div class="relative mb-4">
+            <!-- Icône principale -->
+            <div class="rounded-full flex items-center justify-center mx-auto">
+              <span class="material-icons text-gray-900 !text-4xl"><%= step[:icon] %></span>
+            </div>
+          </div>
+
+          <!-- Contenu -->
+          <div class="px-4">
+            <h3 class="text-xl font-bold text-gray-900 mb-4">
+              <%= step[:title] %>
+            </h3>
+            <p class="text-gray-900 leading-relaxed">
+              <%= step[:content] %>
+            </p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<!-- Section Bourses et opportunités -->
+<section class="py-20 bg-white">
+  <div class="container mx-auto px-6">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <!-- Contenu à gauche -->
+      <div class="order-2 lg:order-1">
+        <div class="mb-6">
+          <span class="inline-block bg-primary-100 text-primary-800 text-sm font-semibold px-4 py-2 rounded-full mb-4">
+            <%= t('home.scholarships.subtitle') %>
+          </span>
+          <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight mb-6">
+            <%= t('home.scholarships.title') %>
+          </h2>
+        </div>
+        
+        <p class="text-lg text-gray-600 leading-relaxed mb-8">
+          <%= t('home.scholarships.content') %>
+        </p>
+        
+        <!-- Points forts -->
+        <div class="grid sm:grid-cols-2 gap-4 mb-10">
+          <% t('home.scholarships.highlights').each do |highlight| %>
+            <div class="flex items-start">
+              <div class="flex-shrink-0 w-6 h-6 bg-primary-400 rounded-full flex items-center justify-center mr-3 mt-1">
+                <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                </svg>
+              </div>
+              <p class="text-gray-700 font-medium"><%= highlight %></p>
+            </div>
+          <% end %>
+        </div>
+        
+        <!-- Bouton d'action -->
+        <div>
+          <a href="#" class="inline-flex items-center bg-primary-500 hover:bg-primary-600 text-gray-900 font-semibold px-8 py-4 rounded-lg transition duration-300 transform hover:scale-105 shadow-lg">
+            <span><%= t('home.scholarships.action_button') %></span>
+            <svg class="w-5 h-5 ml-2" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+      
+      <!-- Image à droite -->
+      <div class="order-1 lg:order-2">
+        <div class="relative h-96 lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
+          <div 
+            class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style="background-image: url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');">
+            <div class="absolute inset-0 bg-gradient-to-r from-green-900/20 to-blue-900/20"></div>
+          </div>
+          
+          <!-- Badge flottant -->
+          <div class="absolute top-6 left-6 bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-lg">
+            <div class="flex items-center">
+              <span class="w-2 h-2 bg-primary-500 rounded-full mr-2 animate-pulse"></span>
+              <span class="text-sm font-medium text-gray-800">Nouvelles opportunités</span>
+            </div>
+          </div>
+          
+          <!-- Statistiques flottantes -->
+          <div class="absolute bottom-6 right-6 bg-white/90 backdrop-blur-sm rounded-lg p-4 shadow-lg">
+            <div class="text-center">
+              <div class="text-2xl font-bold text-gray-900">150+</div>
+              <div class="text-sm text-gray-600">Opportunités disponibles</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section CLE - Citoyens Libres et Épanouis -->
+<section class="py-20 bg-gray-50">
+  <div class="container mx-auto px-6">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <!-- Image à gauche -->
+      <div class="order-1">
+        <div class="relative h-96 lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
+          <div 
+            class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style="background-image: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80');">
+            <div class="absolute inset-0 bg-gradient-to-r from-green-900/20 to-blue-900/20"></div>
+          </div>
+          
+          <!-- Logo CLE flottant -->
+          <div class="absolute top-6 right-6 bg-white/90 backdrop-blur-sm rounded-full p-4 shadow-lg">
+            <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full flex items-center justify-center">
+              <span class="text-white font-bold text-lg">CLE</span>
+            </div>
+          </div>
+          
+          <!-- Badge innovation -->
+          <div class="absolute bottom-6 left-6 bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-lg">
+            <div class="flex items-center">
+              <span class="w-2 h-2 bg-secondary-500 rounded-full mr-2 animate-pulse"></span>
+              <span class="text-sm font-medium text-gray-800">Innovation pédagogique</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Contenu à droite -->
+      <div class="order-2">
+        <div class="mb-6">
+          <span class="inline-block bg-secondary-100 text-secondary-800 text-sm font-semibold px-4 py-2 rounded-full mb-4">
+            <%= t('home.cle.subtitle') %>
+          </span>
+          <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight mb-6">
+            <%= t('home.cle.title') %>
+          </h2>
+        </div>
+        
+        <p class="text-lg text-gray-600 leading-relaxed mb-8">
+          <%= t('home.cle.content') %>
+        </p>
+        
+        <!-- Caractéristiques -->
+        <div class="space-y-4 mb-10">
+          <% t('home.cle.features').each do |feature| %>
+            <div class="flex items-start">
+              <div class="flex-shrink-0 w-6 h-6 bg-secondary-500 rounded-full flex items-center justify-center mr-3 mt-1">
+                <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                </svg>
+              </div>
+              <p class="text-gray-700 font-medium"><%= feature %></p>
+            </div>
+          <% end %>
+        </div>
+        
+        <!-- Bouton d'action -->
+        <div>
+          <a href="#" class="inline-flex items-center bg-secondary-700 hover:bg-secondary-800 text-white font-semibold px-8 py-4 rounded-lg transition duration-300 transform hover:scale-105 shadow-lg">
+            <span><%= t('home.cle.action_button') %></span>
+            <svg class="w-5 h-5 ml-2" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+            </svg>
+          </a>
+        </div>
+        
+        <!-- Citation inspirante -->
+        <div class="mt-8 p-6 bg-secondary-50 rounded-lg border-l-4 border-secondary-500">
+          <blockquote class="text-gray-700 italic">
+            "L'éducation est l'arme la plus puissante pour changer le monde, et CLE en est la clé."
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section Call to Action -->
+<section class="relative py-20 bg-cover bg-center bg-fixed" style="background-image: url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');">
+  <div class="absolute inset-0 bg-black opacity-50"></div>
+  <div class="relative z-10 container mx-auto px-6 text-center text-white">
+    <h2 class="text-3xl lg:text-4xl font-bold leading-tight mb-6">
+      <%= t('home.cta.title') %>
+    </h2>
+    <p class="text-xl lg:text-2xl mb-10 max-w-3xl mx-auto">
+      <%= t('home.cta.subtitle') %>
+    </p>
+    <a href="#contact" class="inline-flex items-center bg-white text-secondary-900 font-bold px-10 py-4 rounded-full transition duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+      <span><%= t('home.cta.action_button') %></span>
+      <svg class="w-5 h-5 ml-2" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+      </svg>
+    </a>
+  </div>
+</section>
+
+<!-- Section Blog -->
+<section class="py-20 bg-gray-50">
+  <div class="container mx-auto px-6">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">
+        <%= t('home.blog.title') %>
+      </h2>
+      <p class="text-xl text-gray-600">
+        <%= t('home.blog.subtitle') %>
+      </p>
+    </div>
+    
+    <div class="grid md:grid-cols-3 gap-8 mb-12">
+      <!-- Article 1 -->
+      <article class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+        <div class="h-48 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');"></div>
+        <div class="p-6">
+          <div class="text-sm text-secondary-700 font-semibold mb-2">15 Nov 2024</div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Les 5 langues les plus demandées en 2024</h3>
+          <p class="text-gray-600 mb-4">Découvrez quelles sont les langues qui ouvrent le plus d'opportunités professionnelles cette année.</p>
+          <a href="#" class="text-secondary-700 font-semibold hover:text-secondary-800">
+            <%= t('home.blog.read_more') %> →
+          </a>
+        </div>
+      </article>
+      
+      <!-- Article 2 -->
+      <article class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+        <div class="h-48 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');"></div>
+        <div class="p-6">
+          <div class="text-sm text-secondary-700 font-semibold mb-2">12 Nov 2024</div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Comment réussir son entretien multilingue</h3>
+          <p class="text-gray-600 mb-4">Nos conseils pratiques pour briller lors d'un entretien dans une langue étrangère.</p>
+          <a href="#" class="text-secondary-700 font-semibold hover:text-secondary-800">
+            <%= t('home.blog.read_more') %> →
+          </a>
+        </div>
+      </article>
+      
+      <!-- Article 3 -->
+      <article class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+        <div class="h-48 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1460518451285-97b6aa326961?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');"></div>
+        <div class="p-6">
+          <div class="text-sm text-secondary-700 font-semibold mb-2">08 Nov 2024</div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">CLE : Révolutionner l'apprentissage</h3>
+          <p class="text-gray-600 mb-4">Plongez dans la philosophie du programme CLE et ses bénéfices pour votre développement.</p>
+          <a href="#" class="text-secondary-700 font-semibold hover:text-secondary-800">
+            <%= t('home.blog.read_more') %> →
+          </a>
+        </div>
+      </article>
+    </div>
+    
+    <div class="text-center">
+      <a href="#" class="inline-flex items-center bg-secondary-700 hover:bg-secondary-800 text-white font-semibold px-8 py-3 rounded-lg transition duration-300">
+        <%= t('home.blog.view_all') %>
+        <svg class="w-5 h-5 ml-2" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Section Témoignages -->
+<section class="py-20 bg-white">
+  <div class="container mx-auto px-6">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">
+        <%= t('home.testimonials.title') %>
+      </h2>
+      <p class="text-xl text-gray-600">
+        <%= t('home.testimonials.subtitle') %>
+      </p>
+    </div>
+    
+    <div class="grid md:grid-cols-3 gap-8">
+      <% t('home.testimonials.items').each do |testimonial| %>
+        <div class="bg-gray-50 rounded-xl p-8 relative">
+          <!-- Étoiles -->
+          <div class="flex mb-4">
+            <% (testimonial[:rating] || 0).to_i.times do %>
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+              </svg>
+            <% end %>
+          </div>
+          
+          <!-- Contenu -->
+          <blockquote class="text-gray-700 mb-6 italic">
+            "<%= testimonial[:content] %>"
+          </blockquote>
+          
+          <!-- Auteur -->
+          <div class="flex items-center">
+            <div class="w-12 h-12 bg-gradient-to-r from-secondary-500 to-secondary-800 rounded-full flex items-center justify-center text-white font-bold mr-4">
+              <%= testimonial[:name].to_s.split(' ').map(&:first).join %>
+            </div>
+            <div>
+              <div class="font-semibold text-gray-900"><%= testimonial[:name] %></div>
+              <div class="text-sm text-gray-600"><%= testimonial[:role] %></div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-white py-16">
+  <div class="container mx-auto px-6">
+    <!-- Logo et description -->
+    <div class="flex justify-center items-center flex-col mb-8">
+      <div class="flex items-center mb-6">
+        <svg class="w-10 h-10 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+        </svg>
+        <span class="text-2xl font-bold">Langues & Métiers</span>
+      </div>
+      <p class="text-gray-400 mb-6"><%= t('home.footer.tagline') %></p>
+      <div class="flex space-x-4">
+        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-secondary-700 transition duration-300">
+          <span class="material-icons text-sm">facebook</span>
+        </a>
+        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-secondary-700 transition duration-300">
+          <span class="material-icons text-sm">alternate_email</span>
+        </a>
+        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-secondary-700 transition duration-300">
+          <span class="material-icons text-sm">group</span>
+        </a>
+      </div>
+    </div>
+      
+    <!-- Liens -->
+    <% t('home.footer.sections').each do |section_key, section| %>
+      <div>
+        <h3 class="font-semibold mb-4"><%= section["title"] %></h3>
+        <ul class="space-y-2">
+          <% Array(section["links"]).each do |link| %>
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300"><%= link %></a></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    
+    <div class="border-t border-gray-800 pt-8 text-center text-gray-400">
+      <p><%= t('home.footer.copyright') %></p>
+    </div>
+  </div>
+</footer>
+

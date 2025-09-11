@@ -33,3 +33,166 @@ en:
     sessions:
       signed_in: "Signed in successfully."
       signed_out: "Signed out successfully."
+  auth:
+    login: "Log in"
+    register: "Register"
+    forgot_password: "Forgot your password?"
+    send_reset_instructions: "Send me reset password instructions"
+    characters_minimum: "characters minimum"
+
+  fields:
+    index: "Fields"
+    new: "New Field"
+    edit: "Edit Field"
+    created: "Field created"
+    updated: "Field updated"
+    deleted: "Field deleted"
+
+  users:
+    registrations:
+      new: "Create an account"
+      edit: "Edit account"
+      # Add other user-related translations as needed
+
+  skills:
+    index: "Skills"
+    new: "New Skill"
+    edit: "Edit Skill"
+    created: "Skill created"
+    updated: "Skill updated"
+    deleted: "Skill deleted"
+
+  careers:
+    index: "Careers"
+    new: "New Career"
+    edit: "Edit Career"
+    created: "Career created"
+    updated: "Career updated"
+    deleted: "Career deleted"
+
+  home:
+    navigation:
+      home: "Home"
+      fields: "Fields"
+      blog: "Blog"
+      about: "About"
+      contact: "Contact"
+      login: "Login"
+    hero:
+      badge: "WE GUIDE YOUR JOURNEY"
+      title: "Discover your ideal professional path"
+      field_placeholder: "Choose a field..."
+    why_section:
+      title: "Why language and career?"
+      subtitle: "A revolutionary approach to your career"
+      content: "In an increasingly connected world, mastering languages while developing professional expertise becomes essential. Our platform guides you in this approach by offering personalized pathways that combine linguistic skills and professional know-how."
+      benefits:
+        - "Access to international opportunities"
+        - "Development of cross-functional skills"
+        - "Pathways adapted to your profile"
+        - "Personalized support"
+      action_button: "Discover fields"
+    how_it_works:
+      title: "How does it work?"
+      subtitle: "A simple 3-step process"
+      steps:
+        - title: "Discover your profile"
+          content: "Answer our personalized questionnaire to identify your current language skills and professional goals."
+          icon: "person_search"
+        - title: "Choose your path"
+          content: "Explore our fields adapted to your profile and select the path that best matches your ambitions."
+          icon: "route"
+        - title: "Progress at your pace"
+          content: "Follow your personalized roadmap with clear steps, adapted resources and continuous support."
+          icon: "trending_up"
+    scholarships:
+      title: "Scholarships and opportunities"
+      subtitle: "Access the best opportunities"
+      content: "Discover a wide range of scholarships, exchange programs and professional opportunities specially selected to support you in your language and career journey. We help you identify and apply to programs that perfectly match your profile and ambitions."
+      highlights:
+        - "International scholarships"
+        - "Language exchange programs"
+        - "Professional internships abroad"
+        - "Certification training"
+      action_button: "View all scholarships and opportunities"
+    cle:
+      title: "CLE - Free and Fulfilled Citizens"
+      subtitle: "A revolutionary approach to education"
+      content: "CLE (Citoyens Libres et Épanouis - Free and Fulfilled Citizens) is our flagship program that revolutionizes learning by combining personal development, language skills and professional training. Our holistic approach aims to train autonomous, creative and fulfilled citizens in their personal and professional journey."
+      features:
+        - "Development of autonomy and creativity"
+        - "Personalized and adaptive learning"
+        - "21st century skills training"
+        - "Support towards personal fulfillment"
+      action_button: "Discover CLE"
+    cta:
+      title: "Ready to transform your future?"
+      subtitle: "Contact a mentor today and start your personalized journey"
+      action_button: "Contact a mentor"
+    blog:
+      title: "Latest articles"
+      subtitle: "Discover our tips and news"
+      read_more: "Read more"
+      view_all: "View all articles"
+    testimonials:
+      title: "What our learners say"
+      subtitle: "Authentic testimonials from our community"
+      items:
+        - name: "Marie Dubois"
+          role: "International Business Student"
+          content: "Thanks to CLE, I developed my language skills while acquiring professional expertise. The program opened the doors to an international internship!"
+          rating: 5
+        - name: "Ahmed Benali"
+          role: "Web Developer"
+          content: "The Languages & Careers platform allowed me to combine my passion for technology with learning new languages. A revolutionary approach!"
+          rating: 5
+        - name: "Sophie Martin"
+          role: "Digital Marketing"
+          content: "The personalized support and opportunities offered exceeded my expectations. I highly recommend this innovative approach to learning."
+          rating: 5
+    contact:
+      title: "Contact us"
+      subtitle: "A question? A project? Feel free to write to us"
+      form:
+        first_name: "First Name"
+        last_name: "Last Name"
+        whatsapp: "WhatsApp Number"
+        email: "Email"
+        message: "Message"
+        send: "Send message"
+      info:
+        phone: "+33 1 23 45 67 89"
+        email: "contact@langues-metiers.fr"
+        address: "123 Innovation Street, 75001 Paris"
+    footer:
+      tagline: "Your gateway to a multilingual and professional future"
+      sections:
+        platform:
+          title: "Platform"
+          links:
+            - "Fields"
+            - "CLE Program"
+            - "Scholarships & Opportunities"
+            - "Testimonials"
+        resources:
+          title: "Resources"
+          links:
+            - "Blog"
+            - "Guides"
+            - "FAQ"
+            - "Support"
+        company:
+          title: "Company"
+          links:
+            - "About"
+            - "Our team"
+            - "Careers"
+            - "Partners"
+        legal:
+          title: "Legal"
+          links:
+            - "Terms of use"
+            - "Privacy policy"
+            - "Legal notices"
+            - "Cookies"
+      copyright: "© 2024 Languages & Careers. All rights reserved."

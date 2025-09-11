@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :fields, only: [ :index, :show ], param: :slug, path: "filieres"
   devise_for :users, controllers: {
     sessions: "users/sessions",
     registrations: "users/registrations",
@@ -40,5 +41,11 @@ Rails.application.routes.draw do
     resources :careers
     resources :user_skills, only: [ :create, :destroy ]
     resources :skills
+
+    resources :fields, path: "fields" do
+      resources :roadmaps do
+        resources :roadmap_steps
+      end
+    end
   end
 end
