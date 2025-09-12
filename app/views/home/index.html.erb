@@ -10,6 +10,7 @@
         <nav class="hidden md:flex items-center space-x-8">
           <a class="hover:text-gray-300 flex items-center" href="#"><%= t('home.navigation.home') %></a>
           <%= link_to t('home.navigation.fields'), fields_path, class: "hover:text-gray-300 flex items-center" %>
+          <%= link_to "CLE", cle_path, class: "hover:text-gray-300 flex items-center" %>
           <a class="hover:text-gray-300 flex items-center" href="#"><%= t('home.navigation.blog') %></a>
           <a class="hover:text-gray-300 flex items-center" href="#"><%= t('home.navigation.about') %></a>
           <a class="hover:text-gray-300" href="#"><%= t('home.navigation.contact') %></a>
@@ -267,7 +268,7 @@
         
         <!-- Bouton d'action -->
         <div>
-          <a href="#" class="inline-flex items-center bg-secondary-700 hover:bg-secondary-800 text-white font-semibold px-8 py-4 rounded-lg transition duration-300 transform hover:scale-105 shadow-lg">
+          <a href="<%= cle_path %>" class="inline-flex items-center bg-secondary-700 hover:bg-secondary-800 text-white font-semibold px-8 py-4 rounded-lg transition duration-300 transform hover:scale-105 shadow-lg">
             <span><%= t('home.cle.action_button') %></span>
             <svg class="w-5 h-5 ml-2" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
