@@ -11,7 +11,7 @@ class FieldsController < ApplicationController
   end
 
   def show
-    @field = Field.friendly.find_by(slug: params[:slug])
+    @field = Field.friendly.find(params[:slug])
     @roadmaps = @field.roadmaps.joins(:roadmap_steps).distinct.order(:title)
   end
 end
