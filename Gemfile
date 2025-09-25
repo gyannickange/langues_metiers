@@ -46,7 +46,7 @@ gem "pundit"
 gem "sidekiq"
 gem "redis", "~> 5.0"
 gem "rails-i18n"
-gem "pagy", "~> 6.0"
+gem "pagy", "~> 9.4"
 gem "friendly_id", "~> 5.5"
 
 group :development, :test do
