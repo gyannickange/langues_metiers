@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
+
+    <%= tag.meta name: "description", content: content_for(:description) || t('meta.description') %>
+    <%= tag.meta name: "keywords", content: content_for(:keywords) || t('meta.keywords') %>
+
+    <meta property="og:title" content="<%= content_for(:title) || t('meta.title') %>">
+    <meta property="og:description" content="<%= content_for(:description) || t('meta.description') %>">
+    <meta property="og:image" content="<%= content_for(:image) || image_url('icon.png') %>">
+    <meta property="og:url" content="<%= request.original_url %>">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<%= content_for(:title) || t('meta.title') %>">
+    <meta name="twitter:description" content="<%= content_for(:description) || t('meta.description') %>">
+    <meta name="twitter:image" content="<%= content_for(:image) || image_url('icon.png') %>">
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -25,6 +38,8 @@
 
   <body>
     <%= render "shared/flash" %>
+    <%= yield :header %>    
     <%= yield %>
+    <%= render "shared/lp_footer" %>
   </body>
 </html>

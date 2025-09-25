@@ -1,0 +1,128 @@
+<!-- Footer -->
+<footer class="relative bg-gradient-to-br from-secondary-900 via-secondary-800 to-gray-900 text-white overflow-hidden">
+  <!-- Background decorative elements -->
+  <div class="absolute inset-0 overflow-hidden">
+    <div class="absolute -top-20 -right-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-primary/5 rounded-full blur-3xl"></div>
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 border border-primary/10 rounded-full"></div>
+  </div>
+  
+  <div class="container mx-auto px-6 py-20 relative z-10">
+    <!-- Header section -->
+    <div class="text-center mb-16">
+      <div class="flex items-center justify-center group mb-6">
+        <div class="w-16 h-16 bg-gradient-to-br from-primary to-primary-600 rounded-3xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+          </svg>
+        </div>
+        <span class="text-3xl font-bold bg-gradient-to-r from-white to-primary-100 bg-clip-text text-transparent">Langues & Métiers</span>
+      </div>
+      <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed"><%= t('home.footer.tagline') %></p>
+      
+      <!-- Social links avec design amélioré -->
+      <div class="flex justify-center space-x-6 mb-12">
+        <a href="#" class="group relative w-14 h-14 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center hover:bg-primary transition-all duration-300 border border-white/20">
+          <span class="material-icons text-white group-hover:scale-110 transition-transform duration-300">facebook</span>
+          <div class="absolute inset-0 bg-primary rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        </a>
+        <a href="#" class="group relative w-14 h-14 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center hover:bg-primary transition-all duration-300 border border-white/20">
+          <span class="material-icons text-white group-hover:scale-110 transition-transform duration-300">alternate_email</span>
+          <div class="absolute inset-0 bg-primary rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        </a>
+        <a href="#" class="group relative w-14 h-14 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center hover:bg-primary transition-all duration-300 border border-white/20">
+          <span class="material-icons text-white group-hover:scale-110 transition-transform duration-300">group</span>
+          <div class="absolute inset-0 bg-primary rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        </a>
+        <a href="#" class="group relative w-14 h-14 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center hover:bg-primary transition-all duration-300 border border-white/20">
+          <span class="material-icons text-white group-hover:scale-110 transition-transform duration-300">linked_camera</span>
+          <div class="absolute inset-0 bg-primary rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        </a>
+      </div>
+    </div>
+    
+    <!-- Newsletter signup -->
+    <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-8 mb-16 border border-white/20 max-w-2xl mx-auto text-center">
+      <h3 class="text-2xl font-bold mb-4">Restez informé</h3>
+      <p class="text-gray-300 mb-6">Recevez nos dernières actualités et opportunités directement dans votre boîte mail</p>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <input type="email" placeholder="Votre adresse email" class="flex-1 bg-white/10 border border-white/30 rounded-2xl px-6 py-3 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+        <button class="btn-primary px-8 py-3 rounded-2xl shadow-lg">
+          S'abonner
+        </button>
+      </div>
+    </div>
+      
+    <!-- Links grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+      <!-- Quick Links -->
+      <div>
+        <h3 class="text-lg font-bold mb-6 text-primary">Navigation</h3>
+        <ul class="space-y-3">
+          <li><%= link_to root_path, class: "text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group" do %><span class="material-icons text-sm mr-2 group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>Accueil<% end %></li>
+          <li><%= link_to fields_path, class: "text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group" do %><span class="material-icons text-sm mr-2 group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>Filières<% end %></li>
+          <li><%= link_to cle_path, class: "text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group" do %><span class="material-icons text-sm mr-2 group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>Programme CLE<% end %></li>
+          <li><a href="#" class="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group"><span class="material-icons text-sm mr-2 group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>À propos</a></li>
+        </ul>
+      </div>
+      
+      <!-- Services -->
+      <div>
+        <h3 class="text-lg font-bold mb-6 text-primary">Services</h3>
+        <ul class="space-y-3">
+          <li><a href="#" class="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group"><span class="material-icons text-sm mr-2 group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>Orientation</a></li>
+          <li><a href="#" class="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group"><span class="material-icons text-sm mr-2 group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>Bourses</a></li>
+          <li><a href="#" class="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group"><span class="material-icons text-sm mr-2 group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>Mentorat</a></li>
+          <li><a href="#" class="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group"><span class="material-icons text-sm mr-2 group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>Certification</a></li>
+        </ul>
+      </div>
+      
+      <!-- Resources -->
+      <div>
+        <h3 class="text-lg font-bold mb-6 text-primary">Ressources</h3>
+        <ul class="space-y-3">
+          <li><a href="#" class="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group"><span class="material-icons text-sm mr-2 group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>Blog</a></li>
+          <li><a href="#" class="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group"><span class="material-icons text-sm mr-2 group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>FAQ</a></li>
+          <li><a href="#" class="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group"><span class="material-icons text-sm mr-2 group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>Guides</a></li>
+          <li><a href="#" class="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group"><span class="material-icons text-sm mr-2 group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>Webinaires</a></li>
+        </ul>
+      </div>
+      
+      <!-- Contact -->
+      <div>
+        <h3 class="text-lg font-bold mb-6 text-primary">Contact</h3>
+        <div class="space-y-4">
+          <div class="flex items-start">
+            <span class="material-icons text-primary mr-3 mt-1">location_on</span>
+            <div class="text-gray-300">
+              <p>123 Rue de l'Éducation</p>
+              <p>75001 Paris, France</p>
+            </div>
+          </div>
+          <div class="flex items-center">
+            <span class="material-icons text-primary mr-3">phone</span>
+            <span class="text-gray-300">+33 1 23 45 67 89</span>
+          </div>
+          <div class="flex items-center">
+            <span class="material-icons text-primary mr-3">email</span>
+            <span class="text-gray-300">contact@langues-metiers.fr</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Bottom section -->
+    <div class="border-t border-white/20 pt-8">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="text-gray-400 mb-4 md:mb-0">
+          <p>&copy; 2024 Langues & Métiers. Tous droits réservés.</p>
+        </div>
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-primary transition-colors duration-300">Politique de confidentialité</a>
+          <a href="#" class="text-gray-400 hover:text-primary transition-colors duration-300">Conditions d'utilisation</a>
+          <a href="#" class="text-gray-400 hover:text-primary transition-colors duration-300">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

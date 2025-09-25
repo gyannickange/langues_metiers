@@ -1,0 +1,74 @@
+<% content_for :title, "Filières" %>
+
+<% content_for :header do %>
+  <%= render 'shared/fields_header' %>
+<% end %>
+
+<div class="min-h-screen bg-gray-50">
+
+  <!-- Résultats -->
+  <div class="container mx-auto px-4 py-8">
+    <%= turbo_frame_tag "fields_results" do %>
+      <% if @query.present? %>
+        <div class="mb-6">
+          <h2 class="text-2xl font-semibold text-gray-900">
+            Résultats pour "<%= @query %>" 
+            <span class="text-lg font-normal text-gray-500">(<%= @fields.count %> résultat<%= 's' if @fields.count > 1 %>)</span>
+          </h2>
+        </div>
+      <% else %>
+        <div class="mb-6">
+          <h2 class="text-2xl font-semibold text-gray-900">Toutes les filières</h2>
+          <p class="text-gray-600">Choisissez la filière qui vous intéresse</p>
+        </div>
+      <% end %>
+
+      <% if @fields.any? %>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <% @fields.each do |field| %>
+            <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+              <div class="p-6">
+                <div class="flex items-start justify-between mb-3">
+                  <h3 class="text-xl font-semibold text-gray-900 leading-tight">
+                    <%= link_to field.name, field_path(field), class: "hover:text-primary transition-colors", data: { turbo_frame: "_top" } %>
+                  </h3>
+                  <span class="px-2 py-1 bg-primary text-white text-xs rounded-full">
+                    <%= pluralize(field.roadmaps.count, 'roadmap') %>
+                  </span>
+                </div>
+                
+                <% if field.description.present? %>
+                  <p class="text-gray-600 mb-4 leading-relaxed">
+                    <%= truncate(field.description, length: 150) %>
+                  </p>
+                <% end %>
+                
+                <div class="flex items-center justify-between">
+                  <%= link_to "Explorer →", field_path(field), 
+                      class: "inline-flex items-center text-primary font-medium hover:text-primary-600 transition-colors", data: { turbo_frame: "_top" } %>
+                  <div class="text-xs text-gray-500">
+                    <%= pluralize(field.roadmaps.count, 'parcours') %> disponible<%= 's' if field.roadmaps.count > 1 %>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Barre de progression visuelle -->
+              <div class="h-1 bg-gradient-to-r from-primary to-primary-600"></div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-12">
+          <div class="text-gray-400 text-6xl mb-4">🔍</div>
+          <h3 class="text-xl font-medium text-gray-900 mb-2">
+            <%= @query.present? ? "Aucun résultat trouvé" : "Aucune filière disponible" %>
+          </h3>
+          <% if @query.present? %>
+            <p class="text-gray-600 mb-4">Essayez avec d'autres mots-clés</p>
+            <%= link_to "Voir toutes les filières", fields_path, class: "text-primary hover:text-primary-600 font-medium" %>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

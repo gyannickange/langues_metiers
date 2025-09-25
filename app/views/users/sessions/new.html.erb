@@ -1,36 +1,61 @@
-<% content_for :title, t("Log in") %>
+<% content_for :title, t("auth.login") %>
 
-<div class="min-h-screen flex items-center justify-center p-4">
-  <div class="w-full max-w-md bg-white shadow rounded p-6">
-    <h1 class="text-xl font-semibold mb-4"><%= t("Log in") %></h1>
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-      <%= render "users/shared/error_messages", resource: resource %>
+<div class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <div class="container mx-auto p-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 bg-white rounded-lg shadow-lg overflow-hidden">
+      <div class="p-8 md:p-16 flex flex-col justify-center">
+        <div class="w-full max-w-md mx-auto">
+          <h1 class="text-3xl font-bold text-gray-800 mb-2"><%= t("auth.login") %> 👋</h1>
+          <p class="text-gray-600 mb-8">Aujourd'hui est un nouveau jour. C'est votre jour. Connectez-vous pour commencer à gérer vos projets.</p>
 
-      <div class="mb-4">
-        <%= f.label :email, class: "block text-sm font-medium mb-1" %>
-        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full border rounded px-3 py-2" %>
-      </div>
+          <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+            <%= render "users/shared/error_messages", resource: resource %>
 
-      <div class="mb-4">
-        <%= f.label :password, class: "block text-sm font-medium mb-1" %>
-        <%= f.password_field :password, autocomplete: "current-password", class: "w-full border rounded px-3 py-2" %>
-      </div>
+            <div class="mb-4">
+              <%= f.label :email, "Email", class: "block text-gray-700 text-sm font-medium mb-2" %>
+              <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "exemple@email.com", class: "w-full px-4 py-3 bg-gray-100 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+            </div>
 
-      <% if devise_mapping.rememberable? %>
-        <div class="mb-4 flex items-center gap-2">
-          <%= f.check_box :remember_me %>
-          <%= f.label :remember_me, class: "text-sm" %>
+            <div class="mb-6">
+              <%= f.label :password, "Mot de passe", class: "block text-gray-700 text-sm font-medium mb-2" %>
+              <%= f.password_field :password, autocomplete: "current-password", placeholder: t("auth.characters_minimum", default: "8 caractères minimum"), class: "w-full px-4 py-3 bg-gray-100 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+              <div class="text-right mt-2">
+                <%= link_to t("auth.forgot_password"), new_password_path(resource_name), class: "text-sm text-blue-600 hover:underline" %>
+              </div>
+            </div>
+
+            <%= f.submit t("auth.login"), class: "w-full bg-gray-800 text-white py-3 rounded-lg font-semibold hover:bg-gray-900 transition duration-300" %>
+          <% end %>
+
+          <div class="my-6 flex items-center">
+            <hr class="w-full border-gray-300"/>
+            <span class="px-2 text-gray-500 text-sm">Ou</span>
+            <hr class="w-full border-gray-300"/>
+          </div>
+
+          <div class="space-y-4">
+            <button class="w-full flex items-center justify-center py-3 px-4 bg-gray-100 rounded-lg border border-gray-200 hover:bg-gray-200 transition duration-300" type="button">
+              <img alt="Logo Google" class="h-5 mr-3" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlaXcsD_5bj5LQ2TDZbx1b3vZ4u1qJpIpnRxeyzfTF-ibGvandk3hUF5HbM3ZJitruCWOIKJ_SWKN7n5Q2MfHULsjcEB1caEu5bAT3SKJ_FeQJfYp29moD2dW5SAV6knUjPcad_WlE7SlrebKKVJVG6GZyi4RcjsZKJQtM9hKHhB73_g-DfpAv0FTDeRP_e7eNLBaQl3qXPUq1_YpeiUR4d9xGMf5BZAuIuryTQpSQPFGuZPb8dR1tn7kGTFD3cCzH_kr8xwfpmrQ"/>
+              <span class="text-gray-700 font-medium">Se connecter avec Google</span>
+            </button>
+            <button class="w-full flex items-center justify-center py-3 px-4 bg-gray-100 rounded-lg border border-gray-200 hover:bg-gray-200 transition duration-300" type="button">
+              <img alt="Logo Facebook" class="h-6 mr-3" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfQ6oFGNdVMQ1-NDpFPmtwt7ccQbp9J9XIc7_AMIAquJNZVggTA36WKDTYpkuiwF14C6C7cSo-4xgSRIV5E1TFEJvYY-0L3Nl7IRsTIfVabGavUBwu6Ty0ns0ME-Md0F1ha89LYUbtvBuXws2ekpTfU5AUKHYmfrGMbkQukIOJATQZx5x6OJOLL22GkMCnQhj0402vmfy36m47rV40ZbyJPQ59rAEcg7hHjClXDIugVRPANQkqBX8kW2-x7iMbY7Un5YJtNrUNJt8"/>
+              <span class="text-gray-700 font-medium">Se connecter avec Facebook</span>
+            </button>
+          </div>
+
+          <p class="text-center text-gray-600 mt-8">
+            Vous n'avez pas de compte ?
+            <%= link_to t("auth.register"), new_user_registration_path, class: "text-blue-600 font-medium hover:underline" %>
+          </p>
         </div>
-      <% end %>
 
-      <div class="flex items-center justify-between">
-        <%= f.submit t("Log in"), class: "inline-flex items-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
-        <%= link_to t("Forgot your password?"), new_password_path(resource_name), class: "text-sm text-blue-600 hover:underline" %>
+        <p class="text-center text-gray-400 text-sm mt-auto">© <%= Time.current.year %> Tous droits réservés</p>
       </div>
-    <% end %>
 
-    <div class="mt-4">
-      <%= render "users/shared/links" %>
+      <div class="hidden md:block">
+        <img alt="Illustration" class="w-full h-full object-cover rounded-r-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-VVsWTNIWdSUyPjydz0e61Gua5IuRwXU10WdM5K9izhsxNOd44q944w6WVtkIII0nzdnA1DckV4zvtiDBoMcR_SP-sxWBtdWPg3FGdmRhu42lZfDxo4lgUlIXao5xYap-UYbgehI27y3InZsezAwlP0hcO94fYqRtAnF739LBDB-EhiyQk9t3p4ia1pRMJJv3B2PqRM4j7JCMfaKqEN6T86bKUqx9nFwoqVmILDNKmMX6xPlzQBBHAI6r6hiPZYTTJqAknLOMKSk"/>
+      </div>
     </div>
   </div>
 </div>

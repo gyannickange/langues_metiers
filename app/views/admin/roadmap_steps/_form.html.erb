@@ -1,0 +1,49 @@
+<%= form_with model: [:admin, @roadmap.field, @roadmap, @roadmap_step] do |f| %>
+  <% if @roadmap_step.errors.any? %>
+    <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
+      <h4 class="font-bold">Erreurs :</h4>
+      <ul class="list-disc ml-5">
+        <% @roadmap_step.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="space-y-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <%= f.label :title, "Titre de l'étape", class: "block text-sm font-medium" %>
+        <%= f.text_field :title, class: "mt-1 block w-full border rounded px-3 py-2" %>
+      </div>
+      
+      <div>
+        <%= f.label :order, "Ordre (numéro de l'étape)", class: "block text-sm font-medium" %>
+        <%= f.number_field :order, class: "mt-1 block w-full border rounded px-3 py-2" %>
+      </div>
+    </div>
+
+    <div>
+      <%= f.label :objective, "🎯 Objectif", class: "block text-sm font-medium" %>
+      <%= f.text_area :objective, rows: 3, class: "mt-1 block w-full border rounded px-3 py-2" %>
+      <p class="text-xs text-gray-500 mt-1">Décrivez clairement l'objectif de cette étape</p>
+    </div>
+
+    <div>
+      <%= f.label :skills, "✅ Compétences à développer", class: "block text-sm font-medium" %>
+      <%= f.text_area :skills, rows: 4, class: "mt-1 block w-full border rounded px-3 py-2" %>
+      <p class="text-xs text-gray-500 mt-1">Listez les compétences que l'étudiant développera</p>
+    </div>
+
+    <div>
+      <%= f.label :activities, "📌 Activités / Expériences", class: "block text-sm font-medium" %>
+      <%= f.text_area :activities, rows: 4, class: "mt-1 block w-full border rounded px-3 py-2" %>
+      <p class="text-xs text-gray-500 mt-1">Décrivez les activités concrètes à réaliser</p>
+    </div>
+  </div>
+
+  <div class="mt-6 flex items-center gap-2">
+    <%= f.submit @roadmap_step.new_record? ? "Créer l'étape" : "Mettre à jour", class: "inline-flex items-center bg-primary text-white px-4 py-2 rounded hover:bg-primary-600" %>
+    <%= link_to "Annuler", admin_field_roadmap_roadmap_steps_path(@roadmap.field, @roadmap), class: "inline-flex items-center bg-gray-100 text-gray-800 px-4 py-2 rounded hover:bg-gray-200" %>
+  </div>
+<% end %>

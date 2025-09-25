@@ -10,6 +10,10 @@ fr:
     forgot_password: "Mot de passe oublié ?"
     send_reset_instructions: "M’envoyer les instructions de réinitialisation"
     characters_minimum: "caractères minimum"
+  meta:
+    title: "Langues Metiers - Votre Passerelle vers un Avenir Multilingue et Professionnel"
+    description: "Découvrez votre parcours professionnel idéal en combinant compétences linguistiques et expertise métier. Programmes personnalisés, bourses et accompagnement pour une carrière réussie."
+    keywords: "Langues Metiers, carrière multilingue, formation professionnelle, bourses d'études, compétences linguistiques, développement professionnel, roadmaps personnalisés"
   fields:
     index: "Champs"
     new: "Nouveau Champ"
@@ -17,6 +21,10 @@ fr:
     created: "Champ créé"
     updated: "Champ mis à jour"
     deleted: "Champ supprimé"
+    header:
+      badge: "DÉCOUVREZ VOS OPPORTUNITÉS"
+      subtitle: "Transformez votre passion pour les langues en carrière réussie avec nos programmes spécialisés et nos roadmaps personnalisés"
+      search_placeholder: "Rechercher une filière..."
 
   users:
     registrations:

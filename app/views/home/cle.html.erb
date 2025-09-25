@@ -1,63 +1,7 @@
 <!-- Hero Section -->
-<section class="min-h-screen flex items-center bg-gradient-to-br from-primary-50 to-secondary-50">
-  <div class="container mx-auto px-6 lg:px-8">
-    <div class="grid lg:grid-cols-2 gap-12 items-center">
-      <!-- Contenu gauche -->
-      <div class="space-y-8">
-        <div class="space-y-4">
-          <div class="inline-block bg-primary/20 text-primary-800 text-sm font-semibold px-4 py-2 rounded-full">
-            PROGRAMME CLE 2025
-          </div>
-          <h1 class="text-5xl lg:text-6xl font-bold text-secondary-800 leading-tight">
-            Citoyens Libres et 
-            <span class="text-primary-600">Épanouis</span>
-          </h1>
-          <p class="text-xl text-gray-600 leading-relaxed">
-            Transforme ta vision entrepreneuriale en réalité concrète. 
-            Rejoins une communauté de 30 entrepreneures ambitieuses pour 3 mois d'accompagnement intensif.
-          </p>
-        </div>
-        
-        <div class="flex flex-col sm:flex-row gap-4">
-          <button class="bg-primary hover:bg-primary-600 text-primary-foreground px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
-            Rejoindre le programme
-          </button>
-          <button class="border-2 border-secondary text-secondary hover:bg-secondary hover:text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300">
-            En savoir plus
-          </button>
-        </div>
-        
-        <!-- Stats -->
-        <div class="grid grid-cols-3 gap-6 pt-8">
-          <div class="text-center">
-            <div class="text-3xl font-bold text-primary-600">30</div>
-            <div class="text-sm text-gray-600">Entrepreneures</div>
-          </div>
-          <div class="text-center">
-            <div class="text-3xl font-bold text-primary-600">3</div>
-            <div class="text-sm text-gray-600">Mois intenses</div>
-          </div>
-          <div class="text-center">
-            <div class="text-3xl font-bold text-primary-600">100%</div>
-            <div class="text-sm text-gray-600">Pratique</div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Image droite -->
-      <div class="relative">
-        <div class="relative z-10">
-          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
-               alt="Entrepreneures CLE" 
-               class="rounded-3xl shadow-2xl w-full">
-        </div>
-        <!-- Decorative elements -->
-        <div class="absolute -top-4 -right-4 w-24 h-24 bg-primary/20 rounded-full"></div>
-        <div class="absolute -bottom-4 -left-4 w-32 h-32 bg-secondary/20 rounded-full"></div>
-      </div>
-    </div>
-  </div>
-</section>
+<% content_for :header do %>
+  <%= render 'shared/cle_header' %>
+<% end %>
 
 <!-- Section Vision -->
 <section class="py-20 bg-white">
@@ -103,11 +47,11 @@
 </section>
 
 <!-- Section Programme -->
-<section class="min-h-screen flex items-center bg-gradient-to-br from-secondary-50 to-primary-50">
+<section class="min-h-screen py-20 flex items-center bg-gradient-to-br from-secondary-50 to-primary-50">
   <div class="container mx-auto px-6 lg:px-8">
     <div class="grid lg:grid-cols-2 gap-12 items-center">
       <!-- Image gauche -->
-      <div class="relative order-2 lg:order-1">
+      <div class="relative order-1 lg:order-2">
         <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
              alt="Programme CLE" 
              class="rounded-3xl shadow-2xl w-full">
@@ -121,7 +65,7 @@
       </div>
       
       <!-- Contenu droite -->
-      <div class="space-y-8 order-1 lg:order-2">
+      <div class="space-y-8 order-2 lg:order-1">
         <div class="space-y-4">
           <div class="inline-block bg-secondary/20 text-secondary-800 text-sm font-semibold px-4 py-2 rounded-full">
             EN SAVOIR PLUS SUR LE PROGRAMME
@@ -173,176 +117,429 @@
 </section>
 
 <!-- Section Ce que tu gagnes -->
-<section class="py-20 bg-white">
-  <div class="container mx-auto px-6 lg:px-8">
-    <div class="text-center mb-16">
-      <h2 class="text-4xl lg:text-5xl font-bold text-secondary-800 mb-6">
-        Ce que tu <span class="text-primary-600">gagnes</span>
+<section class="relative py-24 bg-gradient-to-br from-gray-50 via-white to-primary-50 overflow-hidden">
+  <!-- Background decorative elements -->
+  <div class="absolute inset-0 overflow-hidden">
+    <div class="absolute top-20 left-10 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-20 right-10 w-80 h-80 bg-secondary/5 rounded-full blur-3xl"></div>
+  </div>
+  
+  <div class="container mx-auto px-6 lg:px-8 relative z-10">
+    <div class="text-center mb-20">
+      <div class="inline-flex items-center bg-white/80 backdrop-blur-sm text-secondary-800 text-sm font-semibold px-6 py-3 rounded-full border border-primary/20 mb-6">
+        <span class="w-2 h-2 bg-primary rounded-full mr-3 animate-pulse"></span>
+        BÉNÉFICES DU PROGRAMME
+      </div>
+      <h2 class="text-5xl lg:text-6xl font-bold text-secondary-800 mb-8">
+        Ce que tu 
+        <span class="relative">
+          <span class="bg-gradient-to-r from-primary-600 to-primary-500 bg-clip-text text-transparent">gagnes</span>
+          <div class="absolute -bottom-2 left-0 w-full h-3 bg-primary/20 -skew-x-12 transform"></div>
+        </span>
       </h2>
-      <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-        Un programme complet qui transforme ta vision en entreprise prospère
+      <p class="text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto font-light leading-relaxed">
+        Un programme complet qui transforme ta vision en entreprise prospère avec des résultats concrets et mesurables
       </p>
     </div>
     
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
       <!-- Carte 1 -->
-      <div class="bg-gradient-to-br from-primary-50 to-primary-100 p-8 rounded-2xl hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-        <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6">
-          <span class="material-icons text-primary-foreground text-2xl">psychology</span>
+      <div class="group relative bg-white p-8 rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4 border border-gray-100 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div class="relative z-10">
+          <div class="w-20 h-20 bg-gradient-to-br from-primary to-primary-600 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500 shadow-lg">
+            <span class="material-icons text-white text-3xl">psychology</span>
+          </div>
+          <h3 class="text-2xl font-bold text-secondary-800 mb-4 group-hover:text-primary-600 transition-colors duration-300">Mindset Entrepreneurial</h3>
+          <p class="text-gray-600 leading-relaxed">Développe une mentalité de leader et surmonte tes blocages pour passer à l'action avec confiance.</p>
+          <div class="mt-6 flex items-center text-primary-600 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            <span class="text-sm">En savoir plus</span>
+            <span class="material-icons ml-2 text-lg transform group-hover:translate-x-2 transition-transform duration-300">arrow_forward</span>
+          </div>
         </div>
-        <h3 class="text-xl font-bold text-secondary-800 mb-4">Mindset Entrepreneurial</h3>
-        <p class="text-gray-600">Développe une mentalité de leader et surmonte tes blocages pour passer à l'action.</p>
       </div>
       
       <!-- Carte 2 -->
-      <div class="bg-gradient-to-br from-secondary-50 to-secondary-100 p-8 rounded-2xl hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-        <div class="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center mb-6">
-          <span class="material-icons text-white text-2xl">business_center</span>
+      <div class="group relative bg-white p-8 rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4 border border-gray-100 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div class="relative z-10">
+          <div class="w-20 h-20 bg-gradient-to-br from-secondary to-secondary-600 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500 shadow-lg">
+            <span class="material-icons text-white text-3xl">business_center</span>
+          </div>
+          <h3 class="text-2xl font-bold text-secondary-800 mb-4 group-hover:text-secondary-600 transition-colors duration-300">Business Model Solide</h3>
+          <p class="text-gray-600 leading-relaxed">Construis un modèle économique viable et durable pour ton entreprise avec des méthodes éprouvées.</p>
+          <div class="mt-6 flex items-center text-secondary-600 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            <span class="text-sm">En savoir plus</span>
+            <span class="material-icons ml-2 text-lg transform group-hover:translate-x-2 transition-transform duration-300">arrow_forward</span>
+          </div>
         </div>
-        <h3 class="text-xl font-bold text-secondary-800 mb-4">Business Model Solide</h3>
-        <p class="text-gray-600">Construis un modèle économique viable et durable pour ton entreprise.</p>
       </div>
       
       <!-- Carte 3 -->
-      <div class="bg-gradient-to-br from-primary-50 to-primary-100 p-8 rounded-2xl hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-        <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6">
-          <span class="material-icons text-primary-foreground text-2xl">networking</span>
+      <div class="group relative bg-white p-8 rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4 border border-gray-100 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div class="relative z-10">
+          <div class="w-20 h-20 bg-gradient-to-br from-primary to-primary-600 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500 shadow-lg">
+            <span class="material-icons text-white text-3xl">networking</span>
+          </div>
+          <h3 class="text-2xl font-bold text-secondary-800 mb-4 group-hover:text-primary-600 transition-colors duration-300">Réseau Puissant</h3>
+          <p class="text-gray-600 leading-relaxed">Accède à un réseau exclusif d'entrepreneures, mentors et partenaires stratégiques pour booster ta croissance.</p>
+          <div class="mt-6 flex items-center text-primary-600 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            <span class="text-sm">En savoir plus</span>
+            <span class="material-icons ml-2 text-lg transform group-hover:translate-x-2 transition-transform duration-300">arrow_forward</span>
+          </div>
         </div>
-        <h3 class="text-xl font-bold text-secondary-800 mb-4">Réseau Puissant</h3>
-        <p class="text-gray-600">Accède à un réseau d'entrepreneures, mentors et partenaires stratégiques.</p>
       </div>
       
       <!-- Carte 4 -->
-      <div class="bg-gradient-to-br from-secondary-50 to-secondary-100 p-8 rounded-2xl hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-        <div class="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center mb-6">
-          <span class="material-icons text-white text-2xl">rocket_launch</span>
+      <div class="group relative bg-white p-8 rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4 border border-gray-100 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div class="relative z-10">
+          <div class="w-20 h-20 bg-gradient-to-br from-secondary to-secondary-600 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500 shadow-lg">
+            <span class="material-icons text-white text-3xl">rocket_launch</span>
+          </div>
+          <h3 class="text-2xl font-bold text-secondary-800 mb-4 group-hover:text-secondary-600 transition-colors duration-300">Lancement Réussi</h3>
+          <p class="text-gray-600 leading-relaxed">Lance ton entreprise avec une stratégie marketing et commerciale efficace, testée et optimisée.</p>
+          <div class="mt-6 flex items-center text-secondary-600 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            <span class="text-sm">En savoir plus</span>
+            <span class="material-icons ml-2 text-lg transform group-hover:translate-x-2 transition-transform duration-300">arrow_forward</span>
+          </div>
         </div>
-        <h3 class="text-xl font-bold text-secondary-800 mb-4">Lancement Réussi</h3>
-        <p class="text-gray-600">Lance ton entreprise avec une stratégie marketing et commerciale efficace.</p>
       </div>
       
       <!-- Carte 5 -->
-      <div class="bg-gradient-to-br from-primary-50 to-primary-100 p-8 rounded-2xl hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-        <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6">
-          <span class="material-icons text-primary-foreground text-2xl">support</span>
+      <div class="group relative bg-white p-8 rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4 border border-gray-100 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div class="relative z-10">
+          <div class="w-20 h-20 bg-gradient-to-br from-primary to-primary-600 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500 shadow-lg">
+            <span class="material-icons text-white text-3xl">support</span>
+          </div>
+          <h3 class="text-2xl font-bold text-secondary-800 mb-4 group-hover:text-primary-600 transition-colors duration-300">Accompagnement Expert</h3>
+          <p class="text-gray-600 leading-relaxed">Bénéficie de l'expertise de mentors expérimentés et de coachs spécialisés disponibles 24/7.</p>
+          <div class="mt-6 flex items-center text-primary-600 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            <span class="text-sm">En savoir plus</span>
+            <span class="material-icons ml-2 text-lg transform group-hover:translate-x-2 transition-transform duration-300">arrow_forward</span>
+          </div>
         </div>
-        <h3 class="text-xl font-bold text-secondary-800 mb-4">Accompagnement Expert</h3>
-        <p class="text-gray-600">Bénéficie de l'expertise de mentors expérimentés et de coachs spécialisés.</p>
       </div>
       
       <!-- Carte 6 -->
-      <div class="bg-gradient-to-br from-secondary-50 to-secondary-100 p-8 rounded-2xl hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-        <div class="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center mb-6">
-          <span class="material-icons text-white text-2xl">emoji_events</span>
+      <div class="group relative bg-white p-8 rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4 border border-gray-100 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div class="relative z-10">
+          <div class="w-20 h-20 bg-gradient-to-br from-secondary to-secondary-600 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500 shadow-lg">
+            <span class="material-icons text-white text-3xl">emoji_events</span>
+          </div>
+          <h3 class="text-2xl font-bold text-secondary-800 mb-4 group-hover:text-secondary-600 transition-colors duration-300">Succès Durable</h3>
+          <p class="text-gray-600 leading-relaxed">Acquiers les compétences pour faire croître et pérenniser ton entreprise sur le long terme.</p>
+          <div class="mt-6 flex items-center text-secondary-600 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            <span class="text-sm">En savoir plus</span>
+            <span class="material-icons ml-2 text-lg transform group-hover:translate-x-2 transition-transform duration-300">arrow_forward</span>
+          </div>
         </div>
-        <h3 class="text-xl font-bold text-secondary-800 mb-4">Succès Durable</h3>
-        <p class="text-gray-600">Acquiers les compétences pour faire croître et pérenniser ton entreprise.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- Section 4 Phases -->
-<section class="py-20 bg-gradient-to-br from-secondary-900 to-secondary-800 text-white">
-  <div class="container mx-auto px-6 lg:px-8">
-    <div class="text-center mb-16">
-      <h2 class="text-4xl lg:text-5xl font-bold mb-6">
-        Les 4 <span class="text-primary">Phases</span>
+<section class="relative py-24 bg-gradient-to-br from-secondary-900 via-secondary-800 to-secondary-700 text-white overflow-hidden">
+  <!-- Background decorative elements -->
+  <div class="absolute inset-0 overflow-hidden">
+    <div class="absolute top-0 left-0 w-full h-full opacity-10">
+      <div class="absolute top-20 left-20 w-32 h-32 border border-primary/30 rounded-full"></div>
+      <div class="absolute bottom-40 right-32 w-24 h-24 border border-primary/30 rounded-full"></div>
+      <div class="absolute top-1/2 left-1/3 w-16 h-16 bg-primary/20 rounded-full blur-xl"></div>
+    </div>
+  </div>
+  
+  <div class="container mx-auto px-6 lg:px-8 relative z-10">
+    <div class="text-center mb-20">
+      <div class="inline-flex items-center bg-white/10 backdrop-blur-sm text-white text-sm font-semibold px-6 py-3 rounded-full border border-primary/30 mb-8">
+        <span class="w-2 h-2 bg-primary rounded-full mr-3 animate-pulse"></span>
+        MÉTHODOLOGIE ÉPROUVÉE
+      </div>
+      <h2 class="text-5xl lg:text-6xl font-bold mb-8">
+        Les 4 <span class="bg-gradient-to-r from-primary to-primary-400 bg-clip-text text-transparent">Phases</span>
       </h2>
-      <p class="text-xl text-secondary-100 max-w-3xl mx-auto">
-        Un parcours structuré en 4 phases pour transformer ton idée en entreprise prospère
+      <p class="text-xl lg:text-2xl text-secondary-100 max-w-4xl mx-auto font-light leading-relaxed">
+        Un parcours structuré et progressif pour transformer ton idée en entreprise prospère, étape par étape
       </p>
     </div>
     
-    <div class="grid lg:grid-cols-2 gap-12">
+    <!-- Timeline verticale pour mobile -->
+    <div class="lg:hidden space-y-12">
       <!-- Phase 1 -->
-      <div class="relative">
-        <div class="flex items-start space-x-6">
-          <div class="flex-shrink-0">
-            <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-xl">
-              1
-            </div>
+      <div class="relative flex items-start">
+        <div class="absolute left-6 top-16 bottom-0 w-0.5 bg-primary/30"></div>
+        <div class="flex-shrink-0 relative">
+          <div class="w-12 h-12 bg-gradient-to-br from-primary to-primary-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
+            1
           </div>
-          <div class="space-y-4">
-            <h3 class="text-2xl font-bold">Découverte & Vision</h3>
-            <p class="text-secondary-100 leading-relaxed">
-              Clarifie ta vision entrepreneuriale, identifie tes forces et définis ton projet d'entreprise. 
-              Nous t'aidons à transformer ton idée en concept viable.
-            </p>
-            <ul class="space-y-2 text-secondary-200">
-              <li class="flex items-center"><span class="material-icons text-primary mr-2">check</span>Auto-diagnostic entrepreneurial</li>
-              <li class="flex items-center"><span class="material-icons text-primary mr-2">check</span>Définition de ta vision</li>
-              <li class="flex items-center"><span class="material-icons text-primary mr-2">check</span>Validation de l'idée</li>
-            </ul>
+        </div>
+        <div class="ml-6 bg-white/5 backdrop-blur-sm p-6 rounded-2xl border border-white/10">
+          <h3 class="text-2xl font-bold mb-4">Découverte & Vision</h3>
+          <p class="text-secondary-100 leading-relaxed mb-6">
+            Clarifie ta vision entrepreneuriale, identifie tes forces et définis ton projet d'entreprise.
+          </p>
+          <div class="space-y-3">
+            <div class="flex items-center text-secondary-200">
+              <span class="material-icons text-primary mr-3 text-sm">check_circle</span>
+              <span class="text-sm">Auto-diagnostic entrepreneurial</span>
+            </div>
+            <div class="flex items-center text-secondary-200">
+              <span class="material-icons text-primary mr-3 text-sm">check_circle</span>
+              <span class="text-sm">Définition de ta vision</span>
+            </div>
+            <div class="flex items-center text-secondary-200">
+              <span class="material-icons text-primary mr-3 text-sm">check_circle</span>
+              <span class="text-sm">Validation de l'idée</span>
+            </div>
           </div>
         </div>
       </div>
       
       <!-- Phase 2 -->
-      <div class="relative">
-        <div class="flex items-start space-x-6">
-          <div class="flex-shrink-0">
-            <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-xl">
-              2
-            </div>
+      <div class="relative flex items-start">
+        <div class="absolute left-6 top-16 bottom-0 w-0.5 bg-primary/30"></div>
+        <div class="flex-shrink-0 relative">
+          <div class="w-12 h-12 bg-gradient-to-br from-primary to-primary-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
+            2
           </div>
-          <div class="space-y-4">
-            <h3 class="text-2xl font-bold">Stratégie & Planning</h3>
-            <p class="text-secondary-100 leading-relaxed">
-              Développe une stratégie business complète avec un plan d'action détaillé. 
-              Construis les fondations solides de ton entreprise.
-            </p>
-            <ul class="space-y-2 text-secondary-200">
-              <li class="flex items-center"><span class="material-icons text-primary mr-2">check</span>Business plan complet</li>
-              <li class="flex items-center"><span class="material-icons text-primary mr-2">check</span>Étude de marché</li>
-              <li class="flex items-center"><span class="material-icons text-primary mr-2">check</span>Modèle économique</li>
-            </ul>
+        </div>
+        <div class="ml-6 bg-white/5 backdrop-blur-sm p-6 rounded-2xl border border-white/10">
+          <h3 class="text-2xl font-bold mb-4">Stratégie & Planning</h3>
+          <p class="text-secondary-100 leading-relaxed mb-6">
+            Développe une stratégie business complète avec un plan d'action détaillé.
+          </p>
+          <div class="space-y-3">
+            <div class="flex items-center text-secondary-200">
+              <span class="material-icons text-primary mr-3 text-sm">check_circle</span>
+              <span class="text-sm">Business plan complet</span>
+            </div>
+            <div class="flex items-center text-secondary-200">
+              <span class="material-icons text-primary mr-3 text-sm">check_circle</span>
+              <span class="text-sm">Étude de marché</span>
+            </div>
+            <div class="flex items-center text-secondary-200">
+              <span class="material-icons text-primary mr-3 text-sm">check_circle</span>
+              <span class="text-sm">Modèle économique</span>
+            </div>
           </div>
         </div>
       </div>
       
       <!-- Phase 3 -->
-      <div class="relative">
-        <div class="flex items-start space-x-6">
-          <div class="flex-shrink-0">
-            <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-xl">
-              3
-            </div>
+      <div class="relative flex items-start">
+        <div class="absolute left-6 top-16 bottom-0 w-0.5 bg-primary/30"></div>
+        <div class="flex-shrink-0 relative">
+          <div class="w-12 h-12 bg-gradient-to-br from-primary to-primary-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
+            3
           </div>
-          <div class="space-y-4">
-            <h3 class="text-2xl font-bold">Développement & Test</h3>
-            <p class="text-secondary-100 leading-relaxed">
-              Crée ton MVP (Minimum Viable Product), teste ton offre sur le marché et affine ta proposition de valeur 
-              basée sur les retours clients.
-            </p>
-            <ul class="space-y-2 text-secondary-200">
-              <li class="flex items-center"><span class="material-icons text-primary mr-2">check</span>Création du MVP</li>
-              <li class="flex items-center"><span class="material-icons text-primary mr-2">check</span>Tests marché</li>
-              <li class="flex items-center"><span class="material-icons text-primary mr-2">check</span>Optimisation offre</li>
-            </ul>
+        </div>
+        <div class="ml-6 bg-white/5 backdrop-blur-sm p-6 rounded-2xl border border-white/10">
+          <h3 class="text-2xl font-bold mb-4">Développement & Test</h3>
+          <p class="text-secondary-100 leading-relaxed mb-6">
+            Crée ton MVP, teste ton offre sur le marché et affine ta proposition de valeur.
+          </p>
+          <div class="space-y-3">
+            <div class="flex items-center text-secondary-200">
+              <span class="material-icons text-primary mr-3 text-sm">check_circle</span>
+              <span class="text-sm">Création du MVP</span>
+            </div>
+            <div class="flex items-center text-secondary-200">
+              <span class="material-icons text-primary mr-3 text-sm">check_circle</span>
+              <span class="text-sm">Tests marché</span>
+            </div>
+            <div class="flex items-center text-secondary-200">
+              <span class="material-icons text-primary mr-3 text-sm">check_circle</span>
+              <span class="text-sm">Optimisation offre</span>
+            </div>
           </div>
         </div>
       </div>
       
       <!-- Phase 4 -->
-      <div class="relative">
-        <div class="flex items-start space-x-6">
-          <div class="flex-shrink-0">
-            <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-xl">
-              4
+      <div class="relative flex items-start">
+        <div class="flex-shrink-0 relative">
+          <div class="w-12 h-12 bg-gradient-to-br from-primary to-primary-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
+            4
+          </div>
+        </div>
+        <div class="ml-6 bg-white/5 backdrop-blur-sm p-6 rounded-2xl border border-white/10">
+          <h3 class="text-2xl font-bold mb-4">Lancement & Croissance</h3>
+          <p class="text-secondary-100 leading-relaxed mb-6">
+            Lance officiellement ton entreprise avec une stratégie marketing solide.
+          </p>
+          <div class="space-y-3">
+            <div class="flex items-center text-secondary-200">
+              <span class="material-icons text-primary mr-3 text-sm">check_circle</span>
+              <span class="text-sm">Stratégie de lancement</span>
+            </div>
+            <div class="flex items-center text-secondary-200">
+              <span class="material-icons text-primary mr-3 text-sm">check_circle</span>
+              <span class="text-sm">Plan marketing</span>
+            </div>
+            <div class="flex items-center text-secondary-200">
+              <span class="material-icons text-primary mr-3 text-sm">check_circle</span>
+              <span class="text-sm">Systèmes de croissance</span>
             </div>
           </div>
-          <div class="space-y-4">
-            <h3 class="text-2xl font-bold">Lancement & Croissance</h3>
-            <p class="text-secondary-100 leading-relaxed">
-              Lance officiellement ton entreprise avec une stratégie marketing solide et mets en place 
-              les systèmes pour une croissance durable.
-            </p>
-            <ul class="space-y-2 text-secondary-200">
-              <li class="flex items-center"><span class="material-icons text-primary mr-2">check</span>Stratégie de lancement</li>
-              <li class="flex items-center"><span class="material-icons text-primary mr-2">check</span>Plan marketing</li>
-              <li class="flex items-center"><span class="material-icons text-primary mr-2">check</span>Systèmes de croissance</li>
-            </ul>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Timeline horizontale pour desktop -->
+    <div class="hidden lg:block">
+      <!-- Ligne de progression -->
+      <div class="relative mb-16">
+        <div class="absolute top-1/2 left-0 right-0 h-1 bg-white/20 rounded-full transform -translate-y-1/2"></div>
+        <div class="absolute top-1/2 left-0 w-3/4 h-1 bg-gradient-to-r from-primary to-primary-600 rounded-full transform -translate-y-1/2"></div>
+        
+        <!-- Points de progression -->
+        <div class="relative flex justify-between items-center">
+          <div class="w-20 h-20 bg-gradient-to-br from-primary to-primary-600 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-2xl border-4 border-white">
+            1
+          </div>
+          <div class="w-20 h-20 bg-gradient-to-br from-primary to-primary-600 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-2xl border-4 border-white">
+            2
+          </div>
+          <div class="w-20 h-20 bg-gradient-to-br from-primary to-primary-600 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-2xl border-4 border-white">
+            3
+          </div>
+          <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-2xl border-4 border-white backdrop-blur-sm">
+            4
+          </div>
+        </div>
+      </div>
+      
+      <!-- Cartes des phases -->
+      <div class="grid lg:grid-cols-2 gap-8">
+        <!-- Phase 1 -->
+        <div class="group bg-white/5 backdrop-blur-sm p-8 rounded-3xl border border-white/10 hover:bg-white/10 transition-all duration-500 hover:scale-105">
+          <div class="flex items-start space-x-6">
+            <div class="flex-shrink-0">
+              <div class="w-16 h-16 bg-gradient-to-br from-primary to-primary-600 rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg group-hover:scale-110 transition-transform duration-500">
+                1
+              </div>
+            </div>
+            <div class="space-y-4 flex-1">
+              <h3 class="text-2xl font-bold">Découverte & Vision</h3>
+              <p class="text-secondary-100 leading-relaxed">
+                Clarifie ta vision entrepreneuriale, identifie tes forces et définis ton projet d'entreprise. 
+                Nous t'aidons à transformer ton idée en concept viable.
+              </p>
+              <div class="space-y-2">
+                <div class="flex items-center text-secondary-200">
+                  <span class="material-icons text-primary mr-3">check_circle</span>
+                  <span>Auto-diagnostic entrepreneurial</span>
+                </div>
+                <div class="flex items-center text-secondary-200">
+                  <span class="material-icons text-primary mr-3">check_circle</span>
+                  <span>Définition de ta vision</span>
+                </div>
+                <div class="flex items-center text-secondary-200">
+                  <span class="material-icons text-primary mr-3">check_circle</span>
+                  <span>Validation de l'idée</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Phase 2 -->
+        <div class="group bg-white/5 backdrop-blur-sm p-8 rounded-3xl border border-white/10 hover:bg-white/10 transition-all duration-500 hover:scale-105">
+          <div class="flex items-start space-x-6">
+            <div class="flex-shrink-0">
+              <div class="w-16 h-16 bg-gradient-to-br from-primary to-primary-600 rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg group-hover:scale-110 transition-transform duration-500">
+                2
+              </div>
+            </div>
+            <div class="space-y-4 flex-1">
+              <h3 class="text-2xl font-bold">Stratégie & Planning</h3>
+              <p class="text-secondary-100 leading-relaxed">
+                Développe une stratégie business complète avec un plan d'action détaillé. 
+                Construis les fondations solides de ton entreprise.
+              </p>
+              <div class="space-y-2">
+                <div class="flex items-center text-secondary-200">
+                  <span class="material-icons text-primary mr-3">check_circle</span>
+                  <span>Business plan complet</span>
+                </div>
+                <div class="flex items-center text-secondary-200">
+                  <span class="material-icons text-primary mr-3">check_circle</span>
+                  <span>Étude de marché</span>
+                </div>
+                <div class="flex items-center text-secondary-200">
+                  <span class="material-icons text-primary mr-3">check_circle</span>
+                  <span>Modèle économique</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Phase 3 -->
+        <div class="group bg-white/5 backdrop-blur-sm p-8 rounded-3xl border border-white/10 hover:bg-white/10 transition-all duration-500 hover:scale-105">
+          <div class="flex items-start space-x-6">
+            <div class="flex-shrink-0">
+              <div class="w-16 h-16 bg-gradient-to-br from-primary to-primary-600 rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg group-hover:scale-110 transition-transform duration-500">
+                3
+              </div>
+            </div>
+            <div class="space-y-4 flex-1">
+              <h3 class="text-2xl font-bold">Développement & Test</h3>
+              <p class="text-secondary-100 leading-relaxed">
+                Crée ton MVP (Minimum Viable Product), teste ton offre sur le marché et affine ta proposition de valeur 
+                basée sur les retours clients.
+              </p>
+              <div class="space-y-2">
+                <div class="flex items-center text-secondary-200">
+                  <span class="material-icons text-primary mr-3">check_circle</span>
+                  <span>Création du MVP</span>
+                </div>
+                <div class="flex items-center text-secondary-200">
+                  <span class="material-icons text-primary mr-3">check_circle</span>
+                  <span>Tests marché</span>
+                </div>
+                <div class="flex items-center text-secondary-200">
+                  <span class="material-icons text-primary mr-3">check_circle</span>
+                  <span>Optimisation offre</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Phase 4 -->
+        <div class="group bg-white/5 backdrop-blur-sm p-8 rounded-3xl border border-white/10 hover:bg-white/10 transition-all duration-500 hover:scale-105">
+          <div class="flex items-start space-x-6">
+            <div class="flex-shrink-0">
+              <div class="w-16 h-16 bg-gradient-to-br from-primary to-primary-600 rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg group-hover:scale-110 transition-transform duration-500">
+                4
+              </div>
+            </div>
+            <div class="space-y-4 flex-1">
+              <h3 class="text-2xl font-bold">Lancement & Croissance</h3>
+              <p class="text-secondary-100 leading-relaxed">
+                Lance officiellement ton entreprise avec une stratégie marketing solide et mets en place 
+                les systèmes pour une croissance durable.
+              </p>
+              <div class="space-y-2">
+                <div class="flex items-center text-secondary-200">
+                  <span class="material-icons text-primary mr-3">check_circle</span>
+                  <span>Stratégie de lancement</span>
+                </div>
+                <div class="flex items-center text-secondary-200">
+                  <span class="material-icons text-primary mr-3">check_circle</span>
+                  <span>Plan marketing</span>
+                </div>
+                <div class="flex items-center text-secondary-200">
+                  <span class="material-icons text-primary mr-3">check_circle</span>
+                  <span>Systèmes de croissance</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -351,64 +548,131 @@
 </section>
 
 <!-- Section Galerie Lancement 2025 -->
-<section class="py-20 bg-white">
-  <div class="container mx-auto px-6 lg:px-8">
-    <div class="text-center mb-16">
-      <h2 class="text-4xl lg:text-5xl font-bold text-secondary-800 mb-6">
-        Lancement <span class="text-primary-600">2025</span>
+<section class="relative py-24 bg-gradient-to-br from-white via-primary-50/30 to-secondary-50/30 overflow-hidden">
+  <!-- Background decorative elements -->
+  <div class="absolute inset-0 overflow-hidden">
+    <div class="absolute top-32 left-16 w-48 h-48 bg-primary/5 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-32 right-16 w-64 h-64 bg-secondary/5 rounded-full blur-3xl"></div>
+  </div>
+  
+  <div class="container mx-auto px-6 lg:px-8 relative z-10">
+    <div class="text-center mb-20">
+      <div class="inline-flex items-center bg-white/80 backdrop-blur-sm text-secondary-800 text-sm font-semibold px-6 py-3 rounded-full border border-primary/20 mb-8">
+        <span class="w-2 h-2 bg-primary rounded-full mr-3 animate-pulse"></span>
+        GALERIE EXCLUSIVE
+      </div>
+      <h2 class="text-5xl lg:text-6xl font-bold text-secondary-800 mb-8">
+        Lancement 
+        <span class="relative">
+          <span class="bg-gradient-to-r from-primary-600 to-primary-500 bg-clip-text text-transparent">2025</span>
+          <div class="absolute -bottom-2 left-0 w-full h-3 bg-primary/20 -skew-x-12 transform"></div>
+        </span>
       </h2>
-      <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-        Découvre l'ambiance et l'énergie de nos précédents lancements
+      <p class="text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto font-light leading-relaxed">
+        Découvre l'ambiance et l'énergie de nos précédents lancements à travers ces moments inoubliables
       </p>
     </div>
     
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- Image 1 -->
-      <div class="relative group overflow-hidden rounded-2xl">
-        <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
-             alt="Lancement CLE 2025" 
-             class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110">
-        <div class="absolute inset-0 bg-gradient-to-t from-secondary/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+    <!-- Grid avec différentes tailles -->
+    <div class="grid grid-cols-12 gap-6 auto-rows-fr">
+      <!-- Image 1 - Grande -->
+      <div class="col-span-12 md:col-span-8 lg:col-span-6 group relative overflow-hidden rounded-3xl shadow-xl">
+        <div class="aspect-[4/3] md:aspect-[3/2]">
+          <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+               alt="Lancement CLE 2025" 
+               class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110">
+          <div class="absolute inset-0 bg-gradient-to-t from-secondary/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <div class="absolute bottom-6 left-6 right-6 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-500 opacity-0 group-hover:opacity-100">
+            <h3 class="text-white text-xl font-bold mb-2">Cérémonie d'ouverture</h3>
+            <p class="text-white/90 text-sm">Lancement officiel du programme CLE 2024</p>
+          </div>
+        </div>
       </div>
       
-      <!-- Image 2 -->
-      <div class="relative group overflow-hidden rounded-2xl">
-        <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
-             alt="Entrepreneures CLE" 
-             class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110">
-        <div class="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      <!-- Image 2 - Moyenne -->
+      <div class="col-span-12 md:col-span-4 lg:col-span-3 group relative overflow-hidden rounded-3xl shadow-xl">
+        <div class="aspect-square">
+          <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+               alt="Entrepreneures CLE" 
+               class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110">
+          <div class="absolute inset-0 bg-gradient-to-t from-primary/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <div class="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 opacity-0 group-hover:opacity-100">
+            <h3 class="text-white text-lg font-bold mb-1">Networking</h3>
+            <p class="text-white/90 text-xs">Rencontres inspirantes</p>
+          </div>
+        </div>
       </div>
       
-      <!-- Image 3 -->
-      <div class="relative group overflow-hidden rounded-2xl">
-        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
-             alt="Networking CLE" 
-             class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110">
-        <div class="absolute inset-0 bg-gradient-to-t from-secondary/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      <!-- Image 3 - Moyenne -->
+      <div class="col-span-12 md:col-span-6 lg:col-span-3 group relative overflow-hidden rounded-3xl shadow-xl">
+        <div class="aspect-[4/3]">
+          <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+               alt="Networking CLE" 
+               class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110">
+          <div class="absolute inset-0 bg-gradient-to-t from-secondary/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <div class="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 opacity-0 group-hover:opacity-100">
+            <h3 class="text-white text-lg font-bold mb-1">Ateliers collaboratifs</h3>
+            <p class="text-white/90 text-xs">Séances de travail intensives</p>
+          </div>
+        </div>
       </div>
       
-      <!-- Image 4 -->
-      <div class="relative group overflow-hidden rounded-2xl">
-        <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
-             alt="Workshop CLE" 
-             class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110">
-        <div class="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      <!-- Image 4 - Petite -->
+      <div class="col-span-12 md:col-span-3 lg:col-span-3 group relative overflow-hidden rounded-3xl shadow-xl">
+        <div class="aspect-square">
+          <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+               alt="Workshop CLE" 
+               class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110">
+          <div class="absolute inset-0 bg-gradient-to-t from-primary/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <div class="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 opacity-0 group-hover:opacity-100">
+            <h3 class="text-white text-sm font-bold mb-1">Mentorat</h3>
+            <p class="text-white/90 text-xs">Sessions 1:1</p>
+          </div>
+        </div>
       </div>
       
-      <!-- Image 5 -->
-      <div class="relative group overflow-hidden rounded-2xl">
-        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
-             alt="Succès CLE" 
-             class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110">
-        <div class="absolute inset-0 bg-gradient-to-t from-secondary/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      <!-- Image 5 - Petite -->
+      <div class="col-span-12 md:col-span-3 lg:col-span-3 group relative overflow-hidden rounded-3xl shadow-xl">
+        <div class="aspect-square">
+          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+               alt="Succès CLE" 
+               class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110">
+          <div class="absolute inset-0 bg-gradient-to-t from-secondary/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <div class="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 opacity-0 group-hover:opacity-100">
+            <h3 class="text-white text-sm font-bold mb-1">Pitchs finaux</h3>
+            <p class="text-white/90 text-xs">Présentation projets</p>
+          </div>
+        </div>
       </div>
       
-      <!-- Image 6 -->
-      <div class="relative group overflow-hidden rounded-2xl">
-        <img src="https://images.unsplash.com/photo-1551818255-e6e10975cd17?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
-             alt="Célébration CLE" 
-             class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110">
-        <div class="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      <!-- Image 6 - Grande -->
+      <div class="col-span-12 md:col-span-6 lg:col-span-6 group relative overflow-hidden rounded-3xl shadow-xl">
+        <div class="aspect-[4/3] md:aspect-[3/2]">
+          <img src="https://images.unsplash.com/photo-1551818255-e6e10975cd17?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+               alt="Célébration CLE" 
+               class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110">
+          <div class="absolute inset-0 bg-gradient-to-t from-primary/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <div class="absolute bottom-6 left-6 right-6 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-500 opacity-0 group-hover:opacity-100">
+            <h3 class="text-white text-xl font-bold mb-2">Cérémonie de clôture</h3>
+            <p class="text-white/90 text-sm">Célébration des réussites et remise des diplômes</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- CTA sous la galerie -->
+    <div class="text-center mt-16">
+      <div class="inline-flex items-center space-x-4 bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100">
+        <div class="flex -space-x-2">
+          <img class="w-10 h-10 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1494790108755-2616b612b47c?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="">
+          <img class="w-10 h-10 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="">
+          <img class="w-10 h-10 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="">
+          <div class="w-10 h-10 rounded-full border-2 border-white bg-primary flex items-center justify-center text-white text-sm font-bold">+27</div>
+        </div>
+        <div class="text-left">
+          <div class="text-sm font-semibold text-secondary-800">Rejoins-nous pour 2025</div>
+          <div class="text-xs text-gray-600">30 places disponibles uniquement</div>
+        </div>
       </div>
     </div>
   </div>
@@ -452,57 +716,94 @@
 </section>
 
 <!-- Section Devenir Partenaire / Don -->
-<section class="py-20 bg-gradient-to-br from-primary to-primary-600">
-  <div class="container mx-auto px-6 lg:px-8">
-    <div class="max-w-4xl mx-auto text-center">
-      <h2 class="text-4xl lg:text-5xl font-bold text-primary-foreground mb-6">
-        Rejoignez notre mission
+<section class="relative py-24 bg-gradient-to-br from-secondary-900 via-secondary-800 to-gray-900 overflow-hidden">
+  <!-- Background decorative elements -->
+  <div class="absolute inset-0 overflow-hidden">
+    <div class="absolute -top-20 -right-20 w-80 h-80 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+    <div class="absolute top-1/4 right-1/4 w-4 h-4 bg-primary rounded-full animate-ping" style="animation-delay: 2s;"></div>
+    <div class="absolute bottom-1/3 left-1/3 w-2 h-2 bg-white rounded-full animate-ping" style="animation-delay: 3s;"></div>
+    
+    <!-- Formes géométriques -->
+    <div class="absolute top-1/2 left-1/4 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 border border-primary/30 rounded-3xl rotate-12 animate-spin-slow"></div>
+    <div class="absolute bottom-1/4 right-1/3 w-24 h-24 border border-white/20 rounded-full animate-bounce" style="animation-delay: 1.5s;"></div>
+  </div>
+  
+  <!-- Background image with overlay -->
+  <div class="absolute inset-0 bg-cover bg-center bg-fixed opacity-20" style="background-image: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80');"></div>
+  <div class="absolute inset-0 bg-gradient-to-br from-secondary-900/80 via-secondary-800/70 to-gray-900/80"></div>
+  <div class="absolute inset-0 bg-black/20"></div>
+  
+  <div class="relative z-10 container mx-auto px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center text-white">
+      <!-- Badge animé -->
+      <div class="inline-block mb-8 animate-fade-in-up">
+        <div class="inline-flex items-center bg-white/20 backdrop-blur-sm text-white text-sm font-semibold px-6 py-3 rounded-full border border-white/30 hover:bg-white/30 transition-all duration-300">
+          <span class="w-2 h-2 bg-primary rounded-full mr-3 animate-pulse"></span>
+          Rejoignez notre mission
+        </div>
+      </div>
+      
+      <h2 class="text-4xl lg:text-6xl font-bold leading-tight mb-8 animate-fade-in-up" style="animation-delay: 0.2s;">
+        <span class="bg-gradient-to-r from-white via-primary-100 to-white bg-clip-text text-transparent">
+          Ensemble, transformons
+        </span>
+        <span class="block mt-4 text-white">l'entrepreneuriat féminin</span>
       </h2>
-      <p class="text-xl text-primary-100 mb-12 leading-relaxed">
+      
+      <p class="text-xl lg:text-2xl mb-12 max-w-3xl mx-auto leading-relaxed text-gray-200 animate-fade-in-up" style="animation-delay: 0.4s;">
         Devenez partenaire de CLE ou soutenez l'entrepreneuriat féminin par un don. 
         Ensemble, construisons un écosystème qui transforme des vies et impacte positivement la société.
       </p>
       
-      <div class="grid md:grid-cols-2 gap-8 mb-12">
+      <div class="grid md:grid-cols-2 gap-8 mb-12 animate-fade-in-up" style="animation-delay: 0.6s;">
         <!-- Devenir Partenaire -->
-        <div class="bg-white/10 backdrop-blur-sm p-8 rounded-2xl">
-          <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6">
+        <div class="group bg-white/10 backdrop-blur-sm p-8 rounded-3xl border border-white/20 hover:bg-white/20 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl">
+          <div class="w-16 h-16 bg-gradient-to-br from-primary to-primary-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
             <span class="material-icons text-white text-2xl">handshake</span>
           </div>
-          <h3 class="text-2xl font-bold text-white mb-4">Devenir Partenaire</h3>
-          <p class="text-primary-100 mb-6">
+          <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-primary-300 transition-colors duration-300">Devenir Partenaire</h3>
+          <p class="text-gray-200 mb-6 leading-relaxed">
             Participez activement à la transformation de l'entrepreneuriat féminin et bénéficiez d'une visibilité unique.
           </p>
-          <ul class="text-primary-200 space-y-2 mb-6">
-            <li class="flex items-center"><span class="material-icons text-white mr-2">check</span>Visibilité premium</li>
-            <li class="flex items-center"><span class="material-icons text-white mr-2">check</span>Accès privilégié aux talents</li>
-            <li class="flex items-center"><span class="material-icons text-white mr-2">check</span>Impact social mesuré</li>
+          <ul class="text-gray-300 space-y-3 mb-6">
+            <li class="flex items-center"><span class="material-icons text-primary mr-3">check_circle</span>Visibilité premium</li>
+            <li class="flex items-center"><span class="material-icons text-primary mr-3">check_circle</span>Accès privilégié aux talents</li>
+            <li class="flex items-center"><span class="material-icons text-primary mr-3">check_circle</span>Impact social mesuré</li>
           </ul>
         </div>
         
         <!-- Faire un Don -->
-        <div class="bg-white/10 backdrop-blur-sm p-8 rounded-2xl">
-          <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6">
+        <div class="group bg-white/10 backdrop-blur-sm p-8 rounded-3xl border border-white/20 hover:bg-white/20 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl">
+          <div class="w-16 h-16 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
             <span class="material-icons text-white text-2xl">favorite</span>
           </div>
-          <h3 class="text-2xl font-bold text-white mb-4">Faire un Don</h3>
-          <p class="text-primary-100 mb-6">
+          <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-secondary-300 transition-colors duration-300">Faire un Don</h3>
+          <p class="text-gray-200 mb-6 leading-relaxed">
             Soutenez notre cause et aidez plus de femmes à réaliser leur rêve entrepreneurial.
           </p>
-          <ul class="text-primary-200 space-y-2 mb-6">
-            <li class="flex items-center"><span class="material-icons text-white mr-2">check</span>Soutien direct aux entrepreneures</li>
-            <li class="flex items-center"><span class="material-icons text-white mr-2">check</span>Transparence totale</li>
-            <li class="flex items-center"><span class="material-icons text-white mr-2">check</span>Impact immédiat</li>
+          <ul class="text-gray-300 space-y-3 mb-6">
+            <li class="flex items-center"><span class="material-icons text-secondary-400 mr-3">check_circle</span>Soutien direct aux entrepreneures</li>
+            <li class="flex items-center"><span class="material-icons text-secondary-400 mr-3">check_circle</span>Transparence totale</li>
+            <li class="flex items-center"><span class="material-icons text-secondary-400 mr-3">check_circle</span>Impact immédiat</li>
           </ul>
         </div>
       </div>
       
-      <div class="flex flex-col sm:flex-row gap-6 justify-center">
-        <button class="bg-white text-primary hover:bg-gray-100 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
-          Devenir Partenaire
+      <div class="flex flex-col sm:flex-row gap-6 justify-center animate-fade-in-up" style="animation-delay: 0.8s;">
+        <button class="group relative inline-flex items-center btn-primary px-8 py-4 rounded-2xl font-bold shadow-2xl hover:shadow-primary/25">
+          <span class="relative z-10">Devenir Partenaire</span>
+          <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+          </svg>
+          <!-- Effet de brillance -->
+          <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-shine rounded-2xl"></div>
         </button>
-        <button class="border-2 border-white text-white hover:bg-white hover:text-primary px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300">
-          Faire un Don
+        <button class="group relative inline-flex items-center border-2 border-white text-white hover:bg-white hover:text-secondary-800 px-8 py-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 shadow-lg">
+          <span class="relative z-10">Faire un Don</span>
+          <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+          </svg>
         </button>
       </div>
     </div>
