@@ -184,7 +184,7 @@ GEM
       racc (~> 1.4)
     orm_adapter (0.5.0)
     ostruct (0.6.3)
-    pagy (6.5.0)
+    pagy (9.4.0)
     parallel (1.27.0)
     parser (3.3.9.0)
       ast (~> 2.4.1)
@@ -390,7 +390,7 @@ DEPENDENCIES
   friendly_id (~> 5.5)
   importmap-rails
   kamal
-  pagy (~> 6.0)
+  pagy (~> 9.4)
   pg (~> 1.1)
   propshaft
   puma (>= 5.0)
