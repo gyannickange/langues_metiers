@@ -1,0 +1,43 @@
+<nav class="p-4 space-y-2">
+  <%= link_to admin_root_path, class: nav_link_class(admin_root_path) do %>
+    <span>🏠</span>
+    <span class="ml-2"><%= t("Dashboard") %></span>
+  <% end %>
+
+  <%= link_to admin_users_path, class: nav_link_class(admin_users_path) do %>
+    <span>👥</span>
+    <span class="ml-2"><%= t("Users") %></span>
+  <% end %>
+
+  <%= link_to skills_path, class: nav_link_class(skills_path) do %>
+    <span>🧩</span>
+    <span class="ml-2"><%= t("Skills") %></span>
+  <% end %>
+
+  <%= link_to admin_careers_path, class: nav_link_class(admin_careers_path) do %>
+    <span>🧭</span>
+    <span class="ml-2"><%= t("Careers") %></span>
+  <% end %>
+
+  <%= link_to admin_fields_path, class: nav_link_class(admin_fields_path) do %>
+    <span>🏷️</span>
+    <span class="ml-2"><%= t("Fields") %></span>
+  <% end %>
+
+  <%= link_to "#", class: nav_link_class("#") do %>
+    <span>📚</span>
+    <span class="ml-2"><%= t("Learning Modules") %></span>
+  <% end %>
+
+  <%= link_to "#", class: nav_link_class("#") do %>
+    <span>🤝</span>
+    <span class="ml-2"><%= t("Mentorship") %></span>
+  <% end %>
+
+  <%= link_to "#", class: nav_link_class("#") do %>
+    <span>⚙️</span>
+    <span class="ml-2"><%= t("Settings") %></span>
+  <% end %>
+</nav>
+
+

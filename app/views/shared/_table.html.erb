@@ -1,0 +1,48 @@
+<%#
+  Usage:
+  render "shared/table",
+         columns: [
+           { header: "Email",  cell: ->(r){ r.email } },
+           { header: "Role",   cell: ->(r){ r.role } },
+           { header: "Joined", cell: ->(r){ l(r.created_at, format: :short) } }
+         ],
+         rows: @users,
+         pagy: @pagy
+%>
+
+<div class="bg-white rounded-lg shadow overflow-hidden">
+  <table class="min-w-full divide-y divide-gray-200">
+    <thead>
+      <tr class="bg-gray-50">
+        <% columns.each do |col| %>
+          <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase"><%= col[:header] %></th>
+        <% end %>
+        <% if defined?(actions) && actions %>
+          <th class="px-4 py-2"></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-100">
+      <% rows.each do |row| %>
+        <tr>
+          <% columns.each do |col| %>
+            <td class="px-4 py-2"><%= col[:cell].call(row) %></td>
+          <% end %>
+          <% if defined?(actions) && actions %>
+            <td class="px-4 py-2 text-right">
+              <%= actions.call(row) %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <% if pagy %>
+    <div class="px-4 py-3 border-t bg-gray-50">
+      <%= pagy_nav(pagy) %>
+    </div>
+  <% end %>
+</div>
+
+

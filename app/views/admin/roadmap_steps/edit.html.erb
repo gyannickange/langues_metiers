@@ -1,0 +1,10 @@
+<% content_for :page_title, "Modifier étape" %>
+
+<div class="mb-4">
+  <%= link_to "← Retour aux étapes", admin_field_roadmap_roadmap_steps_path(@roadmap_step.roadmap.field, @roadmap_step.roadmap), class: "text-blue-600 hover:underline" %>
+</div>
+
+<div class="bg-white rounded shadow p-6">
+  <h1 class="text-xl font-semibold mb-4">Modifier : <%= @roadmap_step.title %></h1>
+  <%= render "form" %>
+</div>

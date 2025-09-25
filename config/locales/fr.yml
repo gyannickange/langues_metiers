@@ -1,0 +1,176 @@
+fr:
+  hello: "Bonjour"
+  devise:
+    sessions:
+      signed_in: "Connexion réussie."
+      signed_out: "Déconnexion réussie."
+  auth:
+    login: "Se connecter"
+    register: "Créer un compte"
+    forgot_password: "Mot de passe oublié ?"
+    send_reset_instructions: "M’envoyer les instructions de réinitialisation"
+    characters_minimum: "caractères minimum"
+  meta:
+    title: "Langues Metiers - Votre Passerelle vers un Avenir Multilingue et Professionnel"
+    description: "Découvrez votre parcours professionnel idéal en combinant compétences linguistiques et expertise métier. Programmes personnalisés, bourses et accompagnement pour une carrière réussie."
+    keywords: "Langues Metiers, carrière multilingue, formation professionnelle, bourses d'études, compétences linguistiques, développement professionnel, roadmaps personnalisés"
+  fields:
+    index: "Champs"
+    new: "Nouveau Champ"
+    edit: "Modifier le Champ"
+    created: "Champ créé"
+    updated: "Champ mis à jour"
+    deleted: "Champ supprimé"
+    header:
+      badge: "DÉCOUVREZ VOS OPPORTUNITÉS"
+      subtitle: "Transformez votre passion pour les langues en carrière réussie avec nos programmes spécialisés et nos roadmaps personnalisés"
+      search_placeholder: "Rechercher une filière..."
+
+  users:
+    registrations:
+      new: "Créer un compte"
+      edit: "Modifier le compte"
+      # Add other user-related translations as needed
+
+  skills:
+    index: "Compétences"
+    new: "Nouvelle Compétence"
+    edit: "Modifier la Compétence"
+    created: "Compétence créée"
+    updated: "Compétence mise à jour"
+    deleted: "Compétence supprimée"
+
+  careers:
+    index: "Carrières"
+    new: "Nouvelle Carrière"
+    edit: "Modifier la Carrière"
+    created: "Carrière créée"
+    updated: "Carrière mise à jour"
+    deleted: "Carrière supprimée"
+
+  home:
+    navigation:
+      home: "Accueil"
+      fields: "Filières"
+      blog: "Blog"
+      about: "À propos"
+      contact: "Contact"
+      login: "Connexion"
+    hero:
+      badge: "NOUS GUIDONS VOTRE PARCOURS"
+      title: "Découvrez votre parcours professionnel idéal"
+      field_placeholder: "Choisir une filière..."
+    why_section:
+      title: "Pourquoi langue et métier ?"
+      subtitle: "Une approche révolutionnaire pour votre carrière"
+      content: "Dans un monde de plus en plus connecté, maîtriser les langues tout en développant une expertise métier devient essentiel. Notre plateforme vous guide dans cette démarche en vous proposant des parcours personnalisés qui allient compétences linguistiques et savoir-faire professionnel."
+      benefits:
+        - "Accès à des opportunités internationales"
+        - "Développement de compétences transversales"
+        - "Parcours adapté à votre profil"
+        - "Accompagnement personnalisé"
+      action_button: "Découvrir les filières"
+    how_it_works:
+      title: "Comment ça fonctionne ?"
+      subtitle: "Un processus simple en 3 étapes"
+      steps:
+        - title: "Découvrez votre profil"
+          content: "Répondez à notre questionnaire personnalisé pour identifier vos compétences linguistiques actuelles et vos objectifs professionnels."
+          icon: "person_search"
+        - title: "Choisissez votre parcours"
+          content: "Explorez nos filières adaptées à votre profil et sélectionnez le parcours qui correspond le mieux à vos ambitions."
+          icon: "route"
+        - title: "Progressez à votre rythme"
+          content: "Suivez votre roadmap personnalisée avec des étapes claires, des ressources adaptées et un accompagnement continu."
+          icon: "trending_up"
+    scholarships:
+      title: "Bourses et opportunités"
+      subtitle: "Accédez aux meilleures opportunités"
+      content: "Découvrez un large éventail de bourses d'études, programmes d'échange et opportunités professionnelles spécialement sélectionnées pour vous accompagner dans votre parcours langue et métier. Nous vous aidons à identifier et postuler aux programmes qui correspondent parfaitement à votre profil et vos ambitions."
+      highlights:
+        - "Bourses d'études internationales"
+        - "Programmes d'échange linguistique"
+        - "Stages professionnels à l'étranger"
+        - "Formations certifiantes"
+      action_button: "Consulter toutes les bourses et opportunités"
+    cle:
+      title: "CLE - Citoyens Libres et Épanouis"
+      subtitle: "Une approche révolutionnaire de l'éducation"
+      content: "CLE (Citoyens Libres et Épanouis) est notre programme phare qui révolutionne l'apprentissage en combinant développement personnel, compétences linguistiques et formation professionnelle. Notre approche holistique vise à former des citoyens autonomes, créatifs et épanouis dans leur parcours personnel et professionnel."
+      features:
+        - "Développement de l'autonomie et de la créativité"
+        - "Apprentissage personnalisé et adaptatif"
+        - "Formation aux compétences du 21ème siècle"
+        - "Accompagnement vers l'épanouissement personnel"
+      action_button: "Découvrir CLE"
+    cta:
+      title: "Prêt à transformer votre avenir ?"
+      subtitle: "Contactez un mentor dès aujourd'hui et commencez votre parcours personnalisé"
+      action_button: "Contacter un mentor"
+    blog:
+      title: "Derniers articles"
+      subtitle: "Découvrez nos conseils et actualités"
+      read_more: "Lire la suite"
+      view_all: "Voir tous les articles"
+    testimonials:
+      title: "Ce que disent nos apprenants"
+      subtitle: "Témoignages authentiques de notre communauté"
+      items:
+        - name: "Marie Dubois"
+          role: "Étudiante en Commerce International"
+          content: "Grâce à CLE, j'ai développé mes compétences linguistiques tout en acquérant une expertise métier. Le programme m'a ouvert les portes d'un stage à l'international !"
+          rating: 5
+        - name: "Ahmed Benali"
+          role: "Développeur Web"
+          content: "La plateforme Langues & Métiers m'a permis de combiner ma passion pour la technologie avec l'apprentissage de nouvelles langues. Une approche révolutionnaire !"
+          rating: 5
+        - name: "Sophie Martin"
+          role: "Marketing Digital"
+          content: "L'accompagnement personnalisé et les opportunités proposées ont dépassé mes attentes. Je recommande vivement cette approche innovante de l'apprentissage."
+          rating: 5
+    contact:
+      title: "Contactez-nous"
+      subtitle: "Une question ? Un projet ? N'hésitez pas à nous écrire"
+      form:
+        first_name: "Prénom"
+        last_name: "Nom"
+        whatsapp: "Numéro WhatsApp"
+        email: "Email"
+        message: "Message"
+        send: "Envoyer le message"
+      info:
+        phone: "+33 1 23 45 67 89"
+        email: "contact@langues-metiers.fr"
+        address: "123 Rue de l'Innovation, 75001 Paris"
+    footer:
+      tagline: "Votre passerelle vers un avenir multilingue et professionnel"
+      sections:
+        platform:
+          title: "Plateforme"
+          links:
+            - "Filières"
+            - "CLE Programme"
+            - "Bourses & Opportunités"
+            - "Témoignages"
+        resources:
+          title: "Ressources"
+          links:
+            - "Blog"
+            - "Guides"
+            - "FAQ"
+            - "Support"
+        company:
+          title: "Entreprise"
+          links:
+            - "À propos"
+            - "Notre équipe"
+            - "Carrières"
+            - "Partenaires"
+        legal:
+          title: "Légal"
+          links:
+            - "Conditions d'utilisation"
+            - "Politique de confidentialité"
+            - "Mentions légales"
+            - "Cookies"
+      copyright: "© 2024 Langues & Métiers. Tous droits réservés."

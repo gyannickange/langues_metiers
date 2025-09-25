@@ -1,0 +1,106 @@
+<section class="relative min-h-screen overflow-hidden bg-gradient-to-br from-secondary-900 via-secondary-800 to-secondary-700">
+  <!-- Overlay premium avec gradient -->
+  <div class="absolute inset-0 bg-gradient-to-br from-secondary-900/80 via-secondary-800/70 to-gray-900/80"></div>
+  <div class="absolute inset-0 bg-black/20"></div>
+  
+  <!-- Éléments décoratifs animés -->
+  <div class="absolute inset-0 overflow-hidden">
+    <div class="absolute -top-20 -right-20 w-80 h-80 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+    <div class="absolute top-1/4 right-1/4 w-4 h-4 bg-primary rounded-full animate-ping" style="animation-delay: 2s;"></div>
+    <div class="absolute bottom-1/3 left-1/3 w-2 h-2 bg-white rounded-full animate-ping" style="animation-delay: 3s;"></div>
+    
+    <!-- Formes géométriques -->
+    <div class="absolute top-1/2 left-1/4 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 border border-primary/30 rounded-3xl rotate-12 animate-spin-slow"></div>
+    <div class="absolute bottom-1/4 right-1/3 w-24 h-24 border border-white/20 rounded-full animate-bounce" style="animation-delay: 1.5s;"></div>
+  </div>
+  
+  <!-- Background image with improved overlay -->
+  <div class="absolute inset-0 bg-cover bg-center bg-fixed opacity-20" style="background-image: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80');"></div>
+  
+  <div class="relative z-10 text-white">
+    <header class="container mx-auto px-6 py-8">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center group">
+          <div class="w-12 h-12 bg-gradient-to-br from-primary to-primary-600 rounded-2xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+            </svg>
+          </div>
+          <span class="text-2xl font-bold bg-gradient-to-r from-white to-primary-100 bg-clip-text text-transparent">Langues & Métiers</span>
+        </div>
+        <nav class="hidden md:flex items-center space-x-8">
+          <%= link_to root_path, class: "hover:text-primary-300 flex items-center transition-colors duration-300 relative group" do %>
+            <%= t('home.navigation.home') %>
+            <div class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></div>
+          <% end %>
+          <a class="text-primary-300 flex items-center transition-colors duration-300 relative group" href="#">
+            <%= t('home.navigation.fields') %>
+            <div class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary"></div>
+          </a>
+          <%= link_to "CLE", cle_path, class: "hover:text-primary-300 flex items-center transition-colors duration-300 relative group" %>
+          <a class="hover:text-primary-300 flex items-center transition-colors duration-300 relative group" href="#">
+            <%= t('home.navigation.blog') %>
+            <div class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></div>
+          </a>
+          <a class="hover:text-primary-300 flex items-center transition-colors duration-300 relative group" href="#">
+            <%= t('home.navigation.about') %>
+            <div class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></div>
+          </a>
+          <a class="hover:text-primary-300 transition-colors duration-300 relative group" href="#">
+            <%= t('home.navigation.contact') %>
+            <div class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></div>
+          </a>
+        </nav>
+        <div class="flex items-center space-x-6">
+          <a class="flex items-center hover:text-primary-300 transition-colors duration-300" href="#">
+            <span class="material-icons mr-2">phone</span>
+            <span>+68 585 88666</span>
+          </a>
+          <%= link_to t('home.navigation.login'), new_user_session_path, class: "group relative bg-white/10 backdrop-blur-sm border border-white/30 rounded-full px-8 py-3 text-sm font-semibold hover:bg-white hover:text-secondary-800 transition-all duration-300 overflow-hidden" %>
+        </div>
+      </div>
+    </header>
+    
+    <main class="container mx-auto px-6 flex items-center justify-center min-h-[80vh]">
+      <div class="text-center max-w-5xl">
+        <div class="inline-flex items-center bg-white/10 backdrop-blur-sm text-white text-sm font-semibold px-6 py-3 rounded-full border border-primary/30 mb-8">
+          <span class="w-2 h-2 bg-primary rounded-full mr-3 animate-pulse"></span>
+          <%= t('fields.header.badge', default: 'DÉCOUVREZ VOS OPPORTUNITÉS') %>
+        </div>
+        
+        <h1 class="text-6xl lg:text-7xl font-bold leading-tight mb-8">
+          <span class="block mb-4">
+            <span class="relative">
+              Explorez nos
+              <div class="absolute -bottom-2 left-0 w-full h-4 bg-primary/30 -skew-x-12 transform"></div>
+            </span>
+          </span>
+          <span class="bg-gradient-to-r from-primary to-primary-400 bg-clip-text text-transparent">
+            filières professionnelles
+          </span>
+          <span class="block mt-4">et trouvez votre voie</span>
+        </h1>
+        
+        <p class="text-xl lg:text-2xl text-gray-200 mb-12 max-w-3xl mx-auto font-light leading-relaxed">
+          <%= t('fields.header.subtitle', default: 'Transformez votre passion pour les langues en carrière réussie avec nos programmes spécialisés et nos roadmaps personnalisés') %>
+        </p>
+        
+        <!-- Search Field Improved -->
+        <div class="relative max-w-3xl mx-auto mb-16">
+          <div class="bg-white/95 backdrop-blur-sm rounded-3xl p-3 shadow-2xl border border-white/20" data-controller="field-selector">
+            <div class="flex items-center">
+              <%= select_tag :field_id, 
+                  options_for_select([[t('home.hero.field_placeholder'), ""]] + @fields.map { |field| [field.name, field_path(field)] }),
+                  class: "flex-1 bg-transparent text-gray-700 px-6 py-4 rounded-2xl focus:outline-none appearance-none cursor-pointer text-lg font-medium",
+                  data: { field_selector_target: "select", action: "change->field-selector#redirect" } %>
+              <div class="bg-gradient-to-r from-primary to-primary-600 text-white p-4 rounded-2xl flex items-center justify-center hover:from-primary-600 hover:to-primary-700 transition-all duration-300 cursor-pointer">
+                <span class="material-icons">search</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</section>

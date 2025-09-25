@@ -1,0 +1,31 @@
+<% content_for :page_title, t("Careers") %>
+
+<div class="mb-4 flex items-center gap-2" data-controller="filters">
+  <%= form_with url: admin_careers_path, method: :get, data: { turbo_frame: "careers" }, class: "flex items-center gap-2" do %>
+    <input type="text" name="q" value="<%= @query %>" placeholder="<%= t("Search careers") %>" class="border rounded px-3 py-2 w-full md:w-80" data-filters-target="query" data-action="input->filters#submit" />
+    <select name="status" class="border rounded px-3 py-2" data-filters-target="status" data-action="change->filters#submit">
+      <option value=""><%= t("All statuses") %></option>
+      <% Career.statuses.keys.each do |st| %>
+        <option value="<%= st %>" <%= "selected" if st == @status %>><%= st.humanize %></option>
+      <% end %>
+    </select>
+  <% end %>
+</div>
+
+<%= turbo_frame_tag "careers" do %>
+  <%= render "shared/table",
+    columns: [
+      { header: "Title",  cell: ->(r){ r.title } },
+      { header: "Status", cell: ->(r){ r.status } }
+    ],
+    rows: @careers,
+    pagy: @pagy,
+    actions: ->(r){ link_to(t("Edit"), edit_admin_career_path(r), class: "text-blue-600 hover:underline") +
+                    button_to(t("Delete"), admin_career_path(r), method: :delete, form: { data: { turbo_confirm: t("Are you sure?") } }, class: "text-red-600 ml-2 inline") } %>
+<% end %>
+
+<div class="mt-4">
+  <%= link_to t("New Career"), new_admin_career_path, class: "inline-flex items-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+</div>
+
+

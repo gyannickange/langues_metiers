@@ -1,0 +1,22 @@
+<% content_for :title, "Skills" %>
+
+<div class="w-full">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+  <% end %>
+
+  <div class="flex justify-between items-center">
+    <h1 class="font-bold text-4xl">Skills</h1>
+    <%= link_to "New skill", new_skill_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+  </div>
+
+  <%= render "shared/table",
+    columns: [
+      { header: "Name",  cell: ->(r){ link_to r.name, r, class: "text-blue-600 hover:underline" } },
+      { header: "Description", cell: ->(r){ truncate(r.description.to_s, length: 80) } }
+    ],
+    rows: @skills,
+    pagy: @pagy,
+    actions: ->(r){ link_to("Edit", edit_skill_path(r), class: "text-blue-600 hover:underline") +
+                    button_to("Delete", r, method: :delete, form: { data: { turbo_confirm: "Are you sure?" } }, class: "text-red-600 ml-2 inline") } %>
+</div>

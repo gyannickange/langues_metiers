@@ -1,0 +1,18 @@
+<div class="fixed inset-x-0 top-2 z-50 flex flex-col items-center space-y-2 px-4" data-controller="flash">
+  <% flash.each do |type, message| %>
+    <% next if message.blank? %>
+    <% css = case type.to_s
+      when "notice" then "bg-green-50 text-green-800 border-green-200"
+      when "alert" then "bg-red-50 text-red-800 border-red-200"
+      else "bg-blue-50 text-blue-800 border-blue-200"
+    end %>
+    <div class="w-full max-w-xl border rounded-md shadow-sm px-4 py-3 flex items-start gap-3 #{css}" data-flash-target="item">
+      <div class="flex-1">
+        <p class="text-sm"><%= message %></p>
+      </div>
+      <button type="button" class="text-sm opacity-70 hover:opacity-100" data-action="flash#dismiss">×</button>
+    </div>
+  <% end %>
+</div>
+
+

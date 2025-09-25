@@ -1,0 +1,24 @@
+<% content_for :title, t("auth.forgot_password") %>
+
+<div class="min-h-screen flex items-center justify-center p-4">
+  <div class="w-full max-w-md bg-white shadow rounded p-6">
+    <h1 class="text-xl font-semibold mb-4"><%= t("auth.forgot_password") %></h1>
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+      <%= render "users/shared/error_messages", resource: resource %>
+
+      <div class="mb-4">
+        <%= f.label :email, class: "block text-sm font-medium mb-1" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full border rounded px-3 py-2" %>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <%= f.submit t("auth.send_reset_instructions"), class: "inline-flex items-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+        <%= link_to t("auth.login"), new_session_path(resource_name), class: "text-sm text-blue-600 hover:underline" %>
+      </div>
+    <% end %>
+
+    <div class="mt-4">
+      <%= render "users/shared/links" %>
+    </div>
+  </div>
+</div>

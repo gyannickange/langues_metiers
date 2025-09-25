@@ -1,0 +1,33 @@
+<div class="prose" data-controller="skills">
+  <h1><%= t("Edit profile") %></h1>
+
+  <%= turbo_frame_tag "skills" do %>
+    <%= form_with url: user_skills_path, method: :post do |f| %>
+      <div>
+        <%= label_tag :skill_id, t("Skill") %>
+        <%= select_tag :skill_id, options_from_collection_for_select(@skills, :id, :name), data: { action: "change->skills#select" } %>
+      </div>
+      <div>
+        <%= label_tag :level, t("Level") %>
+        <%= select_tag :level, options_for_select(UserSkill.levels.keys.map { |k| [k.humanize, k] }), data: { skills_target: "level" } %>
+      </div>
+      <%= submit_tag t("Add") %>
+    <% end %>
+
+    <h2><%= t("Your skills") %></h2>
+    <ul>
+      <% current_user.user_skills.includes(:skill).each do |us| %>
+        <li>
+          <%= us.skill.name %> — <%= us.level %>
+          <%= button_to t("Remove"), user_skill_path(us), method: :delete, form: { data: { turbo_confirm: t("Are you sure?") } } %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <p>
+    <%= link_to t("Back"), profile_path, class: "underline" %>
+  </p>
+</div>
+
+
