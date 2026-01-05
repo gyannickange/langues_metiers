@@ -13,5 +13,6 @@ class FieldsController < ApplicationController
   def show
     @field = Field.friendly.find(params[:slug])
     @roadmaps = @field.roadmaps.joins(:roadmap_steps).distinct.order(:title)
+    @fields = Field.where(status: :active).order(:name)
   end
 end

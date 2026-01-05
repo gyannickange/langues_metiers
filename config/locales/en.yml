@@ -39,18 +39,92 @@ en:
     forgot_password: "Forgot your password?"
     send_reset_instructions: "Send me reset password instructions"
     characters_minimum: "characters minimum"
-    meta:
-      title: "Langues Metiers - Your Gateway to a Multilingual and Professional Future"
-      description: "Discover your ideal professional path by combining language skills and professional expertise. Personalized programs, scholarships, and support for a successful career."
-      keywords: "Langues Metiers, multilingual career, professional training, scholarships, language skills, professional development, personalized roadmaps"
+  meta:
+    title: "Langues Metiers - Your Gateway to a Multilingual and Professional Future"
+    description: "Discover your ideal professional path by combining language skills and professional expertise. Personalized programs, scholarships, and support for a successful career."
+    keywords: "Langues Metiers, multilingual career, professional training, scholarships, language skills, professional development, personalized roadmaps"
 
   fields:
-    index: "Fields"
+    index:
+      title: "Fields"
+      results_for: "Results for"
+      result: "result"
+      results: "results"
+      all_fields: "All fields"
+      choose_field: "Choose the field that interests you"
+      no_results: "No results found"
+      no_fields_available: "No fields available"
+      try_other_keywords: "Try with other keywords"
+      view_all_fields: "View all fields"
+      lazy_empty: "No additional fields to display."
     new: "New Field"
     edit: "Edit Field"
     created: "Field created"
     updated: "Field updated"
     deleted: "Field deleted"
+    header:
+      subtitle: "Transform your passion for languages into a successful career with our specialized programs and personalized roadmaps"
+      search_placeholder: "Search for a field..."
+    show:
+      breadcrumb:
+        home: "Home"
+        fields: "Fields"
+      badge: "Professional field"
+      discover: "Discover"
+      stats:
+        roadmaps_proposed: "Proposed pathways"
+        guided_progression: "Guided progression"
+        structured_steps: "Structured steps"
+        last_update: "Last update"
+      actions:
+        explore_roadmaps: "Explore roadmaps"
+        back_to_fields: "Back to fields"
+      highlight_card:
+        title: "Key points"
+        description: "Operational objectives, targeted skills and concrete activities to structure each step of your progression."
+        skills_approach:
+          title: "Skills-based approach"
+          description: "Each roadmap focuses on the professional skills actually expected."
+        modular_paths:
+          title: "Modular pathways"
+          description: "Progressive steps to advance at your own pace without losing track."
+        aligned_field:
+          title: "Field-aligned"
+          description: "Concrete activities inspired by situations encountered in business."
+    roadmaps:
+      title: "Roadmaps"
+      heading: "Structured pathways to progress serenely"
+      description: "Each roadmap guides you step by step with clear objectives, targeted skills and concrete activities to carry out in the field."
+      path_label: "Pathway"
+      step: "step"
+      step_plural: "steps"
+      progression:
+        title: "Progression"
+        description: "Guided pathway from start to finish"
+      skills:
+        title: "Skills"
+        blocks_to_master: "blocks to master"
+      format:
+        title: "Format"
+        description: "Objectives + concrete activities"
+      view_steps: "View steps"
+      hide_steps: "Hide steps"
+      step_label: "Step"
+      objective: "Objective"
+      skills_label: "Skills"
+      activities: "Activities"
+      under_construction: "This roadmap is under construction. Come back soon to discover the complete steps."
+      no_results: "No roadmap matches this filter at the moment."
+      in_preparation:
+        title: "Roadmaps in preparation"
+        description: "The pathways for this field are being finalized. Soon, you will be able to follow each step with detailed objectives and activities."
+        view_other_fields: "View other fields"
+        back_home: "Back to home"
+    roadmaps_filter:
+      quick_search: "Quick search"
+      description: "Filter the roadmaps of this field by pathway."
+      label: "Filter roadmaps"
+      all_roadmaps: "All roadmaps"
 
   users:
     registrations:

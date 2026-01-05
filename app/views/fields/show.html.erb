@@ -1,167 +1,127 @@
 <% content_for :title, @field.name %>
 
 <% content_for :header do %>
-  <%= render 'shared/fields_header' %>
+  <%= render 'shared/navbar' %>
 <% end %>
 
 <div class="min-h-screen bg-gray-50">
   <!-- Header de la filière -->
-  <div class="bg-white shadow-sm">
-    <div class="container mx-auto px-4 py-8">
-      <div class="mb-4">
-        <%= link_to "← Retour aux filières", fields_path, class: "text-primary hover:text-primary-600 font-medium" %>
-      </div>
-      
-      <div class="max-w-4xl">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4"><%= @field.name %></h1>
-        <% if @field.description.present? %>
-          <div class="prose prose-lg text-gray-700 max-w-none">
-            <%= simple_format(@field.description) %>
+  <div class="relative overflow-hidden bg-secondary-900 text-white">
+    <div class="absolute inset-0 pointer-events-none">
+      <%= render 'shared/animated_decorations' %>
+    </div>
+
+    <div class="container relative mx-auto px-4 md:px-6 lg:px-8 py-14 lg:py-18">
+      <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_420px]">
+        <div class="space-y-8">
+          <!-- Breadcrumb -->
+          <nav class="text-sm text-white/60" aria-label="Fil d'Ariane">
+            <ol class="flex flex-wrap items-center gap-2">
+              <li class="inline-flex items-center gap-1">
+                <span class="material-icons text-xs">home</span>
+                <%= link_to t('fields.show.breadcrumb.home'), root_path, class: "hover:text-white transition-colors" %>
+              </li>
+              <li class="inline-flex items-center gap-1">
+                <span class="material-icons text-xs">chevron_right</span>
+                <%= link_to t('fields.show.breadcrumb.fields'), fields_path, class: "hover:text-white transition-colors" %>
+              </li>
+              <li class="inline-flex items-center gap-1 text-white">
+                <span class="material-icons text-xs">chevron_right</span>
+                <span class="font-medium"><%= @field.name %></span>
+              </li>
+            </ol>
+          </nav>
+
+          <!-- Title -->
+          <div class="space-y-4">
+            <span class="inline-flex items-center gap-2 rounded-full bg-secondary-800/60 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.25em] text-white/80">
+              <span class="material-icons text-sm">category</span>
+              <%= t('fields.show.badge') %>
+            </span>
+            <div>
+              <p class="text-white/60 text-sm font-semibold tracking-[0.4em] uppercase mb-2"><%= t('fields.show.discover') %></p>
+              <h1 class="text-4xl md:text-5xl font-semibold leading-tight"><%= @field.name %></h1>
+            </div>
+            <% if @field.description.present? %>
+              <div class="text-lg text-white/80 leading-relaxed max-w-3xl">
+                <%= simple_format(@field.description) %>
+              </div>
+            <% end %>
           </div>
-        <% end %>
-        
-        <div class="mt-6 flex items-center gap-4 text-sm text-gray-600">
-          <span class="flex items-center gap-1">
-            <span class="material-icons text-lg">route</span>
-            <%= pluralize(@roadmaps.count, 'roadmap') %> disponible<%= 's' if @roadmaps.count > 1 %>
-          </span>
-          <span class="flex items-center gap-1">
-            <span class="material-icons text-lg">timeline</span>
-            Parcours progressifs
-          </span>
+
+          <!-- Stats -->
+          <div class="grid gap-4 sm:grid-cols-3">
+            <div class="rounded-2xl border border-white/10 bg-secondary-800/40 p-4">
+              <div class="flex items-center gap-3">
+                <span class="material-icons text-2xl text-primary-400">route</span>
+                <div>
+                  <p class="text-white/60 text-sm"><%= t('fields.show.stats.roadmaps_proposed') %></p>
+                  <p class="text-2xl font-semibold"><%= @roadmaps.count %></p>
+                </div>
+              </div>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-secondary-800/40 p-4">
+              <div class="flex items-center gap-3">
+                <span class="material-icons text-2xl text-primary-400">timeline</span>
+                <div>
+                  <p class="text-white/60 text-sm"><%= t('fields.show.stats.guided_progression') %></p>
+                  <p class="text-2xl font-semibold"><%= t('fields.show.stats.structured_steps') %></p>
+                </div>
+              </div>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-secondary-800/40 p-4">
+              <div class="flex items-center gap-3">
+                <span class="material-icons text-2xl text-primary-400">update</span>
+                <div>
+                  <p class="text-white/60 text-sm"><%= t('fields.show.stats.last_update') %></p>
+                  <p class="text-lg font-semibold"><%= l(@field.updated_at, format: :long) %></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
+            <%= link_to "#roadmaps", class: "inline-flex items-center justify-center gap-2 rounded-2xl bg-primary px-6 py-3 font-semibold text-secondary-900 shadow-lg shadow-primary/30 transition hover:-translate-y-0.5 hover:bg-primary-600" do %>
+              <%= t('fields.show.actions.explore_roadmaps') %>
+              <span class="material-icons text-base">arrow_forward</span>
+            <% end %>
+            <%= link_to fields_path, class: "inline-flex items-center justify-center gap-2 rounded-2xl border border-white/30 px-6 py-3 font-semibold text-white transition hover:border-white hover:bg-white/5" do %>
+              <span class="material-icons text-base">arrow_back</span>
+              <%= t('fields.show.actions.back_to_fields') %>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Highlight card -->
+        <div>
+          <div class="relative rounded-3xl bg-white p-8 text-secondary-900 shadow-2xl">
+            <div class="mb-6 inline-flex items-center gap-2 rounded-full bg-primary-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary-700">
+              <span class="material-icons text-base">insights</span>
+              <%= t('fields.show.highlight_card.title') %>
+            </div>
+            <p class="text-lg text-gray-700 mb-6">
+              <%= t('fields.show.highlight_card.description') %>
+            </p>
+            <div class="space-y-4">
+              <div class="rounded-2xl border border-primary-100 p-4">
+                <p class="text-sm font-semibold text-secondary-800 mb-1"><%= t('fields.show.highlight_card.skills_approach.title') %></p>
+                <p class="text-sm text-gray-600"><%= t('fields.show.highlight_card.skills_approach.description') %></p>
+              </div>
+              <div class="rounded-2xl border border-primary-100 p-4">
+                <p class="text-sm font-semibold text-secondary-800 mb-1"><%= t('fields.show.highlight_card.modular_paths.title') %></p>
+                <p class="text-sm text-gray-600"><%= t('fields.show.highlight_card.modular_paths.description') %></p>
+              </div>
+              <div class="rounded-2xl border border-primary-100 p-4">
+                <p class="text-sm font-semibold text-secondary-800 mb-1"><%= t('fields.show.highlight_card.aligned_field.title') %></p>
+                <p class="text-sm text-gray-600"><%= t('fields.show.highlight_card.aligned_field.description') %></p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Roadmaps -->
-  <div class="container mx-auto px-4 py-8">
-    <% if @roadmaps.any? %>
-      <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-2">Roadmaps disponibles</h2>
-        <p class="text-gray-600">Choisissez le parcours qui correspond à vos objectifs</p>
-      </div>
-
-      <div class="space-y-8">
-        <% @roadmaps.each_with_index do |roadmap, index| %>
-          <div class="bg-white rounded-lg shadow-md overflow-hidden" data-controller="roadmap-preview">
-            <!-- Header de la roadmap -->
-            <div class="p-6 border-b border-gray-200">
-              <div class="flex items-start justify-between">
-                <div class="flex-1">
-                  <div class="flex items-center gap-3 mb-2">
-                    <span class="flex items-center justify-center w-8 h-8 bg-primary text-white text-sm font-bold rounded-full">
-                      <%= index + 1 %>
-                    </span>
-                    <h3 class="text-xl font-semibold text-gray-900"><%= roadmap.title %></h3>
-                  </div>
-                  
-                  <% if roadmap.description.present? %>
-                    <p class="text-gray-600 leading-relaxed ml-11">
-                      <%= roadmap.description %>
-                    </p>
-                  <% end %>
-                </div>
-                
-                <button data-action="roadmap-preview#toggle" 
-                        data-roadmap-preview-target="toggleButton"
-                        class="flex items-center gap-2 px-4 py-2 text-primary border border-primary rounded-lg hover:bg-primary hover:text-white transition-colors">
-                  <span data-roadmap-preview-target="toggleText">Voir les étapes</span>
-                  <span class="material-icons transition-transform" data-roadmap-preview-target="toggleIcon">expand_more</span>
-                </button>
-              </div>
-              
-              <div class="mt-4 ml-11 flex items-center gap-4 text-sm text-gray-500">
-                <span class="flex items-center gap-1">
-                  <span class="material-icons text-sm">linear_scale</span>
-                  <%= pluralize(roadmap.roadmap_steps.count, 'étape') %>
-                </span>
-                <span class="flex items-center gap-1">
-                  <span class="material-icons text-sm">schedule</span>
-                  Parcours progressif
-                </span>
-              </div>
-            </div>
-
-            <!-- Timeline des étapes (collapsible) -->
-            <div data-roadmap-preview-target="content" class="hidden">
-              <div class="p-6">
-                <% if roadmap.roadmap_steps.any? %>
-                  <div class="relative">
-                    <!-- Timeline verticale -->
-                    <% roadmap.roadmap_steps.ordered.each_with_index do |step, step_index| %>
-                      <div class="flex gap-4 <%= 'pb-8' unless step_index == roadmap.roadmap_steps.count - 1 %>">
-                        <!-- Numéro et ligne de connexion -->
-                        <div class="flex flex-col items-center">
-                          <div class="flex items-center justify-center w-10 h-10 bg-primary text-white font-bold rounded-full border-4 border-white shadow-md z-10">
-                            <%= step.order %>
-                          </div>
-                          <% unless step_index == roadmap.roadmap_steps.count - 1 %>
-                            <div class="w-0.5 h-full bg-gray-200 mt-2"></div>
-                          <% end %>
-                        </div>
-
-                        <!-- Contenu de l'étape -->
-                        <div class="flex-1 <%= 'pb-6' unless step_index == roadmap.roadmap_steps.count - 1 %>">
-                          <h4 class="text-lg font-medium text-gray-900 mb-3"><%= step.title %></h4>
-                          
-                          <div class="space-y-3">
-                            <div class="bg-orange-50 border-l-4 border-orange-400 p-3 rounded">
-                              <div class="flex items-start gap-2">
-                                <span class="material-icons text-orange-600 text-sm mt-0.5">target</span>
-                                <div>
-                                  <span class="font-medium text-orange-800">Objectif</span>
-                                  <p class="text-orange-700 text-sm mt-1"><%= simple_format(step.objective) %></p>
-                                </div>
-                              </div>
-                            </div>
-
-                            <% if step.skills.present? %>
-                              <div class="bg-green-50 border-l-4 border-green-400 p-3 rounded">
-                                <div class="flex items-start gap-2">
-                                  <span class="material-icons text-green-600 text-sm mt-0.5">check_circle</span>
-                                  <div>
-                                    <span class="font-medium text-green-800">Compétences à développer</span>
-                                    <p class="text-green-700 text-sm mt-1"><%= simple_format(step.skills) %></p>
-                                  </div>
-                                </div>
-                              </div>
-                            <% end %>
-
-                            <% if step.activities.present? %>
-                              <div class="bg-blue-50 border-l-4 border-blue-400 p-3 rounded">
-                                <div class="flex items-start gap-2">
-                                  <span class="material-icons text-blue-600 text-sm mt-0.5">assignment</span>
-                                  <div>
-                                    <span class="font-medium text-blue-800">Activités</span>
-                                    <p class="text-blue-700 text-sm mt-1"><%= simple_format(step.activities) %></p>
-                                  </div>
-                                </div>
-                              </div>
-                            <% end %>
-                          </div>
-                        </div>
-                      </div>
-                    <% end %>
-                  </div>
-                <% else %>
-                  <div class="text-center py-8 text-gray-500">
-                    <span class="material-icons text-4xl mb-2">build</span>
-                    <p>Cette roadmap est en cours de construction</p>
-                  </div>
-                <% end %>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% else %>
-      <div class="text-center py-16">
-        <div class="text-gray-400 text-6xl mb-4">🚧</div>
-        <h3 class="text-xl font-medium text-gray-900 mb-2">Roadmaps en préparation</h3>
-        <p class="text-gray-600 mb-6">Les parcours pour cette filière sont actuellement en développement.</p>
-        <%= link_to "Voir d'autres filières", fields_path, class: "inline-flex items-center bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-600 transition-colors" %>
-      </div>
-    <% end %>
-  </div>
+  <%= render "fields/roadmaps", roadmaps: @roadmaps %>
 </div>
