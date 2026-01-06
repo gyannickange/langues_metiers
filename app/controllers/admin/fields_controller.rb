@@ -1,6 +1,6 @@
 module Admin
   class FieldsController < BaseController
-    before_action :set_field, only: [ :show, :edit, :update, :destroy ]
+    before_action :set_field, only: [ :edit, :update, :destroy ]
 
     def index
       @pagy, @fields = pagy(Field.order(created_at: :desc))

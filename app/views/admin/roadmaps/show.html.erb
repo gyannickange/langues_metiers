@@ -1,18 +1,18 @@
 <% content_for :page_title, @roadmap.title %>
 
 <div class="mb-4">
-  <%= link_to "← Retour aux roadmaps", admin_field_roadmaps_path(@roadmap.field), class: "text-blue-600 hover:underline" %>
+  <%= link_to "← Retour aux roadmaps", admin_field_roadmaps_path(@field), class: "text-blue-600 hover:underline" %>
 </div>
 
 <div class="bg-white rounded shadow p-6 mb-6">
   <div class="flex items-start justify-between mb-4">
     <div>
       <h1 class="text-2xl font-bold mb-2"><%= @roadmap.title %></h1>
-      <p class="text-gray-600">Filière : <%= @roadmap.field.name %></p>
+      <p class="text-gray-600">Filière : <%= @field.name %></p>
     </div>
     <div class="flex gap-2">
-      <%= link_to "Modifier", edit_admin_field_roadmap_path(@roadmap.field, @roadmap), class: "inline-flex items-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
-      <%= link_to "Gérer les étapes", admin_field_roadmap_roadmap_steps_path(@roadmap.field, @roadmap), class: "inline-flex items-center bg-primary text-white px-4 py-2 rounded hover:bg-primary-600" %>
+      <%= link_to "Modifier", edit_admin_field_roadmap_path(@field, @roadmap), class: "inline-flex items-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+      <%= link_to "Gérer les étapes", admin_field_roadmap_roadmap_steps_path(@field, @roadmap), class: "inline-flex items-center bg-primary text-white px-4 py-2 rounded hover:bg-primary-600" %>
     </div>
   </div>
   
@@ -24,13 +24,13 @@
 <div class="bg-white rounded shadow p-6">
   <div class="flex items-center justify-between mb-4">
     <h2 class="text-lg font-semibold">Étapes de la roadmap (<%= @roadmap_steps.count %>)</h2>
-    <%= link_to "Ajouter une étape", new_admin_field_roadmap_roadmap_step_path(@roadmap.field, @roadmap), class: "inline-flex items-center bg-primary text-white px-3 py-1 text-sm rounded hover:bg-primary-600" %>
+    <%= link_to "Ajouter une étape", new_admin_field_roadmap_roadmap_step_path(@field, @roadmap), class: "inline-flex items-center bg-primary text-white px-3 py-1 text-sm rounded hover:bg-primary-600" %>
   </div>
 
   <% if @roadmap_steps.any? %>
     <div class="space-y-4">
       <% @roadmap_steps.each do |step| %>
-        <div class="border rounded-lg p-4 hover:bg-gray-50">
+        <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50">
           <div class="flex items-start justify-between">
             <div class="flex-1">
               <div class="flex items-center gap-3 mb-2">
@@ -61,8 +61,8 @@
             </div>
             
             <div class="flex gap-2 ml-4">
-              <%= link_to "Voir", admin_field_roadmap_roadmap_step_path(@roadmap.field, @roadmap, step), class: "text-blue-600 hover:underline text-sm" %>
-              <%= link_to "Modifier", edit_admin_field_roadmap_roadmap_step_path(@roadmap.field, @roadmap, step), class: "text-green-600 hover:underline text-sm" %>
+              <%= link_to "Voir", admin_field_roadmap_roadmap_step_path(@field, @roadmap, step), class: "text-blue-600 hover:underline text-sm" %>
+              <%= link_to "Modifier", edit_admin_field_roadmap_roadmap_step_path(@field, @roadmap, step), class: "text-green-600 hover:underline text-sm" %>
             </div>
           </div>
         </div>
@@ -72,7 +72,7 @@
     <div class="text-center py-8 text-gray-500">
       <div class="text-3xl mb-2">📋</div>
       <p>Aucune étape définie pour cette roadmap.</p>
-      <%= link_to "Ajouter la première étape", new_admin_field_roadmap_roadmap_step_path(@roadmap.field, @roadmap), class: "inline-flex items-center bg-primary text-white px-4 py-2 rounded hover:bg-primary-600 mt-3" %>
+      <%= link_to "Ajouter la première étape", new_admin_field_roadmap_roadmap_step_path(@field, @roadmap), class: "inline-flex items-center bg-primary text-white px-4 py-2 rounded hover:bg-primary-600 mt-3" %>
     </div>
   <% end %>
 </div>

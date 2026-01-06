@@ -25,7 +25,7 @@ module Admin
       @skill = Skill.new(skill_params)
 
       if @skill.save
-        redirect_to @skill, notice: "Skill was successfully created."
+        redirect_to admin_skill_path(@skill), notice: "Skill was successfully created."
       else
         render :new, status: :unprocessable_entity
       end
@@ -34,7 +34,7 @@ module Admin
     # PATCH/PUT /skills/1
     def update
       if @skill.update(skill_params)
-        redirect_to @skill, notice: "Skill was successfully updated.", status: :see_other
+        redirect_to admin_skill_path(@skill), notice: "Skill was successfully updated.", status: :see_other
       else
         render :edit, status: :unprocessable_entity
       end
@@ -43,7 +43,7 @@ module Admin
     # DELETE /skills/1
     def destroy
       @skill.destroy!
-      redirect_to skills_path, notice: "Skill was successfully destroyed.", status: :see_other
+      redirect_to admin_skills_path, notice: "Skill was successfully destroyed.", status: :see_other
     end
 
     private

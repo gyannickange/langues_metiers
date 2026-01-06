@@ -1,7 +1,7 @@
 <%= form_with model: [:admin, @field, @roadmap] do |f| %>
   <% if @roadmap.errors.any? %>
     <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
-      <h4 class="font-bold">Erreurs :</h4>
+      <h4 class="font-bold"><%= t("admin.roadmaps.form.errors_title") %></h4>
       <ul class="list-disc ml-5">
         <% @roadmap.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -12,18 +12,62 @@
 
   <div class="space-y-4">
     <div>
-      <%= f.label :title, "Titre", class: "block text-sm font-medium" %>
+      <%= f.label :title, t("admin.roadmaps.form.title"), class: "block text-sm font-medium" %>
       <%= f.text_field :title, class: "mt-1 block w-full border rounded px-3 py-2" %>
     </div>
 
     <div>
-      <%= f.label :description, "Description", class: "block text-sm font-medium" %>
+      <%= f.label :description, t("admin.roadmaps.form.description"), class: "block text-sm font-medium" %>
       <%= f.text_area :description, rows: 4, class: "mt-1 block w-full border rounded px-3 py-2" %>
     </div>
   </div>
 
+  <div
+    class="mt-10 space-y-6 rounded-3xl border border-slate-200 bg-slate-50/70 p-6"
+    data-controller="nested-form">
+    <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary-600 mb-1">
+          <%= t("admin.roadmaps.steps.section.badge") %>
+        </p>
+        <h3 class="text-2xl font-semibold text-secondary-900">
+          <%= t("admin.roadmaps.steps.section.title") %>
+        </h3>
+        <p class="text-sm text-slate-600">
+          <%= t("admin.roadmaps.steps.section.subtitle") %>
+        </p>
+      </div>
+      <button
+        type="button"
+        class="inline-flex items-center gap-2 rounded-full bg-secondary-900 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-secondary-900/20 transition hover:bg-secondary-800"
+        data-action="nested-form#add">
+        <span class="material-icons text-base">add</span>
+        <%= t("admin.roadmaps.steps.actions.add") %>
+      </button>
+    </div>
+
+    <div
+      class="rounded-2xl border border-dashed border-slate-300 bg-white/70 px-6 py-10 text-center text-slate-500 <%= 'hidden' if @roadmap.roadmap_steps.any? %>"
+      data-nested-form-target="emptyState">
+      <span class="material-icons mb-3 text-4xl text-slate-300">timeline</span>
+      <p class="text-sm font-medium"><%= t("admin.roadmaps.steps.empty_state") %></p>
+    </div>
+
+    <div class="space-y-6" data-nested-form-target="items">
+      <%= f.fields_for :roadmap_steps do |step_form| %>
+        <%= render "admin/roadmaps/roadmap_step_fields", step_form: step_form %>
+      <% end %>
+    </div>
+
+    <template data-nested-form-target="template">
+      <%= f.fields_for :roadmap_steps, RoadmapStep.new, child_index: "NEW_RECORD" do |step_form| %>
+        <%= render "admin/roadmaps/roadmap_step_fields", step_form: step_form %>
+      <% end %>
+    </template>
+  </div>
+
   <div class="mt-6 flex items-center gap-2">
-    <%= f.submit @roadmap.new_record? ? "Créer la roadmap" : "Mettre à jour", class: "inline-flex items-center bg-primary text-white px-4 py-2 rounded hover:bg-primary-600" %>
-    <%= link_to "Annuler", admin_field_roadmaps_path(@field), class: "inline-flex items-center bg-gray-100 text-gray-800 px-4 py-2 rounded hover:bg-gray-200" %>
+    <%= f.submit @roadmap.new_record? ? t("admin.roadmaps.form.submit.create") : t("admin.roadmaps.form.submit.update"), class: "inline-flex items-center bg-primary text-white px-4 py-2 rounded hover:bg-primary-600" %>
+    <%= link_to t("admin.roadmaps.form.cancel"), admin_field_roadmaps_path(@field), class: "inline-flex items-center bg-gray-100 text-gray-800 px-4 py-2 rounded hover:bg-gray-200" %>
   </div>
 <% end %>

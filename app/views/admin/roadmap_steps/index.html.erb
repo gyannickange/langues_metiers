@@ -1,15 +1,15 @@
 <% content_for :page_title, "Étapes - #{@roadmap.title}" %>
 
 <div class="mb-4">
-  <%= link_to "← Retour à la roadmap", admin_field_roadmap_path(@roadmap.field, @roadmap), class: "text-blue-600 hover:underline" %>
+  <%= link_to "← Retour à la roadmap", admin_field_roadmap_path(@field, @roadmap), class: "text-blue-600 hover:underline" %>
 </div>
 
 <div class="mb-4 flex items-center justify-between">
   <div>
     <h1 class="text-xl font-semibold">Étapes de la roadmap</h1>
-    <p class="text-gray-600"><%= @roadmap.title %> - <%= @roadmap.field.name %></p>
+    <p class="text-gray-600"><%= @roadmap.title %> - <%= @field.name %></p>
   </div>
-  <%= link_to "Nouvelle étape", new_admin_field_roadmap_roadmap_step_path(@roadmap.field, @roadmap), class: "inline-flex items-center bg-primary text-white px-4 py-2 rounded hover:bg-primary-600" %>
+  <%= link_to "Nouvelle étape", new_admin_field_roadmap_roadmap_step_path(@field, @roadmap), class: "inline-flex items-center bg-primary text-white px-4 py-2 rounded hover:bg-primary-600" %>
 </div>
 
 <% if @roadmap_steps.any? %>
@@ -49,9 +49,9 @@
           </div>
           
           <div class="flex flex-col gap-2 ml-4">
-            <%= link_to "Voir", admin_field_roadmap_roadmap_step_path(@roadmap.field, @roadmap, step), class: "text-blue-600 hover:underline text-sm" %>
-            <%= link_to "Modifier", edit_admin_field_roadmap_roadmap_step_path(@roadmap.field, @roadmap, step), class: "text-green-600 hover:underline text-sm" %>
-            <%= button_to "Supprimer", admin_field_roadmap_roadmap_step_path(@roadmap.field, @roadmap, step), method: :delete, 
+            <%= link_to "Voir", admin_field_roadmap_roadmap_step_path(@field, @roadmap, step), class: "text-blue-600 hover:underline text-sm" %>
+            <%= link_to "Modifier", edit_admin_field_roadmap_roadmap_step_path(@field, @roadmap, step), class: "text-green-600 hover:underline text-sm" %>
+            <%= button_to "Supprimer", admin_field_roadmap_roadmap_step_path(@field, @roadmap, step), method: :delete, 
                 form: { data: { turbo_confirm: "Êtes-vous sûr ?" } }, 
                 class: "text-red-600 hover:underline text-sm" %>
           </div>
@@ -68,6 +68,6 @@
     <div class="text-gray-400 text-4xl mb-4">📋</div>
     <h3 class="text-lg font-medium text-gray-900 mb-2">Aucune étape</h3>
     <p class="text-gray-600 mb-4">Commencez par créer la première étape de cette roadmap.</p>
-    <%= link_to "Créer une étape", new_admin_field_roadmap_roadmap_step_path(@roadmap.field, @roadmap), class: "inline-flex items-center bg-primary text-white px-4 py-2 rounded hover:bg-primary-600" %>
+    <%= link_to "Créer une étape", new_admin_field_roadmap_roadmap_step_path(@field, @roadmap), class: "inline-flex items-center bg-primary text-white px-4 py-2 rounded hover:bg-primary-600" %>
   </div>
 <% end %>

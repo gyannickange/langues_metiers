@@ -1,4 +1,4 @@
-<%= form_with model: [:admin, @roadmap.field, @roadmap, @roadmap_step] do |f| %>
+<%= form_with model: [:admin, @field, @roadmap, @roadmap_step] do |f| %>
   <% if @roadmap_step.errors.any? %>
     <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
       <h4 class="font-bold">Erreurs :</h4>
@@ -44,6 +44,6 @@
 
   <div class="mt-6 flex items-center gap-2">
     <%= f.submit @roadmap_step.new_record? ? "Créer l'étape" : "Mettre à jour", class: "inline-flex items-center bg-primary text-white px-4 py-2 rounded hover:bg-primary-600" %>
-    <%= link_to "Annuler", admin_field_roadmap_roadmap_steps_path(@roadmap.field, @roadmap), class: "inline-flex items-center bg-gray-100 text-gray-800 px-4 py-2 rounded hover:bg-gray-200" %>
+    <%= link_to "Annuler", admin_field_roadmap_roadmap_steps_path(@field, @roadmap), class: "inline-flex items-center bg-gray-100 text-gray-800 px-4 py-2 rounded hover:bg-gray-200" %>
   </div>
 <% end %>

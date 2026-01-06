@@ -1,0 +1,48 @@
+<%#
+  Usage:
+  render "shared/quick_action_card",
+         title: "Manage users",
+         count: User.count,
+         icon: "👥",
+         url: admin_users_path,
+         color_scheme: "primary"
+  
+  Color schemes: primary, secondary
+%>
+<%
+  color_scheme ||= "primary"
+  
+  border_hover_classes = {
+    primary: "hover:border-primary-300",
+    secondary: "hover:border-secondary-300"
+  }
+  
+  icon_bg_classes = {
+    primary: "bg-primary/10 group-hover:bg-primary/20",
+    secondary: "bg-secondary/10 group-hover:bg-secondary/20"
+  }
+  
+  text_hover_classes = {
+    primary: "group-hover:text-primary",
+    secondary: "group-hover:text-secondary"
+  }
+  
+  border_hover = border_hover_classes[color_scheme.to_sym] || border_hover_classes[:primary]
+  icon_bg = icon_bg_classes[color_scheme.to_sym] || icon_bg_classes[:primary]
+  text_hover = text_hover_classes[color_scheme.to_sym] || text_hover_classes[:primary]
+%>
+
+<%= link_to url, class: "bg-card border border-border rounded-xl p-4 #{border_hover} hover:shadow-md transition-all duration-300 group" do %>
+  <div class="flex items-center space-x-3">
+    <div class="w-10 h-10 <%= icon_bg %> rounded-lg flex items-center justify-center text-xl transition-colors">
+      <%= icon %>
+    </div>
+    <div>
+      <div class="font-semibold text-foreground <%= text_hover %> transition-colors"><%= title %></div>
+      <% if count_label.present? %>
+        <div class="text-xs text-muted-foreground"><%= count %> <%= count_label.downcase %></div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+

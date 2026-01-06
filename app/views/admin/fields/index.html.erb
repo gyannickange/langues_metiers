@@ -1,23 +1,23 @@
-<% content_for :page_title, "Filières" %>
+<% content_for :page_title, t("Fields") %>
 
-<div class="mb-4 flex items-center justify-between">
-  <h1 class="text-xl font-semibold">Filières</h1>
-  <%= link_to "Nouvelle filière", new_admin_field_path, class: "inline-flex items-center bg-primary-500 text-white px-4 py-2 rounded hover:bg-primary-600" %>
-</div>
+<%= render "shared/page_header",
+    title: t("Fields"),
+    action_url: new_admin_field_path,
+    action_text: t("fields.new") %>
 
 <%= render "shared/table",
   columns: [
-    { header: "Nom",  cell: ->(r){ link_to r.name, admin_field_roadmaps_path(r), class: "text-blue-600 hover:underline font-medium" } },
-    { header: "Description", cell: ->(r){ truncate(r.description.to_s, length: 80) } },
-    { header: "Statut", cell: ->(r){ content_tag :span, r.status.humanize, class: "px-2 py-1 text-xs rounded #{r.active? ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}" } },
-    { header: "Roadmaps", cell: ->(r){ r.roadmaps.count } }
+    { header: t("fields.table.name"), cell: ->(r){ link_to r.name, admin_field_roadmaps_path(r), class: "text-blue-600 hover:underline font-medium" } },
+    { header: t("fields.table.description"), cell: ->(r){ truncate(r.description.to_s, length: 80) } },
+    { header: t("fields.table.status"), cell: ->(r){ render "shared/badge", text: r.status.humanize, color: r.active? ? "green" : "gray" } },
+    { header: t("fields.table.roadmaps"), cell: ->(r){ r.roadmaps.count } }
   ],
   rows: @fields,
   pagy: @pagy,
-  actions: ->(r){ link_to("Modifier", edit_admin_field_path(r), class: "text-blue-600 hover:underline") +
-                  " | ".html_safe +
-                  link_to("Roadmaps", admin_field_roadmaps_path(r), class: "text-green-600 hover:underline") +
-                  " | ".html_safe +
-                  button_to("Supprimer", admin_field_path(r), method: :delete, form: { data: { turbo_confirm: "Êtes-vous sûr ?" } }, class: "text-red-600 hover:underline inline") } %>
-
-
+  actions: ->(r){ 
+    link_to(t("fields.actions.edit"), edit_admin_field_path(r), class: "text-blue-600 hover:underline") +
+    " | ".html_safe +
+    link_to(t("fields.actions.roadmaps"), admin_field_roadmaps_path(r), class: "text-green-600 hover:underline") +
+    " | ".html_safe +
+    button_to(t("fields.actions.delete"), admin_field_path(r), method: :delete, form: { data: { turbo_confirm: t("fields.actions.confirm_delete") } }, class: "text-red-600 hover:underline inline")
+  } %>

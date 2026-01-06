@@ -1,0 +1,15 @@
+<%# 
+  Usage: render partial: "shared/activity_item", locals: { title: "New message from Laur", time_ago: "13 minutes ago", icon: "💬" }
+%>
+<div class="flex items-start space-x-4 p-4 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+  <div class="flex-shrink-0">
+    <div class="w-10 h-10 rounded-full bg-gabon-blue/10 dark:bg-gabon-blue/20 flex items-center justify-center">
+      <span class="text-lg"><%= icon || "📢" %></span>
+    </div>
+  </div>
+  <div class="flex-1 min-w-0">
+    <p class="text-sm font-medium text-slate-900 dark:text-white"><%= title %></p>
+    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1"><%= time_ago %></p>
+  </div>
+</div>
+

@@ -1,18 +1,104 @@
-<% content_for :page_title, "Admin Dashboard" %>
+<% content_for :page_title, t("admin.dashboard.title") %>
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-  <div class="bg-white rounded-lg shadow p-4">
-    <h3 class="font-semibold mb-2">Users</h3>
-    <p><%= User.count %></p>
+<div class="space-y-8">
+  <!-- Header Section -->
+  <div class="animate-fade-in-up">
+    <h1 class="text-3xl font-bold text-foreground mb-2"><%= t("admin.dashboard.welcome") %></h1>
+    <p class="text-muted-foreground"><%= t("admin.dashboard.subtitle") %></p>
   </div>
-  <div class="bg-white rounded-lg shadow p-4">
-    <h3 class="font-semibold mb-2">Skills</h3>
-    <p><%= Skill.count %></p>
+
+  <!-- Statistics Cards Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <%= render "shared/stat_card",
+        title: t("Users"),
+        count: User.count,
+        description: t("admin.dashboard.users.description"),
+        icon: "👥",
+        url: admin_users_path,
+        color_scheme: "primary",
+        animation_delay: "0.1s" %>
+
+    <%= render "shared/stat_card",
+        title: t("Skills"),
+        count: Skill.count,
+        description: t("admin.dashboard.skills.description"),
+        icon: "🧩",
+        url: admin_skills_path,
+        color_scheme: "secondary",
+        animation_delay: "0.2s" %>
+
+    <%= render "shared/stat_card",
+        title: t("admin.dashboard.categories.title"),
+        count: Category.count,
+        description: t("admin.dashboard.categories.description"),
+        icon: "📁",
+        url: nil,
+        color_scheme: "mixed",
+        animation_delay: "0.3s" %>
+
+    <%= render "shared/stat_card",
+        title: t("Fields"),
+        count: Field.count,
+        description: t("admin.dashboard.fields.description"),
+        icon: "🏷️",
+        url: admin_fields_path,
+        color_scheme: "primary_dark",
+        animation_delay: "0.4s" %>
+
+    <%= render "shared/stat_card",
+        title: t("admin.dashboard.roadmaps.title"),
+        count: Roadmap.count,
+        description: t("admin.dashboard.roadmaps.description"),
+        icon: "🗺️",
+        url: nil,
+        color_scheme: "secondary_dark",
+        animation_delay: "0.5s" %>
+
+    <%= render "shared/stat_card",
+        title: t("Careers"),
+        count: Career.count,
+        description: t("admin.dashboard.careers.description"),
+        icon: "🧭",
+        url: admin_careers_path,
+        color_scheme: "mixed",
+        animation_delay: "0.6s" %>
   </div>
-  <div class="bg-white rounded-lg shadow p-4">
-    <h3 class="font-semibold mb-2">Categories</h3>
-    <p><%= Category.count %></p>
+
+  <!-- Quick Actions Section -->
+  <div class="animate-fade-in-up" style="animation-delay: 0.7s;">
+    <h2 class="text-2xl font-bold text-foreground mb-4"><%= t("admin.dashboard.quick_actions.title") %></h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <%= render "shared/quick_action_card",
+          title: t("admin.dashboard.quick_actions.manage_users"),
+          count: User.count,
+          count_label: t("Users"),
+          icon: "👥",
+          url: admin_users_path,
+          color_scheme: "primary" %>
+
+      <%= render "shared/quick_action_card",
+          title: t("admin.dashboard.quick_actions.manage_skills"),
+          count: Skill.count,
+          count_label: t("Skills"),
+          icon: "🧩",
+          url: admin_skills_path,
+          color_scheme: "secondary" %>
+
+      <%= render "shared/quick_action_card",
+          title: t("admin.dashboard.quick_actions.manage_fields"),
+          count: Field.count,
+          count_label: t("Fields"),
+          icon: "🏷️",
+          url: admin_fields_path,
+          color_scheme: "primary" %>
+
+      <%= render "shared/quick_action_card",
+          title: t("admin.dashboard.quick_actions.manage_careers"),
+          count: Career.count,
+          count_label: t("Careers"),
+          icon: "🧭",
+          url: admin_careers_path,
+          color_scheme: "secondary" %>
+    </div>
   </div>
 </div>
-
-

@@ -1,5 +1,12 @@
 fr:
   hello: "Bonjour"
+  Dashboard: "Tableau de bord"
+  Users: "Utilisateurs"
+  Skills: "Compétences"
+  Fields: "Filières"
+  Careers: "Carrières"
+  Save: "Enregistrer"
+  Cancel: "Annuler"
   devise:
     sessions:
       signed_in: "Connexion réussie."
@@ -27,11 +34,25 @@ fr:
       try_other_keywords: "Essayez avec d'autres mots-clés"
       view_all_fields: "Voir toutes les filières"
       lazy_empty: "Aucune filière supplémentaire à afficher."
-    new: "Nouveau Champ"
-    edit: "Modifier le Champ"
+    new: "Nouvelle filière"
+    edit: "Modifier la filière"
     created: "Champ créé"
     updated: "Champ mis à jour"
     deleted: "Champ supprimé"
+    form:
+      name: "Nom"
+      description: "Description"
+      status: "Statut"
+    table:
+      name: "Nom"
+      description: "Description"
+      status: "Statut"
+      roadmaps: "Roadmaps"
+    actions:
+      edit: "Modifier"
+      roadmaps: "Roadmaps"
+      delete: "Supprimer"
+      confirm_delete: "Êtes-vous sûr ?"
     header:
       subtitle: "Transformez votre passion pour les langues en carrière réussie avec nos programmes spécialisés et nos roadmaps personnalisés"
       search_placeholder: "Rechercher une filière..."
@@ -117,6 +138,60 @@ fr:
     created: "Carrière créée"
     updated: "Carrière mise à jour"
     deleted: "Carrière supprimée"
+
+  admin:
+    dashboard:
+      title: "Tableau de bord"
+      welcome: "Bienvenue dans le tableau de bord"
+      subtitle: "Vue d'ensemble de votre plateforme"
+      total: "total"
+      view_all: "Voir tout"
+      users:
+        description: "Gérer les utilisateurs de la plateforme"
+      skills:
+        description: "Gérer les compétences disponibles"
+      categories:
+        title: "Catégories"
+        description: "Organiser les compétences par catégories"
+      fields:
+        description: "Gérer les filières professionnelles"
+      roadmaps:
+        title: "Roadmaps"
+        description: "Parcours structurés pour les utilisateurs"
+      careers:
+        description: "Gérer les carrières disponibles"
+      quick_actions:
+        title: "Actions rapides"
+        manage_users: "Gérer les utilisateurs"
+        manage_skills: "Gérer les compétences"
+        manage_fields: "Gérer les filières"
+        manage_careers: "Gérer les carrières"
+    roadmaps:
+      form:
+        errors_title: "Veuillez corriger les erreurs suivantes :"
+        title: "Titre de la roadmap"
+        description: "Description"
+        submit:
+          create: "Créer la roadmap"
+          update: "Mettre à jour la roadmap"
+        cancel: "Annuler"
+      steps:
+        badge: "Étape personnalisée"
+        title: "Contenu de l'étape"
+        remove: "Supprimer"
+        empty_state: "Ajoutez votre première étape pour structurer le parcours."
+        actions:
+          add: "Ajouter une étape"
+        section:
+          badge: "Parcours guidé"
+          title: "Étapes de la roadmap"
+          subtitle: "Définissez les objectifs, compétences et activités pour chaque étape."
+        fields:
+          title: "Titre de l'étape"
+          order: "Ordre (position)"
+          objective: "Objectif"
+          skills: "Compétences à développer"
+          activities: "Activités / expériences"
 
   home:
     navigation:

@@ -1,0 +1,98 @@
+<%#
+  Usage: 
+  render "shared/stat_card",
+         title: "Users",
+         count: User.count,
+         description: "Manage platform users",
+         icon: "👥",
+         url: admin_users_path,
+         color_scheme: "primary",
+         animation_delay: "0.1s"
+  
+  Color schemes: primary, secondary, mixed (primary-secondary blend)
+  If url is nil, the card won't be a link
+%>
+<%
+  color_scheme ||= "primary"
+  animation_delay ||= "0s"
+  url ||= nil
+  
+  gradient_classes = {
+    primary: "from-primary-50 to-primary-100 border-primary-200 hover:border-primary-300",
+    secondary: "from-secondary-50 to-secondary-100 border-secondary-200 hover:border-secondary-300",
+    mixed: "from-primary-50 to-secondary-50 border-border hover:border-primary-300",
+    primary_dark: "from-primary-100 to-primary-200 border-primary-300 hover:border-primary-400",
+    secondary_dark: "from-secondary-100 to-secondary-200 border-secondary-300 hover:border-secondary-400"
+  }
+  
+  icon_bg_classes = {
+    primary: "from-primary to-primary-600",
+    secondary: "from-secondary to-secondary-600",
+    mixed: "from-primary-400 to-secondary-500",
+    primary_dark: "from-primary-500 to-primary-700",
+    secondary_dark: "from-secondary-500 to-secondary-700"
+  }
+  
+  text_color_classes = {
+    primary: { count: "text-primary-700", label: "text-primary-600" },
+    secondary: { count: "text-secondary-700", label: "text-secondary-600" },
+    mixed: { count: "text-foreground", label: "text-muted-foreground" },
+    primary_dark: { count: "text-primary-800", label: "text-primary-700" },
+    secondary_dark: { count: "text-secondary-800", label: "text-secondary-700" }
+  }
+  
+  link_color_classes = {
+    primary: "text-primary-600",
+    secondary: "text-secondary-600",
+    mixed: "text-secondary-600",
+    primary_dark: "text-primary-700",
+    secondary_dark: "text-secondary-700"
+  }
+  
+  gradient_class = gradient_classes[color_scheme.to_sym] || gradient_classes[:primary]
+  icon_bg_class = icon_bg_classes[color_scheme.to_sym] || icon_bg_classes[:primary]
+  text_colors = text_color_classes[color_scheme.to_sym] || text_color_classes[:primary]
+  count_color = text_colors[:count]
+  label_color = text_colors[:label]
+  link_color = link_color_classes[color_scheme.to_sym] || link_color_classes[:primary]
+%>
+
+<% card_classes = "group relative bg-gradient-to-br #{gradient_class} rounded-2xl p-6 border hover:shadow-lg transition-all duration-300 transform hover:scale-105 animate-fade-in-up" %>
+<% card_style = "animation-delay: #{animation_delay};" %>
+
+<% if url %>
+  <%= link_to url, class: card_classes, style: card_style do %>
+    <div class="flex items-center justify-between mb-4">
+      <div class="w-14 h-14 bg-gradient-to-br #{icon_bg_class} rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform duration-300 shadow-md">
+        <%= icon %>
+      </div>
+      <div class="text-right">
+        <div class="text-3xl font-bold <%= count_color %>"><%= count %></div>
+        <div class="text-sm <%= label_color %> font-medium"><%= t("admin.dashboard.total") %></div>
+      </div>
+    </div>
+    <h3 class="text-lg font-semibold text-foreground mb-1"><%= title %></h3>
+    <p class="text-sm text-muted-foreground"><%= description %></p>
+    <div class="mt-4 flex items-center <%= link_color %> text-sm font-medium group-hover:translate-x-1 transition-transform duration-300">
+      <%= t("admin.dashboard.view_all") %>
+      <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+      </svg>
+    </div>
+  <% end %>
+<% else %>
+  <div class="<%= card_classes %>" style="<%= card_style %>">
+    <div class="flex items-center justify-between mb-4">
+      <div class="w-14 h-14 bg-gradient-to-br <%= icon_bg_class %> rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform duration-300 shadow-md">
+        <%= icon %>
+      </div>
+      <div class="text-right">
+        <div class="text-3xl font-bold <%= count_color %>"><%= count %></div>
+        <div class="text-sm <%= label_color %> font-medium"><%= t("admin.dashboard.total") %></div>
+      </div>
+    </div>
+    <h3 class="text-lg font-semibold text-foreground mb-1"><%= title %></h3>
+    <p class="text-sm text-muted-foreground"><%= description %></p>
+  </div>
+<% end %>
+

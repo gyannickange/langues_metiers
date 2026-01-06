@@ -1,0 +1,50 @@
+<%# 
+  Usage: render partial: "shared/logo", locals: { size: "md", align: "center", background: "auto" }
+  size options: sm, md, lg, xl
+  align options: left, center, right (default: center)
+  background options: auto (default), primary
+  - "primary": Use blanc logo (for primary blue background #2365b7)
+  - "auto": Use dark logo in light mode, blanc in dark mode
+%>
+<%
+  size ||= "md"
+  align ||= "center"
+  background ||= "auto"
+  
+  size_classes = {
+    sm: "h-8",
+    md: "h-12",
+    lg: "h-16",
+    xl: "h-20"
+  }
+  align_classes = {
+    left: "",
+    center: "mx-auto",
+    right: "ml-auto"
+  }
+  logo_size = size_classes[size.to_sym] || size_classes[:md]
+  logo_align = align_classes[align.to_sym] || align_classes[:center]
+  
+  # Use blanc logo only for primary blue background
+  if background == "primary"
+    logo_file = "logo-gabon-blanc.png"
+    logo_class = "#{logo_size} #{logo_align}"
+  else
+    # Auto: dark logo in light mode, blanc in dark mode
+    logo_file_light = "logo-gabon-dark.png"
+    logo_file_dark = "logo-gabon.png"
+  end
+%>
+<% if background == "primary" %>
+  <%= image_tag logo_file, 
+      alt: t("app_name"), 
+      class: logo_class %>
+<% else %>
+  <%= image_tag logo_file_light, 
+      alt: t("app_name"), 
+      class: "#{logo_size} dark:hidden #{logo_align}" %>
+  <%= image_tag logo_file_dark, 
+      alt: t("app_name"), 
+      class: "#{logo_size} hidden dark:block #{logo_align}" %>
+<% end %>
+

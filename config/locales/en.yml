@@ -29,6 +29,13 @@
 
 en:
   hello: "Hello world"
+  Dashboard: "Dashboard"
+  Users: "Users"
+  Skills: "Skills"
+  Fields: "Fields"
+  Careers: "Careers"
+  Save: "Save"
+  Cancel: "Cancel"
   devise:
     sessions:
       signed_in: "Signed in successfully."
@@ -62,6 +69,20 @@ en:
     created: "Field created"
     updated: "Field updated"
     deleted: "Field deleted"
+    form:
+      name: "Name"
+      description: "Description"
+      status: "Status"
+    table:
+      name: "Name"
+      description: "Description"
+      status: "Status"
+      roadmaps: "Roadmaps"
+    actions:
+      edit: "Edit"
+      roadmaps: "Roadmaps"
+      delete: "Delete"
+      confirm_delete: "Are you sure?"
     header:
       subtitle: "Transform your passion for languages into a successful career with our specialized programs and personalized roadmaps"
       search_placeholder: "Search for a field..."
@@ -147,6 +168,60 @@ en:
     created: "Career created"
     updated: "Career updated"
     deleted: "Career deleted"
+
+  admin:
+    dashboard:
+      title: "Dashboard"
+      welcome: "Welcome to the dashboard"
+      subtitle: "Overview of your platform"
+      total: "total"
+      view_all: "View all"
+      users:
+        description: "Manage platform users"
+      skills:
+        description: "Manage available skills"
+      categories:
+        title: "Categories"
+        description: "Organize skills by categories"
+      fields:
+        description: "Manage professional fields"
+      roadmaps:
+        title: "Roadmaps"
+        description: "Structured pathways for users"
+      careers:
+        description: "Manage available careers"
+      quick_actions:
+        title: "Quick Actions"
+        manage_users: "Manage users"
+        manage_skills: "Manage skills"
+        manage_fields: "Manage fields"
+        manage_careers: "Manage careers"
+    roadmaps:
+      form:
+        errors_title: "Please fix the following errors:"
+        title: "Roadmap title"
+        description: "Description"
+        submit:
+          create: "Create roadmap"
+          update: "Update roadmap"
+        cancel: "Cancel"
+      steps:
+        badge: "Custom step"
+        title: "Step content"
+        remove: "Remove"
+        empty_state: "Add your first step to structure the pathway."
+        actions:
+          add: "Add a step"
+        section:
+          badge: "Guided pathway"
+          title: "Roadmap steps"
+          subtitle: "Define objectives, skills, and activities for each step."
+        fields:
+          title: "Step title"
+          order: "Order (position)"
+          objective: "Objective"
+          skills: "Skills to develop"
+          activities: "Activities / experiences"
 
   home:
     navigation:

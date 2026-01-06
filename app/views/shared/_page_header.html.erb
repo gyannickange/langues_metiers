@@ -1,0 +1,27 @@
+<%#
+  Usage:
+  render "shared/page_header",
+         title: "Fields",
+         action_url: new_admin_field_path,
+         action_text: "New Field",
+         action_type: "primary"
+  
+  action_type: primary, secondary (optional, defaults to primary)
+  If action_url or action_text is nil, no button is rendered
+%>
+<%
+  action_type ||= "primary"
+  action_classes = {
+    primary: "bg-primary-500 text-white hover:bg-primary-600",
+    secondary: "bg-secondary-500 text-white hover:bg-secondary-600"
+  }
+  action_class = action_classes[action_type.to_sym] || action_classes[:primary]
+%>
+
+<div class="mb-4 flex items-center justify-between">
+  <h1 class="text-xl font-semibold text-foreground"><%= title %></h1>
+  <% if action_url.present? && action_text.present? %>
+    <%= link_to action_text, action_url, class: "inline-flex items-center #{action_class} px-4 py-2 rounded transition-colors" %>
+  <% end %>
+</div>
+
