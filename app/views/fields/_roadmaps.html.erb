@@ -1,0 +1,143 @@
+<!-- Roadmaps -->
+<div
+  id="roadmaps"
+  class="container mx-auto px-4 md:px-6 lg:px-8 py-10 md:py-16"
+  data-controller="roadmaps-browser"
+  data-roadmaps-browser-batch-size-value="3">
+  <% if roadmaps.any? %>
+    <div class="mb-12 text-center md:text-left">
+      <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-primary-600"><%= I18n.t('fields.roadmaps.title') %></p>
+      <h2 class="mb-4 text-3xl md:text-4xl font-bold text-gray-900"><%= I18n.t('fields.roadmaps.heading') %></h2>
+      <p class="mx-auto text-gray-600 text-lg max-w-2xl md:mx-0"><%= I18n.t('fields.roadmaps.description') %></p>
+    </div>
+
+    <%= render "fields/roadmaps_filter", roadmaps: roadmaps %>
+
+    <div class="space-y-8">
+      <% roadmaps.each_with_index do |roadmap, index| %>
+        <article
+          class="relative rounded-2xl bg-white shadow-xl shadow-gray-500/5 transition-all duration-200 hover:-translate-y-0.5"
+          data-controller="roadmap-preview"
+          data-roadmap-preview-view-steps-value="<%= I18n.t('fields.roadmaps.view_steps') %>"
+          data-roadmap-preview-hide-steps-value="<%= I18n.t('fields.roadmaps.hide_steps') %>"
+          data-roadmaps-browser-target="item"
+          data-roadmap-id="<%= roadmap.id %>">
+          <div class="p-6 md:p-8">
+            <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+              <div class="space-y-5">
+                <div class="flex items-center gap-4">
+                  <span class="inline-flex items-center rounded-full bg-primary-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-700"><%= I18n.t('fields.roadmaps.path_label') %> <%= index + 1 %></span>
+                  <span class="hidden h-px w-16 bg-primary-100 md:block"></span>
+                  <span class="text-sm text-primary-700/80"><%= pluralize(roadmap.roadmap_steps.count, I18n.t('fields.roadmaps.step'), I18n.t('fields.roadmaps.step_plural')) %></span>
+                </div>
+                <div>
+                  <h3 class="text-2xl font-semibold text-gray-900"><%= roadmap.title %></h3>
+                  <% if roadmap.description.present? %>
+                    <p class="mt-3 text-gray-600 leading-relaxed">
+                      <%= roadmap.description %>
+                    </p>
+                  <% end %>
+                </div>
+                <dl class="grid gap-4 text-sm text-gray-600 sm:grid-cols-3">
+                  <div>
+                    <dt class="font-semibold text-secondary-800"><%= I18n.t('fields.roadmaps.progression.title') %></dt>
+                    <dd><%= I18n.t('fields.roadmaps.progression.description') %></dd>
+                  </div>
+                  <% if roadmap.roadmap_steps.any? %>
+                    <div>
+                      <dt class="font-semibold text-secondary-800"><%= I18n.t('fields.roadmaps.skills.title') %></dt>
+                      <dd><%= roadmap.roadmap_steps.count %> <%= I18n.t('fields.roadmaps.skills.blocks_to_master') %></dd>
+                    </div>
+                  <% end %>
+                  <div>
+                    <dt class="font-semibold text-secondary-800"><%= I18n.t('fields.roadmaps.format.title') %></dt>
+                    <dd><%= I18n.t('fields.roadmaps.format.description') %></dd>
+                  </div>
+                </dl>
+              </div>
+
+              <button data-action="roadmap-preview#toggle" 
+                      data-roadmap-preview-target="toggleButton"
+                      aria-expanded="false"
+                      aria-controls="roadmap-<%= roadmap.id %>-content"
+                      class="inline-flex items-center justify-center gap-2 rounded-full bg-secondary-800 px-6 py-3 text-sm font-semibold text-white shadow-md shadow-secondary-900/20 transition hover:bg-secondary-900">
+                <span data-roadmap-preview-target="toggleText"><%= I18n.t('fields.roadmaps.view_steps') %></span>
+                <span class="material-icons text-base transition-transform duration-200" data-roadmap-preview-target="toggleIcon" aria-hidden="true">expand_more</span>
+              </button>
+            </div>
+          </div>
+
+          <div id="roadmap-<%= roadmap.id %>-content"
+               data-roadmap-preview-target="content" 
+               class="hidden bg-gray-50/60"
+               role="region"
+               aria-labelledby="roadmap-<%= roadmap.id %>-title">
+            <div class="space-y-8 px-6 py-8 md:px-8">
+              <% if roadmap.roadmap_steps.any? %>
+                <% roadmap.roadmap_steps.ordered.each_with_index do |step, step_index| %>
+                  <div class="flex flex-col gap-4 sm:flex-row sm:gap-6 <%= 'pb-8' unless step_index == roadmap.roadmap_steps.count - 1 %>">
+                    <div class="flex items-center gap-3 sm:flex-col sm:items-start sm:gap-2">
+                      <div class="flex h-12 w-12 items-center justify-center rounded-full bg-secondary-800 text-sm font-semibold text-white shadow-md">
+                        <%= step.order %>
+                      </div>
+                      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-secondary-600"><%= I18n.t('fields.roadmaps.step_label') %></p>
+                    </div>
+                    <div class="flex-1 space-y-4">
+                      <h4 class="text-xl font-semibold text-gray-900"><%= step.title %></h4>
+                      <div class="">
+                        <div class="rounded-xl bg-white p-4 shadow-inner shadow-primary-100/40">
+                          <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-primary-700"><%= I18n.t('fields.roadmaps.objective') %></p>
+                          <div class="text-sm text-gray-700 leading-relaxed"><%= simple_format(step.objective) %></div>
+                        </div>
+                        <% if step.skills.present? %>
+                          <div class="rounded-xl bg-white p-4 shadow-inner shadow-primary-100/40">
+                            <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-primary-700"><%= I18n.t('fields.roadmaps.skills_label') %></p>
+                            <div class="text-sm text-gray-700 leading-relaxed"><%= simple_format(step.skills) %></div>
+                          </div>
+                        <% end %>
+                        <% if step.activities.present? %>
+                          <div class="rounded-xl bg-white p-4 shadow-inner shadow-primary-100/40">
+                            <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-primary-700"><%= I18n.t('fields.roadmaps.activities') %></p>
+                            <div class="text-sm text-gray-700 leading-relaxed"><%= simple_format(step.activities) %></div>
+                          </div>
+                        <% end %>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+              <% else %>
+                <div class="rounded-2xl bg-white p-10 text-center shadow-inner shadow-gray-100">
+                  <span class="material-icons mb-3 text-4xl text-gray-300">pending</span>
+                  <p class="text-gray-600 font-medium"><%= I18n.t('fields.roadmaps.under_construction') %></p>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </article>
+      <% end %>
+      <div class="hidden text-center text-gray-600" data-roadmaps-browser-target="empty">
+        <%= I18n.t('fields.roadmaps.no_results') %>
+      </div>
+      <div class="mt-8 flex justify-center">
+        <div class="h-10 w-full max-w-md rounded-full bg-transparent" data-roadmaps-browser-target="sentinel"></div>
+      </div>
+    </div>
+  <% else %>
+    <div class="rounded-3xl bg-white px-6 py-16 text-center shadow-xl shadow-gray-500/5">
+      <div class="mb-6 inline-flex h-24 w-24 items-center justify-center rounded-full bg-primary-50 text-4xl text-primary-600">
+        <span class="material-icons">calendar_month</span>
+      </div>
+      <h3 class="text-2xl font-semibold text-gray-900 mb-3"><%= I18n.t('fields.roadmaps.in_preparation.title') %></h3>
+      <p class="text-gray-600 mb-8 max-w-xl mx-auto leading-relaxed">
+        <%= I18n.t('fields.roadmaps.in_preparation.description') %>
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <%= link_to I18n.t('fields.roadmaps.in_preparation.view_other_fields'), fields_path, 
+            class: "inline-flex items-center justify-center gap-2 rounded-full bg-secondary-800 px-6 py-3 font-semibold text-white transition hover:bg-secondary-900" %>
+        <%= link_to I18n.t('fields.roadmaps.in_preparation.back_home'), root_path, 
+            class: "inline-flex items-center justify-center gap-2 rounded-full border border-primary-100 px-6 py-3 font-semibold text-primary-700 transition hover:bg-primary-50/60" %>
+      </div>
+    </div>
+  <% end %>
+</div>
+

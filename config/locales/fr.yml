@@ -1,5 +1,12 @@
 fr:
   hello: "Bonjour"
+  Dashboard: "Tableau de bord"
+  Users: "Utilisateurs"
+  Skills: "Compétences"
+  Fields: "Filières"
+  Careers: "Carrières"
+  Save: "Enregistrer"
+  Cancel: "Annuler"
   devise:
     sessions:
       signed_in: "Connexion réussie."
@@ -15,16 +22,100 @@ fr:
     description: "Découvrez votre parcours professionnel idéal en combinant compétences linguistiques et expertise métier. Programmes personnalisés, bourses et accompagnement pour une carrière réussie."
     keywords: "Langues Metiers, carrière multilingue, formation professionnelle, bourses d'études, compétences linguistiques, développement professionnel, roadmaps personnalisés"
   fields:
-    index: "Champs"
-    new: "Nouveau Champ"
-    edit: "Modifier le Champ"
+    index:
+      title: "Filières"
+      results_for: "Résultats pour"
+      result: "résultat"
+      results: "résultats"
+      all_fields: "Toutes les filières"
+      choose_field: "Choisissez la filière qui vous intéresse"
+      no_results: "Aucun résultat trouvé"
+      no_fields_available: "Aucune filière disponible"
+      try_other_keywords: "Essayez avec d'autres mots-clés"
+      view_all_fields: "Voir toutes les filières"
+      lazy_empty: "Aucune filière supplémentaire à afficher."
+    new: "Nouvelle filière"
+    edit: "Modifier la filière"
     created: "Champ créé"
     updated: "Champ mis à jour"
     deleted: "Champ supprimé"
+    form:
+      name: "Nom"
+      description: "Description"
+      status: "Statut"
+    table:
+      name: "Nom"
+      description: "Description"
+      status: "Statut"
+      roadmaps: "Roadmaps"
+    actions:
+      edit: "Modifier"
+      roadmaps: "Roadmaps"
+      delete: "Supprimer"
+      confirm_delete: "Êtes-vous sûr ?"
     header:
-      badge: "DÉCOUVREZ VOS OPPORTUNITÉS"
       subtitle: "Transformez votre passion pour les langues en carrière réussie avec nos programmes spécialisés et nos roadmaps personnalisés"
       search_placeholder: "Rechercher une filière..."
+    show:
+      breadcrumb:
+        home: "Accueil"
+        fields: "Filières"
+      badge: "Filière professionnelle"
+      discover: "Découvrir"
+      stats:
+        roadmaps_proposed: "Parcours proposés"
+        guided_progression: "Progression guidée"
+        structured_steps: "Étapes structurées"
+        last_update: "Dernière mise à jour"
+      actions:
+        explore_roadmaps: "Explorer les roadmaps"
+        back_to_fields: "Retour aux filières"
+      highlight_card:
+        title: "Repères clés"
+        description: "Des objectifs opérationnels, des compétences ciblées et des activités concrètes pour structurer chaque étape de votre progression."
+        skills_approach:
+          title: "Approche par compétences"
+          description: "Chaque roadmap met l'accent sur les compétences métier réellement attendues."
+        modular_paths:
+          title: "Parcours modulaires"
+          description: "Des étapes progressives pour avancer à votre rythme sans perdre le fil."
+        aligned_field:
+          title: "Aligné sur le terrain"
+          description: "Des activités concrètes inspirées des situations rencontrées en entreprise."
+    roadmaps:
+      title: "Roadmaps"
+      heading: "Des parcours structurés pour avancer sereinement"
+      description: "Chaque roadmap vous guide étape par étape avec des objectifs clairs, des compétences ciblées et des activités concrètes à réaliser sur le terrain."
+      path_label: "Parcours"
+      step: "étape"
+      step_plural: "étapes"
+      progression:
+        title: "Progression"
+        description: "Parcours guidé du début à la fin"
+      skills:
+        title: "Compétences"
+        blocks_to_master: "blocs à maîtriser"
+      format:
+        title: "Format"
+        description: "Objectifs + activités concrètes"
+      view_steps: "Voir les étapes"
+      hide_steps: "Masquer les étapes"
+      step_label: "Étape"
+      objective: "Objectif"
+      skills_label: "Compétences"
+      activities: "Activités"
+      under_construction: "Cette roadmap est en cours de construction. Revenez bientôt pour découvrir les étapes complètes."
+      no_results: "Aucune roadmap ne correspond à ce filtre pour le moment."
+      in_preparation:
+        title: "Roadmaps en préparation"
+        description: "Les parcours de cette filière sont en cours de finalisation. Bientôt, vous pourrez suivre chaque étape avec des objectifs et activités détaillés."
+        view_other_fields: "Voir d'autres filières"
+        back_home: "Retour à l'accueil"
+    roadmaps_filter:
+      quick_search: "Recherche rapide"
+      description: "Filtrez les roadmaps de cette filière par parcours."
+      label: "Filtrer les roadmaps"
+      all_roadmaps: "Toutes les roadmaps"
 
   users:
     registrations:
@@ -47,6 +138,60 @@ fr:
     created: "Carrière créée"
     updated: "Carrière mise à jour"
     deleted: "Carrière supprimée"
+
+  admin:
+    dashboard:
+      title: "Tableau de bord"
+      welcome: "Bienvenue dans le tableau de bord"
+      subtitle: "Vue d'ensemble de votre plateforme"
+      total: "total"
+      view_all: "Voir tout"
+      users:
+        description: "Gérer les utilisateurs de la plateforme"
+      skills:
+        description: "Gérer les compétences disponibles"
+      categories:
+        title: "Catégories"
+        description: "Organiser les compétences par catégories"
+      fields:
+        description: "Gérer les filières professionnelles"
+      roadmaps:
+        title: "Roadmaps"
+        description: "Parcours structurés pour les utilisateurs"
+      careers:
+        description: "Gérer les carrières disponibles"
+      quick_actions:
+        title: "Actions rapides"
+        manage_users: "Gérer les utilisateurs"
+        manage_skills: "Gérer les compétences"
+        manage_fields: "Gérer les filières"
+        manage_careers: "Gérer les carrières"
+    roadmaps:
+      form:
+        errors_title: "Veuillez corriger les erreurs suivantes :"
+        title: "Titre de la roadmap"
+        description: "Description"
+        submit:
+          create: "Créer la roadmap"
+          update: "Mettre à jour la roadmap"
+        cancel: "Annuler"
+      steps:
+        badge: "Étape personnalisée"
+        title: "Contenu de l'étape"
+        remove: "Supprimer"
+        empty_state: "Ajoutez votre première étape pour structurer le parcours."
+        actions:
+          add: "Ajouter une étape"
+        section:
+          badge: "Parcours guidé"
+          title: "Étapes de la roadmap"
+          subtitle: "Définissez les objectifs, compétences et activités pour chaque étape."
+        fields:
+          title: "Titre de l'étape"
+          order: "Ordre (position)"
+          objective: "Objectif"
+          skills: "Compétences à développer"
+          activities: "Activités / expériences"
 
   home:
     navigation:

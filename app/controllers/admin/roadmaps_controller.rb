@@ -1,7 +1,8 @@
 module Admin
   class RoadmapsController < BaseController
-    before_action :set_field, only: [ :index, :new, :create ]
+    before_action :set_field
     before_action :set_roadmap, only: [ :show, :edit, :update, :destroy ]
+    before_action :prepare_form_data, only: [ :new, :create, :edit, :update ]
 
     def index
       @pagy, @roadmaps = pagy(@field.roadmaps.order(:title))
@@ -14,7 +15,7 @@ module Admin
 
     def new
       @roadmap = Roadmap.new
-      @fields = Field.where(status: :active).order(:name)
+      build_empty_step
     end
 
     def create
@@ -34,13 +35,13 @@ module Admin
 
         redirect_to admin_field_roadmaps_path(@field), notice: "Roadmap créée avec succès."
       else
-        @fields = Field.where(status: :active).order(:name)
+        build_empty_step
         render :new, status: :unprocessable_entity
       end
     end
 
     def edit
-      @fields = Field.where(status: :active).order(:name)
+      build_empty_step
       @selected_field_ids = @roadmap.fields.pluck(:id)
     end
 
@@ -67,7 +68,7 @@ module Admin
 
         redirect_to admin_field_roadmap_path(@field, @roadmap), notice: "Roadmap mise à jour avec succès."
       else
-        @fields = Field.where(status: :active).order(:name)
+        build_empty_step
         @selected_field_ids = @roadmap.fields.pluck(:id)
         render :edit, status: :unprocessable_entity
       end
@@ -88,8 +89,31 @@ module Admin
       @roadmap = Roadmap.find(params[:id])
     end
 
+    def prepare_form_data
+      @fields = Field.where(status: :active).order(:name)
+    end
+
+    def build_empty_step
+      return if @roadmap.roadmap_steps.any?
+
+      next_order = (@roadmap.roadmap_steps.maximum(:order) || 0) + 1
+      @roadmap.roadmap_steps.build(order: next_order)
+    end
+
     def roadmap_params
-      params.require(:roadmap).permit(:title, :description)
+      params.require(:roadmap).permit(
+        :title,
+        :description,
+        roadmap_steps_attributes: [
+          :id,
+          :title,
+          :objective,
+          :skills,
+          :activities,
+          :order,
+          :_destroy
+        ]
+      )
     end
   end
 end

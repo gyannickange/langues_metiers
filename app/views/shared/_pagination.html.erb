@@ -1,0 +1,61 @@
+<%# 
+  Usage: render partial: "shared/pagination", locals: { pagy: @pagy }
+%>
+<% if pagy.pages > 1 %>
+  <div class="flex items-center justify-between border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 sm:px-6">
+    <div class="flex flex-1 justify-between sm:hidden">
+      <% if pagy.prev %>
+        <% query_params = request.query_parameters.merge(page: pagy.prev) %>
+        <%= link_to t("actions.previous"), "#{request.path}?#{query_params.to_query}", class: "relative inline-flex items-center rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700" %>
+      <% else %>
+        <span class="relative inline-flex items-center rounded-md border border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-700 px-4 py-2 text-sm font-medium text-slate-400 dark:text-slate-500 cursor-not-allowed"><%= t("actions.previous") %></span>
+      <% end %>
+      <% if pagy.next %>
+        <% query_params = request.query_parameters.merge(page: pagy.next) %>
+        <%= link_to t("actions.next"), "#{request.path}?#{query_params.to_query}", class: "relative ml-3 inline-flex items-center rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700" %>
+      <% else %>
+        <span class="relative ml-3 inline-flex items-center rounded-md border border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-700 px-4 py-2 text-sm font-medium text-slate-400 dark:text-slate-500 cursor-not-allowed"><%= t("actions.next") %></span>
+      <% end %>
+    </div>
+    <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+      <div>
+        <p class="text-sm text-slate-700 dark:text-slate-300">
+          <%= t("pagination.showing", from: pagy.from, to: pagy.to, total: pagy.count) %>
+        </p>
+      </div>
+      <div>
+        <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+          <% pagy.series.each do |item| %>
+            <% if item.is_a?(Integer) %>
+              <% query_params = request.query_parameters.merge(page: item) %>
+              <%= link_to item, "#{request.path}?#{query_params.to_query}", class: "relative inline-flex items-center px-4 py-2 text-sm font-semibold #{item == pagy.page ? 'z-10 bg-gabon-blue text-white focus:z-20' : 'text-slate-900 dark:text-slate-100 ring-1 ring-inset ring-slate-300 dark:ring-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 focus:z-20 focus:outline-offset-0'} focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gabon-blue" %>
+            <% elsif item == :gap %>
+              <span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-300 ring-1 ring-inset ring-slate-300 dark:ring-slate-600 focus:outline-offset-0">...</span>
+            <% elsif item == :prev_page %>
+              <% if pagy.prev %>
+                <% query_params = request.query_parameters.merge(page: pagy.prev) %>
+                <%= link_to "#{request.path}?#{query_params.to_query}", class: "relative inline-flex items-center rounded-l-md px-2 py-2 text-slate-400 dark:text-slate-500 ring-1 ring-inset ring-slate-300 dark:ring-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 focus:z-20 focus:outline-offset-0" do %>
+                  <span class="sr-only"><%= t("actions.previous") %></span>
+                  <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
+                  </svg>
+                <% end %>
+              <% end %>
+            <% elsif item == :next_page %>
+              <% if pagy.next %>
+                <% query_params = request.query_parameters.merge(page: pagy.next) %>
+                <%= link_to "#{request.path}?#{query_params.to_query}", class: "relative inline-flex items-center rounded-r-md px-2 py-2 text-slate-400 dark:text-slate-500 ring-1 ring-inset ring-slate-300 dark:ring-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 focus:z-20 focus:outline-offset-0" do %>
+                  <span class="sr-only"><%= t("actions.next") %></span>
+                  <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                  </svg>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% end %>
+        </nav>
+      </div>
+    </div>
+  </div>
+<% end %>
+

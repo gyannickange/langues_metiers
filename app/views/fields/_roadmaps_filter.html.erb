@@ -1,0 +1,20 @@
+<div class="mb-10 flex flex-col gap-4 rounded-2xl border border-gray-100 bg-white/60 px-4 py-4 shadow-sm md:flex-row md:items-end md:justify-between">
+  <div>
+    <p class="text-sm font-semibold uppercase tracking-[0.3em] text-gray-500"><%= I18n.t('fields.roadmaps_filter.quick_search') %></p>
+    <p class="text-base text-gray-600"><%= I18n.t('fields.roadmaps_filter.description') %></p>
+  </div>
+  <div class="w-full md:w-80">
+    <label for="roadmap-filter-select" class="sr-only"><%= I18n.t('fields.roadmaps_filter.label') %></label>
+    <select
+      id="roadmap-filter-select"
+      class="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-800 shadow-inner shadow-gray-100 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+      data-roadmaps-browser-target="select"
+      data-action="change->roadmaps-browser#filter">
+      <option value=""><%= I18n.t('fields.roadmaps_filter.all_roadmaps') %></option>
+      <% roadmaps.each do |roadmap| %>
+        <option value="<%= roadmap.id %>"><%= roadmap.title %></option>
+      <% end %>
+    </select>
+  </div>
+</div>
+

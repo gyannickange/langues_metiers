@@ -11,12 +11,12 @@
 
     <meta property="og:title" content="<%= content_for(:title) || t('meta.title') %>">
     <meta property="og:description" content="<%= content_for(:description) || t('meta.description') %>">
-    <meta property="og:image" content="<%= content_for(:image) || image_url('icon.png') %>">
+    <!-- <meta property="og:image" content="<= content_for(:image) || image_url('icon.png') >"> -->
     <meta property="og:url" content="<%= request.original_url %>">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="<%= content_for(:title) || t('meta.title') %>">
     <meta name="twitter:description" content="<%= content_for(:description) || t('meta.description') %>">
-    <meta name="twitter:image" content="<%= content_for(:image) || image_url('icon.png') %>">
+    <!-- <meta name="twitter:image" content="<= content_for(:image) || image_url('icon.png') || "" >"> -->
 
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>

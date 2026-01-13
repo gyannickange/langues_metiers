@@ -1,0 +1,30 @@
+<div class="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-transparent hover:shadow-xl">
+  <div class="flex flex-col gap-5 p-6">
+    <div class="flex items-start justify-between gap-3">
+      <div>
+        <p class="text-[11px] font-semibold uppercase tracking-[0.35em] text-primary-600 mb-2">Filière</p>
+        <h3 class="text-xl font-semibold text-gray-900 leading-tight">
+          <%= link_to field.name, field_path(field), class: "hover:text-primary transition-colors", data: { turbo_frame: "_top" } %>
+        </h3>
+      </div>
+      <span class="inline-flex items-center gap-1 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+        <span class="material-icons text-sm">route</span>
+        <%= pluralize(field.roadmaps.count, 'roadmap') %>
+      </span>
+    </div>
+
+    <% if field.description.present? %>
+      <p class="text-sm text-gray-600 leading-relaxed">
+        <%= truncate(field.description, length: 150) %>
+      </p>
+    <% end %>
+
+    <div class="flex items-center justify-between">
+      <%= link_to field_path(field), data: { turbo_frame: "_top" }, class: "inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:border-primary hover:text-primary" do %>
+        Voir les détails
+        <span class="material-icons text-base">arrow_outward</span>
+      <% end %>
+    </div>
+  </div>
+</div>
+

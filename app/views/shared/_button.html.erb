@@ -1,0 +1,23 @@
+<%# 
+  Usage: render partial: "shared/button", locals: { text: "Save", type: "primary", submit: true }
+  Types: primary, secondary, danger, success
+%>
+<% button_classes = {
+  primary: "bg-primary-500 text-white hover:bg-primary-600 focus:ring-primary-500",
+  secondary: "bg-gray-100 text-gray-800 hover:bg-gray-200 focus:ring-gray-500",
+  danger: "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500",
+  success: "bg-green-600 text-white hover:bg-green-700 focus:ring-green-500"
+} %>
+<% 
+  type ||= :primary
+  submit ||= false
+  url ||= "#"
+  method ||= :get
+%>
+<% if submit %>
+  <%= button_tag type: :submit, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 #{button_classes[type.to_sym] || button_classes[:primary]} disabled:opacity-50 disabled:cursor-not-allowed" do %>
+    <%= text %>
+  <% end %>
+<% else %>
+  <%= link_to text, url, method: method, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 #{button_classes[type.to_sym] || button_classes[:primary]} disabled:opacity-50 disabled:cursor-not-allowed" %>
+<% end %>

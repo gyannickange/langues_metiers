@@ -1,0 +1,31 @@
+<%# 
+  Usage: render partial: "shared/form_field", locals: { form: f, field: :title, label: "Title", type: "text" }
+  Types: text, email, password, text_area, select, date, datetime, number
+%>
+<div class="mb-4">
+  <% case type
+     when "text_area" %>
+    <%= form.label field, label || field.to_s.humanize, class: "block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" %>
+    <%= form.text_area field, class: "mt-1 block w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-gabon-blue focus:border-gabon-blue sm:text-sm", rows: rows || 3 %>
+  <% when "select" %>
+    <%= form.label field, label || field.to_s.humanize, class: "block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" %>
+    <% select_options = local_assigns[:prompt] ? { prompt: local_assigns[:prompt] } : {} %>
+    <%= form.select field, options || [], select_options, { class: "mt-1 block w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-gabon-blue focus:border-gabon-blue sm:text-sm" } %>
+  <% when "date" %>
+    <%= form.label field, label || field.to_s.humanize, class: "block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" %>
+    <%= form.date_field field, class: "mt-1 block w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-gabon-blue focus:border-gabon-blue sm:text-sm" %>
+  <% when "datetime" %>
+    <%= form.label field, label || field.to_s.humanize, class: "block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" %>
+    <%= form.datetime_local_field field, class: "mt-1 block w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-gabon-blue focus:border-gabon-blue sm:text-sm" %>
+  <% when "number" %>
+    <%= form.label field, label || field.to_s.humanize, class: "block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" %>
+    <%= form.number_field field, class: "mt-1 block w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-gabon-blue focus:border-gabon-blue sm:text-sm" %>
+  <% else %>
+    <%= form.label field, label || field.to_s.humanize, class: "block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" %>
+    <%= form.text_field field, class: "mt-1 block w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-gabon-blue focus:border-gabon-blue sm:text-sm", type: type || "text" %>
+  <% end %>
+  <% if form.object&.errors&.[](field)&.any? %>
+    <p class="mt-1 text-sm text-red-600 dark:text-red-400"><%= form.object&.errors&.[](field)&.first %></p>
+  <% end %>
+</div>
+

@@ -26,8 +26,6 @@
                     " | ".html_safe +
                     link_to("Modifier", edit_admin_field_roadmap_path(@field, r), class: "text-green-600 hover:underline") +
                     " | ".html_safe +
-                    link_to("Étapes", admin_field_roadmap_roadmap_steps_path(@field, r), class: "text-purple-600 hover:underline") +
-                    " | ".html_safe +
                     button_to("Supprimer", admin_field_roadmap_path(@field, r), method: :delete, form: { data: { turbo_confirm: "Êtes-vous sûr ?" } }, class: "text-red-600 hover:underline inline") } %>
 <% else %>
   <div class="text-center py-12 bg-gray-50 rounded-lg">

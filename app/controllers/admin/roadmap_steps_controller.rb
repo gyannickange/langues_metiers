@@ -30,16 +30,15 @@ module Admin
 
     def update
       if @roadmap_step.update(roadmap_step_params)
-        redirect_to admin_field_roadmap_roadmap_step_path(@field, @roadmap_step.roadmap, @roadmap_step), notice: "Étape mise à jour avec succès."
+        redirect_to admin_field_roadmap_roadmap_step_path(@field, @roadmap, @roadmap_step), notice: "Étape mise à jour avec succès."
       else
         render :edit, status: :unprocessable_entity
       end
     end
 
     def destroy
-      roadmap = @roadmap_step.roadmap
       @roadmap_step.destroy
-      redirect_to admin_field_roadmap_roadmap_steps_path(@field, roadmap), notice: "Étape supprimée avec succès."
+      redirect_to admin_field_roadmap_roadmap_steps_path(@field, @roadmap), notice: "Étape supprimée avec succès."
     end
 
     private
@@ -54,6 +53,7 @@ module Admin
 
     def set_roadmap_step
       @roadmap_step = RoadmapStep.find(params[:id])
+      @roadmap = @roadmap_step.roadmap
     end
 
     def roadmap_step_params
