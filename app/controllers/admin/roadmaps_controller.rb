@@ -20,7 +20,6 @@ module Admin
 
     def create
       @roadmap = Roadmap.new(roadmap_params)
-      build_empty_step
       if @roadmap.save
         # Associer la roadmap au field courant
         RoadmapField.create!(roadmap: @roadmap, field: @field)
@@ -36,7 +35,7 @@ module Admin
 
         redirect_to admin_field_roadmaps_path(@field), notice: "Roadmap créée avec succès."
       else
-        @fields = Field.where(status: :active).order(:name)
+        build_empty_step
         render :new, status: :unprocessable_entity
       end
     end
