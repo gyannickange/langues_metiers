@@ -1,4 +1,4 @@
-<section class="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-primary-50 via-white to-secondary-50">
+<section class="primary-cle secondary-cle relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-primary-50 via-white to-secondary-50">
   <!-- Decorative background elements -->
   <div class="absolute inset-0 overflow-hidden">
     <div class="absolute -top-40 -right-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl"></div>
@@ -12,11 +12,33 @@
       <!-- Contenu gauche -->
       <div class="space-y-10">
         <div class="space-y-6">
-          <div class="inline-flex items-center bg-gradient-to-r from-primary/20 to-secondary/20 text-secondary-800 text-sm font-semibold px-6 py-3 rounded-full backdrop-blur-sm border border-primary/30">
+          <% show_icon = local_assigns.fetch(:show_icon, true) %>
+          <% show_logo = local_assigns.fetch(:show_logo, true) %>
+
+          <% if show_icon || show_logo %>
+            <div class="flex items-center">
+              <% if show_icon %>
+                <%= image_tag "cle-icon.png",
+                              alt: "CLE",
+                              class: "h-10 w-10 sm:hidden",
+                              loading: "eager",
+                              decoding: "async" %>
+              <% end %>
+
+              <% if show_logo %>
+                <%= image_tag "cle-logo.png",
+                              alt: "Citoyens Libres et Épanouis",
+                              class: "hidden sm:block w-[7rem] lg:w-[10rem] w-auto",
+                              loading: "eager",
+                              decoding: "async" %>
+              <% end %>
+            </div>
+          <% end %>
+          <div class="inline-flex items-center bg-gradient-to-r from-primary/20 to-secondary/20 text-secondary-600 text-sm font-semibold px-6 py-3 rounded-full backdrop-blur-sm border border-primary/30">
             <span class="w-2 h-2 bg-primary rounded-full mr-3 animate-pulse"></span>
             PROGRAMME CLE 2025
           </div>
-          <h1 class="text-6xl lg:text-7xl font-bold text-secondary-800 leading-tight">
+          <h1 class="text-6xl lg:text-7xl font-bold text-secondary-600 leading-tight">
             Citoyens 
             <span class="relative">
               Libres
@@ -29,13 +51,13 @@
           </h1>
           <p class="text-xl lg:text-2xl text-gray-600 leading-relaxed font-light">
             Transforme ta vision entrepreneuriale en réalité concrète. 
-            Rejoins une communauté de <span class="font-semibold text-secondary-700">30 entrepreneures ambitieuses</span> pour 3 mois d'accompagnement intensif.
+            Rejoins une communauté de <span class="font-semibold text-secondary">30 entrepreneures ambitieuses</span> pour 3 mois d'accompagnement intensif.
           </p>
         </div>
         
         <div class="flex flex-col sm:flex-row gap-6">
           <button class="group relative bg-gradient-to-r from-primary to-primary-600 text-primary-foreground px-10 py-5 rounded-2xl font-semibold text-lg transition-all duration-500 transform hover:scale-105 shadow-xl hover:shadow-2xl overflow-hidden">
-            <span class="relative z-10">Rejoindre le programme</span>
+            <span class="relative z-10 text-white">Rejoindre le programme</span>
             <div class="absolute inset-0 bg-gradient-to-r from-primary-600 to-primary-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
           </button>
           <button class="group relative border-2 border-secondary text-secondary hover:text-white px-10 py-5 rounded-2xl font-semibold text-lg transition-all duration-500 overflow-hidden">
