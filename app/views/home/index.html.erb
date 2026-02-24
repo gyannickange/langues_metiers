@@ -2,34 +2,6 @@
   <%= render 'shared/lp_header' %>
 <% end %>
 
-<!-- Hero Section -->
-<section class="relative min-h-[90vh] flex items-center pt-20 overflow-hidden bg-secondary">
-  <div class="absolute inset-0 z-0">
-    <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-3xl -mr-64 -mt-64 text-secondary-800"></div>
-    <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-3xl -ml-40 -mb-40"></div>
-  </div>
-  
-  <div class="container mx-auto px-6 relative z-10">
-    <div class="max-w-4xl mx-auto text-center animate-fade-in-up">
-      <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
-        Transformez votre diplôme en <span class="text-primary italic">trajectoire professionnelle</span> claire et stratégique.
-      </h1>
-      <p class="text-xl md:text-2xl text-gray-300 mb-10 leading-relaxed font-light">
-        Un diagnostic structuré pour identifier votre positionnement réel, votre potentiel inexploité et les métiers alignés au marché actuel — y compris dans les secteurs digitaux.
-      </p>
-      <div class="flex justify-center">
-        <%= link_to "#", class: "btn-primary px-10 py-5 text-lg shadow-2xl flex items-center group" do %>
-          <span>Faire mon diagnostic stratégique</span>
-          <span class="ml-2 text-sm opacity-80">(À partir de 3 000 FCFA)</span>
-          <svg class="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-          </svg>
-        <% end %>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- Problème Section -->
 <section class="py-24 bg-white relative">
   <div class="container mx-auto px-6">

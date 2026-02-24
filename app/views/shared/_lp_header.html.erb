@@ -60,42 +60,28 @@
     </header>
     
     <main class="container mx-auto px-6 flex items-center justify-center min-h-[80vh]">
-      <div class="text-center max-w-5xl">
-        <div class="inline-flex items-center bg-white/10 backdrop-blur-sm text-white text-sm font-semibold px-6 py-3 rounded-full border border-primary/30 mb-8">
-          <span class="w-2 h-2 bg-primary rounded-full mr-3 animate-pulse"></span>
-          <%= t('home.hero.badge') %>
-        </div>
-        
-        <h1 class="text-4xl lg:text-5xl font-bold leading-tight mb-8">
-          <span class="block mb-4">
-            <span class="relative">
-              Découvrez votre
-              <div class="absolute -bottom-2 left-0 w-full h-4 bg-primary/30 -skew-x-12 transform"></div>
-            </span>
+      <div class="text-center max-w-5xl animate-fade-in-up">
+        <h1 class="text-4xl lg:text-6xl font-bold leading-tight mb-8">
+          Transformez votre diplôme en
+          <span class="relative inline-block mt-2">
+            <span class="bg-gradient-to-r from-primary to-primary-400 bg-clip-text text-transparent">trajectoire professionnelle</span>
+            <div class="absolute -bottom-2 left-0 w-full h-3 bg-primary/30 -skew-x-12 transform"></div>
           </span>
-          <span class="bg-gradient-to-r from-primary to-primary-400 bg-clip-text text-transparent">
-            parcours professionnel
-          </span>
-          <span class="block mt-4">idéal</span>
+          <span class="block mt-4">claire et stratégique.</span>
         </h1>
-        
+
         <p class="text-xl lg:text-2xl text-gray-200 mb-12 max-w-3xl mx-auto font-light leading-relaxed">
-          Transformez votre passion pour les langues en opportunités professionnelles concrètes avec nos programmes personnalisés
+          Un diagnostic structuré pour identifier votre positionnement réel, votre potentiel inexploité et les métiers alignés au marché actuel — y compris dans les secteurs digitaux.
         </p>
-        
-        <!-- Search Field Improved -->
-        <div class="relative max-w-3xl mx-auto mb-16">
-          <div class="bg-white/95 backdrop-blur-sm rounded-3xl p-3 shadow-2xl border border-white/20" data-controller="field-selector">
-            <div class="flex items-center">
-              <%= select_tag :field_id, 
-                  options_for_select([[t('home.hero.field_placeholder'), ""]] + @fields.map { |field| [field.name, field_path(field)] }),
-                  class: "flex-1 bg-transparent text-gray-700 px-6 py-4 rounded-2xl focus:outline-none appearance-none cursor-pointer text-lg font-medium",
-                  data: { field_selector_target: "select", action: "change->field-selector#redirect" } %>
-              <div class="bg-gradient-to-r from-primary to-primary-600 text-white p-4 rounded-2xl flex items-center justify-center hover:from-primary-600 hover:to-primary-700 transition-all duration-300 cursor-pointer">
-                <span class="material-icons">search</span>
-              </div>
-            </div>
-          </div>
+
+        <div class="flex justify-center">
+          <%= link_to "#", class: "btn-primary px-10 py-5 text-lg shadow-2xl flex items-center group" do %>
+            <span>Faire mon diagnostic stratégique</span>
+            <span class="ml-2 text-sm opacity-80">(À partir de 3 000 FCFA)</span>
+            <svg class="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
+          <% end %>
         </div>
       </div>
     </main>
