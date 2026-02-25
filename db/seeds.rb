@@ -98,3 +98,134 @@ end
 
 puts "✅ Filière 'Langues et Communication' créée avec succès"
 puts "✅ Roadmap 'Devenir Responsable Relation Client' avec 5 étapes créée"
+
+# ===== PROFILES (7) =====
+profiles_data = [
+  {
+    name: "Coordinateur Stratégique",
+    slug: "coordinateur-strategique",
+    description: "Pilotage et gestion de projets multi-acteurs.",
+    key_skills: ["Gestion de projet", "Leadership", "Communication", "Planification stratégique"],
+    first_action: "Rejoignez une organisation et proposez-vous sur un projet transversal.",
+    premium_pitch: "Le Roadmap Premium construit votre plan de montée en compétences sur 6 mois avec des jalons concrets.",
+    axe_1: "Coordinateur dans une institution internationale ou ONG — pilotage de projets multi-acteurs.",
+    axe_2: "Chef de projet dans le secteur privé ou hybride — direction, conseil, management.",
+    axe_3: "Expert en gestion de projets complexes — certifications PMP, Prince2, Agile."
+  },
+  {
+    name: "Analyste & Veille",
+    slug: "analyste-veille",
+    description: "Analyse stratégique, études, recherche appliquée.",
+    key_skills: ["Analyse de données", "Recherche documentaire", "Rédaction de rapports", "Pensée critique"],
+    first_action: "Réalisez une analyse sectorielle et publiez-la sur LinkedIn.",
+    premium_pitch: "Le Roadmap Premium vous guide vers les certifications analytiques les plus reconnues.",
+    axe_1: "Analyste dans une organisation internationale, un think tank, ou une administration.",
+    axe_2: "Consultant en stratégie ou chargé d'études dans le secteur privé.",
+    axe_3: "Expert en intelligence économique ou recherche appliquée à long terme."
+  },
+  {
+    name: "Communication & Influence",
+    slug: "communication-influence",
+    description: "Narration, plaidoyer, communication institutionnelle.",
+    key_skills: ["Storytelling", "Rédaction", "Réseaux sociaux", "Plaidoyer"],
+    first_action: "Lancez un blog ou une page LinkedIn dédiée à un sujet de votre domaine.",
+    premium_pitch: "Le Roadmap Premium vous aide à construire votre personal brand avec un plan éditorial sur mesure.",
+    axe_1: "Chargé de communication dans une organisation internationale, ONG ou institution publique.",
+    axe_2: "Responsable communication ou content manager dans le secteur privé ou une startup.",
+    axe_3: "Consultant en communication stratégique et personal branding — expert reconnu."
+  },
+  {
+    name: "Développement Territorial",
+    slug: "developpement-territorial",
+    description: "Climat, urbanisation, aménagement local.",
+    key_skills: ["Diagnostic territorial", "Gestion de projets locaux", "Cartographie", "Partenariats publics-privés"],
+    first_action: "Identifiez un projet de développement local dans votre commune et rédigez une note de présentation.",
+    premium_pitch: "Le Roadmap Premium vous connecte aux réseaux de développement territorial et aux financements.",
+    axe_1: "Chargé de développement territorial dans une collectivité locale ou une ONG de développement.",
+    axe_2: "Consultant en développement local ou en planification urbaine dans le secteur privé.",
+    axe_3: "Expert en aménagement du territoire, urbanisme durable ou gestion environnementale."
+  },
+  {
+    name: "Impact Social & Communautaire",
+    slug: "impact-social-communautaire",
+    description: "Inclusion, programmes sociaux, mobilisation.",
+    key_skills: ["Animation communautaire", "Gestion de programmes sociaux", "Mobilisation des ressources", "Évaluation d'impact"],
+    first_action: "Lancez une initiative locale et documentez son impact sur 30 jours.",
+    premium_pitch: "Le Roadmap Premium vous aide à créer et financer votre propre projet à impact social.",
+    axe_1: "Gestionnaire de programmes sociaux dans une ONG ou une organisation humanitaire.",
+    axe_2: "Responsable RSE ou chef de projet impact dans une entreprise ou un fonds social.",
+    axe_3: "Fondateur ou directeur d'une structure à impact social — ONG, coopérative, entreprise sociale."
+  },
+  {
+    name: "Digital & Stratégie Contenu",
+    slug: "digital-strategie-contenu",
+    description: "Stratégie éditoriale, e-learning, communication numérique.",
+    key_skills: ["Marketing digital", "Création de contenu", "SEO", "Gestion de communauté"],
+    first_action: "Créez un compte professionnel sur une plateforme et publiez 3 contenus en 1 semaine.",
+    premium_pitch: "Le Roadmap Premium inclut une formation aux outils digitaux les plus demandés du marché.",
+    axe_1: "Community manager ou chargé de communication digitale dans une institution ou ONG.",
+    axe_2: "Stratège de contenu ou responsable marketing digital dans une entreprise ou agence.",
+    axe_3: "Expert en stratégie digitale, e-learning ou growth hacking — consultant indépendant."
+  },
+  {
+    name: "Data & Transformation",
+    slug: "data-transformation",
+    description: "Analyse de données sociales, suivi-évaluation digitalisé.",
+    key_skills: ["Excel avancé", "Visualisation de données", "Suivi-évaluation", "Bases de données"],
+    first_action: "Téléchargez un dataset public et réalisez une analyse simple avec Excel ou Google Sheets.",
+    premium_pitch: "Le Roadmap Premium vous guide vers les certifications data (Power BI, Python, Tableau).",
+    axe_1: "Chargé de suivi-évaluation ou data analyst dans une ONG, institution ou projet de développement.",
+    axe_2: "Analyste de données dans une entreprise, une startup ou un cabinet de conseil.",
+    axe_3: "Data scientist ou expert en transformation digitale — spécialisation IA appliquée au secteur social."
+  }
+]
+
+profiles_data.each do |attrs|
+  axe_1 = attrs.delete(:axe_1)
+  axe_2 = attrs.delete(:axe_2)
+  axe_3 = attrs.delete(:axe_3)
+
+  profile = Profile.find_or_create_by!(slug: attrs[:slug]) do |p|
+    p.assign_attributes(attrs)
+  end
+
+  unless profile.trajectories.exists?
+    profile.trajectories.create!(axe_1: axe_1, axe_2: axe_2, axe_3: axe_3, active: true)
+  end
+end
+
+puts "✓ #{Profile.count} profils, #{Trajectory.count} trajectoires"
+
+# ===== MOBILE OPERATORS =====
+operators = [
+  # Côte d'Ivoire
+  { name: "Orange Money",     code: "ORANGE_CI",      country_code: "CI" },
+  { name: "MTN Mobile Money", code: "MTN_MOMO_CI",    country_code: "CI" },
+  { name: "Wave",             code: "WAVE_CI",         country_code: "CI" },
+  { name: "Moov Money",       code: "MOOV_CI",         country_code: "CI" },
+  # Sénégal
+  { name: "Orange Money",     code: "ORANGE_SN",       country_code: "SN" },
+  { name: "Wave",             code: "WAVE_SN",          country_code: "SN" },
+  { name: "Free Money",       code: "FREE_SN",          country_code: "SN" },
+  # Cameroun
+  { name: "Orange Money",     code: "ORANGE_CM",       country_code: "CM" },
+  { name: "MTN Mobile Money", code: "MTN_MOMO_CM",     country_code: "CM" },
+  # Bénin
+  { name: "MTN Mobile Money", code: "MTN_MOMO_BJ",     country_code: "BJ" },
+  { name: "Moov Money",       code: "MOOV_BJ",          country_code: "BJ" },
+  # Ghana
+  { name: "MTN MoMo",         code: "MTN_MOMO_GH",     country_code: "GH" },
+  { name: "Vodafone Cash",    code: "VODAFONE_GH",      country_code: "GH" },
+  { name: "AirtelTigo Money", code: "AIRTELTIGO_GH",    country_code: "GH" },
+  # Togo
+  { name: "Flooz",            code: "MOOV_TG",          country_code: "TG" },
+  { name: "T-Money",          code: "TOGOCEL_TG",        country_code: "TG" },
+]
+
+operators.each do |op|
+  MobileOperator.find_or_create_by!(code: op[:code], country_code: op[:country_code]) do |m|
+    m.assign_attributes(op.merge(active: true))
+  end
+end
+
+puts "✓ #{MobileOperator.count} opérateurs mobiles"
