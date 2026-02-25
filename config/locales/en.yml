@@ -47,9 +47,9 @@ en:
     send_reset_instructions: "Send me reset password instructions"
     characters_minimum: "characters minimum"
   meta:
-    title: "Langues Metiers - Your Gateway to a Multilingual and Professional Future"
+    title: "Insertrice - Your Gateway to a Multilingual and Professional Future"
     description: "Discover your ideal professional path by combining language skills and professional expertise. Personalized programs, scholarships, and support for a successful career."
-    keywords: "Langues Metiers, multilingual career, professional training, scholarships, language skills, professional development, personalized roadmaps"
+    keywords: "Insertrice, multilingual career, professional training, scholarships, language skills, professional development, personalized roadmaps"
 
   fields:
     index:
