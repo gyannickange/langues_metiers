@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_25_105550) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_25_105643) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -73,6 +73,19 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_25_105550) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_profiles_on_slug", unique: true
+  end
+
+  create_table "questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "bloc", null: false
+    t.text "text", null: false
+    t.string "kind", default: "mcq", null: false
+    t.jsonb "options", default: []
+    t.boolean "scored", default: false, null: false
+    t.integer "position", default: 0, null: false
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bloc", "position"], name: "index_questions_on_bloc_and_position"
   end
 
   create_table "roadmap_fields", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
