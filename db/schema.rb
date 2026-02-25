@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_25_105820) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_25_105934) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -89,6 +89,34 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_25_105820) do
     t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
+  end
+
+  create_table "mobile_operators", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "code", null: false
+    t.string "country_code", null: false
+    t.string "logo_url"
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code", "country_code"], name: "index_mobile_operators_on_code_and_country_code", unique: true
+    t.index ["country_code"], name: "index_mobile_operators_on_country_code"
+  end
+
+  create_table "payments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "diagnostic_id", default: -> { "gen_random_uuid()" }, null: false
+    t.integer "provider", null: false
+    t.integer "amount_cents", default: 300000, null: false
+    t.string "currency", default: "XOF", null: false
+    t.integer "status", default: 0, null: false
+    t.string "provider_payment_id"
+    t.datetime "webhook_confirmed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["diagnostic_id"], name: "index_payments_on_diagnostic_id"
+    t.index ["provider_payment_id"], name: "index_payments_on_provider_payment_id", unique: true, where: "(provider_payment_id IS NOT NULL)"
+    t.index ["user_id"], name: "index_payments_on_user_id"
   end
 
   create_table "profiles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -194,6 +222,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_25_105820) do
   add_foreign_key "diagnostics", "profiles", column: "complementary_profile_id"
   add_foreign_key "diagnostics", "profiles", column: "primary_profile_id"
   add_foreign_key "diagnostics", "users"
+  add_foreign_key "payments", "diagnostics"
+  add_foreign_key "payments", "users"
   add_foreign_key "roadmap_fields", "fields"
   add_foreign_key "roadmap_fields", "roadmaps"
   add_foreign_key "roadmap_steps", "roadmaps"
