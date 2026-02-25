@@ -72,7 +72,7 @@
       <div class="grid lg:grid-cols-2 gap-12 items-center">
         
         <!-- Contenu Gauche -->
-        <div class="max-w-2xl xl:pr-12 animate-fade-in-up">
+        <div class="max-w-2xl xl:pr-12 mt-12 lg:mt-0 animate-fade-in-up">
           <h1 class="text-5xl lg:text-[3.6rem] font-extrabold text-secondary leading-[1.1] mb-8 tracking-tight">
             Transforme ton diplôme en 
             <span class="relative inline-block px-4 py-2 mt-2">
@@ -99,14 +99,14 @@
           </p>
 
           <!-- CTA Bas -->
-          <%= link_to "#", class: "bg-primary hover:bg-primary-600 text-white font-bold py-3 px-8 rounded-full shadow-lg shadow-primary/30 transition-all duration-300 transform hover:-translate-y-1" do %>
+          <%= link_to "#", class: "btn-primary font-bold text-[1.2rem] py-3 px-8 rounded-full shadow-lg shadow-primary/30 transition-all duration-300 transform hover:-translate-y-1" do %>
             Faire mon diagnostic
           <% end %>
         </div>
 
         <!-- Contenu Droite (Image hero-sideimg.png) -->
-        <div class="relative w-full h-[600px] lg:h-[800px] flex justify-center lg:justify-end mt-12 lg:mt-0 xl:-mr-20">
-          <%= image_tag "hero-sideimg.png", class: "w-full h-full object-fill object-left lg:object-center relative z-10 animate-fade-in-up" %>
+        <div class="relative w-full h-[600px] lg:h-[868px] flex justify-center lg:justify-end mt-12 lg:mt-0 xl:-mr-20">
+          <%= image_tag "hero-sideimg.png", class: "lg:w-full h-full object-contain lg:object-cover object-left lg:object-center relative z-10 animate-fade-in-up" %>
         </div>
       </div>
     </main>
