@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_25_105333) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_25_105550) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -112,6 +112,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_25_105333) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "trajectories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "profile_id", default: -> { "gen_random_uuid()" }, null: false
+    t.text "axe_1"
+    t.text "axe_2"
+    t.text "axe_3"
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["profile_id"], name: "index_trajectories_on_profile_id"
+  end
+
   create_table "user_skills", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id", null: false
     t.uuid "skill_id", null: false
@@ -140,6 +151,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_25_105333) do
   add_foreign_key "roadmap_fields", "fields"
   add_foreign_key "roadmap_fields", "roadmaps"
   add_foreign_key "roadmap_steps", "roadmaps"
+  add_foreign_key "trajectories", "profiles"
   add_foreign_key "user_skills", "skills"
   add_foreign_key "user_skills", "users"
 end
