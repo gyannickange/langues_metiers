@@ -37,7 +37,7 @@ Rails.application.routes.draw do
   end
 
   # Diagnostics
-  resources :diagnostics, only: [:new, :create, :show] do
+  resources :diagnostics, only: [ :new, :create, :show ] do
     member do
       get  :questionnaire
       post :submit_bloc
@@ -55,7 +55,7 @@ Rails.application.routes.draw do
   end
 
   # Mobile operator list (Stimulus fetch)
-  resources :mobile_operators, only: [:index]
+  resources :mobile_operators, only: [ :index ]
 
   # Webhooks — CSRF exempt, handled in controller
   post "/webhooks/stripe",  to: "webhooks/stripe#receive"
@@ -68,7 +68,7 @@ Rails.application.routes.draw do
     resources :user_skills, only: [ :create, :destroy ]
     resources :skills
 
-    resources :diagnostics,      only: [:index, :show]
+    resources :diagnostics,      only: [ :index, :show ]
     resources :profiles
     resources :trajectories
     resources :questions
