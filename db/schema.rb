@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_25_105643) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_25_105820) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -39,6 +39,34 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_25_105643) do
     t.index ["category_id", "skill_id"], name: "index_categories_skills_on_category_id_and_skill_id", unique: true
     t.index ["category_id"], name: "index_categories_skills_on_category_id"
     t.index ["skill_id"], name: "index_categories_skills_on_skill_id"
+  end
+
+  create_table "diagnostic_answers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "diagnostic_id", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "question_id", default: -> { "gen_random_uuid()" }, null: false
+    t.string "answer_value"
+    t.string "profile_dimension"
+    t.integer "points_awarded", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["diagnostic_id", "question_id"], name: "index_diagnostic_answers_on_diagnostic_id_and_question_id", unique: true
+    t.index ["diagnostic_id"], name: "index_diagnostic_answers_on_diagnostic_id"
+    t.index ["question_id"], name: "index_diagnostic_answers_on_question_id"
+  end
+
+  create_table "diagnostics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", default: -> { "gen_random_uuid()" }, null: false
+    t.integer "status", default: 0, null: false
+    t.integer "payment_provider"
+    t.uuid "primary_profile_id"
+    t.uuid "complementary_profile_id"
+    t.jsonb "score_data", default: {}
+    t.boolean "pdf_generated", default: false, null: false
+    t.datetime "paid_at"
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_diagnostics_on_user_id"
   end
 
   create_table "fields", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -161,6 +189,11 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_25_105643) do
 
   add_foreign_key "categories_skills", "categories"
   add_foreign_key "categories_skills", "skills"
+  add_foreign_key "diagnostic_answers", "diagnostics"
+  add_foreign_key "diagnostic_answers", "questions"
+  add_foreign_key "diagnostics", "profiles", column: "complementary_profile_id"
+  add_foreign_key "diagnostics", "profiles", column: "primary_profile_id"
+  add_foreign_key "diagnostics", "users"
   add_foreign_key "roadmap_fields", "fields"
   add_foreign_key "roadmap_fields", "roadmaps"
   add_foreign_key "roadmap_steps", "roadmaps"
