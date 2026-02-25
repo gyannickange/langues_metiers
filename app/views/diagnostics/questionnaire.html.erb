@@ -1,2 +1,32 @@
-<%# app/views/diagnostics/questionnaire.html.erb — placeholder, completed in Task 17 %>
-<div>questionnaire</div>
+<%# app/views/diagnostics/questionnaire.html.erb %>
+<div class="max-w-2xl mx-auto px-4 py-10">
+  <div class="mb-8">
+    <div class="flex justify-between text-sm text-gray-500 mb-1">
+      <span>Bloc <%= @current_bloc %> sur 5</span>
+      <span><%= (@current_bloc - 1) * 20 %>%</span>
+    </div>
+    <div class="w-full bg-gray-200 rounded-full h-2">
+      <div class="bg-blue-600 h-2 rounded-full"
+           style="width: <%= (@current_bloc - 1) * 20 %>%"></div>
+    </div>
+  </div>
+
+  <h2 class="text-xl font-bold text-gray-900 mb-1"><%= bloc_title(@current_bloc) %></h2>
+  <p class="text-sm text-gray-400 mb-8">
+    Questions <%= (@current_bloc - 1) * 5 + 1 %>–<%= @current_bloc * 5 %> sur 25
+  </p>
+
+  <%= form_with url: submit_bloc_diagnostic_path(@diagnostic), method: :post do |f| %>
+    <%= f.hidden_field :bloc, value: @current_bloc %>
+
+    <% @questions.each_with_index do |question, index| %>
+      <%= render "question", question: question, form: f,
+                             number: (@current_bloc - 1) * 5 + index + 1 %>
+    <% end %>
+
+    <div class="mt-8">
+      <%= f.submit(@current_bloc < 5 ? "Continuer →" : "Voir mes résultats",
+            class: "w-full bg-blue-700 hover:bg-blue-800 text-white py-3 rounded-lg font-semibold") %>
+    </div>
+  <% end %>
+</div>

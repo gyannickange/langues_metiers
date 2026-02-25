@@ -1,0 +1,38 @@
+<%# app/views/diagnostics/_question.html.erb %>
+<div class="mb-8 p-5 border rounded-xl bg-white shadow-sm">
+  <p class="font-medium text-gray-800 mb-4">
+    <span class="text-gray-400 text-sm mr-2"><%= number %>.</span>
+    <%= question.text %>
+  </p>
+
+  <% if question.kind == "likert" %>
+    <div class="flex items-center justify-between gap-2">
+      <span class="text-xs text-gray-400 shrink-0">Pas du tout</span>
+      <div class="flex gap-4">
+        <% (1..5).each do |val| %>
+          <label class="flex flex-col items-center gap-1 cursor-pointer">
+            <%= form.radio_button "answers[#{question.id}]", val.to_s, required: true,
+                  class: "accent-blue-600 w-5 h-5" %>
+            <span class="text-sm text-gray-600"><%= val %></span>
+          </label>
+        <% end %>
+      </div>
+      <span class="text-xs text-gray-400 shrink-0">Tout à fait</span>
+    </div>
+  <% else %>
+    <% question.options.each do |opt| %>
+      <label class="flex items-start gap-3 p-3 border rounded-lg mb-2 cursor-pointer hover:bg-blue-50">
+        <%= form.radio_button "answers[#{question.id}]", opt["value"], required: true,
+              class: "mt-0.5 accent-blue-600" %>
+        <span class="text-sm">
+          <% if opt["label"].present? %>
+            <strong><%= opt["label"] %></strong>
+            <% if opt["text"].present? %> — <%= opt["text"] %><% end %>
+          <% else %>
+            <%= opt["value"] %>
+          <% end %>
+        </span>
+      </label>
+    <% end %>
+  <% end %>
+</div>
