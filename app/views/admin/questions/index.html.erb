@@ -1,0 +1,34 @@
+<%# app/views/admin/questions/index.html.erb %>
+<div class="px-6 py-6">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-xl font-bold">Questions (<%= @questions.count %>)</h1>
+    <%= link_to "Nouvelle", new_admin_question_path, class: "bg-blue-700 text-white px-4 py-2 rounded text-sm" %>
+  </div>
+  <table class="w-full text-sm border-collapse">
+    <thead><tr class="border-b text-left text-gray-500">
+      <th class="pb-2 pr-4">Bloc</th>
+      <th class="pb-2 pr-4">Pos.</th>
+      <th class="pb-2 pr-4">Texte</th>
+      <th class="pb-2 pr-4">Type</th>
+      <th class="pb-2">Active</th>
+      <th></th>
+    </tr></thead>
+    <tbody>
+      <% @questions.each do |question| %>
+        <tr class="border-b hover:bg-gray-50">
+          <td class="py-2 pr-4"><%= question.bloc %></td>
+          <td class="pr-4"><%= question.position %></td>
+          <td class="pr-4 truncate max-w-sm"><%= question.text&.truncate(80) %></td>
+          <td class="pr-4"><%= question.kind %></td>
+          <td><%= question.active? ? "✓" : "—" %></td>
+          <td class="text-right">
+            <%= link_to "Modifier", edit_admin_question_path(question), class: "text-blue-600 mr-3 text-xs" %>
+            <%= button_to "Supprimer", admin_question_path(question), method: :delete,
+                  data: { turbo_confirm: "Confirmer ?" },
+                  class: "text-red-500 text-xs bg-transparent border-0 cursor-pointer" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

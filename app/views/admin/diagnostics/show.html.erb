@@ -1,0 +1,30 @@
+<%# app/views/admin/diagnostics/show.html.erb %>
+<div class="px-6 py-6 max-w-3xl">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-xl font-bold">Diagnostic</h1>
+    <%= link_to "← Retour", admin_diagnostics_path, class: "text-blue-600 text-sm" %>
+  </div>
+
+  <dl class="space-y-3 text-sm mb-8">
+    <div><dt class="font-medium text-gray-500">Utilisateur</dt><dd><%= @diagnostic.user&.email %></dd></div>
+    <div><dt class="font-medium text-gray-500">Statut</dt><dd><%= @diagnostic.status %></dd></div>
+    <div><dt class="font-medium text-gray-500">Fournisseur</dt><dd><%= @diagnostic.payment_provider %></dd></div>
+    <div><dt class="font-medium text-gray-500">Profil principal</dt><dd><%= @diagnostic.primary_profile&.name || "—" %></dd></div>
+    <div><dt class="font-medium text-gray-500">Profil complémentaire</dt><dd><%= @diagnostic.complementary_profile&.name || "—" %></dd></div>
+    <div><dt class="font-medium text-gray-500">PDF généré</dt><dd><%= @diagnostic.pdf_generated? ? "Oui" : "Non" %></dd></div>
+    <div><dt class="font-medium text-gray-500">Créé le</dt><dd><%= @diagnostic.created_at.strftime("%d/%m/%Y %H:%M") %></dd></div>
+  </dl>
+
+  <% if @diagnostic.payment %>
+    <h3 class="font-semibold text-gray-700 mb-2">Paiement</h3>
+    <dl class="space-y-2 text-sm mb-8">
+      <div><dt class="font-medium text-gray-500">Statut</dt><dd><%= @diagnostic.payment.status %></dd></div>
+      <div><dt class="font-medium text-gray-500">Montant</dt><dd><%= @diagnostic.payment.amount %></dd></div>
+    </dl>
+  <% end %>
+
+  <% if @diagnostic.diagnostic_answers.any? %>
+    <h3 class="font-semibold text-gray-700 mb-2">Réponses (<%= @diagnostic.diagnostic_answers.count %>)</h3>
+    <div class="text-sm text-gray-600"><%= @diagnostic.score_data %></div>
+  <% end %>
+</div>

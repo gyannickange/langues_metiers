@@ -18,9 +18,9 @@ fr:
     send_reset_instructions: "M’envoyer les instructions de réinitialisation"
     characters_minimum: "caractères minimum"
   meta:
-    title: "Langues Metiers - Votre Passerelle vers un Avenir Multilingue et Professionnel"
+    title: "Insertrice - Votre Passerelle vers un Avenir Multilingue et Professionnel"
     description: "Découvrez votre parcours professionnel idéal en combinant compétences linguistiques et expertise métier. Programmes personnalisés, bourses et accompagnement pour une carrière réussie."
-    keywords: "Langues Metiers, carrière multilingue, formation professionnelle, bourses d'études, compétences linguistiques, développement professionnel, roadmaps personnalisés"
+    keywords: "Insertrice, carrière multilingue, formation professionnelle, bourses d'études, compétences linguistiques, développement professionnel, roadmaps personnalisés"
   fields:
     index:
       title: "Filières"
@@ -267,7 +267,7 @@ fr:
           rating: 5
         - name: "Ahmed Benali"
           role: "Développeur Web"
-          content: "La plateforme Langues & Métiers m'a permis de combiner ma passion pour la technologie avec l'apprentissage de nouvelles langues. Une approche révolutionnaire !"
+          content: "La plateforme Insertrice m'a permis de combiner ma passion pour la technologie avec l'apprentissage de nouvelles langues. Une approche révolutionnaire !"
           rating: 5
         - name: "Sophie Martin"
           role: "Marketing Digital"
@@ -318,4 +318,4 @@ fr:
             - "Politique de confidentialité"
             - "Mentions légales"
             - "Cookies"
-      copyright: "© 2024 Langues & Métiers. Tous droits réservés."
+      copyright: "© 2024 Insertrice. Tous droits réservés."

@@ -1,87 +1,112 @@
-<section class="relative min-h-screen overflow-hidden bg-gradient-to-br from-secondary-900 via-secondary-800 to-secondary-700">
-  <!-- Overlay premium avec gradient -->
-  <div class="absolute inset-0 bg-gradient-to-br from-secondary-900/80 via-secondary-800/70 to-gray-900/80"></div>
-  <div class="absolute inset-0 bg-black/20"></div>
+<section class="relative min-h-screen overflow-hidden bg-[#fbfbfb] text-secondary font-sans">
   
-  <!-- Éléments décoratifs animés -->
-  <div class="absolute inset-0 overflow-hidden">
-    <div class="absolute -top-20 -right-20 w-80 h-80 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
-    <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
-    <div class="absolute top-1/4 right-1/4 w-4 h-4 bg-primary rounded-full animate-ping" style="animation-delay: 2s;"></div>
-    <div class="absolute bottom-1/3 left-1/3 w-2 h-2 bg-white rounded-full animate-ping" style="animation-delay: 3s;"></div>
-    
-    <!-- Formes géométriques -->
-    <div class="absolute top-1/2 left-1/4 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 border border-primary/30 rounded-3xl rotate-12 animate-spin-slow"></div>
-    <div class="absolute bottom-1/4 right-1/3 w-24 h-24 border border-white/20 rounded-full animate-bounce" style="animation-delay: 1.5s;"></div>
+  <!-- Formes géométriques décoratives (basées sur l'image) -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <!-- Demi-cercle bleu à gauche -->
+    <div class="absolute -left-16 top-32 w-32 h-32 bg-primary rounded-full opacity-90"></div>
+    <!-- Cercle jaune en haut à gauche -->
+    <div class="absolute left-1/4 -top-8 w-16 h-16 bg-primary-300 rounded-full opacity-60"></div>
+    <!-- Cercle vert en bas  -->
+    <div class="absolute left-1/3 -bottom-10 w-24 h-24 bg-primary-400 rounded-full opacity-40"></div>
+    <!-- Cercle mauve clair au milieu/bas -->
+    <div class="absolute left-1/2 bottom-20 w-12 h-12 bg-secondary-300 rounded-full opacity-20"></div>
   </div>
   
-  <!-- Background image with improved overlay -->
-  <div class="absolute inset-0 bg-cover bg-center bg-fixed opacity-20" style="background-image: url('https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=2400&q=80');"></div>
-  
-  <div class="relative z-10 text-white">
+  <div class="relative z-10" data-controller="mobile-menu">
     <header class="container mx-auto px-6 py-8">
       <div class="flex items-center justify-between">
+        
+        <!-- Logo -->
         <div class="flex items-center group">
-          <div class="w-12 h-12 bg-gradient-to-br from-primary to-primary-600 rounded-2xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-            </svg>
-          </div>
-          <span class="text-2xl font-bold bg-gradient-to-r from-white to-primary-100 bg-clip-text text-transparent">Langues & Métiers</span>
+          <span class="text-3xl font-extrabold text-secondary tracking-tight">
+            Insertrice<span class="text-primary">.</span>
+          </span>
         </div>
-        <nav class="hidden md:flex items-center space-x-8">
-          <a class="hover:text-primary-300 flex items-center transition-colors duration-300 relative group" href="#">
-            <%= t('home.navigation.home') %>
-            <div class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></div>
-          </a>
-          <%= link_to t('home.navigation.fields'), fields_path, class: "hover:text-primary-300 flex items-center transition-colors duration-300 relative group" %>
-          <%= link_to "CLE", cle_path, class: "hover:text-primary-300 flex items-center transition-colors duration-300 relative group" %>
-          <a class="hover:text-primary-300 flex items-center transition-colors duration-300 relative group" href="#">
-            <%= t('home.navigation.blog') %>
-            <div class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></div>
-          </a>
-          <a class="hover:text-primary-300 flex items-center transition-colors duration-300 relative group" href="#">
-            <%= t('home.navigation.about') %>
-            <div class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></div>
-          </a>
-          <a class="hover:text-primary-300 transition-colors duration-300 relative group" href="#">
-            <%= t('home.navigation.contact') %>
-            <div class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></div>
-          </a>
+        
+        <!-- Navigation -->
+        <nav class="hidden lg:flex items-center space-x-8 font-medium text-gray-600">
+          <a class="hover:text-primary transition-colors duration-300" href="#"><%= t('home.navigation.home') %></a>
+          <%= link_to t('home.navigation.fields'), fields_path, class: "hover:text-primary transition-colors duration-300" %>
+          <%= link_to "CLE", cle_path, class: "hover:text-primary transition-colors duration-300" %>
+          <a class="hover:text-primary transition-colors duration-300" href="#"><%= t('home.navigation.blog') %></a>
+          <a class="hover:text-primary transition-colors duration-300" href="#"><%= t('home.navigation.about') %></a>
+          <a class="hover:text-primary transition-colors duration-300" href="#"><%= t('home.navigation.contact') %></a>
         </nav>
-        <div class="flex items-center space-x-6">
-          <a class="flex items-center hover:text-primary-300 transition-colors duration-300" href="#">
-            <span class="material-icons mr-2">phone</span>
-            <span>+68 585 88666</span>
-          </a>
-          <%= link_to t('home.navigation.login'), new_user_session_path, class: "group relative bg-white/10 backdrop-blur-sm border border-white/30 rounded-full px-8 py-3 text-sm font-semibold hover:bg-white hover:text-secondary-800 transition-all duration-300 overflow-hidden" %>
+        
+        <!-- Action / Profile (Desktop) -->
+        <div class="hidden lg:flex items-center space-x-6">
+          <%= link_to t('home.navigation.login'), new_user_session_path, class: "flex items-center space-x-2 bg-secondary text-white font-semibold hover:bg-opacity-90 transition-colors py-2.5 px-6 rounded-full shadow-lg shadow-secondary/20" %>
         </div>
+
+        <!-- Mobile menu button -->
+        <div class="lg:hidden flex items-center">
+          <button data-action="click->mobile-menu#toggle" type="button" class="text-gray-600 hover:text-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary rounded-md p-2">
+            <span class="sr-only">Open main menu</span>
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Menu (Hidden by default) -->
+      <div data-mobile-menu-target="menu" class="hidden lg:hidden mt-4 pb-4 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl absolute left-4 right-4 z-50 px-4 border border-gray-100">
+        <nav class="flex flex-col space-y-4 pt-6">
+          <a class="text-gray-700 hover:text-primary font-medium transition-colors" href="#" data-action="click->mobile-menu#close"><%= t('home.navigation.home') %></a>
+          <%= link_to t('home.navigation.fields'), fields_path, class: "text-gray-700 hover:text-primary font-medium transition-colors", data: { action: "click->mobile-menu#close" } %>
+          <%= link_to "CLE", cle_path, class: "text-gray-700 hover:text-primary font-medium transition-colors", data: { action: "click->mobile-menu#close" } %>
+          <a class="text-gray-700 hover:text-primary font-medium transition-colors" href="#" data-action="click->mobile-menu#close"><%= t('home.navigation.blog') %></a>
+          <a class="text-gray-700 hover:text-primary font-medium transition-colors" href="#" data-action="click->mobile-menu#close"><%= t('home.navigation.about') %></a>
+          <a class="text-gray-700 hover:text-primary font-medium transition-colors" href="#" data-action="click->mobile-menu#close"><%= t('home.navigation.contact') %></a>
+          
+          <div class="h-px bg-gray-100 w-full my-4"></div>
+          
+          <%= link_to form_authenticity_token == 'test' ? '#' : new_user_session_path, class: "flex items-center justify-center space-x-2 bg-secondary text-white font-semibold py-3 rounded-full hover:bg-opacity-90 shadow-lg shadow-secondary/20 transition-colors mt-4" do %>
+            <span><%= t('home.navigation.login') %></span>
+          <% end %>
+        </nav>
       </div>
     </header>
     
-    <main class="container mx-auto px-6 flex items-center justify-center min-h-[80vh]">
-      <div class="text-center max-w-5xl animate-fade-in-up">
-        <h1 class="text-4xl lg:text-6xl font-bold leading-tight mb-8">
-          Transformez votre diplôme en
-          <span class="relative inline-block mt-2">
-            <span class="bg-gradient-to-r from-primary to-primary-400 bg-clip-text text-transparent">trajectoire professionnelle</span>
-            <div class="absolute -bottom-2 left-0 w-full h-3 bg-primary/30 -skew-x-12 transform"></div>
-          </span>
-          <span class="block mt-4">claire et stratégique.</span>
-        </h1>
+    <main class="container mx-auto px-6 pb-12 lg:pb-24">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        
+        <!-- Contenu Gauche -->
+        <div class="max-w-2xl xl:pr-12 mt-12 lg:mt-0 animate-fade-in-up">
+          <h1 class="text-5xl lg:text-[3.6rem] font-extrabold text-secondary leading-[1.1] mb-8 tracking-tight">
+            Transforme ton diplôme en 
+            <span class="relative inline-block px-4 py-2 mt-2">
+              <span class="absolute inset-0 bg-primary/20 rounded-xl transform -rotate-1"></span>
+              <span class="relative z-10 text-secondary">trajectoire professionnelle</span>
+              
+              <!-- Sparkles effect based on screenshot -->
+              <div class="absolute -top-10 -right-8 w-16 h-16 text-primary opacity-80 animate-pulse pointer-events-none">
+                <svg viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Large sparkle -->
+                  <path d="M50 0 L56 38 L94 44 L56 50 L50 88 L44 50 L6 44 L44 38 Z" />
+                  <!-- Smaller top right sparkle -->
+                  <path d="M85 10 L88 22 L100 25 L88 28 L85 40 L82 28 L70 25 L82 22 Z" />
+                  <!-- Smaller left sparkle -->
+                  <path d="M20 20 L22 28 L30 30 L22 32 L20 40 L18 32 L10 30 L18 28 Z" />
+                </svg>
+              </div>
+            </span> 
+            <br/>claire et stratégique.
+          </h1>
 
-        <p class="text-xl lg:text-2xl text-gray-200 mb-12 max-w-3xl mx-auto font-light leading-relaxed">
-          Un diagnostic structuré pour identifier votre positionnement réel, votre potentiel inexploité et les métiers alignés au marché actuel — y compris dans les secteurs digitaux.
-        </p>
+          <p class="text-lg lg:text-xl text-gray-600 mb-10 max-w-xl font-light leading-relaxed">
+            Un diagnostic structuré pour identifier ton positionnement réel, ton potentiel inexploité et les métiers alignés au marché actuel — y compris dans les secteurs digitaux.
+          </p>
 
-        <div class="flex justify-center">
-          <%= link_to "#", class: "btn-primary px-10 py-5 text-lg shadow-2xl flex items-center group" do %>
-            <span>Faire mon diagnostic stratégique</span>
-            <span class="ml-2 text-sm opacity-80">(À partir de 3 000 FCFA)</span>
-            <svg class="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-            </svg>
+          <!-- CTA Bas -->
+          <%= link_to "#", class: "btn-primary font-bold text-[1.2rem] py-3 px-8 rounded-full shadow-lg shadow-primary/30 transition-all duration-300 transform hover:-translate-y-1" do %>
+            Faire mon diagnostic
           <% end %>
+        </div>
+
+        <!-- Contenu Droite (Image hero-sideimg.png) -->
+        <div class="relative w-full h-[600px] lg:h-[868px] flex justify-center lg:justify-end mt-12 lg:mt-0 xl:-mr-20">
+          <%= image_tag "hero-sideimg.png", class: "lg:w-full h-full object-contain lg:object-cover object-left lg:object-center relative z-10 animate-fade-in-up" %>
         </div>
       </div>
     </main>

@@ -36,12 +36,43 @@ Rails.application.routes.draw do
     end
   end
 
+  # Diagnostics
+  resources :diagnostics, only: [ :new, :create, :show ] do
+    member do
+      get  :questionnaire
+      post :submit_bloc
+      get  :results
+      get  :pdf_status
+      get  :download_pdf
+    end
+  end
+
+  # Pawapay waiting screen polling
+  resources :payments, only: [] do
+    member do
+      get :status
+    end
+  end
+
+  # Mobile operator list (Stimulus fetch)
+  resources :mobile_operators, only: [ :index ]
+
+  # Webhooks — CSRF exempt, handled in controller
+  post "/webhooks/stripe",  to: "webhooks/stripe#receive"
+  post "/webhooks/pawapay", to: "webhooks/pawapay#receive"
+
   namespace :admin do
     root to: "dashboard#index"
     resources :users, only: [ :index ]
     resources :careers
     resources :user_skills, only: [ :create, :destroy ]
     resources :skills
+
+    resources :diagnostics,      only: [ :index, :show ]
+    resources :profiles
+    resources :trajectories
+    resources :questions
+    resources :mobile_operators
 
     resources :fields, path: "fields" do
       resources :roadmaps do

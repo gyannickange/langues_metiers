@@ -1,0 +1,9 @@
+<%# app/views/payments/_confirmed.html.erb %>
+<div>
+  <div class="text-5xl mb-4">✅</div>
+  <h2 class="text-xl font-bold text-gray-900 mb-2">Paiement confirmé !</h2>
+  <p class="text-gray-600 mb-6">Votre diagnostic est maintenant accessible.</p>
+  <%= link_to "Commencer le questionnaire →",
+        questionnaire_diagnostic_path(diagnostic),
+        class: "inline-block bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-800" %>
+</div>

@@ -1,0 +1,53 @@
+<%# app/views/diagnostics/results.html.erb %>
+<div class="max-w-3xl mx-auto px-4 py-12">
+  <h1 class="text-2xl font-bold text-gray-900 mb-1">Vos Résultats</h1>
+  <p class="text-sm text-gray-400 mb-10">
+    Diagnostic complété le <%= l(@diagnostic.completed_at&.to_date, format: :long) rescue @diagnostic.completed_at&.to_date %>
+  </p>
+
+  <% if @diagnostic.primary_profile %>
+    <div class="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-5">
+      <div class="text-xs font-semibold text-blue-500 uppercase tracking-wide mb-1">Profil Principal</div>
+      <h2 class="text-xl font-bold text-blue-900"><%= @diagnostic.primary_profile.name %></h2>
+      <p class="text-blue-800 text-sm mt-1"><%= @diagnostic.primary_profile.description %></p>
+    </div>
+  <% end %>
+
+  <% if @diagnostic.complementary_profile %>
+    <div class="bg-gray-50 border rounded-xl p-4 mb-5">
+      <div class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Profil Complémentaire</div>
+      <h3 class="font-bold text-gray-800"><%= @diagnostic.complementary_profile.name %></h3>
+    </div>
+  <% end %>
+
+  <% if @trajectory %>
+    <div class="mb-8">
+      <h3 class="text-lg font-bold text-gray-900 mb-4">Vos 3 Axes Stratégiques</h3>
+      <% [
+          ["Institutionnel / ONG",      @trajectory.axe_1],
+          ["Secteur privé / hybride",   @trajectory.axe_2],
+          ["Spécialisation long terme", @trajectory.axe_3]
+         ].each_with_index do |(title, text), i| %>
+        <div class="mb-4 pl-4 border-l-4 border-blue-500">
+          <div class="font-semibold text-gray-800 text-sm">Axe <%= i + 1 %> — <%= title %></div>
+          <p class="text-gray-600 text-sm mt-0.5"><%= text %></p>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="mt-10 p-6 bg-gray-50 rounded-xl text-center">
+    <% if @diagnostic.pdf_generated? %>
+      <%= link_to "⬇ Télécharger mon rapport PDF",
+            download_pdf_diagnostic_path(@diagnostic),
+            class: "inline-block bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-800" %>
+    <% else %>
+      <div id="pdf-status" data-controller="poll"
+           data-poll-url-value="<%= pdf_status_diagnostic_path(@diagnostic, format: :json) %>"
+           data-poll-interval-value="3000">
+        <p class="text-gray-500 mb-2">Votre rapport PDF est en cours de génération…</p>
+        <div class="animate-pulse text-blue-600 text-sm">Veuillez patienter</div>
+      </div>
+    <% end %>
+  </div>
+</div>

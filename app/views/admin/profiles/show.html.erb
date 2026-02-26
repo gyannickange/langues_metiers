@@ -1,0 +1,14 @@
+<%# app/views/admin/profiles/show.html.erb %>
+<div class="px-6 py-6 max-w-2xl">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-xl font-bold"><%= @profile.name %></h1>
+    <%= link_to "Modifier", edit_admin_profile_path(@profile), class: "bg-blue-700 text-white px-4 py-2 rounded text-sm" %>
+  </div>
+  <dl class="space-y-3 text-sm">
+    <div><dt class="font-medium text-gray-500">Slug</dt><dd><%= @profile.slug %></dd></div>
+    <div><dt class="font-medium text-gray-500">Description</dt><dd><%= @profile.description %></dd></div>
+    <div><dt class="font-medium text-gray-500">Première action</dt><dd><%= @profile.first_action %></dd></div>
+    <div><dt class="font-medium text-gray-500">Pitch premium</dt><dd><%= @profile.premium_pitch %></dd></div>
+  </dl>
+  <%= link_to "← Retour", admin_profiles_path, class: "mt-6 inline-block text-blue-600 text-sm" %>
+</div>
