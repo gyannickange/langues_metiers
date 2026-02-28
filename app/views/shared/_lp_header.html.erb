@@ -35,8 +35,50 @@
         
         <!-- Action / Profile (Desktop) -->
         <div class="hidden lg:flex items-center space-x-6">
-          <%= link_to t('home.navigation.login'), new_user_session_path, class: "flex items-center space-x-2 bg-secondary text-white font-semibold hover:bg-opacity-90 transition-colors py-2.5 px-6 rounded-full shadow-lg shadow-secondary/20" %>
+          <% if user_signed_in? %>
+            <%= link_to t('home.navigation.dashboard'), admin_root_path, class: "flex items-center space-x-2 bg-primary text-secondary font-semibold hover:bg-opacity-90 transition-colors py-2.5 px-6 rounded-full shadow-lg shadow-primary/20" %>
+
+            <div class="relative group">
+              <!-- Avatar -->
+              <div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center cursor-pointer overflow-hidden border-2 border-white shadow-sm hover:border-primary transition-all">
+                <%# If User has an avatar attached %>
+                <% if current_user.respond_to?(:avatar) && current_user.avatar.attached? %>
+                  <%= image_tag current_user.avatar, class: "w-full h-full object-cover" %>
+                <% else %>
+                  <span class="text-primary font-bold text-sm"><%= current_user.email[0..1].upcase %></span>
+                <% end %>
+              </div>
+              
+              <!-- Dropdown (Hover) -->
+              <div class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                <%= link_to profile_path, class: "flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors" do %>
+                  <span class="material-icons text-lg mr-3 text-gray-400">person_outline</span>
+                  <span><%= t('home.navigation.profile') %></span>
+                <% end %>
+                <div class="h-px bg-gray-100 my-1 mx-2"></div>
+                <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors" do %>
+                  <span class="material-icons text-lg mr-3 text-red-400">logout</span>
+                  <span><%= t('home.navigation.logout') %></span>
+                <% end %>
+
+              </div>
+            </div>
+          <% else %>
+            <%= link_to t('home.navigation.login'), new_user_session_path, class: "flex items-center space-x-2 bg-secondary text-white font-semibold hover:bg-opacity-90 transition-colors py-2.5 px-6 rounded-full shadow-lg shadow-secondary/20" %>
+          <% end %>
+          
+          <!-- Language Switcher -->
+          <div class="flex items-center space-x-2 border-l border-gray-200 pl-6 ml-2">
+            <% if I18n.locale == :fr %>
+              <%= link_to "EN", root_path(locale: :en), class: "text-sm font-bold text-gray-400 hover:text-primary transition-colors" %>
+              <span class="text-secondary font-bold text-sm">FR</span>
+            <% else %>
+              <span class="text-secondary font-bold text-sm">EN</span>
+              <%= link_to "FR", root_path(locale: :fr), class: "text-sm font-bold text-gray-400 hover:text-primary transition-colors" %>
+            <% end %>
+          </div>
         </div>
+
 
         <!-- Mobile menu button -->
         <div class="lg:hidden flex items-center">
@@ -61,11 +103,35 @@
           
           <div class="h-px bg-gray-100 w-full my-4"></div>
           
-          <%= link_to form_authenticity_token == 'test' ? '#' : new_user_session_path, class: "flex items-center justify-center space-x-2 bg-secondary text-white font-semibold py-3 rounded-full hover:bg-opacity-90 shadow-lg shadow-secondary/20 transition-colors mt-4" do %>
-            <span><%= t('home.navigation.login') %></span>
+          <% if user_signed_in? %>
+            <%= link_to admin_root_path, class: "flex items-center space-x-3 text-gray-700 hover:text-primary font-medium transition-colors" do %>
+              <span class="material-icons">dashboard</span>
+              <span><%= t('home.navigation.dashboard') %></span>
+            <% end %>
+            <%= link_to profile_path, class: "flex items-center space-x-3 text-gray-700 hover:text-primary font-medium transition-colors" do %>
+              <span class="material-icons">person_outline</span>
+              <span><%= t('home.navigation.profile') %></span>
+            <% end %>
+            <div class="h-px bg-gray-100 w-full my-4"></div>
+            <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "flex items-center justify-center space-x-2 bg-red-600 text-white font-semibold py-3 rounded-full hover:bg-opacity-90 shadow-lg shadow-red-600/20 transition-colors mt-4" do %>
+              <span class="material-icons">logout</span>
+              <span><%= t('home.navigation.logout') %></span>
+            <% end %>
+
+          <% else %>
+            <%= link_to form_authenticity_token == 'test' ? '#' : new_user_session_path, class: "flex items-center justify-center space-x-2 bg-secondary text-white font-semibold py-3 rounded-full hover:bg-opacity-90 shadow-lg shadow-secondary/20 transition-colors mt-4" do %>
+              <span><%= t('home.navigation.login') %></span>
+            <% end %>
           <% end %>
+
+          <div class="flex items-center justify-center space-x-4 pt-6">
+            <%= link_to "Français", root_path(locale: :fr), class: "text-sm #{I18n.locale == :fr ? 'font-bold text-secondary' : 'text-gray-500'}" %>
+            <span class="text-gray-200">|</span>
+            <%= link_to "English", root_path(locale: :en), class: "text-sm #{I18n.locale == :en ? 'font-bold text-secondary' : 'text-gray-500'}" %>
+          </div>
         </nav>
       </div>
+
     </header>
     
     <main class="container mx-auto px-6 pb-12 lg:pb-24">
@@ -74,10 +140,10 @@
         <!-- Contenu Gauche -->
         <div class="max-w-2xl xl:pr-12 mt-12 lg:mt-0 animate-fade-in-up">
           <h1 class="text-5xl lg:text-[3.6rem] font-extrabold text-secondary leading-[1.1] mb-8 tracking-tight">
-            Transforme ton diplôme en 
+            <%= t('home.hero.title_part1') %>
             <span class="relative inline-block px-4 py-2 mt-2">
-              <span class="absolute inset-0 bg-primary/20 rounded-xl transform -rotate-1"></span>
-              <span class="relative z-10 text-secondary">trajectoire professionnelle</span>
+              <span class="absolute inset-0 bg-primary/20 text-secondary rounded-xl transform -rotate-1"></span>
+              <span class="relative z-10 text-secondary"><%= t('home.hero.title_part2') %></span>
               
               <!-- Sparkles effect based on screenshot -->
               <div class="absolute -top-10 -right-8 w-16 h-16 text-primary opacity-80 animate-pulse pointer-events-none">
@@ -91,17 +157,18 @@
                 </svg>
               </div>
             </span> 
-            <br/>claire et stratégique.
+            <br/><%= t('home.hero.title_part3') %>
           </h1>
 
           <p class="text-lg lg:text-xl text-gray-600 mb-10 max-w-xl font-light leading-relaxed">
-            Un diagnostic structuré pour identifier ton positionnement réel, ton potentiel inexploité et les métiers alignés au marché actuel — y compris dans les secteurs digitaux.
+            <%= t('home.hero.description') %>
           </p>
 
           <!-- CTA Bas -->
           <%= link_to new_diagnostic_path, class: "btn-primary font-bold text-[1.2rem] py-3 px-8 rounded-full shadow-lg shadow-primary/30 transition-all duration-300 transform hover:-translate-y-1" do %>
-            Faire mon diagnostic
+            <%= t('home.hero.cta') %>
           <% end %>
+
         </div>
 
         <!-- Contenu Droite (Image hero-sideimg.png) -->

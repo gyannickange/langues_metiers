@@ -8,41 +8,36 @@
     <div class="grid lg:grid-cols-2 gap-16 items-center">
       <div>
         <h2 class="text-3xl md:text-4xl font-bold text-secondary mb-8">
-          Pourquoi tant de diplômés restent sous-valorisés ?
+          <%= t('home.problem.title') %>
         </h2>
+
         <div class="space-y-6 text-lg text-gray-600 leading-relaxed">
           <p>
-            Tu as un diplôme. Tu as des compétences. Mais tu n’as pas une stratégie de positionnement claire.
+            <%= t('home.problem.description') %>
           </p>
+
           <div class="bg-gray-50 p-8 rounded-2xl border-l-4 border-primary">
-            <h3 class="font-bold text-secondary mb-4 uppercase tracking-wider text-sm">Conséquences fréquentes :</h3>
+            <h3 class="font-bold text-secondary mb-4 uppercase tracking-wider text-sm"><%= t('home.problem.subtitle') %></h3>
+
             <ul class="space-y-3">
-              <li class="flex items-center">
-                <svg class="w-5 h-5 text-red-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                Difficulté à identifier des débouchés précis
-              </li>
-              <li class="flex items-center">
-                <svg class="w-5 h-5 text-red-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                CV peu différenciant
-              </li>
-              <li class="flex items-center">
-                <svg class="w-5 h-5 text-red-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                Candidatures sans retour
-              </li>
-              <li class="flex items-center">
-                <svg class="w-5 h-5 text-red-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                Impression de stagnation
-              </li>
+              <% t('home.problem.items').each do |item| %>
+                <li class="flex items-center">
+                  <svg class="w-5 h-5 text-red-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                  <%= item %>
+                </li>
+              <% end %>
             </ul>
+
           </div>
           <p class="font-bold text-secondary pt-4 italic">
-            "Le marché rémunère la valeur perçue et la clarté du positionnement."
+            "<%= t('home.problem.quote') %>"
           </p>
+
         </div>
       </div>
       <div class="relative">
         <div class="aspect-square bg-gray-100 rounded-3xl overflow-hidden shadow-2xl rotate-3">
-          <img src="https://images.unsplash.com/photo-1454165833767-027ffea9e77b?auto=format&fit=crop&w=800&q=80" alt="Career Strategy" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700">
+          <%= image_tag "img-1.png", class: "w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" %>
         </div>
         <div class="absolute -bottom-10 -left-10 w-64 h-64 bg-primary/20 rounded-full blur-3xl -z-10"></div>
       </div>
@@ -54,19 +49,21 @@
 <section class="py-24 bg-secondary text-white relative overflow-hidden">
   <div class="container mx-auto px-6 relative z-10">
     <div class="text-center mb-16">
-      <h2 class="text-3xl md:text-5xl font-bold mb-6">La réalité du marché</h2>
-      <p class="text-xl text-gray-400 font-light">Aujourd'hui, les organisations recherchent des profils polyvalents et structurés.</p>
+      <h2 class="text-3xl md:text-5xl font-bold mb-6"><%= t('home.market.title') %></h2>
+      <p class="text-xl text-gray-400 font-light"><%= t('home.market.subtitle') %></p>
+
     </div>
     
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
       <% [
-        { title: "Capacité d’analyse", icon: "troubleshoot" },
-        { title: "Compétences digitales", icon: "devices" },
-        { title: "Esprit structuré", icon: "account_tree" },
-        { title: "Vision opérationnelle", icon: "visibility" },
-        { title: "Maîtrise des outils numériques", icon: "terminal" },
-        { title: "Lecture et utilisation de données", icon: "bar_chart" }
+        { title: t('home.market.features.analysis'), icon: "troubleshoot" },
+        { title: t('home.market.features.digital'), icon: "devices" },
+        { title: t('home.market.features.structured'), icon: "account_tree" },
+        { title: t('home.market.features.operational'), icon: "visibility" },
+        { title: t('home.market.features.tools'), icon: "terminal" },
+        { title: t('home.market.features.data'), icon: "bar_chart" }
       ].each do |item| %>
+
         <div class="bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all group">
           <span class="material-icons text-primary text-4xl mb-4 group-hover:scale-110 transition-transform"><%= item[:icon] %></span>
           <h3 class="text-xl font-semibold"><%= item[:title] %></h3>
@@ -76,8 +73,9 @@
     
     <div class="mt-20 text-center max-w-3xl mx-auto">
       <p class="text-lg text-gray-300 italic">
-        "Beaucoup de profils académiques possèdent ces bases, mais ne savent pas les transformer en opportunités concrètes."
+        "<%= t('home.market.quote') %>"
       </p>
+
     </div>
   </div>
 </section>
@@ -86,8 +84,9 @@
 <section class="py-24 bg-gray-50">
   <div class="container mx-auto px-6">
     <h2 class="text-3xl md:text-4xl font-bold text-secondary mb-16 text-center">
-      Exemples de métiers accessibles après repositionnement
+      <%= t('home.metiers.title') %>
     </h2>
+
     
     <div class="grid lg:grid-cols-3 gap-12">
       <!-- Analytique -->
@@ -95,7 +94,8 @@
         <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-8">
           <span class="material-icons text-primary text-3xl">insights</span>
         </div>
-        <h3 class="text-2xl font-bold text-secondary mb-6">Dimension Analytique</h3>
+        <h3 class="text-2xl font-bold text-secondary mb-6"><%= t('home.metiers.dimensions.analytic') %></h3>
+
         <ul class="space-y-4 text-gray-600 flex-grow">
           <li>• Chargé d’études socio-économiques</li>
           <li>• Analyste territorial</li>
@@ -106,10 +106,11 @@
 
       <!-- Digital -->
       <div class="bg-secondary p-10 rounded-3xl shadow-xl border border-white/5 flex flex-col h-full text-white transform lg:-translate-y-8">
-        <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-8">
+        <div class="w-16 h-16 bg-primary text-secondary rounded-2xl flex items-center justify-center mb-8">
           <span class="material-icons text-secondary text-3xl">computer</span>
         </div>
-        <h3 class="text-2xl font-bold text-primary mb-6">Dimension Digitale</h3>
+        <h3 class="text-2xl font-bold text-primary mb-6"><%= t('home.metiers.dimensions.digital') %></h3>
+
         <ul class="space-y-4 text-gray-300 flex-grow">
           <li>• Rédacteur UX / Content digital</li>
           <li>• Community Manager stratégique</li>
@@ -125,7 +126,8 @@
         <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-8">
           <span class="material-icons text-primary text-3xl">business_center</span>
         </div>
-        <h3 class="text-2xl font-bold text-secondary mb-6">Impact Organisationnel</h3>
+        <h3 class="text-2xl font-bold text-secondary mb-6"><%= t('home.metiers.dimensions.impact') %></h3>
+
         <ul class="space-y-4 text-gray-600 flex-grow">
           <li>• Chargé de mission</li>
           <li>• Responsable programme junior</li>
@@ -136,7 +138,8 @@
     </div>
     
     <div class="text-center mt-12">
-      <p class="text-gray-500 italic">Ces orientations sont proposées en fonction du profil stratégique dominant identifié par ton diagnostic.</p>
+      <p class="text-gray-500 italic"><%= t('home.metiers.footer') %></p>
+
     </div>
   </div>
 </section>
@@ -149,9 +152,10 @@
       
       <div class="relative z-10 grid lg:grid-cols-2 gap-16 items-center">
         <div>
-          <span class="inline-block bg-primary text-secondary text-xs font-bold px-4 py-2 rounded-full mb-6 uppercase tracking-widest">La Solution</span>
-          <h2 class="text-4xl md:text-5xl font-bold mb-8">Diagnostic de Repositionnement Stratégique</h2>
-          <p class="text-xl text-gray-300 mb-10 leading-relaxed font-light">En 20 minutes seulement, change ta vision de l'avenir et obtiens une roadmap concrète pour ta carrière.</p>
+          <span class="inline-block bg-primary text-secondary text-xs font-bold px-4 py-2 rounded-full mb-6 uppercase tracking-widest"><%= t('home.solution.badge') %></span>
+          <h2 class="text-4xl md:text-5xl font-bold mb-8"><%= t('home.solution.title') %></h2>
+          <p class="text-xl text-gray-300 mb-10 leading-relaxed font-light"><%= t('home.solution.subtitle') %></p>
+
           
           <div class="grid sm:grid-cols-2 gap-6">
             <% [
@@ -163,7 +167,7 @@
                 "Plan d’action synthétique"
             ].each do |item| %>
               <div class="flex items-center space-x-3">
-                <div class="flex-shrink-0 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                <div class="flex-shrink-0 w-6 h-6 bg-primary text-secondary rounded-full flex items-center justify-center">
                   <span class="material-icons text-secondary !text-sm">check</span>
                 </div>
                 <span class="text-gray-200"><%= item %></span>
@@ -174,7 +178,8 @@
           <div class="mt-12 p-6 bg-white/5 rounded-2xl border border-white/10">
             <p class="text-primary font-semibold flex items-center">
               <span class="material-icons mr-2">description</span>
-              Restitution sous forme de rapport personnalisé.
+              <%= t('home.solution.report') %>
+
             </p>
           </div>
         </div>
@@ -201,16 +206,18 @@
 <section class="py-24 bg-white text-secondary">
   <div class="container mx-auto px-6">
     <div class="text-center mb-16">
-      <h2 class="text-3xl md:text-4xl font-bold mb-4">Comment ça fonctionne</h2>
+      <h2 class="text-3xl md:text-4xl font-bold mb-4"><%= t('home.how_it_works.title') %></h2>
+
       <div class="w-24 h-1 bg-primary mx-auto rounded-full"></div>
     </div>
     
     <div class="grid md:grid-cols-3 gap-12 max-w-5xl mx-auto">
       <% [
-        { step: "1", title: "Questionnaire", content: "Tu réponds au questionnaire structuré en 20 minutes." },
-        { step: "2", title: "Analyse", content: "Le système analyse tes réponses selon un modèle stratégique propriétaire." },
-        { step: "3", title: "Rapport", content: "Tu reçois immédiatement ton rapport personnalisé avec ton score et tes trajectoires." }
+        { step: "1", title: t('home.how_it_works.steps.step1'), content: t('home.how_it_works.steps.step1_desc') },
+        { step: "2", title: t('home.how_it_works.steps.step2'), content: t('home.how_it_works.steps.step2_desc') },
+        { step: "3", title: t('home.how_it_works.steps.step3'), content: t('home.how_it_works.steps.step3_desc') }
       ].each do |item| %>
+
         <div class="text-center group">
           <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-8 border border-gray-100 group-hover:bg-primary group-hover:text-secondary transition-all duration-300 shadow-inner">
             <span class="text-3xl font-bold"><%= item[:step] %></span>
@@ -284,10 +291,12 @@
   <div class="container mx-auto px-6">
     <div class="flex flex-col lg:flex-row gap-16 items-center">
       <div class="lg:w-1/2">
-        <h2 class="text-4xl md:text-5xl font-bold mb-8 leading-tight">À qui s'adresse ce diagnostic ?</h2>
+        <h2 class="text-4xl md:text-5xl font-bold mb-8 leading-tight"><%= t('home.target.title') %></h2>
+
         <p class="text-xl text-gray-500 mb-10 leading-relaxed font-light">
-          Que tu sois au début ou déjà en poste, ce diagnostic est l'outil indispensable pour clarifier ta valeur ajoutée.
+          <%= t('home.target.subtitle') %>
         </p>
+
         <div class="grid sm:grid-cols-2 gap-8">
           <% [
             { icon: "school", title: "Étudiants", desc: "En fin de cycle universitaire" },
@@ -314,8 +323,10 @@
 <section class="py-24 bg-secondary overflow-hidden relative">
   <div class="container mx-auto px-6 relative z-10">
     <div class="text-center mb-16">
-      <h2 class="text-4xl font-bold text-white mb-4 italic">Investis dans ta clarté</h2>
-      <p class="text-primary tracking-widest uppercase font-bold text-sm">Tarification transparente</p>
+      <h2 class="text-4xl font-bold text-white mb-4 italic"><%= t('home.pricing.title') %></h2>
+
+      <p class="text-primary tracking-widest uppercase font-bold text-sm"><%= t('home.pricing.subtitle') %></p>
+
     </div>
     
     <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -324,9 +335,10 @@
         <div class="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform">
           <span class="material-icons !text-9xl">bookmark</span>
         </div>
-        <h3 class="text-2xl font-bold text-secondary mb-2">Diagnostic Essentiel</h3>
+        <h3 class="text-2xl font-bold text-secondary mb-2"><%= t('home.pricing.essential') %></h3>
+
         <div class="text-4xl font-black text-secondary mb-6 flex items-baseline">
-          3 000 <span class="text-sm ml-1 font-bold text-gray-400">FCFA</span>
+          <%= Diagnostic.formatted_price.gsub(" F CFA", "") %> <span class="text-sm ml-1 font-bold text-gray-400">F CFA</span>
         </div>
         <div class="h-px bg-gray-100 mb-8 w-full"></div>
         <ul class="space-y-4 text-gray-600 mb-10">
@@ -336,14 +348,16 @@
           <li class="flex items-center"><span class="material-icons text-green-500 mr-3 !text-lg">check_circle</span> 3 trajectoires conseillées</li>
         </ul>
         <%= link_to "#", class: "block w-full text-center btn-secondary py-4 rounded-xl font-bold" do %>
-          Commander
+          <%= t('home.pricing.order') %>
+
         <% end %>
       </div>
 
       <!-- Roadmap Premium -->
       <div class="bg-white/10 backdrop-blur-md rounded-3xl p-10 border border-white/20 text-white relative overflow-hidden group">
         <div class="absolute -top-4 -right-4 bg-primary text-secondary text-[10px] font-black uppercase px-12 py-6 rotate-45 shadow-lg">PREMIUM</div>
-        <h3 class="text-2xl font-bold text-primary mb-2">Roadmap Premium</h3>
+        <h3 class="text-2xl font-bold text-primary mb-2"><%= t('home.pricing.premium') %></h3>
+
         <div class="text-4xl font-black mb-6 flex items-baseline">
           Contactez-nous
         </div>
@@ -370,12 +384,14 @@
       <h2 class="text-3xl md:text-5xl font-bold text-secondary mb-10 leading-tight">
         Une trajectoire professionnelle se structure. <br/>Elle ne s’improvise pas.
       </h2>
-      <p class="text-xl text-gray-500 mb-12 font-light">Le temps est ta ressource la plus précieuse. Ne le gaspille plus dans des directions aléatoires.</p>
+      <p class="text-xl text-gray-500 mb-12 font-light"><%= t('home.final.subtitle') %></p>
+
       
       <div class="flex flex-col sm:flex-row justify-center items-center gap-6">
         <%= link_to new_diagnostic_path, class: "btn-primary px-12 py-6 text-xl shadow-2xl flex items-center group relative overflow-hidden" do %>
           <div class="absolute inset-0 w-full h-full bg-white/20 -skew-x-12 translate-x-full group-hover:-translate-x-full transition-transform duration-700"></div>
-          <span class="relative z-10">Faire mon diagnostic stratégique maintenant</span>
+          <span class="relative z-10"><%= t('home.final.cta') %></span>
+
         <% end %>
       </div>
       
