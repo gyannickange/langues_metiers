@@ -4,7 +4,6 @@ require "json"
 
 module Payments
   class PawapayDepositService
-    AMOUNT   = "3000"
     CURRENCY = "XOF"
 
     def self.call(**args)
@@ -51,7 +50,7 @@ module Payments
       req["Content-Type"]  = "application/json"
       req.body = {
         depositId:            @deposit_id,
-        amount:               AMOUNT,
+        amount:               Diagnostic.price,
         currency:             CURRENCY,
         correspondent:        @operator_code,
         recipient:            { type: "MSISDN", address: { value: @phone } },

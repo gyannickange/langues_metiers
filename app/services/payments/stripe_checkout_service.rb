@@ -13,15 +13,15 @@ module Payments
 
     def call
       session = Stripe::Checkout::Session.create(
-        payment_method_types: ["card"],
-        line_items: [{
+        payment_method_types: [ "card" ],
+        line_items: [ {
           price_data: {
             currency:     Rails.application.credentials.dig(:stripe, :currency) || "xof",
             product_data: { name: "Diagnostic de Repositionnement Stratégique" },
-            unit_amount:  Rails.application.credentials.dig(:stripe, :price_amount) || 300000
+            unit_amount:  Diagnostic.price * 100
           },
           quantity: 1
-        }],
+        } ],
         mode:                 "payment",
         client_reference_id: @diagnostic.id,
         customer_email:      @diagnostic.user.email,
