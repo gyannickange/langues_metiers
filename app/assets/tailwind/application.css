@@ -318,7 +318,7 @@
 
 /* Global button classes */
 .btn-primary {
-  @apply bg-gradient-to-r from-primary to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105;
+  @apply bg-gradient-to-r from-primary to-primary-600 hover:from-primary-600 hover:to-primary-700 text-secondary px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105;
 }
 
 .btn-secondary {
