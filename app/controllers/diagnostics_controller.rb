@@ -1,9 +1,9 @@
 # app/controllers/diagnostics_controller.rb
 class DiagnosticsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_diagnostic, only: [:show, :questionnaire, :submit_bloc, :results, :pdf_status, :download_pdf]
-  before_action :require_paid!,      only: [:questionnaire, :submit_bloc]
-  before_action :require_completed!, only: [:results, :pdf_status, :download_pdf]
+  before_action :set_diagnostic, only: [ :show, :questionnaire, :submit_bloc, :results, :pdf_status, :download_pdf ]
+  before_action :require_paid!,      only: [ :questionnaire, :submit_bloc ]
+  before_action :require_completed!, only: [ :results, :pdf_status, :download_pdf ]
 
   def new
     @mobile_operators = MobileOperator.active.group_by(&:country_code)
@@ -12,6 +12,19 @@ class DiagnosticsController < ApplicationController
 
   def create
     @diagnostic = current_user.diagnostics.create!(payment_provider: payment_provider_param)
+
+    if !Rails.env.production?
+      # Simulation de paiement en local (0 XOF)
+      @diagnostic.update!(status: :paid)
+      @diagnostic.create_payment!(
+        user: @diagnostic.user,
+        provider: payment_provider_param,
+        provider_payment_id: "dev_payment_#{SecureRandom.hex(4)}",
+        status: :confirmed
+      )
+      redirect_to questionnaire_diagnostic_path(@diagnostic), notice: "Paiement simulé avec succès (0 XOF)"
+      return
+    end
 
     case payment_provider_param
     when "stripe"  then handle_stripe_payment
@@ -133,7 +146,7 @@ class DiagnosticsController < ApplicationController
   end
 
   def detect_country
-    cookies[:country].presence || "CI"
+    request.headers["HTTP_X_RAILWAY_COUNTRY"] || cookies[:country].presence || "BJ"
   end
 
   def current_bloc
