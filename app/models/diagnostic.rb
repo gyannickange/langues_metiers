@@ -17,4 +17,12 @@ class Diagnostic < ApplicationRecord
     stripe:  0,
     pawapay: 1
   }, prefix: :provider
+
+  def self.price
+    Rails.env.production? ? 2000 : 0
+  end
+
+  def self.formatted_price
+    "#{price.to_s.gsub(/(\d)(?=(\d{3})+(?!\d))/, '\\1 ')} F CFA"
+  end
 end
