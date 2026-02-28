@@ -1,0 +1,12 @@
+fr:
+  activerecord:
+    models:
+      user: "Utilisateur"
+    attributes:
+      user:
+        email: "Adresse e-mail"
+        role: "Rôle"
+        provider: "Fournisseur"
+        uid: "ID Unique"
+        otp_code: "Code OTP"
+        otp_sent_at: "OTP envoyé le"

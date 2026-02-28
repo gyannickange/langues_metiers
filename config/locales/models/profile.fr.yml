@@ -1,0 +1,9 @@
+fr:
+  activerecord:
+    models:
+      profile: "Profil"
+    attributes:
+      profile:
+        name: "Nom"
+        description: "Description"
+        code: "Code"
