@@ -40,8 +40,11 @@ module LanguesMetiers
     config.generators.system_tests = nil
 
     # Default locale setup
-    config.i18n.available_locales = [ :en, :fr ]
+    config.i18n.available_locales = [ :fr, :en ]
     config.i18n.default_locale = :fr
+
+
+
 
     # Use Sidekiq for Active Job
     config.active_job.queue_adapter = :sidekiq
