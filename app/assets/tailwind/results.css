@@ -1,0 +1,110 @@
+/* app/assets/tailwind/results.css */
+
+.results-container {
+  @apply max-w-5xl mx-auto px-4 py-16 space-y-12 relative;
+}
+
+/* Background elements for depth */
+.results-bg-glow {
+  @apply absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none;
+}
+.results-bg-glow::before {
+  content: "";
+  @apply absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary-500/10 rounded-full blur-[100px];
+}
+.results-bg-glow::after {
+  content: "";
+  @apply absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-secondary-800/5 rounded-full blur-[120px];
+}
+
+/* Base card styling with glassmorphism */
+.card-premium {
+  @apply bg-white/90 backdrop-blur-xl rounded-[2.5rem] border border-white/50 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden transition-all duration-500 hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)];
+}
+
+.card-premium-header {
+  @apply p-8 border-b border-gray-100/50 bg-gradient-to-r from-white/80 to-transparent;
+}
+
+/* Specific Section Styles */
+.info-badge {
+  @apply inline-flex items-center space-x-2 px-5 py-2.5 bg-secondary-900 rounded-full text-xs font-black uppercase tracking-[0.2em] text-white shadow-lg shadow-secondary-900/20;
+}
+.info-badge-dot {
+  @apply w-2 h-2 rounded-full bg-primary-500 animate-pulse;
+}
+
+.data-tag {
+  @apply flex flex-col p-5 bg-gray-50/50 rounded-2xl border border-gray-100/50 transition-colors hover:bg-white hover:border-primary-200 hover:shadow-md;
+}
+
+.strategy-point {
+  @apply flex items-center space-x-4 bg-white/80 backdrop-blur-sm p-5 rounded-[1.5rem] border border-gray-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:border-primary-200;
+}
+
+/* Circular Charts */
+.chart-circle {
+  @apply relative inline-flex items-center justify-center p-3 bg-white rounded-full shadow-[0_0_20px_rgba(0,0,0,0.03)] border border-gray-50;
+}
+.chart-circle svg {
+  @apply w-full h-full transform -rotate-90 drop-shadow-md;
+}
+.chart-percentage {
+  @apply absolute text-3xl font-black text-secondary-900 tracking-tighter;
+}
+
+/* Profile Cards */
+.profile-card {
+  @apply p-12 rounded-[3.5rem] border border-white/20 transition-all duration-500 hover:-translate-y-2;
+}
+
+.profile-card-primary {
+  @apply bg-secondary-900 text-white shadow-[0_20px_50px_rgba(26,54,93,0.3)] relative overflow-hidden;
+}
+.profile-card-primary::before {
+  content: "";
+  @apply absolute -top-32 -right-32 w-96 h-96 bg-primary-500/20 rounded-full blur-[80px];
+}
+
+.profile-card-secondary {
+  @apply bg-white/80 backdrop-blur-xl text-secondary-900 shadow-[0_15px_40px_rgb(0,0,0,0.05)] border-white border;
+}
+
+.badge-tag {
+  @apply px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-sm;
+}
+
+/* Forces & Axes Grids */
+.force-item {
+  @apply flex flex-col items-center text-center p-8 bg-white/50 rounded-[2rem] border border-gray-100/50 hover:bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300;
+}
+.force-icon-box {
+  @apply w-14 h-14 rounded-2xl bg-gray-50 flex items-center justify-center mb-6 shadow-sm border border-gray-100 group-hover:bg-primary-500 group-hover:text-secondary-900 transition-colors duration-300;
+}
+
+.axe-item {
+  @apply flex items-center space-x-6 p-8 bg-secondary-800/30 backdrop-blur-md hover:bg-secondary-800 border border-white/10 rounded-[2rem] transition-all duration-300 shadow-lg hover:shadow-2xl hover:-translate-y-1;
+}
+
+/* Quote Section */
+.quote-container {
+  @apply relative py-32 px-10 text-center rounded-[3rem] overflow-hidden my-12;
+}
+.quote-bg {
+  @apply absolute inset-0 bg-gradient-to-br from-secondary-900 to-secondary-800 opacity-5;
+}
+
+/* Action Button */
+.btn-download-pdf {
+  @apply w-full max-w-2xl mx-auto rounded-[2.5rem] py-8 bg-secondary-900 text-white hover:bg-primary-500 hover:text-black transition-all duration-500 shadow-[0_20px_50px_rgba(26,54,93,0.3)] flex items-center justify-center space-x-8 overflow-hidden relative border border-white/10;
+}
+.btn-download-pdf::before {
+  content: "";
+  @apply absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite];
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
