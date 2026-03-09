@@ -1,0 +1,9 @@
+fr:
+  activerecord:
+    models:
+      mobile_operator: "Opérateur Mobile"
+    attributes:
+      mobile_operator:
+        name: "Nom"
+        code: "Code"
+        country: "Pays"

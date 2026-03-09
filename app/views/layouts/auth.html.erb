@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Auth" %> · Langues & Metiers</title>
+    <title><%= content_for(:title) || "Auth" %> · Insertrice</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -11,7 +11,7 @@
   </head>
   <body class="min-h-screen bg-gray-50">
     <%= render "shared/flash" %>
-    <main class="min-h-screen flex items-center justify-center p-4">
+    <main class="min-h-screen flex items-center justify-center">
       <div class="w-full">
         <%= yield %>
       </div>

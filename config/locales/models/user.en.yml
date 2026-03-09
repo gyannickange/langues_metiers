@@ -1,0 +1,12 @@
+en:
+  activerecord:
+    models:
+      user: "User"
+    attributes:
+      user:
+        email: "Email address"
+        role: "Role"
+        provider: "Provider"
+        uid: "UID"
+        otp_code: "OTP Code"
+        otp_sent_at: "OTP sent at"

@@ -1,14 +1,16 @@
 Rails.application.routes.draw do
-  resources :fields, only: [ :index, :show ], param: :slug, path: "filieres"
   devise_for :users, controllers: {
     sessions: "users/sessions",
-    registrations: "users/registrations",
-    passwords: "users/passwords"
-  }, path: "", path_names: {
-    sign_in: "login",
-    sign_out: "logout",
-    sign_up: "register"
+    omniauth_callbacks: "users/omniauth_callbacks"
   }
+
+  resources :fields, only: [ :index, :show ], param: :slug
+
+  devise_scope :user do
+    post "login/request_otp", to: "users/sessions#request_otp", as: :send_otp
+    post "login/verify_otp", to: "users/sessions#verify_otp", as: :verify_otp
+  end
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -29,12 +31,40 @@ Rails.application.routes.draw do
   end
 
   resource :profile, only: [ :show, :edit, :update ]
-
+  resource :onboarding, only: [ :show, :update ], controller: "onboarding"
+  resources :careers, only: [ :index ]
   namespace :api do
     namespace :v1 do
       get "/profile", to: "profiles#show"
     end
   end
+
+  # Diagnostics
+  resources :diagnostics, only: [ :new, :show ] do
+    member do
+      get  :questionnaire
+      post :submit_bloc
+      get  :pay
+      post :process_payment
+      get  :results
+      get  :pdf_status
+      get  :download_pdf
+    end
+  end
+
+  # Pawapay waiting screen polling
+  resources :payments, only: [] do
+    member do
+      get :status
+    end
+  end
+
+  # Mobile operator list (Stimulus fetch)
+  resources :mobile_operators, only: [ :index ]
+
+  # Webhooks — CSRF exempt, handled in controller
+  post "/webhooks/stripe",  to: "webhooks/stripe#receive"
+  post "/webhooks/pawapay", to: "webhooks/pawapay#receive"
 
   namespace :admin do
     root to: "dashboard#index"
@@ -42,6 +72,11 @@ Rails.application.routes.draw do
     resources :careers
     resources :user_skills, only: [ :create, :destroy ]
     resources :skills
+
+    resources :diagnostics,      only: [ :index, :show ]
+    resources :trajectories
+    resources :questions
+    resources :mobile_operators
 
     resources :fields, path: "fields" do
       resources :roadmaps do

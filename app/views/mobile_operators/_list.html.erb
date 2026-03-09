@@ -1,0 +1,10 @@
+<%# app/views/mobile_operators/_list.html.erb %>
+<% operators.each do |op| %>
+  <label class="group relative flex items-center gap-4 p-4 border border-white/10 rounded-xl cursor-pointer hover:bg-white/10 transition-all duration-300">
+    <div class="relative flex items-center justify-center">
+      <input type="radio" name="operator_code" value="<%= op.code %>" required class="peer appearance-none w-5 h-5 border-2 border-white/20 rounded-full checked:border-primary checked:bg-primary transition-all cursor-pointer">
+      <div class="absolute inset-0 bg-primary/20 scale-0 peer-checked:scale-150 rounded-full blur-md transition-transform duration-300"></div>
+    </div>
+    <span class="text-sm font-bold text-gray-300 group-hover:text-white transition-colors"><%= op.name %></span>
+  </label>
+<% end %>

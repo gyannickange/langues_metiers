@@ -1,0 +1,12 @@
+en:
+  activerecord:
+    models:
+      payment: "Payment"
+    attributes:
+      payment:
+        user: "User"
+        diagnostic: "Diagnostic"
+        amount: "Amount"
+        status: "Status"
+        payment_method: "Payment method"
+        external_id: "External ID"

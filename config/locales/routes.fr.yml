@@ -1,0 +1,16 @@
+fr:
+  routes:
+    fields: "filieres"
+    users: "utilisateurs"
+    login: "connexion"
+    logout: "deconnexion"
+    sign_in: "connexion"
+    sign_out: "deconnexion"
+
+    diagnostics: "diagnostics"
+    payments: "paiements"
+    profile: "profil"
+    admin: "admin"
+    cle: "cle"
+    send_otp: "demander_otp"
+    verify_otp: "verifier_otp"

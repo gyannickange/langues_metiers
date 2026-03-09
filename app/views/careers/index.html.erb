@@ -1,0 +1,99 @@
+<% content_for :title, "Insertrice - Métiers" %>
+
+<% content_for :header do %>
+  <%= render 'shared/navbar' %>
+<% end %>
+
+<!-- HERO HEADER -->
+<div class="relative overflow-hidden bg-white border border-gray-100 shadow-[0_20px_50px_rgba(0,0,0,0.05)]">
+  
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-0">
+    <!-- LEFTSIDE CONTENT -->
+    <div class="p-8 md:p-16 lg:py-24 lg:pl-20 flex flex-col justify-center relative z-10 bg-white">
+      <h1 class="text-4xl md:text-5xl font-black text-secondary uppercase tracking-tighter leading-[1.05] mb-6">
+        Explorer les <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-[#d4af37]">Métiers</span>
+      </h1>
+      
+      <p class="text-lg text-gray-500 font-medium max-w-xl leading-relaxed mb-10 border-l-4 border-primary-500 pl-4">
+        Découvrez 20 métiers d'avenir dans les secteurs stratégiques, conçus pour valoriser les compétences des sciences humaines, lettres et langues.
+      </p>
+
+      <!-- CALL TO ACTION (CTA) in Hero -->
+      <div class="relative z-10 self-start">
+        <%= link_to (user_signed_in? ? new_diagnostic_path : new_user_session_path(redirect_to: new_diagnostic_path)), class: "btn-premium-secondary group" do %>
+          <span>Faire mon diagnostic</span>
+          <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
+            <svg class="w-4 h-4 text-primary-500 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </div>
+        <% end %>
+        <p class="mt-4 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em]">Trouvez le métier fait pour vous</p>
+      </div>
+    </div>
+
+    <!-- RIGHTSIDE IMAGE COMPONENT -->
+    <div class="relative h-[400px] lg:h-auto min-h-full overflow-hidden block w-full">
+      <%= image_tag "cinematic_career_hero.png", class: "w-full h-full object-cover object-center absolute inset-0" %>
+    </div>
+  </div>
+</div>
+
+<!-- METIERS (INDEX) -->
+<div class="max-w-7xl mx-auto px-4 sm:px-8 py-20 bg-[#F8F9FA] min-h-screen font-sans selection:bg-primary-500 selection:text-secondary">
+
+  <!-- CAREERS GRID (Liquid Glass Style) -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+    <% @careers.each do |career| %>
+      <div class="group relative bg-white/40 backdrop-blur-xl border border-white/60 p-8 rounded-[2rem] shadow-[0_10px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_50px_rgba(231,200,115,0.15)] hover:-translate-y-2 transition-all duration-500 overflow-hidden flex flex-col justify-between">
+        
+        <!-- Liquid Hover Effect -->
+        <div class="absolute -right-20 -bottom-20 w-48 h-48 bg-gradient-to-br from-primary-100 to-primary-300 rounded-full blur-[50px] opacity-0 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none"></div>
+
+        <div class="relative z-10 mb-8 flex-grow">
+          <div class="flex items-center space-x-4 mb-6">
+            <div class="w-12 h-12 rounded-2xl bg-secondary text-primary-500 flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform duration-500 shrink-0">
+               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+            </div>
+            <h2 class="text-xl font-black text-secondary uppercase leading-none tracking-tight group-hover:text-primary-600 transition-colors"><%= career.title %></h2>
+          </div>
+          
+          <p class="text-[15px] text-gray-500 font-medium leading-relaxed line-clamp-3 group-hover:text-gray-700 transition-colors">
+            <%= career.description %>
+          </p>
+        </div>
+
+        <div class="relative z-10 mt-auto pt-6 border-t border-gray-100 group-hover:border-primary-100 transition-colors">
+           <div class="flex items-center space-x-2 mb-3">
+              <svg class="w-4 h-4 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+              <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Filières concernées</p>
+           </div>
+           <p class="text-xs font-bold text-secondary-800 leading-snug"><%= career.sector %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- BOTTOM CTA SECTION -->
+  <div class="mt-24 bg-gradient-to-br from-secondary to-[#0e1d13] rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden shadow-2xl">
+    <!-- Decorative element -->
+    <div class="absolute left-0 top-0 opacity-10 transform -translate-x-1/4 -translate-y-1/4 pointer-events-none">
+      <svg fill="currentColor" class="w-96 h-96 text-primary-500" viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+    </div>
+    
+    <div class="relative z-10 max-w-3xl mx-auto">
+      <h2 class="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter leading-tight mb-8">
+        Prêt à découvrir <span class="text-primary-500">votre voie</span> stratégique ?
+      </h2>
+      <p class="text-gray-300 text-lg md:text-xl font-medium mb-12 leading-relaxed">
+        Passez notre diagnostic en 5 minutes pour croiser vos compétences avec les réalités du marché de l'emploi.
+      </p>
+      
+      <%= link_to (user_signed_in? ? new_diagnostic_path : new_user_session_path(redirect_to: new_diagnostic_path)), class: "btn-premium-primary group" do %>
+        <span class="text-secondary-900 font-black text-sm md:text-base uppercase tracking-[0.2em]">Démarrer mon diagnostic</span>
+        <div class="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center group-hover:bg-secondary-600/20 transition-colors">
+          <svg class="w-5 h-5 text-secondary-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+</div>

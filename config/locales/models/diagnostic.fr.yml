@@ -1,0 +1,11 @@
+fr:
+  activerecord:
+    models:
+      diagnostic: "Diagnostic"
+    attributes:
+      diagnostic:
+        user: "Utilisateur"
+        primary_profile: "Profil primaire"
+        complementary_profile: "Profil complémentaire"
+        total_score: "Score total"
+        status: "Statut"

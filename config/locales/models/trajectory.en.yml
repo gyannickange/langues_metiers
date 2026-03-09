@@ -1,0 +1,9 @@
+en:
+  activerecord:
+    models:
+      trajectory: "Trajectory"
+    attributes:
+      trajectory:
+        name: "Name"
+        description: "Description"
+        profile: "Profile"

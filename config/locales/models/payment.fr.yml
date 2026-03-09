@@ -1,0 +1,12 @@
+fr:
+  activerecord:
+    models:
+      payment: "Paiement"
+    attributes:
+      payment:
+        user: "Utilisateur"
+        diagnostic: "Diagnostic"
+        amount: "Montant"
+        status: "Statut"
+        payment_method: "Méthode de paiement"
+        external_id: "ID Externe"

@@ -1,44 +1,84 @@
-<% content_for :title, t("auth.login") %>
+<section class="min-h-screen flex items-center justify-center bg-[#fbfbfb] text-secondary font-sans relative overflow-hidden">
+  
+  <!-- Subtle decorative elements -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute -left-16 top-32 w-48 h-48 bg-primary rounded-full opacity-60 mix-blend-multiply blur-3xl"></div>
+    <div class="absolute right-1/4 bottom-10 w-64 h-64 bg-secondary-300 rounded-full opacity-20 mix-blend-multiply blur-3xl"></div>
+  </div>
 
-<div class="bg-gray-100 flex items-center justify-center min-h-screen">
-  <div class="container mx-auto p-4">
-    <div class="grid grid-cols-1 md:grid-cols-2 bg-white rounded-lg shadow-lg overflow-hidden">
-      <div class="p-8 md:p-16 flex flex-col justify-center">
-        <div class="w-full max-w-md mx-auto">
-          <h1 class="text-3xl font-bold text-gray-800 mb-2"><%= t("auth.login") %> 👋</h1>
-          <p class="text-gray-600 mb-8">Aujourd'hui est un nouveau jour. C'est votre jour. Connectez-vous pour commencer à gérer vos projets.</p>
+  <div class="w-full max-w-lg px-6 relative z-10 animate-fade-in-up">
 
-          <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-            <%= render "users/shared/error_messages", resource: resource %>
+    <!-- The Auth Card -->
+    <div class="bg-white/80 backdrop-blur-xl border border-gray-100 rounded-3xl p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+      
+      <!-- Headers -->
+      <div class="text-center mb-10">
+        <!-- Back / Home Nuanced Link -->
+        <div class="mb-6 flex justify-center">
+          <%= link_to root_path, class: "group flex items-center justify-center space-x-2 text-secondary hover:text-primary transition-colors duration-300" do %>
+            <span class="text-3xl font-extrabold tracking-tight">
+              Insertrice<span class="text-primary">.</span>
+            </span>
+          <% end %>
+        </div>
+        <p class="text-gray-500 font-light"><%= t('auth.login_subtitle') %></p>
+      </div>
 
-            <div class="mb-4">
-              <%= f.label :email, "Email", class: "block text-gray-700 text-sm font-medium mb-2" %>
-              <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "exemple@email.com", class: "w-full px-4 py-3 bg-gray-100 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
-            </div>
+      <!-- Turbo Frame for seamless Email -> OTP transition -->
+      <%= turbo_frame_tag "auth_flow" do %>
+        <!-- OAuth Providers -->
+        <div class="space-y-4">
+          <%= button_to user_google_oauth2_omniauth_authorize_path(redirect_to: params[:redirect_to]), data: { turbo: false }, class: "w-full flex items-center justify-center space-x-3 py-3.5 px-4 bg-white border border-gray-200 rounded-full hover:bg-gray-50 hover:border-gray-300 transition-all duration-300 shadow-sm text-secondary font-medium group" do %>
+            <svg class="h-5 w-5 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/><path d="M1 1h22v22H1z" fill="none"/></svg>
+            <span><%= t('auth.google_login') %></span>
 
-            <div class="mb-6">
-              <%= f.label :password, "Mot de passe", class: "block text-gray-700 text-sm font-medium mb-2" %>
-              <%= f.password_field :password, autocomplete: "current-password", placeholder: t("auth.characters_minimum", default: "8 caractères minimum"), class: "w-full px-4 py-3 bg-gray-100 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
-              <div class="text-right mt-2">
-                <%= link_to t("auth.forgot_password"), new_password_path(resource_name), class: "text-sm text-blue-600 hover:underline" %>
-              </div>
-            </div>
-
-            <%= f.submit t("auth.login"), class: "w-full bg-gray-800 text-white py-3 rounded-lg font-semibold hover:bg-gray-900 transition duration-300" %>
           <% end %>
 
-          <p class="text-center text-gray-600 mt-8">
-            Vous n'avez pas de compte ?
-            <%= link_to t("auth.register"), new_user_registration_path, class: "text-blue-600 font-medium hover:underline" %>
-          </p>
+          <%= button_to user_facebook_omniauth_authorize_path(redirect_to: params[:redirect_to]), data: { turbo: false }, class: "w-full flex items-center justify-center space-x-3 py-3.5 px-4 bg-white border border-gray-200 rounded-full hover:bg-gray-50 hover:border-gray-300 transition-all duration-300 shadow-sm text-secondary font-medium group" do %>
+            <svg class="h-5 w-5 text-[#1877F2] group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            <span><%= t('auth.facebook_login') %></span>
+
+          <% end %>
         </div>
 
-        <p class="text-center text-gray-400 text-sm mt-auto">© <%= Time.current.year %> Tous droits réservés</p>
-      </div>
+        <!-- Divider -->
+        <div class="my-8 flex items-center justify-center space-x-4">
+          <span class="h-px bg-gray-200 flex-1"></span>
+          <span class="text-sm font-medium text-gray-400 tracking-wider uppercase"><%= t('auth.or_divider') %></span>
 
-      <div class="hidden md:block">
-        <img alt="Illustration" class="w-full h-full object-cover rounded-r-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-VVsWTNIWdSUyPjydz0e61Gua5IuRwXU10WdM5K9izhsxNOd44q944w6WVtkIII0nzdnA1DckV4zvtiDBoMcR_SP-sxWBtdWPg3FGdmRhu42lZfDxo4lgUlIXao5xYap-UYbgehI27y3InZsezAwlP0hcO94fYqRtAnF739LBDB-EhiyQk9t3p4ia1pRMJJv3B2PqRM4j7JCMfaKqEN6T86bKUqx9nFwoqVmILDNKmMX6xPlzQBBHAI6r6hiPZYTTJqAknLOMKSk"/>
-      </div>
+          <span class="h-px bg-gray-200 flex-1"></span>
+        </div>
+
+        <!-- Step 1: Email Input Form -->
+        <%= form_with url: send_otp_path, method: :post, data: { turbo: true }, class: "space-y-6" do |f| %>
+          
+          <%= f.hidden_field :redirect_to, value: params[:redirect_to] %>
+
+          <div class="space-y-2">
+            <%= f.label :email, t('auth.email_label'), class: "block text-sm font-semibold text-secondary" %>
+
+            <div class="relative">
+              <%= f.email_field :email, 
+                  placeholder: t('auth.email_placeholder'),
+
+                  required: true,
+                  autocomplete: "email",
+                  class: "w-full bg-gray-50 border border-gray-200 text-secondary placeholder-gray-400 rounded-xl px-4 py-4 focus:ring-2 focus:ring-primary focus:bg-white transition-all duration-300 shadow-inner" %>
+            </div>
+          </div>
+
+          <%= f.submit t('auth.email_submit'), class: "w-full flex justify-center items-center py-4 px-4 border-transparent rounded-full shadow-lg text-[1.1rem] font-bold text-white bg-primary hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all transform hover:-translate-y-0.5 cursor-pointer" %>
+
+          
+        <% end %>
+      <% end %>
     </div>
+    
+    <!-- Footer Context -->
+    <p class="mt-8 text-center text-xs text-gray-400">
+      <%= t('auth.legal_text', terms: link_to(t('auth.terms'), "#", class: "underline hover:text-primary transition-colors"), privacy: link_to(t('auth.privacy'), "#", class: "underline hover:text-primary transition-colors")).html_safe %>
+    </p>
+
+
   </div>
-</div>
+</section>

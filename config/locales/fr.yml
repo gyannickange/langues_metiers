@@ -17,10 +17,28 @@ fr:
     forgot_password: "Mot de passe oublié ?"
     send_reset_instructions: "M’envoyer les instructions de réinitialisation"
     characters_minimum: "caractères minimum"
+    signed_in: "Connexion réussie."
+    signed_out: "Déconnexion réussie."
+    login_title: "Bon retour."
+    login_subtitle: "Connecte-toi pour accéder à ton espace stratégique."
+    google_login: "Continuer avec Google"
+    facebook_login: "Continuer avec Facebook"
+    or_divider: "Ou"
+    email_label: "Adresse e-mail"
+    email_placeholder: "ton.email@exemple.com"
+    email_submit: "Continuer avec l'e-mail"
+    legal_text: "En continuant, tu acceptes nos %{terms} et notre %{privacy}."
+    terms: "Conditions Générales"
+    privacy: "Politique de Confidentialité"
+    verify_title: "Vérifie tes e-mails"
+    verify_subtitle: "Nous avons envoyé un code de connexion à"
+    otp_placeholder: "123456"
+    otp_submit: "Vérifier le code"
+    change_email: "Modifier l'adresse e-mail"
   meta:
-    title: "Langues Metiers - Votre Passerelle vers un Avenir Multilingue et Professionnel"
+    title: "Insertrice - Votre Passerelle vers un Avenir Multilingue et Professionnel"
     description: "Découvrez votre parcours professionnel idéal en combinant compétences linguistiques et expertise métier. Programmes personnalisés, bourses et accompagnement pour une carrière réussie."
-    keywords: "Langues Metiers, carrière multilingue, formation professionnelle, bourses d'études, compétences linguistiques, développement professionnel, roadmaps personnalisés"
+    keywords: "Insertrice, carrière multilingue, formation professionnelle, bourses d'études, compétences linguistiques, développement professionnel, roadmaps personnalisés"
   fields:
     index:
       title: "Filières"
@@ -200,11 +218,87 @@ fr:
       blog: "Blog"
       about: "À propos"
       contact: "Contact"
+      contact: "Contact"
       login: "Connexion"
+      dashboard: "Tableau de Bord"
+      profile: "Profil"
+      logout: "Déconnexion"
+
     hero:
       badge: "NOUS GUIDONS VOTRE PARCOURS"
-      title: "Découvrez votre parcours professionnel idéal"
-      field_placeholder: "Choisir une filière..."
+      title_part1: "Transforme ton diplôme en"
+      title_part2: "trajectoire professionnelle"
+      title_part3: "claire et stratégique."
+      description: "Un diagnostic structuré pour identifier ton positionnement réel, ton potentiel inexploité et les métiers alignés au marché actuel — y compris dans les secteurs digitaux."
+      cta: "Faire mon diagnostic"
+    problem:
+      title: "Pourquoi tant de diplômés restent sous-valorisés ?"
+      description: "Tu as un diplôme. Tu as des compétences. Mais tu n’as pas une stratégie de positionnement claire."
+      subtitle: "Conséquences fréquentes :"
+      items:
+        - "Difficulté à identifier des débouchés précis"
+        - "CV peu différenciant"
+        - "Candidatures sans retour"
+        - "Impression de stagnation"
+      quote: "Le marché rémunère la valeur perçue et la clarté du positionnement."
+    market:
+      title: "La réalité du marché"
+      subtitle: "Aujourd'hui, les organisations recherchent des profils polyvalents et structurés."
+      features:
+        analysis: "Capacité d’analyse"
+        digital: "Compétences digitales"
+        structured: "Esprit structuré"
+        operational: "Vision opérationnelle"
+        tools: "Maîtrise des outils numériques"
+        data: "Lecture et utilisation de données"
+      quote: "Beaucoup de profils académiques possèdent ces bases, mais ne savent pas les transformer en opportunités conrètes."
+    metiers:
+      title: "Exemples de métiers accessibles après repositionnement"
+      dimensions:
+        analytic: "Dimension Analytique"
+        digital: "Dimension Digitale"
+        impact: "Impact Organisationnel"
+      footer: "Ces orientations sont proposées en fonction du profil stratégique dominant identifié par ton diagnostic."
+    solution:
+      badge: "La Solution"
+      title: "Diagnostic de Repositionnement Stratégique"
+      subtitle: "En 20 minutes seulement, change ta vision de l'avenir et obtiens une roadmap concrète pour ta carrière."
+      report: "Restitution sous forme de rapport personnalisé."
+    how_it_works:
+      title: "Comment ça fonctionne"
+      steps:
+        step1: "Questionnaire"
+        step1_desc: "Tu réponds au questionnaire structuré en 20 minutes."
+        step2: "Analyse"
+        step2_desc: "Le système analyse tes réponses selon un modèle stratégique propriétaire."
+        step3: "Rapport"
+        step3_desc: "Tu reçois immédiatement ton rapport personnalisé avec ton score et tes trajectoires."
+    target:
+      title: "À qui s'adresse ce diagnostic ?"
+      subtitle: "Que tu sois au début ou déjà en poste, ce diagnostic est l'outil indispensable pour clarifier ta valeur ajoutée."
+    pricing:
+      title: "Investis dans ta clarté"
+      subtitle: "Tarification transparente"
+      essential: "Diagnostic Essentiel"
+      premium: "Roadmap Premium"
+      order: "Commander"
+    final:
+      title: "Une trajectoire professionnelle se structure. Elle ne s’improvise pas."
+      subtitle: "Le temps est ta ressource la plus précieuse. Ne le gaspille plus dans des directions aléatoires."
+      cta: "Faire mon diagnostic stratégique maintenant"
+  diagnostics:
+    new:
+      title: "Diagnostic de Repositionnement Stratégique"
+      price_info: "Accès immédiat + rapport PDF personnalisé"
+      stripe_title: "Payer par carte bancaire"
+      stripe_submit: "Payer par carte — %{price}"
+      momo_title: "Payer par Mobile Money"
+      country: "Pays"
+      phone: "Numéro de téléphone"
+      phone_placeholder: "Ex: 0701234567"
+      operator: "Opérateur"
+      momo_submit: "Payer par Mobile Money — %{price}"
+
     why_section:
       title: "Pourquoi langue et métier ?"
       subtitle: "Une approche révolutionnaire pour votre carrière"
@@ -267,7 +361,7 @@ fr:
           rating: 5
         - name: "Ahmed Benali"
           role: "Développeur Web"
-          content: "La plateforme Langues & Métiers m'a permis de combiner ma passion pour la technologie avec l'apprentissage de nouvelles langues. Une approche révolutionnaire !"
+          content: "La plateforme Insertrice m'a permis de combiner ma passion pour la technologie avec l'apprentissage de nouvelles langues. Une approche révolutionnaire !"
           rating: 5
         - name: "Sophie Martin"
           role: "Marketing Digital"
@@ -318,4 +412,4 @@ fr:
             - "Politique de confidentialité"
             - "Mentions légales"
             - "Cookies"
-      copyright: "© 2024 Langues & Métiers. Tous droits réservés."
+      copyright: "© 2024 Insertrice. Tous droits réservés."

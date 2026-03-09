@@ -1,0 +1,30 @@
+<%# app/views/admin/trajectories/index.html.erb %>
+<div class="px-6 py-6">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-xl font-bold">Trajectoires (<%= @trajectories.count %>)</h1>
+    <%= link_to "Nouvelle", new_admin_trajectory_path, class: "bg-blue-700 text-white px-4 py-2 rounded text-sm" %>
+  </div>
+  <table class="w-full text-sm border-collapse">
+    <thead><tr class="border-b text-left text-gray-500">
+      <th class="pb-2 pr-4">Profil</th>
+      <th class="pb-2 pr-4">Axe 1</th>
+      <th class="pb-2 pr-4">Active</th>
+      <th></th>
+    </tr></thead>
+    <tbody>
+      <% @trajectories.each do |trajectory| %>
+        <tr class="border-b hover:bg-gray-50">
+          <td class="py-2 pr-4 font-medium"><%= trajectory.profile&.name %></td>
+          <td class="pr-4 text-gray-600 truncate max-w-xs"><%= trajectory.axe_1&.truncate(60) %></td>
+          <td><%= trajectory.active? ? "✓" : "—" %></td>
+          <td class="text-right">
+            <%= link_to "Modifier", edit_admin_trajectory_path(trajectory), class: "text-blue-600 mr-3 text-xs" %>
+            <%= button_to "Supprimer", admin_trajectory_path(trajectory), method: :delete,
+                  data: { turbo_confirm: "Confirmer ?" },
+                  class: "text-red-500 text-xs bg-transparent border-0 cursor-pointer" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
