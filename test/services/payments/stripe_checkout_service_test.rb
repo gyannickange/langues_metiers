@@ -3,7 +3,7 @@ require "test_helper"
 
 class Payments::StripeCheckoutServiceTest < ActiveSupport::TestCase
   def setup
-    @user       = User.create!(email: "stripe#{SecureRandom.hex(4)}@test.com", password: "password123")
+    @user       = User.create!(email: "stripe#{SecureRandom.hex(4)}@test.com", password: "password123", first_name: "Test", last_name: "User", city: "Test City", country: "CI", diploma: "Master", employment_status: "En emploi")
     @diagnostic = Diagnostic.create!(user: @user)
     @urls       = { success_url: "http://test.host/success", cancel_url: "http://test.host/cancel" }
   end

@@ -3,7 +3,7 @@ require "test_helper"
 
 class Webhooks::StripeHandlerServiceTest < ActiveSupport::TestCase
   def setup
-    @user = User.create!(email: "stripe_hook#{SecureRandom.hex(4)}@test.com", password: "password123")
+    @user = User.create!(email: "stripe_hook#{SecureRandom.hex(4)}@test.com", password: "password123", first_name: "Test", last_name: "User", city: "Test City", country: "CI", diploma: "Master", employment_status: "En emploi")
     @diagnostic = Diagnostic.create!(user: @user, status: :pending_payment)
     @payment    = @diagnostic.create_payment!(user: @user, provider: :stripe,
                                               provider_payment_id: "cs_test_abc", status: :pending)

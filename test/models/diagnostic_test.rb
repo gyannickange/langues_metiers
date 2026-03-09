@@ -2,7 +2,7 @@ require "test_helper"
 
 class DiagnosticTest < ActiveSupport::TestCase
   def setup
-    @user = User.create!(email: "diag#{SecureRandom.hex(4)}@test.com", password: "password123")
+    @user = User.create!(email: "diag#{SecureRandom.hex(4)}@test.com", password: "password123", first_name: "Test", last_name: "User", city: "Test City", country: "CI", diploma: "Master", employment_status: "En emploi")
   end
 
   test "valid with a user" do
@@ -30,8 +30,8 @@ class DiagnosticTest < ActiveSupport::TestCase
     assert_respond_to Diagnostic.new, :diagnostic_answers
   end
 
-  test "belongs_to primary_profile optionally" do
+  test "belongs_to primary_career optionally" do
     d = Diagnostic.new(user: @user)
-    assert d.valid?   # primary_profile is optional
+    assert d.valid?   # primary_career is optional
   end
 end

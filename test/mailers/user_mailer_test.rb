@@ -2,10 +2,11 @@ require "test_helper"
 
 class UserMailerTest < ActionMailer::TestCase
   test "otp_email" do
-    mail = UserMailer.otp_email
-    assert_equal "Otp email", mail.subject
-    assert_equal [ "to@example.org" ], mail.to
-    assert_equal [ "alice@insertrice.com" ], mail.from
-    assert_match "Hi", mail.body.encoded
+    user = User.new(otp_code: "123456", email: "alice@insertrice.com")
+    mail = UserMailer.with(user: user).otp_email
+
+    assert_equal "Ton code de connexion Insertrice", mail.subject
+    assert_equal [ "alice@insertrice.com" ], mail.to
+    assert_match "123456", mail.body.encoded
   end
 end
