@@ -1,5 +1,5 @@
 class Trajectory < ApplicationRecord
-  belongs_to :profile
+  belongs_to :career
 
   scope :active, -> { where(active: true) }
 end

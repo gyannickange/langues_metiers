@@ -7,8 +7,8 @@
   <% end %>
 
   <div>
-    <%= f.label :profile_id, "Profil", class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <%= f.collection_select :profile_id, @profiles, :id, :name,
+    <%= f.label :career_id, "Profil", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.collection_select :career_id, @careers, :id, :title,
           { prompt: "Choisir un profil" }, class: "w-full border rounded px-3 py-2 text-sm" %>
   </div>
   <div>

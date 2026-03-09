@@ -15,6 +15,7 @@
 ### Task 1: Add gems
 
 **Files:**
+
 - Modify: `Gemfile`
 
 **Step 1: Add to Gemfile main section**
@@ -59,6 +60,7 @@ git commit -m "feat: add stripe, prawn, prawn-table, webmock gems"
 ### Task 2: Profile migration + model
 
 **Files:**
+
 - Create: `db/migrate/TIMESTAMP_create_profiles.rb`
 - Create: `app/models/profile.rb`
 - Create: `test/models/profile_test.rb`
@@ -179,6 +181,7 @@ git commit -m "feat: add Profile model and migration"
 ### Task 3: Trajectory migration + model
 
 **Files:**
+
 - Create: `db/migrate/TIMESTAMP_create_trajectories.rb`
 - Create: `app/models/trajectory.rb`
 - Create: `test/models/trajectory_test.rb`
@@ -287,6 +290,7 @@ git commit -m "feat: add Trajectory model and migration"
 ### Task 4: Question migration + model
 
 **Files:**
+
 - Create: `db/migrate/TIMESTAMP_create_questions.rb`
 - Create: `app/models/question.rb`
 - Create: `test/models/question_test.rb`
@@ -411,6 +415,7 @@ git commit -m "feat: add Question model and migration"
 ### Task 5: Diagnostic + DiagnosticAnswer migrations + models
 
 **Files:**
+
 - Create: `db/migrate/TIMESTAMP_create_diagnostics.rb`
 - Create: `db/migrate/TIMESTAMP_create_diagnostic_answers.rb`
 - Create: `app/models/diagnostic.rb`
@@ -579,6 +584,7 @@ git commit -m "feat: add Diagnostic and DiagnosticAnswer models"
 ### Task 6: Payment + MobileOperator migrations + models
 
 **Files:**
+
 - Create: `db/migrate/TIMESTAMP_create_payments.rb`
 - Create: `db/migrate/TIMESTAMP_create_mobile_operators.rb`
 - Create: `app/models/payment.rb`
@@ -732,6 +738,7 @@ git commit -m "feat: add Payment, MobileOperator models and User associations"
 ### Task 7: Routes
 
 **Files:**
+
 - Modify: `config/routes.rb`
 
 **Step 1: Add public routes** — insert BEFORE the `namespace :admin` block:
@@ -793,6 +800,7 @@ git commit -m "feat: add diagnostic, payment, webhook, and admin routes"
 ### Task 8: Seed data
 
 **Files:**
+
 - Modify: `db/seeds.rb`
 
 **Step 1: Replace contents of db/seeds.rb**
@@ -937,6 +945,7 @@ rails db:seed
 ```
 
 Expected:
+
 ```
 ✓ 7 profils, 7 trajectoires
 ✓ 16 opérateurs mobiles
@@ -954,6 +963,7 @@ git commit -m "feat: seed 7 profiles, trajectories, and mobile operators"
 ### Task 9: ScoringService
 
 **Files:**
+
 - Create: `app/services/diagnostics/scoring_service.rb`
 - Create: `test/services/diagnostics/scoring_service_test.rb`
 
@@ -1146,6 +1156,7 @@ git commit -m "feat: add ScoringService with tiebreak logic"
 ### Task 10: Stripe checkout service
 
 **Files:**
+
 - Create: `app/services/payments/stripe_checkout_service.rb`
 - Create: `config/initializers/stripe.rb`
 - Create: `test/services/payments/stripe_checkout_service_test.rb`
@@ -1295,6 +1306,7 @@ git commit -m "feat: add Stripe checkout service"
 ### Task 11: Pawapay deposit service
 
 **Files:**
+
 - Create: `app/services/payments/pawapay_deposit_service.rb`
 - Create: `test/services/payments/pawapay_deposit_service_test.rb`
 
@@ -1466,6 +1478,7 @@ git commit -m "feat: add Pawapay deposit service"
 ### Task 12: Webhook handler services
 
 **Files:**
+
 - Create: `app/services/webhooks/stripe_handler_service.rb`
 - Create: `app/services/webhooks/pawapay_handler_service.rb`
 - Create: `test/services/webhooks/stripe_handler_service_test.rb`
@@ -1660,6 +1673,7 @@ git commit -m "feat: add Stripe and Pawapay webhook handler services"
 ### Task 13: PDF generation service + job
 
 **Files:**
+
 - Create: `app/services/diagnostics/generate_pdf_service.rb`
 - Create: `app/jobs/diagnostics/generate_pdf_job.rb`
 - Create: `test/services/diagnostics/generate_pdf_service_test.rb`
@@ -1881,6 +1895,7 @@ git commit -m "feat: add PDF generation service and Sidekiq job"
 ### Task 14: Webhook controllers
 
 **Files:**
+
 - Create: `app/controllers/webhooks/stripe_controller.rb`
 - Create: `app/controllers/webhooks/pawapay_controller.rb`
 - Create: `test/controllers/webhooks/stripe_controller_test.rb`
@@ -2002,6 +2017,7 @@ git commit -m "feat: add Stripe and Pawapay webhook controllers"
 ### Task 15: DiagnosticsController + PaymentsController
 
 **Files:**
+
 - Create: `app/controllers/diagnostics_controller.rb`
 - Create: `app/controllers/payments_controller.rb`
 - Create: `app/controllers/mobile_operators_controller.rb`
@@ -2258,6 +2274,7 @@ git commit -m "feat: add DiagnosticsController, PaymentsController, MobileOperat
 ### Task 16: Views — Checkout
 
 **Files:**
+
 - Create: `app/views/diagnostics/new.html.erb`
 - Create: `app/views/mobile_operators/_list.html.erb`
 - Create: `app/views/payments/status.html.erb`
@@ -2438,6 +2455,7 @@ git commit -m "feat: add checkout views, Pawapay waiting screen, Stimulus contro
 ### Task 17: Views — Questionnaire
 
 **Files:**
+
 - Create: `app/views/diagnostics/questionnaire.html.erb`
 - Create: `app/views/diagnostics/_question.html.erb`
 - Create: `app/helpers/diagnostics_helper.rb`
@@ -2553,6 +2571,7 @@ git commit -m "feat: add questionnaire views and helper"
 ### Task 18: Views — Results page
 
 **Files:**
+
 - Create: `app/views/diagnostics/results.html.erb`
 
 **Step 1: Create results view**
@@ -2625,6 +2644,7 @@ git commit -m "feat: add results page with PDF download and polling"
 ### Task 19: Admin controllers
 
 **Files:**
+
 - Create: `app/controllers/admin/profiles_controller.rb`
 - Create: `app/controllers/admin/trajectories_controller.rb`
 - Create: `app/controllers/admin/questions_controller.rb`
@@ -2866,6 +2886,7 @@ git commit -m "feat: add admin controllers and views for profiles, trajectories,
 ### Task 20: Pundit policies
 
 **Files:**
+
 - Create: `app/policies/diagnostic_policy.rb`
 - Create: `app/policies/profile_policy.rb`
 - Create: `app/policies/trajectory_policy.rb`
@@ -2995,11 +3016,13 @@ rails credentials:edit
 3. Click "Payer par Mobile Money"
 4. Verify redirect to waiting screen with poll animation
 5. Simulate Pawapay webhook:
+
 ```bash
 curl -X POST http://localhost:3000/webhooks/pawapay \
   -H "Content-Type: application/json" \
   -d '{"depositId":"<DEPOSIT_ID_FROM_DB>","status":"COMPLETED","amount":"3000","currency":"XOF"}'
 ```
+
 6. Verify waiting screen updates to "Paiement confirmé !"
 7. Click "Commencer le questionnaire" and complete the flow
 8. Verify PDF is generated via Sidekiq (check Sidekiq web at `/sidekiq`)
@@ -3018,20 +3041,19 @@ git commit -m "fix: smoke test corrections"
 Before deploying:
 
 1. **Set environment variables in Railway:**
+
    - `RAILS_MASTER_KEY` — from `config/master.key`
    - `REDIS_URL` — from Railway Redis service
    - `DATABASE_URL` — from Railway PostgreSQL service
-
 2. **Configure webhooks:**
+
    - Stripe Dashboard → Webhooks → Add endpoint: `https://your-app.railway.app/webhooks/stripe`
    - Select event: `checkout.session.completed`
    - Copy the signing secret to credentials
-
    - Pawapay Dashboard → Webhook URL: `https://your-app.railway.app/webhooks/pawapay`
-
 3. **Active Storage** — Railway uses ephemeral disk. Configure S3 or Cloudflare R2 for production PDF storage in `config/storage.yml` and `config/environments/production.rb`.
-
 4. **Run migrations on deploy:**
+
    ```bash
    rails db:migrate
    rails db:seed  # only first deploy

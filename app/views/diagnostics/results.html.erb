@@ -1,53 +1,215 @@
 <%# app/views/diagnostics/results.html.erb %>
-<div class="max-w-3xl mx-auto px-4 py-12">
-  <h1 class="text-2xl font-bold text-gray-900 mb-1">Vos Résultats</h1>
-  <p class="text-sm text-gray-400 mb-10">
-    Diagnostic complété le <%= l(@diagnostic.completed_at&.to_date, format: :long) rescue @diagnostic.completed_at&.to_date %>
-  </p>
+<%
+  # Helper to get score data (handling both symbol and string keys)
+  def gsd(key)
+    @diagnostic.score_data[key.to_s] || @diagnostic.score_data[key.to_sym]
+  end
 
-  <% if @diagnostic.primary_profile %>
-    <div class="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-5">
-      <div class="text-xs font-semibold text-blue-500 uppercase tracking-wide mb-1">Profil Principal</div>
-      <h2 class="text-xl font-bold text-blue-900"><%= @diagnostic.primary_profile.name %></h2>
-      <p class="text-blue-800 text-sm mt-1"><%= @diagnostic.primary_profile.description %></p>
+  rich_data = gsd(:participant_info).present?
+  participant = rich_data ? gsd(:participant_info) : {}
+
+  # Profile Data
+  primary = @diagnostic.primary_career
+  secondary = @diagnostic.complementary_career
+
+  dominant_name = primary&.title || gsd(:dominant_profile)&.dig("name") || "Stratège de projet"
+  dominant_desc = primary&.description || gsd(:dominant_profile)&.dig("description") || "Votre profil indique une forte capacité à : structurer des initiatives, coordonner des projets, organiser des ressources et transformer des idées en actions concrètes."
+  
+  secondary_name = secondary&.title || gsd(:secondary_profile)&.dig("name") || "Créateur de contenu"
+%>
+
+<div class="max-w-7xl mx-auto px-4 sm:px-8 py-10 md:py-20 bg-[#F8F9FA] min-h-screen font-sans selection:bg-primary-500 selection:text-secondary-900">
+  
+  <!-- BENTO HEADER -->
+  <div class="mb-8 md:mb-12">
+    <div class="inline-block px-4 py-1.5 bg-secondary text-primary-500 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-6 shadow-sm">
+      Rapport de Diagnostic
     </div>
-  <% end %>
-
-  <% if @diagnostic.complementary_profile %>
-    <div class="bg-gray-50 border rounded-xl p-4 mb-5">
-      <div class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Profil Complémentaire</div>
-      <h3 class="font-bold text-gray-800"><%= @diagnostic.complementary_profile.name %></h3>
+    <div class="flex flex-col xl:flex-row xl:items-end justify-between gap-8 border-b border-gray-200 pb-8">
+      <div>
+         <h1 class="text-4xl md:text-6xl font-black text-secondary-900 uppercase tracking-tighter leading-none mb-4">Repositionnement <br/><span class="text-primary-500">Stratégique</span></h1>
+         <p class="text-sm font-bold text-gray-500 uppercase tracking-widest">Émis le <%= @diagnostic.completed_at&.strftime("%d.%m.%Y") %></p>
+      </div>
+      
+      <!-- Participant specific info in mini-bento -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 xl:gap-8 w-full xl:w-auto text-left">
+        <div class="bg-white p-4 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-100 flex flex-col justify-center transition-shadow hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
+          <span class="text-[9px] text-gray-400 font-black uppercase tracking-widest mb-1">Participant</span>
+          <span class="text-sm font-bold text-secondary-900 leading-tight truncate"><%= current_user.first_name %> <%= current_user.last_name %></span>
+        </div>
+        <div class="bg-white p-4 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-100 flex flex-col justify-center transition-shadow hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
+          <span class="text-[9px] text-gray-400 font-black uppercase tracking-widest mb-1">Localisation</span>
+          <span class="text-sm font-bold text-secondary-900 leading-tight"><%= current_user.city %>, <%= current_user.country %></span>
+        </div>
+        <div class="bg-white p-4 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-100 flex flex-col justify-center transition-shadow hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
+          <span class="text-[9px] text-gray-400 font-black uppercase tracking-widest mb-1">Diplôme</span>
+          <span class="text-sm font-bold text-secondary-900 leading-tight truncate"><%= current_user.diploma %></span>
+        </div>
+        <div class="bg-primary-50/50 p-4 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-primary-100/50 flex flex-col justify-center transition-shadow hover:shadow-[0_8px_30px_rgba(231,200,115,0.15)]">
+          <span class="text-[9px] text-primary-600 font-black uppercase tracking-widest mb-1">Statut</span>
+          <span class="text-sm font-bold text-primary-900 leading-tight"><%= current_user.employment_status %></span>
+        </div>
+      </div>
     </div>
-  <% end %>
+  </div>
 
-  <% if @trajectory %>
-    <div class="mb-8">
-      <h3 class="text-lg font-bold text-gray-900 mb-4">Vos 3 Axes Stratégiques</h3>
-      <% [
-          ["Institutionnel / ONG",      @trajectory.axe_1],
-          ["Secteur privé / hybride",   @trajectory.axe_2],
-          ["Spécialisation long terme", @trajectory.axe_3]
-         ].each_with_index do |(title, text), i| %>
-        <div class="mb-4 pl-4 border-l-4 border-blue-500">
-          <div class="font-semibold text-gray-800 text-sm">Axe <%= i + 1 %> — <%= title %></div>
-          <p class="text-gray-600 text-sm mt-0.5"><%= text %></p>
+  <!-- BENTO GRID MAIN AREA -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
+    
+    <!-- DOMINANT PROFILE (LARGE HERO CARD) -->
+    <div class="lg:col-span-8 bg-secondary rounded-[2.5rem] p-8 md:p-14 relative overflow-hidden shadow-[0_15px_40px_rgba(26,54,93,0.15)] flex flex-col justify-between group">
+      <!-- Decorative element -->
+      <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-primary-500 rounded-full blur-[100px] opacity-20 group-hover:opacity-40 transition-opacity duration-1000 pointer-events-none"></div>
+      
+      <div>
+        <div class="flex items-center space-x-3 mb-8">
+          <div class="w-2 h-2 rounded-full bg-primary-500"></div>
+          <span class="text-[10px] font-black text-white uppercase tracking-[0.3em]">Profil Dominant</span>
+        </div>
+        
+        <h2 class="text-5xl md:text-6xl font-black text-white uppercase tracking-tighter leading-[0.9] mb-8 relative z-10 drop-shadow-md">
+          <%= dominant_name %>
+        </h2>
+        
+        <p class="text-lg md:text-xl font-medium text-gray-300 leading-relaxed max-w-2xl relative z-10 border-l-4 border-primary-500 pl-6 py-2 mb-12">
+          <%= dominant_desc %>
+        </p>
+      </div>
+
+      <div class="relative z-10">
+        <p class="text-[10px] font-black text-primary-400 uppercase tracking-widest mb-4">Terrains d'expression favorisés</p>
+        <div class="flex flex-wrap gap-2 md:gap-3">
+          <% ["ONG", "Institutions", "Entreprises", "International", "Startups"].each do |env| %>
+            <div class="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-[10px] md:text-xs font-bold text-white uppercase tracking-widest hover:bg-primary-500 hover:text-secondary-900 hover:border-primary-500 transition-colors cursor-default">
+              <%= env %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECONDARY PROFILE (TALL SIDE CARD) -->
+    <div class="lg:col-span-4 bg-white rounded-[2.5rem] p-8 md:p-12 shadow-[0_15px_40px_rgba(0,0,0,0.03)] border border-gray-100 flex flex-col relative overflow-hidden group hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] transition-shadow duration-500">
+      <div class="absolute top-0 right-0 w-32 h-32 bg-gray-50 rounded-bl-[100px] -z-10 group-hover:bg-primary-50/50 transition-colors duration-500"></div>
+      
+      <div class="flex items-center space-x-3 mb-8">
+        <div class="w-2 h-2 rounded-full bg-gray-300 group-hover:bg-primary-500 transition-colors"></div>
+        <span class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em]">Profil Secondaire</span>
+      </div>
+      
+      <h3 class="text-3xl md:text-4xl font-black text-secondary-900 uppercase tracking-tighter leading-tight mb-6 mt-auto">
+        <%= secondary_name %>
+      </h3>
+      
+      <p class="text-base text-gray-500 leading-relaxed font-medium mb-10 flex-grow">
+        Votre profil secondaire apporte une capacité complémentaire analytique et stratégique majeure.
+      </p>
+
+      <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 group-hover:border-primary-200 transition-colors">
+        <p class="text-[11px] font-black text-secondary-800 uppercase tracking-widest leading-relaxed">
+          <span class="text-primary-500 mr-2 text-sm">✚</span> Synergie puissante : <span class="font-medium text-gray-500 tracking-normal normal-case block mt-1">Vous combinez efficacement la vision globale et l'exigence opérationnelle.</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- FORCES (BENTO BLOCK) -->
+    <div class="lg:col-span-6 bg-white rounded-[2.5rem] p-8 md:p-12 shadow-[0_15px_40px_rgba(0,0,0,0.03)] border border-gray-100 flex flex-col hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] transition-shadow">
+      <div class="flex items-center space-x-4 mb-10">
+        <div class="p-3 bg-primary-50 rounded-xl text-primary-500 shadow-inner">
+           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        </div>
+        <h2 class="text-2xl md:text-3xl font-black text-secondary-900 uppercase tracking-tighter">Forces Principales</h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-grow content-start">
+        <% ["Analyse Stratégique", "Structuration Projet", "Communication Impactante", "Intelligence Sociale"].each do |force| %>
+          <div class="flex items-center space-x-4 p-4 bg-gray-50/50 rounded-2xl border border-gray-100 hover:border-primary-300 hover:bg-white hover:shadow-md transition-all group cursor-default">
+            <div class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center shrink-0 border border-gray-100 group-hover:text-primary-500 transition-colors">
+               <svg class="w-5 h-5 text-gray-400 group-hover:text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <span class="text-xs md:text-sm font-black text-secondary-900 uppercase tracking-tight"><%= force %></span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- AXES DE DEVELOPPEMENT (BENTO BLOCK) -->
+    <div class="lg:col-span-6 bg-gradient-to-br from-primary-500 to-[#d4af37] rounded-[2.5rem] p-8 md:p-12 shadow-[0_15px_40px_rgba(231,200,115,0.3)] flex flex-col overflow-hidden relative group">
+      <!-- Decorative graphic in background -->
+      <div class="absolute right-0 top-0 opacity-10 transform translate-x-1/4 -translate-y-1/4 group-hover:scale-110 transition-transform duration-700 pointer-events-none">
+        <svg fill="currentColor" class="w-64 h-64 text-secondary-900" viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+      </div>
+
+      <div class="flex items-center space-x-4 mb-10 relative z-10">
+        <div class="p-3 bg-secondary rounded-xl text-primary-500 shadow-lg">
+           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+        </div>
+        <h2 class="text-2xl md:text-3xl font-black text-secondary-900 uppercase tracking-tighter">Axes de Développement</h2>
+      </div>
+
+      <div class="flex flex-col gap-4 relative z-10 flex-grow justify-center">
+        <% ["Alignement du projet professionnel", "Maîtrise technologique", "Visibilité et Personal Branding"].each do |axe| %>
+          <div class="flex items-center space-x-5 p-5 bg-white/20 backdrop-blur-md rounded-2xl border border-white/20 hover:bg-white/30 transition-colors shadow-sm cursor-default">
+            <div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center shrink-0 shadow-inner">
+               <svg class="w-5 h-5 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </div>
+            <span class="text-secondary-900 font-bold text-sm md:text-[15px] leading-tight"><%= axe %></span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUOTE SECTION -->
+  <div class="mt-20 mb-20 md:mb-32 px-4 text-center">
+    <div class="mb-8 flex justify-center text-primary-500 drop-shadow-[0_0_15px_rgba(231,200,115,0.4)]">
+      <svg class="w-12 h-12 md:w-16 md:h-16" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C19.5693 16 20.017 15.5523 20.017 15V9C20.017 8.44772 19.5693 8 19.017 8H14.017C13.4647 8 13.017 8.44772 13.017 9V15C13.017 16.5161 12.0381 17.8037 10.655 18.2533L9.01705 18.7849L8.35515 16.3473L10.0171 15.8279C10.5901 15.644 11.0171 15.1165 11.0171 14.5V9C11.0171 7.34315 12.3602 6 14.0171 6H19.0171C20.6739 6 22.0171 7.34315 22.0171 9V15C22.0171 18.3137 19.3308 21 16.0171 21H14.0171ZM3.01705 21L3.01705 18C3.01705 16.8954 3.91242 16 5.01705 16H8.01705C8.56933 16 9.01705 15.5523 9.01705 15V9C9.01705 8.44772 8.56933 8 8.01705 8H3.01705C2.46477 8 2.01705 8.44772 2.01705 9V15C2.01705 16.5161 1.03814 17.8037 -0.344937 18.2533L-1.9829 18.7849L-2.6448 16.3473L-0.98285 15.8279C-0.409874 15.644 0.0170505 15.1165 0.0170505 14.5V9C0.0170505 7.34315 1.3602 6 3.01705 6H8.01705C9.67391 6 11.0171 7.34315 11.0171 9V15C11.0171 18.3137 8.33076 21 5.01705 21H3.01705Z" /></svg>
+    </div>
+    <blockquote class="text-3xl md:text-5xl lg:text-6xl font-black text-secondary-900 leading-[1.1] tracking-tighter mb-10 max-w-4xl mx-auto uppercase">
+      "Le repositionnement est le début d'une <span class="bg-secondary-900 text-primary-500 px-4 md:px-6 py-1 md:py-2 rounded-[1.5rem] inline-block shadow-xl transform -rotate-2">expertise 4.0</span>"
+    </blockquote>
+    <div class="inline-flex items-center space-x-6">
+      <div class="w-8 h-[2px] bg-gray-300"></div>
+      <cite class="text-gray-400 font-black uppercase tracking-[0.4em] not-italic text-[9px] md:text-[10px]">L'Équipe d'Analyse L&M 4.0</cite>
+      <div class="w-8 h-[2px] bg-gray-300"></div>
+    </div>
+  </div>
+
+  <!-- DOWNLOAD ACTION -->
+  <div class="flex justify-center pb-20">
+    <div class="w-full max-w-xl px-4">
+      <% if @diagnostic.pdf_generated? %>
+        <%= link_to download_pdf_diagnostic_path(@diagnostic), class: "group flex items-center justify-between w-full p-4 md:p-6 bg-secondary-900 rounded-[2.5rem] hover:bg-primary-500 hover:scale-[1.03] hover:shadow-[0_20px_50px_rgba(26,54,93,0.3)] transition-all duration-500 border border-white/10" do %>
+          <div class="flex items-center space-x-5 md:space-x-6 ml-2 md:ml-4">
+             <div class="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-white/10 flex items-center justify-center group-hover:bg-secondary-900/20 transition-colors shadow-inner">
+               <svg class="w-6 h-6 md:w-8 md:h-8 text-primary-500 group-hover:text-secondary-900 transform group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+             </div>
+             <div class="text-left">
+                <p class="text-[10px] md:text-[11px] text-primary-500 group-hover:text-secondary-900/70 font-black uppercase tracking-[0.3em] font-mono mb-1">Dossier Complet</p>
+                <p class="text-white group-hover:text-secondary-900 font-black text-xl md:text-2xl uppercase tracking-tighter leading-none drop-shadow-sm">Télécharger PDF</p>
+             </div>
+          </div>
+          <div class="flex w-12 h-12 rounded-full border border-white/20 group-hover:border-secondary-900/20 items-center justify-center mr-2 md:mr-4">
+            <svg class="w-5 h-5 text-white group-hover:text-secondary-900 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+          </div>
+        <% end %>
+      <% else %>
+        <div id="pdf-status" class="bg-white p-10 rounded-[2.5rem] border-2 border-dashed border-primary-200 shadow-sm text-center"
+             data-controller="poll"
+             data-poll-url-value="<%= pdf_status_diagnostic_path(@diagnostic, format: :json) %>"
+             data-poll-interval-value="3000">
+          <div class="flex flex-col items-center space-y-6">
+            <div class="relative">
+              <div class="animate-ping absolute inset-0 rounded-full bg-primary-500 opacity-20"></div>
+              <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-primary-500 relative"></div>
+            </div>
+            <div>
+              <p class="text-secondary-900 font-black uppercase tracking-widest text-sm mb-1">Génération en cours</p>
+              <p class="text-gray-400 text-[10px] font-bold uppercase tracking-widest">Création de la maquette HD...</p>
+            </div>
+          </div>
         </div>
       <% end %>
     </div>
-  <% end %>
-
-  <div class="mt-10 p-6 bg-gray-50 rounded-xl text-center">
-    <% if @diagnostic.pdf_generated? %>
-      <%= link_to "⬇ Télécharger mon rapport PDF",
-            download_pdf_diagnostic_path(@diagnostic),
-            class: "inline-block bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-800" %>
-    <% else %>
-      <div id="pdf-status" data-controller="poll"
-           data-poll-url-value="<%= pdf_status_diagnostic_path(@diagnostic, format: :json) %>"
-           data-poll-interval-value="3000">
-        <p class="text-gray-500 mb-2">Votre rapport PDF est en cours de génération…</p>
-        <div class="animate-pulse text-blue-600 text-sm">Veuillez patienter</div>
-      </div>
-    <% end %>
   </div>
 </div>

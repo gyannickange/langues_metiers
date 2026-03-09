@@ -1,5 +1,6 @@
-# app/services/diagnostics/scoring_service.rb
 module Diagnostics
+  # Service responsible for calculating diagnostic scores and determining
+  # the primary and complementary profiles based on user answers.
   class ScoringService
     def self.call(diagnostic)
       new(diagnostic).call
@@ -15,9 +16,9 @@ module Diagnostics
 
       @diagnostic.update!(
         score_data:              scores,
-        primary_profile:         primary,
-        complementary_profile:   complementary,
-        status:                  :completed,
+        primary_career:          primary,
+        complementary_career:    complementary,
+        status:                  :pending_payment,
         completed_at:            Time.current
       )
     end
@@ -28,7 +29,7 @@ module Diagnostics
       scored = @diagnostic.diagnostic_answers
         .joins(:question)
         .where(questions: { scored: true })
-        .where.not(profile_dimension: [nil, ""])
+        .where.not(profile_dimension: [ nil, "" ])
 
       scores = Hash.new(0)
       scored.each { |a| scores[a.profile_dimension] += a.points_awarded.to_i }
@@ -36,7 +37,7 @@ module Diagnostics
     end
 
     def determine_profiles(scores)
-      return [nil, nil] if scores.empty?
+      return [ nil, nil ] if scores.empty?
 
       sorted    = scores.sort_by { |_, v| -v }
       top_score = sorted.first[1]
@@ -45,7 +46,7 @@ module Diagnostics
       primary_slug = tied.size > 1 ? resolve_tiebreak(tied) : tied.first
       secondary_slug = sorted.find { |slug, _| slug != primary_slug }&.first
 
-      [Profile.find_by(slug: primary_slug), Profile.find_by(slug: secondary_slug)]
+      [ Career.behavioral.find_by(slug: primary_slug), Career.behavioral.find_by(slug: secondary_slug) ]
     end
 
     def resolve_tiebreak(tied_slugs)

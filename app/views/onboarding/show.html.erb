@@ -1,0 +1,98 @@
+<% content_for :title, "Finalisez votre inscription" %>
+
+<div class="min-h-screen bg-[#F8F9FA] font-sans selection:bg-primary-500 selection:text-secondary flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-xl">
+    <!-- Logo -->
+    <div class="flex justify-center mb-8">
+      <%= link_to root_path, class: "flex items-center group" do %>
+        <span class="text-3xl font-extrabold text-secondary tracking-tight">
+          Insertrice<span class="text-primary">.</span>
+        </span>
+      <% end %>
+    </div>
+
+    <!-- Main Card -->
+    <div class="bg-white py-12 px-8 sm:px-12 shadow-[0_20px_50px_rgba(0,0,0,0.05)] rounded-[2rem] border border-gray-100 relative overflow-hidden">
+      
+      <!-- Decorative Elements -->
+      <div class="absolute -top-24 -right-24 w-48 h-48 bg-gradient-to-br from-primary-100 to-primary-300 rounded-full blur-[40px] opacity-40 pointer-events-none"></div>
+      <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-gradient-to-tr from-secondary/5 to-secondary/10 rounded-full blur-[40px] pointer-events-none"></div>
+
+      <div class="relative z-10 text-center mb-10">
+        <h2 class="text-3xl font-black text-secondary uppercase tracking-tighter leading-tight mb-3">
+          Finalisez votre <span class="text-primary-500">profil</span>
+        </h2>
+        <p class="text-gray-500 text-sm font-medium">
+          Ces informations nous permettront de personnaliser votre expérience et votre diagnostic.
+        </p>
+      </div>
+
+      <div class="relative z-10">
+        <%= form_with model: current_user, url: onboarding_path, method: :patch, local: true, class: "space-y-6" do |f| %>
+          
+          <% if current_user.errors.any? %>
+            <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-r-lg">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <h3 class="text-sm font-medium text-red-800">Il y a eu des erreurs avec votre soumission</h3>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <!-- Prénom -->
+            <div>
+              <%= f.label :first_name, "Prénom", class: "block text-[11px] font-black text-gray-400 uppercase tracking-widest mb-2" %>
+              <%= f.text_field :first_name, required: true, class: "block w-full rounded-xl border-gray-200 bg-gray-50/50 py-3 px-4 text-gray-900 focus:bg-white focus:border-primary-500 focus:ring-primary-500 sm:text-sm transition-colors shadow-sm", placeholder: "Ex: Aminata" %>
+            </div>
+
+            <!-- Nom -->
+            <div>
+              <%= f.label :last_name, "Nom", class: "block text-[11px] font-black text-gray-400 uppercase tracking-widest mb-2" %>
+              <%= f.text_field :last_name, required: true, class: "block w-full rounded-xl border-gray-200 bg-gray-50/50 py-3 px-4 text-gray-900 focus:bg-white focus:border-primary-500 focus:ring-primary-500 sm:text-sm transition-colors shadow-sm", placeholder: "Ex: Diallo" %>
+            </div>
+            
+            <!-- Pays -->
+            <div>
+              <%= f.label :country, "Pays", class: "block text-[11px] font-black text-gray-400 uppercase tracking-widest mb-2" %>
+              <%= f.text_field :country, required: true, class: "block w-full rounded-xl border-gray-200 bg-gray-50/50 py-3 px-4 text-gray-900 focus:bg-white focus:border-primary-500 focus:ring-primary-500 sm:text-sm transition-colors shadow-sm", placeholder: "Ex: Côte d'Ivoire" %>
+            </div>
+
+            <!-- Ville -->
+            <div>
+              <%= f.label :city, "Ville", class: "block text-[11px] font-black text-gray-400 uppercase tracking-widest mb-2" %>
+              <%= f.text_field :city, required: true, class: "block w-full rounded-xl border-gray-200 bg-gray-50/50 py-3 px-4 text-gray-900 focus:bg-white focus:border-primary-500 focus:ring-primary-500 sm:text-sm transition-colors shadow-sm", placeholder: "Ex: Abidjan" %>
+            </div>
+
+            <!-- Diplôme -->
+            <div class="sm:col-span-2">
+              <%= f.label :diploma, "Diplôme principal", class: "block text-[11px] font-black text-gray-400 uppercase tracking-widest mb-2" %>
+              <%= f.select :diploma, ["Baccalauréat", "Licence", "Master", "Doctorat", "Autres diplômes", "Autodidacte"], { prompt: "Sélectionnez votre plus haut niveau d'étude" }, { required: true, class: "block w-full rounded-xl border-gray-200 bg-gray-50/50 py-3 px-4 text-gray-900 focus:bg-white focus:border-primary-500 focus:ring-primary-500 sm:text-sm transition-colors shadow-sm" } %>
+            </div>
+
+            <!-- Situation Actuelle -->
+            <div class="sm:col-span-2">
+              <%= f.label :employment_status, "Situation actuelle", class: "block text-[11px] font-black text-gray-400 uppercase tracking-widest mb-2" %>
+              <%= f.select :employment_status, ["Étudiant(e)", "En recherche d'emploi", "En emploi", "Freelance / Indépendant(e)", "Entrepreneur(e)"], { prompt: "Sélectionnez votre situation" }, { required: true, class: "block w-full rounded-xl border-gray-200 bg-gray-50/50 py-3 px-4 text-gray-900 focus:bg-white focus:border-primary-500 focus:ring-primary-500 sm:text-sm transition-colors shadow-sm" } %>
+            </div>
+          </div>
+
+          <div class="pt-6">
+            <button type="submit" class="w-full btn-premium-primary group flex justify-center py-4">
+              <span class="text-secondary-900 font-black text-sm uppercase tracking-[0.2em]">Enregistrer et continuer</span>
+              <div class="ml-3 w-6 h-6 rounded-full bg-secondary/20 flex items-center justify-center group-hover:bg-secondary-600/20 transition-colors">
+                <svg class="w-4 h-4 text-secondary-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+              </div>
+            </button>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_28_013823) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_09_180447) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -52,6 +52,12 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_28_013823) do
     t.jsonb "required_skills"
     t.text "recommended_path"
     t.string "sector"
+    t.string "slug"
+    t.string "kind", default: "behavioral"
+    t.jsonb "key_skills", default: []
+    t.text "first_action"
+    t.text "premium_pitch"
+    t.index ["slug"], name: "index_careers_on_slug", unique: true, where: "(slug IS NOT NULL)"
   end
 
   create_table "categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -86,8 +92,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_28_013823) do
     t.uuid "user_id", default: -> { "gen_random_uuid()" }, null: false
     t.integer "status", default: 0, null: false
     t.integer "payment_provider"
-    t.uuid "primary_profile_id"
-    t.uuid "complementary_profile_id"
+    t.uuid "primary_career_id"
+    t.uuid "complementary_career_id"
     t.jsonb "score_data", default: {}
     t.boolean "pdf_generated", default: false, null: false
     t.datetime "paid_at"
@@ -147,18 +153,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_28_013823) do
     t.index ["user_id"], name: "index_payments_on_user_id"
   end
 
-  create_table "profiles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name", null: false
-    t.string "slug", null: false
-    t.text "description"
-    t.jsonb "key_skills", default: []
-    t.text "first_action"
-    t.text "premium_pitch"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["slug"], name: "index_profiles_on_slug", unique: true
-  end
-
   create_table "questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "bloc", null: false
     t.text "text", null: false
@@ -210,14 +204,14 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_28_013823) do
   end
 
   create_table "trajectories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "profile_id", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "career_id", default: -> { "gen_random_uuid()" }, null: false
     t.text "axe_1"
     t.text "axe_2"
     t.text "axe_3"
     t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["profile_id"], name: "index_trajectories_on_profile_id"
+    t.index ["career_id"], name: "index_trajectories_on_career_id"
   end
 
   create_table "user_skills", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -243,6 +237,12 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_28_013823) do
     t.string "uid"
     t.string "otp_code"
     t.datetime "otp_sent_at"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "city"
+    t.string "country"
+    t.string "diploma"
+    t.string "employment_status"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -253,15 +253,15 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_28_013823) do
   add_foreign_key "categories_skills", "skills"
   add_foreign_key "diagnostic_answers", "diagnostics"
   add_foreign_key "diagnostic_answers", "questions"
-  add_foreign_key "diagnostics", "profiles", column: "complementary_profile_id"
-  add_foreign_key "diagnostics", "profiles", column: "primary_profile_id"
+  add_foreign_key "diagnostics", "careers", column: "complementary_career_id"
+  add_foreign_key "diagnostics", "careers", column: "primary_career_id"
   add_foreign_key "diagnostics", "users"
   add_foreign_key "payments", "diagnostics"
   add_foreign_key "payments", "users"
   add_foreign_key "roadmap_fields", "fields"
   add_foreign_key "roadmap_fields", "roadmaps"
   add_foreign_key "roadmap_steps", "roadmaps"
-  add_foreign_key "trajectories", "profiles"
+  add_foreign_key "trajectories", "careers"
   add_foreign_key "user_skills", "skills"
   add_foreign_key "user_skills", "users"
 end

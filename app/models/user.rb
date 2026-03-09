@@ -12,6 +12,12 @@ class User < ApplicationRecord
   has_many :diagnostics, dependent: :destroy
   has_many :payments,    dependent: :destroy
 
+  def onboarded?
+    return true if admin?
+
+    first_name.present? && last_name.present? && city.present? && country.present? && diploma.present? && employment_status.present?
+  end
+
   def generate_otp!
     self.otp_code = rand(100_000..999_999).to_s
     self.otp_sent_at = Time.current

@@ -14,13 +14,13 @@ module Diagnostics
 
     def initialize(diagnostic)
       @d       = diagnostic
-      @primary = diagnostic.primary_profile
-      @second  = diagnostic.complementary_profile
+      @primary = diagnostic.primary_career
+      @second  = diagnostic.complementary_career
       @user    = diagnostic.user
     end
 
     def call
-      pdf = Prawn::Document.new(page_size: "A4", margin: [40, 50])
+      pdf = Prawn::Document.new(page_size: "A4", margin: [ 40, 50 ])
       build(pdf)
       attach(pdf.render)
     end
@@ -56,7 +56,7 @@ module Diagnostics
       return unless @primary
       heading(pdf, "Votre Profil Principal")
       score = @d.score_data[@primary.slug].to_i
-      pdf.text "#{@primary.name} — #{score} point(s)", size: 12, style: :bold, color: TEXT
+      pdf.text "#{@primary.title} — #{score} point(s)", size: 12, style: :bold, color: TEXT
       pdf.text @primary.description.to_s, size: 11, color: TEXT
     end
 
@@ -64,7 +64,7 @@ module Diagnostics
       return unless @second
       heading(pdf, "Profil Complémentaire")
       score = @d.score_data[@second.slug].to_i
-      pdf.text "#{@second.name} — #{score} point(s)", size: 11, color: TEXT
+      pdf.text "#{@second.title} — #{score} point(s)", size: 11, color: TEXT
     end
 
     def trajectories_section(pdf)
@@ -72,9 +72,9 @@ module Diagnostics
       return unless trajectory
       heading(pdf, "Vos 3 Axes Stratégiques")
       [
-        ["Axe 1 — Institutionnel / ONG",      trajectory.axe_1],
-        ["Axe 2 — Secteur privé / hybride",   trajectory.axe_2],
-        ["Axe 3 — Spécialisation long terme", trajectory.axe_3]
+        [ "Axe 1 — Institutionnel / ONG",      trajectory.axe_1 ],
+        [ "Axe 2 — Secteur privé / hybride",   trajectory.axe_2 ],
+        [ "Axe 3 — Spécialisation long terme", trajectory.axe_3 ]
       ].each_with_index do |(title, text), i|
         pdf.text "#{i + 1}. #{title}", size: 11, style: :bold, color: TEXT
         pdf.text text.to_s, size: 11, color: TEXT
@@ -113,7 +113,6 @@ module Diagnostics
         filename:     "diagnostic-#{@d.id}.pdf",
         content_type: "application/pdf"
       )
-      @d.update!(pdf_generated: true)
     end
   end
 end

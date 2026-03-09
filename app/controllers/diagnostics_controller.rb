@@ -1,17 +1,21 @@
 # app/controllers/diagnostics_controller.rb
 class DiagnosticsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_diagnostic, only: [ :show, :questionnaire, :submit_bloc, :results, :pdf_status, :download_pdf ]
-  before_action :require_paid!,      only: [ :questionnaire, :submit_bloc ]
-  before_action :require_completed!, only: [ :results, :pdf_status, :download_pdf ]
+  before_action :set_diagnostic, only: [ :show, :questionnaire, :submit_bloc, :pay, :process_payment, :results, :pdf_status, :download_pdf ]
+  before_action :require_paid!,      only: [ :results, :pdf_status, :download_pdf ]
 
   def new
+    @diagnostic = current_user.diagnostics.create!(status: :in_progress)
+    redirect_to questionnaire_diagnostic_path(@diagnostic)
+  end
+
+  def pay
     @mobile_operators = MobileOperator.active.group_by(&:country_code)
     @default_country  = detect_country
   end
 
-  def create
-    @diagnostic = current_user.diagnostics.create!(payment_provider: payment_provider_param)
+  def process_payment
+    @diagnostic.update!(payment_provider: payment_provider_param)
 
     if !Rails.env.production?
       # Simulation de paiement en local (0 XOF)
@@ -22,7 +26,7 @@ class DiagnosticsController < ApplicationController
         provider_payment_id: "dev_payment_#{SecureRandom.hex(4)}",
         status: :confirmed
       )
-      redirect_to questionnaire_diagnostic_path(@diagnostic), notice: "Paiement simulé avec succès (0 XOF)"
+      redirect_to results_diagnostic_path(@diagnostic), notice: "Paiement simulé avec succès (0 XOF)"
       return
     end
 
@@ -34,9 +38,10 @@ class DiagnosticsController < ApplicationController
 
   def show
     redirect_to case @diagnostic.status
-    when "paid", "in_progress" then questionnaire_diagnostic_path(@diagnostic)
-    when "completed" then results_diagnostic_path(@diagnostic)
-    else new_diagnostic_path
+    when "in_progress" then questionnaire_diagnostic_path(@diagnostic)
+    when "pending_payment" then pay_diagnostic_path(@diagnostic)
+    when "paid", "completed" then results_diagnostic_path(@diagnostic)
+    else root_path
     end
   end
 
@@ -66,7 +71,7 @@ class DiagnosticsController < ApplicationController
 
     if bloc_number >= 5
       Diagnostics::ScoringService.call(@diagnostic)
-      redirect_to results_diagnostic_path(@diagnostic)
+      redirect_to pay_diagnostic_path(@diagnostic)
     else
       redirect_to questionnaire_diagnostic_path(@diagnostic, bloc: bloc_number + 1)
     end
@@ -75,7 +80,7 @@ class DiagnosticsController < ApplicationController
   def results
     @trajectory = @diagnostic.primary_profile&.active_trajectory
 
-    if @diagnostic.provider_stripe? && !@diagnostic.pdf_generated?
+    unless @diagnostic.pdf_generated?
       Diagnostics::GeneratePdfService.call(@diagnostic)
       @diagnostic.reload
     end
@@ -102,13 +107,9 @@ class DiagnosticsController < ApplicationController
   end
 
   def require_paid!
-    unless @diagnostic.paid? || @diagnostic.in_progress? || @diagnostic.completed?
-      redirect_to new_diagnostic_path
+    unless @diagnostic.paid? || @diagnostic.completed?
+      redirect_to pay_diagnostic_path(@diagnostic)
     end
-  end
-
-  def require_completed!
-    redirect_to questionnaire_diagnostic_path(@diagnostic) unless @diagnostic.completed?
   end
 
   def payment_provider_param
@@ -118,15 +119,14 @@ class DiagnosticsController < ApplicationController
   def handle_stripe_payment
     result = Payments::StripeCheckoutService.call(
       diagnostic:  @diagnostic,
-      success_url: questionnaire_diagnostic_url(@diagnostic),
-      cancel_url:  new_diagnostic_url
+      success_url: results_diagnostic_url(@diagnostic),
+      cancel_url:  pay_diagnostic_url(@diagnostic)
     )
 
     if result[:success]
       redirect_to result[:url], allow_other_host: true
     else
-      @diagnostic.destroy
-      redirect_to new_diagnostic_path, alert: result[:error]
+      redirect_to pay_diagnostic_path(@diagnostic), alert: result[:error]
     end
   end
 
@@ -140,8 +140,7 @@ class DiagnosticsController < ApplicationController
     if result[:success]
       redirect_to status_payment_path(@diagnostic.payment)
     else
-      @diagnostic.destroy
-      redirect_to new_diagnostic_path, alert: result[:error]
+      redirect_to pay_diagnostic_path(@diagnostic), alert: result[:error]
     end
   end
 
