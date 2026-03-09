@@ -1,5 +1,6 @@
 <!-- Hero Section -->
 <% content_for :header do %>
+  <%= render 'shared/navbar' %>
   <%= render 'shared/cle_header', show_logo: true, show_icon: true, theme: :cle %>
 <% end %>
 
@@ -13,16 +14,16 @@
       <div class="grid lg:grid-cols-2 gap-12 items-center">
         <!-- Image gauche -->
         <div class="relative">
-          <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
-              alt="Vision CLE" 
-              class="rounded-2xl shadow-xl w-full">
+          <%= image_tag "cle-vision-women.png", 
+              alt: "Vision CLE", 
+              class: "rounded-2xl shadow-xl w-full" %>
           <div class="absolute inset-0 bg-gradient-to-t from-secondary/20 to-transparent rounded-2xl"></div>
         </div>
         
         <!-- Texte droite -->
         <div class="space-y-6">
           <div class="space-y-4">
-            <h2 class="text-4xl lg:text-5xl font-bold text-secondary-600">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-secondary">
               Notre Vision
             </h2>
             <p class="text-lg text-gray-600 leading-relaxed">
@@ -33,17 +34,6 @@
               Notre mission est de créer un écosystème où les femmes entrepreneures peuvent s'épanouir, 
               innover et impacter positivement leur communauté tout en construisant des entreprises durables.
             </p>
-          </div>
-          
-          <div class="grid grid-cols-2 gap-6">
-            <div class="text-center p-6 bg-primary-50 rounded-xl">
-              <div class="text-2xl font-bold text-primary mb-2">500+</div>
-              <div class="text-sm text-gray-600">Femmes accompagnées</div>
-            </div>
-            <div class="text-center p-6 bg-secondary-50 rounded-xl">
-              <div class="text-2xl font-bold text-secondary-600 mb-2">85%</div>
-              <div class="text-sm text-gray-600">Taux de réussite</div>
-            </div>
           </div>
         </div>
       </div>
@@ -56,25 +46,18 @@
       <div class="grid lg:grid-cols-2 gap-12 items-center">
         <!-- Image gauche -->
         <div class="relative order-1 lg:order-2">
-          <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
-              alt="Programme CLE" 
-              class="rounded-3xl shadow-2xl w-full">
-          <!-- Floating card -->
-          <div class="absolute -bottom-6 -right-6 bg-white p-6 rounded-xl shadow-lg">
-            <div class="text-center">
-              <div class="text-2xl font-bold text-primary">3</div>
-              <div class="text-sm text-gray-600">Mois intenses</div>
-            </div>
-          </div>
+          <%= image_tag "cle-program-women.png", 
+              alt: "Programme CLE", 
+              class: "rounded-3xl shadow-2xl w-full" %>
         </div>
         
         <!-- Contenu droite -->
         <div class="space-y-8 order-2 lg:order-1">
           <div class="space-y-4">
-            <div class="inline-block bg-secondary/20 text-secondary-600 text-sm font-semibold px-4 py-2 rounded-full">
+            <div class="inline-block bg-secondary/20 text-secondary text-sm font-semibold px-4 py-2 rounded-full">
               EN SAVOIR PLUS SUR LE PROGRAMME
             </div>
-            <h2 class="text-4xl lg:text-5xl font-bold text-secondary-600 leading-tight">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-secondary leading-tight">
               Un programme 
               <span class="text-primary">pratique</span>
             </h2>
@@ -130,11 +113,11 @@
     
     <div class="container mx-auto px-6 lg:px-8 relative z-10">
       <div class="text-center mb-20">
-        <div class="inline-flex items-center bg-white/80 backdrop-blur-sm text-secondary-600 text-sm font-semibold px-6 py-3 rounded-full border border-primary/20 mb-6">
+        <div class="inline-flex items-center bg-white/80 backdrop-blur-sm text-secondary text-sm font-semibold px-6 py-3 rounded-full border border-primary/20 mb-6">
           <span class="w-2 h-2 bg-primary rounded-full mr-3 animate-pulse"></span>
           BÉNÉFICES DU PROGRAMME
         </div>
-        <h2 class="text-5xl lg:text-6xl font-bold text-secondary-600 mb-8">
+        <h2 class="text-3xl sm:text-4xl lg:text-6xl font-bold text-secondary mb-6 sm:mb-8">
           Ce que tu 
           <span class="relative">
             <span class="bg-gradient-to-r from-primary to-primary-500 bg-clip-text text-transparent">gagnes</span>
@@ -154,12 +137,8 @@
             <div class="w-20 h-20 bg-gradient-to-br from-primary to-primary rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500 shadow-lg">
               <span class="material-icons text-white text-3xl">psychology</span>
             </div>
-            <h3 class="text-2xl font-bold text-secondary-600 mb-4 group-hover:text-primary transition-colors duration-300">Mindset Entrepreneurial</h3>
+            <h3 class="text-2xl font-bold text-secondary mb-4 group-hover:text-primary transition-colors duration-300">Mindset Entrepreneurial</h3>
             <p class="text-gray-600 leading-relaxed">Développe une mentalité de leader et surmonte tes blocages pour passer à l'action avec confiance.</p>
-            <div class="mt-6 flex items-center text-primary font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              <span class="text-sm">En savoir plus</span>
-              <span class="material-icons ml-2 text-lg transform group-hover:translate-x-2 transition-transform duration-300">arrow_forward</span>
-            </div>
           </div>
         </div>
         
@@ -170,12 +149,8 @@
             <div class="w-20 h-20 bg-gradient-to-br from-secondary to-secondary-600 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500 shadow-lg">
               <span class="material-icons text-white text-3xl">business_center</span>
             </div>
-            <h3 class="text-2xl font-bold text-secondary-600 mb-4 group-hover:text-secondary-600 transition-colors duration-300">Business Model Solide</h3>
+            <h3 class="text-2xl font-bold text-secondary mb-4 group-hover:text-secondary transition-colors duration-300">Business Model Solide</h3>
             <p class="text-gray-600 leading-relaxed">Construis un modèle économique viable et durable pour ton entreprise avec des méthodes éprouvées.</p>
-            <div class="mt-6 flex items-center text-secondary-600 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              <span class="text-sm">En savoir plus</span>
-              <span class="material-icons ml-2 text-lg transform group-hover:translate-x-2 transition-transform duration-300">arrow_forward</span>
-            </div>
           </div>
         </div>
         
@@ -186,12 +161,8 @@
             <div class="w-20 h-20 bg-gradient-to-br from-primary to-primary rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500 shadow-lg">
               <span class="material-icons text-white text-3xl">networking</span>
             </div>
-            <h3 class="text-2xl font-bold text-secondary-600 mb-4 group-hover:text-primary transition-colors duration-300">Réseau Puissant</h3>
+            <h3 class="text-2xl font-bold text-secondary mb-4 group-hover:text-primary transition-colors duration-300">Réseau Puissant</h3>
             <p class="text-gray-600 leading-relaxed">Accède à un réseau exclusif d'entrepreneures, mentors et partenaires stratégiques pour booster ta croissance.</p>
-            <div class="mt-6 flex items-center text-primary font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              <span class="text-sm">En savoir plus</span>
-              <span class="material-icons ml-2 text-lg transform group-hover:translate-x-2 transition-transform duration-300">arrow_forward</span>
-            </div>
           </div>
         </div>
         
@@ -202,12 +173,8 @@
             <div class="w-20 h-20 bg-gradient-to-br from-secondary to-secondary-600 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500 shadow-lg">
               <span class="material-icons text-white text-3xl">rocket_launch</span>
             </div>
-            <h3 class="text-2xl font-bold text-secondary-600 mb-4 group-hover:text-secondary-600 transition-colors duration-300">Lancement Réussi</h3>
+            <h3 class="text-2xl font-bold text-secondary mb-4 group-hover:text-secondary transition-colors duration-300">Lancement Réussi</h3>
             <p class="text-gray-600 leading-relaxed">Lance ton entreprise avec une stratégie marketing et commerciale efficace, testée et optimisée.</p>
-            <div class="mt-6 flex items-center text-secondary-600 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              <span class="text-sm">En savoir plus</span>
-              <span class="material-icons ml-2 text-lg transform group-hover:translate-x-2 transition-transform duration-300">arrow_forward</span>
-            </div>
           </div>
         </div>
         
@@ -218,12 +185,8 @@
             <div class="w-20 h-20 bg-gradient-to-br from-primary to-primary rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500 shadow-lg">
               <span class="material-icons text-white text-3xl">support</span>
             </div>
-            <h3 class="text-2xl font-bold text-secondary-600 mb-4 group-hover:text-primary transition-colors duration-300">Accompagnement Expert</h3>
+            <h3 class="text-2xl font-bold text-secondary mb-4 group-hover:text-primary transition-colors duration-300">Accompagnement Expert</h3>
             <p class="text-gray-600 leading-relaxed">Bénéficie de l'expertise de mentors expérimentés et de coachs spécialisés disponibles 24/7.</p>
-            <div class="mt-6 flex items-center text-primary font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              <span class="text-sm">En savoir plus</span>
-              <span class="material-icons ml-2 text-lg transform group-hover:translate-x-2 transition-transform duration-300">arrow_forward</span>
-            </div>
           </div>
         </div>
         
@@ -234,12 +197,8 @@
             <div class="w-20 h-20 bg-gradient-to-br from-secondary to-secondary-600 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500 shadow-lg">
               <span class="material-icons text-white text-3xl">emoji_events</span>
             </div>
-            <h3 class="text-2xl font-bold text-secondary-600 mb-4 group-hover:text-secondary-600 transition-colors duration-300">Succès Durable</h3>
+            <h3 class="text-2xl font-bold text-secondary mb-4 group-hover:text-secondary transition-colors duration-300">Succès Durable</h3>
             <p class="text-gray-600 leading-relaxed">Acquiers les compétences pour faire croître et pérenniser ton entreprise sur le long terme.</p>
-            <div class="mt-6 flex items-center text-secondary-600 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              <span class="text-sm">En savoir plus</span>
-              <span class="material-icons ml-2 text-lg transform group-hover:translate-x-2 transition-transform duration-300">arrow_forward</span>
-            </div>
           </div>
         </div>
       </div>
@@ -263,7 +222,7 @@
           <span class="w-2 h-2 bg-primary rounded-full mr-3 animate-pulse"></span>
           MÉTHODOLOGIE ÉPROUVÉE
         </div>
-        <h2 class="text-5xl lg:text-6xl font-bold mb-8">
+        <h2 class="text-3xl sm:text-4xl lg:text-6xl font-bold mb-8">
           Les 4 <span class="bg-gradient-to-r from-primary to-primary-400 bg-clip-text text-transparent">Phases</span>
         </h2>
         <p class="text-xl lg:text-2xl text-secondary-100 max-w-4xl mx-auto font-light leading-relaxed">
@@ -561,11 +520,11 @@
     
     <div class="container mx-auto px-6 lg:px-8 relative z-10">
       <div class="text-center mb-20">
-        <div class="inline-flex items-center bg-white/80 backdrop-blur-sm text-secondary-600 text-sm font-semibold px-6 py-3 rounded-full border border-primary/20 mb-8">
+        <div class="inline-flex items-center bg-white/80 backdrop-blur-sm text-secondary text-sm font-semibold px-6 py-3 rounded-full border border-primary/20 mb-8">
           <span class="w-2 h-2 bg-primary rounded-full mr-3 animate-pulse"></span>
           GALERIE EXCLUSIVE
         </div>
-        <h2 class="text-5xl lg:text-6xl font-bold text-secondary-600 mb-8">
+        <h2 class="text-3xl sm:text-4xl lg:text-6xl font-bold text-secondary mb-8">
           Lancement 
           <span class="relative">
             <span class="bg-gradient-to-r from-primary to-primary-500 bg-clip-text text-transparent">2025</span>
@@ -674,7 +633,7 @@
             <div class="w-10 h-10 rounded-full border-2 border-white bg-primary flex items-center justify-center text-white text-sm font-bold">+27</div>
           </div>
           <div class="text-left">
-            <div class="text-sm font-semibold text-secondary-600">Rejoins-nous pour 2025</div>
+            <div class="text-sm font-semibold text-secondary">Rejoins-nous pour 2025</div>
             <div class="text-xs text-gray-600">30 places disponibles uniquement</div>
           </div>
         </div>
@@ -686,7 +645,7 @@
   <section class="py-20 bg-gray-50">
     <div class="container mx-auto px-6 lg:px-8">
       <div class="text-center mb-16">
-        <h2 class="text-4xl lg:text-5xl font-bold text-secondary-600 mb-6">
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-secondary mb-6">
           Ils nous font <span class="text-primary">confiance</span>
         </h2>
         <p class="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -734,7 +693,7 @@
     </div>
     
     <!-- Background image with overlay -->
-    <div class="absolute inset-0 bg-cover bg-center bg-fixed opacity-20" style="background-image: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80');"></div>
+    <div class="absolute inset-0 bg-cover bg-center bg-fixed opacity-20" style="background-image: url('<%= image_path("cle-partner-bg-black-people.png") %>');"></div>
     <div class="absolute inset-0 bg-gradient-to-br from-secondary-700/80 via-secondary-600/70 to-gray-900/80"></div>
     <div class="absolute inset-0 bg-black/20"></div>
     
@@ -748,7 +707,7 @@
           </div>
         </div>
         
-        <h2 class="text-4xl lg:text-6xl font-bold leading-tight mb-8 animate-fade-in-up" style="animation-delay: 0.2s;">
+        <h2 class="text-3xl sm:text-4xl lg:text-6xl font-bold leading-tight mb-8 animate-fade-in-up" style="animation-delay: 0.2s;">
           <span class="bg-gradient-to-r from-white via-primary-100 to-white bg-clip-text text-transparent">
             Ensemble, transformons
           </span>
@@ -795,7 +754,7 @@
         </div>
         
         <div class="flex flex-col sm:flex-row gap-6 justify-center animate-fade-in-up" style="animation-delay: 0.8s;">
-          <button class="group relative inline-flex items-center btn-primary px-8 py-4 rounded-2xl font-bold shadow-2xl hover:shadow-primary/25">
+          <button class="btn-premium-primary px-8 py-4 relative overflow-hidden">
             <span class="relative z-10">Devenir Partenaire</span>
             <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
@@ -803,7 +762,7 @@
             <!-- Effet de brillance -->
             <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-shine rounded-2xl"></div>
           </button>
-          <button class="group relative inline-flex items-center border-2 border-white text-white hover:bg-white hover:text-secondary-600 px-8 py-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 shadow-lg">
+          <button class="group relative inline-flex items-center border-2 border-white text-white hover:bg-white hover:text-secondary px-8 py-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 shadow-lg">
             <span class="relative z-10">Faire un Don</span>
             <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>

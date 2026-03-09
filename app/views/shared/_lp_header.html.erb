@@ -26,9 +26,9 @@
         <!-- Navigation -->
         <nav class="hidden lg:flex items-center space-x-8 font-medium text-gray-600">
           <a class="hover:text-primary transition-colors duration-300" href="#"><%= t('home.navigation.home') %></a>
-          <%= link_to t('home.navigation.fields'), fields_path, class: "hover:text-primary transition-colors duration-300" %>
+          <%= link_to "Les Métiers", careers_path, class: "hover:text-primary transition-colors duration-300" %>
+          <%= link_to "Nouveau Diagnostic", (user_signed_in? ? new_diagnostic_path : new_user_session_path(redirect_to: new_diagnostic_path)), class: "hover:text-primary transition-colors duration-300" %>
           <%= link_to "CLE", cle_path, class: "hover:text-primary transition-colors duration-300" %>
-          <a class="hover:text-primary transition-colors duration-300" href="#"><%= t('home.navigation.blog') %></a>
           <a class="hover:text-primary transition-colors duration-300" href="#"><%= t('home.navigation.about') %></a>
           <a class="hover:text-primary transition-colors duration-300" href="#"><%= t('home.navigation.contact') %></a>
         </nav>
@@ -36,7 +36,7 @@
         <!-- Action / Profile (Desktop) -->
         <div class="hidden lg:flex items-center space-x-6">
           <% if user_signed_in? %>
-            <%= link_to t('home.navigation.dashboard'), admin_root_path, class: "flex items-center space-x-2 bg-primary text-secondary font-semibold hover:bg-opacity-90 transition-colors py-2.5 px-6 rounded-full shadow-lg shadow-primary/20" %>
+            <%= link_to t('home.navigation.dashboard'), admin_root_path, class: "btn-premium-primary py-2.5 px-6" %>
 
             <div class="relative group">
               <!-- Avatar -->
@@ -64,7 +64,7 @@
               </div>
             </div>
           <% else %>
-            <%= link_to t('home.navigation.login'), new_user_session_path, class: "flex items-center space-x-2 bg-secondary text-white font-semibold hover:bg-opacity-90 transition-colors py-2.5 px-6 rounded-full shadow-lg shadow-secondary/20" %>
+            <%= link_to t('home.navigation.login'), new_user_session_path, class: "btn-premium-secondary py-2.5 px-6" %>
           <% end %>
           
           <!-- Language Switcher -->
@@ -95,9 +95,9 @@
       <div data-mobile-menu-target="menu" class="hidden lg:hidden mt-4 pb-4 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl absolute left-4 right-4 z-50 px-4 border border-gray-100">
         <nav class="flex flex-col space-y-4 pt-6">
           <a class="text-gray-700 hover:text-primary font-medium transition-colors" href="#" data-action="click->mobile-menu#close"><%= t('home.navigation.home') %></a>
-          <%= link_to t('home.navigation.fields'), fields_path, class: "text-gray-700 hover:text-primary font-medium transition-colors", data: { action: "click->mobile-menu#close" } %>
+          <%= link_to "Les Métiers", careers_path, class: "text-gray-700 hover:text-primary font-medium transition-colors", data: { action: "click->mobile-menu#close" } %>
           <%= link_to "CLE", cle_path, class: "text-gray-700 hover:text-primary font-medium transition-colors", data: { action: "click->mobile-menu#close" } %>
-          <a class="text-gray-700 hover:text-primary font-medium transition-colors" href="#" data-action="click->mobile-menu#close"><%= t('home.navigation.blog') %></a>
+          <%= link_to "Nouveau Diagnostic", (user_signed_in? ? new_diagnostic_path : new_user_session_path(redirect_to: new_diagnostic_path)), class: "text-gray-700 hover:text-primary font-medium transition-colors", data: { action: "click->mobile-menu#close" } %>
           <a class="text-gray-700 hover:text-primary font-medium transition-colors" href="#" data-action="click->mobile-menu#close"><%= t('home.navigation.about') %></a>
           <a class="text-gray-700 hover:text-primary font-medium transition-colors" href="#" data-action="click->mobile-menu#close"><%= t('home.navigation.contact') %></a>
           
@@ -119,7 +119,7 @@
             <% end %>
 
           <% else %>
-            <%= link_to form_authenticity_token == 'test' ? '#' : new_user_session_path, class: "flex items-center justify-center space-x-2 bg-secondary text-white font-semibold py-3 rounded-full hover:bg-opacity-90 shadow-lg shadow-secondary/20 transition-colors mt-4" do %>
+            <%= link_to form_authenticity_token == 'test' ? '#' : new_user_session_path, class: "btn-premium-secondary w-full justify-center py-3 mt-4" do %>
               <span><%= t('home.navigation.login') %></span>
             <% end %>
           <% end %>
@@ -165,7 +165,7 @@
           </p>
 
           <!-- CTA Bas -->
-          <%= link_to new_diagnostic_path, class: "btn-primary font-bold text-[1.2rem] py-3 px-8 rounded-full shadow-lg shadow-primary/30 transition-all duration-300 transform hover:-translate-y-1" do %>
+          <%= link_to (user_signed_in? ? new_diagnostic_path : new_user_session_path(redirect_to: new_diagnostic_path)), class: "btn-premium-primary text-[1.2rem] py-3 px-8" do %>
             <%= t('home.hero.cta') %>
           <% end %>
 
