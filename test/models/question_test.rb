@@ -33,6 +33,6 @@ class QuestionTest < ActiveSupport::TestCase
   test "scope by_bloc returns ordered by position" do
     q2 = Question.create!(bloc: 1, text: "Q2", kind: "mcq", position: 2)
     q1 = Question.create!(bloc: 1, text: "Q1", kind: "mcq", position: 1)
-    assert_equal [q1, q2], Question.by_bloc(1).to_a
+    assert_equal [ q1, q2 ], Question.by_bloc(1).to_a
   end
 end

@@ -1,6 +1,6 @@
 # app/controllers/admin/questions_controller.rb
 class Admin::QuestionsController < Admin::BaseController
-  before_action :set_question, only: [:edit, :update, :destroy]
+  before_action :set_question, only: [ :edit, :update, :destroy ]
 
   def index   = (@questions = Question.order(:bloc, :position)) && render
   def new     = (@question = Question.new) && render

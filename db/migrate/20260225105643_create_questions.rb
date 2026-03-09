@@ -10,6 +10,6 @@ class CreateQuestions < ActiveRecord::Migration[8.0]
       t.boolean  :active,   default: true, null: false
       t.timestamps
     end
-    add_index :questions, [:bloc, :position]
+    add_index :questions, [ :bloc, :position ]
   end
 end

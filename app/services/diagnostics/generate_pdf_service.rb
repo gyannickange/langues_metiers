@@ -2,6 +2,8 @@
 require "prawn"
 require "prawn/table"
 
+Prawn::Fonts::AFM.hide_m17n_warning = true
+
 module Diagnostics
   class GeneratePdfService
     BRAND  = "1a365d"

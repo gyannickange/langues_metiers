@@ -10,6 +10,6 @@ class CreateDiagnosticAnswers < ActiveRecord::Migration[8.0]
       t.integer :points_awarded, default: 0
       t.timestamps
     end
-    add_index :diagnostic_answers, [:diagnostic_id, :question_id], unique: true
+    add_index :diagnostic_answers, [ :diagnostic_id, :question_id ], unique: true
   end
 end

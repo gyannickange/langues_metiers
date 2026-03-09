@@ -77,5 +77,3 @@ gem "omniauth-google-oauth2", "~> 1.2"
 gem "omniauth-facebook", "~> 10.0"
 gem "dotenv-rails", "~> 3.2"
 gem "letter_opener", "~> 1.10"
-
-

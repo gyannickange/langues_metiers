@@ -1,6 +1,6 @@
 # app/controllers/admin/mobile_operators_controller.rb
 class Admin::MobileOperatorsController < Admin::BaseController
-  before_action :set_operator, only: [:edit, :update, :destroy]
+  before_action :set_operator, only: [ :edit, :update, :destroy ]
 
   def index   = (@operators = MobileOperator.order(:country_code, :name)) && render
   def new     = (@operator = MobileOperator.new) && render

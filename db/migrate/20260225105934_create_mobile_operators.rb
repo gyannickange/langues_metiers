@@ -8,7 +8,7 @@ class CreateMobileOperators < ActiveRecord::Migration[8.0]
       t.boolean :active, default: true, null: false
       t.timestamps
     end
-    add_index :mobile_operators, [:code, :country_code], unique: true
+    add_index :mobile_operators, [ :code, :country_code ], unique: true
     add_index :mobile_operators, :country_code
   end
 end
