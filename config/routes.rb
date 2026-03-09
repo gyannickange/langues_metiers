@@ -1,91 +1,86 @@
 Rails.application.routes.draw do
-  devise_for :users, skip: [ :sessions, :registrations, :passwords, :confirmations, :unlocks ], controllers: {
+  devise_for :users, controllers: {
+    sessions: "users/sessions",
     omniauth_callbacks: "users/omniauth_callbacks"
   }
 
-  # Fallback root for "/"
+  resources :fields, only: [ :index, :show ], param: :slug
+
+  devise_scope :user do
+    post "login/request_otp", to: "users/sessions#request_otp", as: :send_otp
+    post "login/verify_otp", to: "users/sessions#verify_otp", as: :verify_otp
+  end
+
+  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+
+  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
+  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  get "up" => "rails/health#show", as: :rails_health_check
+
+  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
+  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
+  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+
+  # Defines the root path route ("/")
   root "home#index"
+  get "cle", to: "home#cle"
 
-  localized do
-    resources :fields, only: [ :index, :show ], param: :slug
-    devise_for :users, skip: :omniauth_callbacks, controllers: {
-      sessions: "users/sessions"
-    }
+  require "sidekiq/web"
+  authenticate :user, ->(u) { u.admin? } do
+    mount Sidekiq::Web => "/sidekiq"
+  end
 
-    devise_scope :user do
-      post "login/request_otp", to: "users/sessions#request_otp", as: :send_otp
-      post "login/verify_otp", to: "users/sessions#verify_otp", as: :verify_otp
+  resource :profile, only: [ :show, :edit, :update ]
+  resource :onboarding, only: [ :show, :update ], controller: "onboarding"
+  resources :careers, only: [ :index ]
+  namespace :api do
+    namespace :v1 do
+      get "/profile", to: "profiles#show"
     end
+  end
 
-    # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-    # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-    # Can be used by load balancers and uptime monitors to verify that the app is live.
-    get "up" => "rails/health#show", as: :rails_health_check
-
-    # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-    # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-    # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
-    # Defines the root path route ("/")
-    root "home#index"
-    get "cle", to: "home#cle"
-
-    require "sidekiq/web"
-    authenticate :user, ->(u) { u.admin? } do
-      mount Sidekiq::Web => "/sidekiq"
+  # Diagnostics
+  resources :diagnostics, only: [ :new, :show ] do
+    member do
+      get  :questionnaire
+      post :submit_bloc
+      get  :pay
+      post :process_payment
+      get  :results
+      get  :pdf_status
+      get  :download_pdf
     end
+  end
 
-    resource :profile, only: [ :show, :edit, :update ]
-
-    namespace :api do
-      namespace :v1 do
-        get "/profile", to: "profiles#show"
-      end
+  # Pawapay waiting screen polling
+  resources :payments, only: [] do
+    member do
+      get :status
     end
+  end
 
-    # Diagnostics
-    resources :diagnostics, only: [ :new, :create, :show ] do
-      member do
-        get  :questionnaire
-        post :submit_bloc
-        get  :results
-        get  :pdf_status
-        get  :download_pdf
-      end
-    end
+  # Mobile operator list (Stimulus fetch)
+  resources :mobile_operators, only: [ :index ]
 
-    # Pawapay waiting screen polling
-    resources :payments, only: [] do
-      member do
-        get :status
-      end
-    end
+  # Webhooks — CSRF exempt, handled in controller
+  post "/webhooks/stripe",  to: "webhooks/stripe#receive"
+  post "/webhooks/pawapay", to: "webhooks/pawapay#receive"
 
-    # Mobile operator list (Stimulus fetch)
-    resources :mobile_operators, only: [ :index ]
+  namespace :admin do
+    root to: "dashboard#index"
+    resources :users, only: [ :index ]
+    resources :careers
+    resources :user_skills, only: [ :create, :destroy ]
+    resources :skills
 
-    # Webhooks — CSRF exempt, handled in controller
-    post "/webhooks/stripe",  to: "webhooks/stripe#receive"
-    post "/webhooks/pawapay", to: "webhooks/pawapay#receive"
+    resources :diagnostics,      only: [ :index, :show ]
+    resources :trajectories
+    resources :questions
+    resources :mobile_operators
 
-    namespace :admin do
-      root to: "dashboard#index"
-      resources :users, only: [ :index ]
-      resources :careers
-      resources :user_skills, only: [ :create, :destroy ]
-      resources :skills
-
-      resources :diagnostics,      only: [ :index, :show ]
-      resources :profiles
-      resources :trajectories
-      resources :questions
-      resources :mobile_operators
-
-      resources :fields, path: "fields" do
-        resources :roadmaps do
-          resources :roadmap_steps
-        end
+    resources :fields, path: "fields" do
+      resources :roadmaps do
+        resources :roadmap_steps
       end
     end
   end

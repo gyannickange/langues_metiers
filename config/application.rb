@@ -40,7 +40,7 @@ module LanguesMetiers
     config.generators.system_tests = nil
 
     # Default locale setup
-    config.i18n.available_locales = [ :fr, :en ]
+    config.i18n.available_locales = [ :fr ]
     config.i18n.default_locale = :fr
 
 

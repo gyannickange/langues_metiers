@@ -3,7 +3,7 @@ require "test_helper"
 
 class Webhooks::PawapayHandlerServiceTest < ActiveSupport::TestCase
   def setup
-    @user = User.create!(email: "pawa_hook#{SecureRandom.hex(4)}@test.com", password: "password123")
+    @user = User.create!(email: "pawa_hook#{SecureRandom.hex(4)}@test.com", password: "password123", first_name: "Test", last_name: "User", city: "Test City", country: "CI", diploma: "Master", employment_status: "En emploi")
     @diagnostic = Diagnostic.create!(user: @user, status: :pending_payment, payment_provider: :pawapay)
     @payment    = @diagnostic.create_payment!(user: @user, provider: :pawapay,
                                               provider_payment_id: "pawa-456", status: :pending)
