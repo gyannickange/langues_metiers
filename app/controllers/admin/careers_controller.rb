@@ -47,7 +47,7 @@ module Admin
     end
 
     def career_params
-      params.require(:career).permit(:title, :description, :status)
+      params.require(:career).permit(:title, :slug, :description, :status, :kind, :first_action, :premium_pitch, key_skills: [])
     end
   end
 end
