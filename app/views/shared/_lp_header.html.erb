@@ -16,22 +16,24 @@
     <header class="container mx-auto px-6 py-8">
       <div class="flex items-center justify-between">
         
-        <!-- Logo -->
-        <div class="flex items-center group">
-          <span class="text-3xl font-extrabold text-secondary tracking-tight">
-            Insertrice<span class="text-primary">.</span>
-          </span>
+        <div class="flex items-center lg:space-x-12">
+          <!-- Logo -->
+          <div class="flex items-center group">
+            <span class="text-3xl font-extrabold text-secondary tracking-tight">
+              Insertrice<span class="text-primary">.</span>
+            </span>
+          </div>
+          
+          <!-- Navigation -->
+          <nav class="hidden lg:flex items-center space-x-8 font-medium text-gray-600">
+            <a class="hover:text-primary transition-colors duration-300" href="#"><%= t('home.navigation.home') %></a>
+            <%= link_to "Les Métiers", careers_path, class: "hover:text-primary transition-colors duration-300" %>
+            <%= link_to "Nouveau Diagnostic", (user_signed_in? ? new_diagnostic_path : new_user_session_path(redirect_to: new_diagnostic_path)), class: "hover:text-primary transition-colors duration-300" %>
+            <%= link_to "CLE", cle_path, class: "hover:text-primary transition-colors duration-300" %>
+            <a class="hover:text-primary transition-colors duration-300" href="#"><%= t('home.navigation.about') %></a>
+            <a class="hover:text-primary transition-colors duration-300" href="#"><%= t('home.navigation.contact') %></a>
+          </nav>
         </div>
-        
-        <!-- Navigation -->
-        <nav class="hidden lg:flex items-center space-x-8 font-medium text-gray-600">
-          <a class="hover:text-primary transition-colors duration-300" href="#"><%= t('home.navigation.home') %></a>
-          <%= link_to "Les Métiers", careers_path, class: "hover:text-primary transition-colors duration-300" %>
-          <%= link_to "Nouveau Diagnostic", (user_signed_in? ? new_diagnostic_path : new_user_session_path(redirect_to: new_diagnostic_path)), class: "hover:text-primary transition-colors duration-300" %>
-          <%= link_to "CLE", cle_path, class: "hover:text-primary transition-colors duration-300" %>
-          <a class="hover:text-primary transition-colors duration-300" href="#"><%= t('home.navigation.about') %></a>
-          <a class="hover:text-primary transition-colors duration-300" href="#"><%= t('home.navigation.contact') %></a>
-        </nav>
         
         <!-- Action / Profile (Desktop) -->
         <div class="hidden lg:flex items-center space-x-6">
