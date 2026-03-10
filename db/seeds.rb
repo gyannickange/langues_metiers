@@ -584,7 +584,7 @@ if admin_user && Diagnostic.where(user: admin_user).blank?
 
     # ── Section 4 : Votre profil dominant ─────────────────────────────────────
     dominant_profile: {
-      name: primary&.name || "x",
+      name: primary&.title || "x",
       slug: primary&.slug || "coordinateur-strategique",
       label: "Profil dominant",
       exemple: "Stratège de projet",
@@ -605,7 +605,7 @@ if admin_user && Diagnostic.where(user: admin_user).blank?
       ]
     },
     secondary_profile: {
-      name: secondary&.name || "Digital & Stratégie Contenu",
+      name: secondary&.title || "Digital & Stratégie Contenu",
       slug: secondary&.slug || "digital-strategie-contenu",
       label: "Profil secondaire",
       exemple: "Créateur de contenu",
