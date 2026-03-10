@@ -6,17 +6,19 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     @user = User.create!(email: "ctrl#{SecureRandom.hex(4)}@test.com", password: "password123", first_name: "Test", last_name: "User", city: "Test City", country: "CI", diploma: "Master", employment_status: "En emploi")
   end
 
-  test "GET new redirects unauthenticated users to login" do
+  test "GET new renders coming_soon for unauthenticated users" do
     get new_diagnostic_path
-    assert_redirected_to new_user_session_path
+    assert_response :success
+    assert_select "h2", text: /Bientôt disponible/
   end
 
-  test "GET new creates diagnostic and redirects to questionnaire" do
+  test "GET new renders coming_soon for authenticated users" do
     sign_in @user
-    assert_difference "Diagnostic.count" do
+    assert_no_difference "Diagnostic.count" do
       get new_diagnostic_path
     end
-    assert_redirected_to questionnaire_diagnostic_path(Diagnostic.last)
+    assert_response :success
+    assert_select "h2", text: /Bientôt disponible/
   end
 
   test "GET results blocks unpaid diagnostic" do
