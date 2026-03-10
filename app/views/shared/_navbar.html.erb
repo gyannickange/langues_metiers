@@ -18,11 +18,13 @@
         <%= link_to "CLE", cle_path, class: "hover:text-primary transition-colors duration-300" %>
         
         <!-- Premium Header Button -->
+        <% if false %>
         <%= link_to new_user_session_path, class: "btn-premium-primary group !px-4 !py-3 text-[10px] md:text-xs" do %>
           <span><%= t('home.navigation.login') %></span>
           <div class="w-6 h-6 rounded-full bg-secondary-900/10 flex items-center justify-center group-hover:bg-secondary-900/20 transition-colors">
             <svg class="w-3 h-3 text-secondary-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
           </div>
+        <% end %>
         <% end %>
       </div>
 
@@ -44,11 +46,13 @@
       <%= link_to "CLE", cle_path, class: "hover:text-primary transition-colors duration-300" %>
       
       <div class="pt-6 mt-4 border-t border-gray-100">
+        <% if false %>
         <%= link_to new_user_session_path, class: "btn-premium-primary group w-full justify-center !px-4 !py-4 text-xs" do %>
           <span><%= t('home.navigation.login') %></span>
           <div class="w-6 h-6 rounded-full bg-secondary-900/10 flex items-center justify-center group-hover:bg-secondary-900/20 transition-colors">
             <svg class="w-3 h-3 text-secondary-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
           </div>
+        <% end %>
         <% end %>
       </div>
     </div>

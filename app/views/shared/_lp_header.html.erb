@@ -35,6 +35,7 @@
         
         <!-- Action / Profile (Desktop) -->
         <div class="hidden lg:flex items-center space-x-6">
+          <% if false %>
           <% if user_signed_in? %>
             <%= link_to t('home.navigation.dashboard'), admin_root_path, class: "btn-premium-primary py-2.5 px-6" %>
 
@@ -66,17 +67,8 @@
           <% else %>
             <%= link_to t('home.navigation.login'), new_user_session_path, class: "btn-premium-secondary py-2.5 px-6" %>
           <% end %>
+          <% end %>
           
-          <!-- Language Switcher -->
-          <div class="flex items-center space-x-2 border-l border-gray-200 pl-6 ml-2">
-            <% if I18n.locale == :fr %>
-              <%= link_to "EN", root_path(locale: :en), class: "text-sm font-bold text-gray-400 hover:text-primary transition-colors" %>
-              <span class="text-secondary font-bold text-sm">FR</span>
-            <% else %>
-              <span class="text-secondary font-bold text-sm">EN</span>
-              <%= link_to "FR", root_path(locale: :fr), class: "text-sm font-bold text-gray-400 hover:text-primary transition-colors" %>
-            <% end %>
-          </div>
         </div>
 
 
@@ -103,6 +95,7 @@
           
           <div class="h-px bg-gray-100 w-full my-4"></div>
           
+          <% if false %>
           <% if user_signed_in? %>
             <%= link_to admin_root_path, class: "flex items-center space-x-3 text-gray-700 hover:text-primary font-medium transition-colors" do %>
               <span class="material-icons">dashboard</span>
@@ -123,12 +116,9 @@
               <span><%= t('home.navigation.login') %></span>
             <% end %>
           <% end %>
+          <% end %>
 
-          <div class="flex items-center justify-center space-x-4 pt-6">
-            <%= link_to "Français", root_path(locale: :fr), class: "text-sm #{I18n.locale == :fr ? 'font-bold text-secondary' : 'text-gray-500'}" %>
-            <span class="text-gray-200">|</span>
-            <%= link_to "English", root_path(locale: :en), class: "text-sm #{I18n.locale == :en ? 'font-bold text-secondary' : 'text-gray-500'}" %>
-          </div>
+
         </nav>
       </div>
 
