@@ -1,10 +1,16 @@
 <% content_for :page_title, t("Users") %>
 
+<%= render "shared/page_header", 
+    title: t("Users"),
+    subtitle: "Gérer les comptes utilisateurs et leurs permissions",
+    action_text: nil,
+    action_url: nil %>
+
 <%= render "shared/table",
   columns: [
     { header: "Email",  cell: ->(r){ r.email } },
-    { header: "Role",   cell: ->(r){ r.role } },
-    { header: "Created", cell: ->(r){ l(r.created_at, format: :short) } }
+    { header: "Rôle",   cell: ->(r){ render "shared/badge", text: r.role, color: (r.role == "admin" ? :gold : :gray) } },
+    { header: "Créé le", cell: ->(r){ l(r.created_at, format: :short) } }
   ],
   rows: @users,
   pagy: @pagy %>

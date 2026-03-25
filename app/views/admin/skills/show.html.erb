@@ -1,15 +1,31 @@
-<% content_for :title, "Showing skill" %>
+<% content_for :page_title, "Détails de la Compétence" %>
 
-<div class="md:w-2/3 w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
-  <% end %>
+<%= render "shared/page_header", 
+    title: "Compétence",
+    subtitle: "Consulter les détails du référentiel de compétences",
+    action_text: "Modifier",
+    action_url: edit_admin_skill_path(@skill),
+    action_icon: :edit_3,
+    action_type: :primary %>
 
-  <h1 class="font-bold text-4xl">Showing skill</h1>
+<div class="space-y-8 max-w-2xl">
+  <%= render "shared/show_card", 
+      title: @skill.name,
+      icon: :award,
+      items: [
+        { label: "Nom de la compétence", value: @skill.name },
+        { label: "Description", value: content_tag(:div, @skill.description, class: "leading-relaxed text-slate-600") }
+      ] %>
 
-  <%= render @skill %>
+  <div class="flex items-center gap-4">
+    <%= link_to admin_skills_path, class: "inline-flex items-center px-4 py-2 bg-slate-100 text-slate-700 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-slate-200 transition-colors" do %>
+      <%= lucide_icon :arrow_left, class: "w-4 h-4 mr-2" %>
+      Retour à la liste
+    <% end %>
 
-  <%= link_to "Edit this skill", edit_skill_path(@skill), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= link_to "Back to skills", skills_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= button_to "Destroy this skill", @skill, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2", class: "w-full rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+    <%= button_to admin_skill_path(@skill), method: :delete, data: { turbo_confirm: "Confirmer la suppression ?" }, class: "inline-flex items-center px-4 py-2 bg-red-50 text-red-600 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-red-100 transition-colors border-0 cursor-pointer" do %>
+      <%= lucide_icon :trash_2, class: "w-4 h-4 mr-2" %>
+      Supprimer
+    <% end %>
+  </div>
 </div>

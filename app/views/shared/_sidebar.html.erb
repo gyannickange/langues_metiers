@@ -1,37 +1,37 @@
 <nav class="p-4 space-y-2">
   <%= link_to admin_root_path, class: nav_link_class(admin_root_path) do %>
-    <span>🏠</span>
-    <span class="ml-2"><%= t("Dashboard") %></span>
+    <%= lucide_icon :home, class: "w-5 h-5" %>
+    <span class="ml-3 font-medium"><%= t("Dashboard") %></span>
   <% end %>
 
   <%= link_to admin_users_path, class: nav_link_class(admin_users_path) do %>
-    <span>👥</span>
-    <span class="ml-2"><%= t("Users") %></span>
+    <%= lucide_icon :users, class: "w-5 h-5" %>
+    <span class="ml-3 font-medium"><%= t("Users") %></span>
   <% end %>
 
   <%= link_to admin_skills_path, class: nav_link_class(admin_skills_path) do %>
-    <span>🧩</span>
-    <span class="ml-2"><%= t("Skills") %></span>
+    <%= lucide_icon :puzzle, class: "w-5 h-5" %>
+    <span class="ml-3 font-medium"><%= t("Skills") %></span>
   <% end %>
 
   <%= link_to admin_careers_path, class: nav_link_class(admin_careers_path) do %>
-    <span>🧭</span>
-    <span class="ml-2"><%= t("Careers") %></span>
+    <%= lucide_icon :compass, class: "w-5 h-5" %>
+    <span class="ml-3 font-medium"><%= t("Careers") %></span>
   <% end %>
 
   <%= link_to "#", class: nav_link_class("#") do %>
-    <span>📚</span>
-    <span class="ml-2"><%= t("Learning Modules") %></span>
+    <%= lucide_icon :book, class: "w-5 h-5" %>
+    <span class="ml-3 font-medium"><%= t("Learning Modules") %></span>
   <% end %>
 
   <%= link_to "#", class: nav_link_class("#") do %>
-    <span>🤝</span>
-    <span class="ml-2"><%= t("Mentorship") %></span>
+    <%= lucide_icon :handshake, class: "w-5 h-5" %>
+    <span class="ml-3 font-medium"><%= t("Mentorship") %></span>
   <% end %>
 
   <%= link_to "#", class: nav_link_class("#") do %>
-    <span>⚙️</span>
-    <span class="ml-2"><%= t("Settings") %></span>
+    <%= lucide_icon :settings, class: "w-5 h-5" %>
+    <span class="ml-3 font-medium"><%= t("Settings") %></span>
   <% end %>
 </nav>
 

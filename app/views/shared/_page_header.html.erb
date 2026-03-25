@@ -1,16 +1,28 @@
 <%
   action_type ||= "primary"
+  action_icon ||= :plus
+  
   action_classes = {
-    primary: "bg-primary-500 text-white hover:bg-primary-600",
-    secondary: "bg-secondary-500 text-white hover:bg-secondary-600"
+    primary: "bg-[var(--color-primary)] text-white hover:opacity-90 shadow-sm",
+    secondary: "bg-[var(--color-secondary)] text-white hover:opacity-90 shadow-sm",
+    accent: "bg-[var(--color-accent)] text-slate-800 hover:opacity-90 shadow-sm"
   }
   action_class = action_classes[action_type.to_sym] || action_classes[:primary]
 %>
 
-<div class="mb-4 flex items-center justify-between">
-  <h1 class="text-xl font-semibold text-foreground"><%= title %></h1>
+<div class="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-premium-in">
+  <div>
+    <h1 class="text-3xl font-display uppercase tracking-wider text-slate-900"><%= title %></h1>
+    <% if defined?(subtitle) && subtitle.present? %>
+      <p class="text-sm text-slate-500 font-medium mt-1"><%= subtitle %></p>
+    <% end %>
+  </div>
+
   <% if action_url.present? && action_text.present? %>
-    <%= link_to action_text, action_url, class: "inline-flex items-center #{action_class} px-4 py-2 rounded transition-colors" %>
+    <%= link_to action_url, class: "inline-flex items-center justify-center #{action_class} px-5 py-2.5 rounded-xl transition-all duration-300 transform hover:translate-y-[-2px] hover:shadow-md font-bold text-xs uppercase tracking-widest" do %>
+      <%= lucide_icon action_icon, class: "w-4 h-4 mr-2" if action_icon %>
+      <%= action_text %>
+    <% end %>
   <% end %>
 </div>
 

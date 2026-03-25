@@ -10,35 +10,43 @@
          pagy: @pagy
 %>
 
-<div class="bg-white rounded-lg shadow overflow-hidden">
-  <table class="min-w-full divide-y divide-gray-200">
-    <thead>
-      <tr class="bg-gray-50">
-        <% columns.each do |col| %>
-          <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase"><%= col[:header] %></th>
-        <% end %>
-        <% if defined?(actions) && actions %>
-          <th class="px-4 py-2"></th>
-        <% end %>
-      </tr>
-    </thead>
-    <tbody class="divide-y divide-gray-100">
-      <% rows.each do |row| %>
-        <tr>
+<div class="glass-card rounded-2xl overflow-hidden shadow-premium animate-premium-in" style="animation-delay: 0.1s;">
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-slate-100/50">
+      <thead>
+        <tr class="bg-slate-50/50">
           <% columns.each do |col| %>
-            <td class="px-4 py-2"><%= col[:cell].call(row) %></td>
+            <th class="px-6 py-4 text-left text-[10px] font-black text-slate-500 uppercase tracking-widest font-display">
+              <%= col[:header] %>
+            </th>
           <% end %>
           <% if defined?(actions) && actions %>
-            <td class="px-4 py-2 text-right">
-              <%= actions.call(row) %>
-            </td>
+            <th class="px-6 py-4"></th>
           <% end %>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody class="divide-y divide-slate-100/30">
+        <% rows.each_with_index do |row, index| %>
+          <tr class="hover:bg-slate-50/30 transition-colors duration-200">
+            <% columns.each do |col| %>
+              <td class="px-6 py-4 text-sm text-slate-600 font-medium whitespace-nowrap">
+                <%= col[:cell].call(row) %>
+              </td>
+            <% end %>
+            <% if defined?(actions) && actions %>
+              <td class="px-6 py-4 text-right whitespace-nowrap">
+                <div class="flex items-center justify-end space-x-2">
+                  <%= actions.call(row) %>
+                </div>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 
-  <% if pagy.present? %>
+  <% if defined?(pagy) && pagy.present? && pagy.pages > 1 %>
     <%= render "shared/pagination", pagy: pagy %>
   <% end %>
 </div>

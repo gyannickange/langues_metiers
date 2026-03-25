@@ -1,34 +1,29 @@
-<%# app/views/admin/questions/index.html.erb %>
-<div class="px-6 py-6">
-  <div class="flex justify-between items-center mb-6">
-    <h1 class="text-xl font-bold">Questions (<%= @questions.count %>)</h1>
-    <%= link_to "Nouvelle", new_admin_question_path, class: "bg-blue-700 text-white px-4 py-2 rounded text-sm" %>
-  </div>
-  <table class="w-full text-sm border-collapse">
-    <thead><tr class="border-b text-left text-gray-500">
-      <th class="pb-2 pr-4">Bloc</th>
-      <th class="pb-2 pr-4">Pos.</th>
-      <th class="pb-2 pr-4">Texte</th>
-      <th class="pb-2 pr-4">Type</th>
-      <th class="pb-2">Active</th>
-      <th></th>
-    </tr></thead>
-    <tbody>
-      <% @questions.each do |question| %>
-        <tr class="border-b hover:bg-gray-50">
-          <td class="py-2 pr-4"><%= question.bloc %></td>
-          <td class="pr-4"><%= question.position %></td>
-          <td class="pr-4 truncate max-w-sm"><%= question.text&.truncate(80) %></td>
-          <td class="pr-4"><%= question.kind %></td>
-          <td><%= question.active? ? "✓" : "—" %></td>
-          <td class="text-right">
-            <%= link_to "Modifier", edit_admin_question_path(question), class: "text-blue-600 mr-3 text-xs" %>
-            <%= button_to "Supprimer", admin_question_path(question), method: :delete,
-                  data: { turbo_confirm: "Confirmer ?" },
-                  class: "text-red-500 text-xs bg-transparent border-0 cursor-pointer" %>
-          </td>
-        </tr>
+<% content_for :page_title, "Questions" %>
+
+<%= render "shared/page_header", 
+    title: "Questions",
+    subtitle: "Gérer les blocs de questions du diagnostic",
+    action_text: "Nouvelle Question",
+    action_url: new_admin_question_path,
+    action_icon: :plus %>
+
+<%= render "shared/table",
+  columns: [
+    { header: "Bloc", cell: ->(q){ render "shared/badge", text: q.bloc, color: :blue } },
+    { header: "Pos.", cell: ->(q){ content_tag(:span, q.position, class: "font-mono font-bold text-[10px] bg-slate-100 px-2 py-0.5 rounded") } },
+    { header: "Texte de la question", cell: ->(q){ content_tag(:div, q.text&.truncate(100), class: "max-w-md whitespace-normal leading-tight") } },
+    { header: "Type", cell: ->(q){ content_tag(:span, q.kind&.upcase, class: "text-[10px] font-black text-slate-400 tracking-widest") } },
+    { header: "Statut", cell: ->(q){ render "shared/badge", text: (q.active? ? "Active" : "Inactive"), color: (q.active? ? :green : :gray) } }
+  ],
+  rows: @questions,
+  pagy: @pagy,
+  actions: ->(q){
+    capture do %>
+      <%= link_to edit_admin_question_path(q), class: "p-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors" do %>
+        <%= lucide_icon :edit_3, class: "w-4 h-4" %>
       <% end %>
-    </tbody>
-  </table>
-</div>
+      <%= button_to admin_question_path(q), method: :delete, data: { turbo_confirm: "Confirmer la suppression ?" }, class: "p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors border-0" do %>
+        <%= lucide_icon :trash_2, class: "w-4 h-4" %>
+      <% end %>
+    <% end
+  } %>

@@ -1,32 +1,28 @@
-<%# app/views/admin/mobile_operators/index.html.erb %>
-<div class="px-6 py-6">
-  <div class="flex justify-between items-center mb-6">
-    <h1 class="text-xl font-bold">Opérateurs Mobile (<%= @operators.count %>)</h1>
-    <%= link_to "Nouveau", new_admin_mobile_operator_path, class: "bg-blue-700 text-white px-4 py-2 rounded text-sm" %>
-  </div>
-  <table class="w-full text-sm border-collapse">
-    <thead><tr class="border-b text-left text-gray-500">
-      <th class="pb-2 pr-4">Pays</th>
-      <th class="pb-2 pr-4">Nom</th>
-      <th class="pb-2 pr-4">Code</th>
-      <th class="pb-2">Actif</th>
-      <th></th>
-    </tr></thead>
-    <tbody>
-      <% @operators.each do |op| %>
-        <tr class="border-b hover:bg-gray-50">
-          <td class="py-2 pr-4"><%= op.country_code %></td>
-          <td class="pr-4 font-medium"><%= op.name %></td>
-          <td class="pr-4 text-gray-500"><%= op.code %></td>
-          <td><%= op.active? ? "✓" : "—" %></td>
-          <td class="text-right">
-            <%= link_to "Modifier", edit_admin_mobile_operator_path(op), class: "text-blue-600 mr-3 text-xs" %>
-            <%= button_to "Supprimer", admin_mobile_operator_path(op), method: :delete,
-                  data: { turbo_confirm: "Confirmer ?" },
-                  class: "text-red-500 text-xs bg-transparent border-0 cursor-pointer" %>
-          </td>
-        </tr>
+<% content_for :page_title, "Opérateurs Mobile" %>
+
+<%= render "shared/page_header", 
+    title: "Opérateurs Mobile",
+    subtitle: "Gérer la liste des opérateurs mobiles et codes de paiement par pays",
+    action_text: "Nouvel Opérateur",
+    action_url: new_admin_mobile_operator_path,
+    action_icon: :plus %>
+
+<%= render "shared/table",
+  columns: [
+    { header: "Pays", cell: ->(op){ render "shared/badge", text: op.country_code, color: :blue } },
+    { header: "Nom de l'Opérateur", cell: ->(op){ content_tag(:span, op.name, class: "font-bold text-slate-800") } },
+    { header: "Code", cell: ->(op){ content_tag(:span, op.code, class: "font-mono text-xs text-slate-500") } },
+    { header: "Statut", cell: ->(op){ render "shared/badge", text: (op.active? ? "Actif" : "Inactif"), color: (op.active? ? :green : :gray) } }
+  ],
+  rows: @operators,
+  pagy: @pagy,
+  actions: ->(op){
+    capture do %>
+      <%= link_to edit_admin_mobile_operator_path(op), class: "p-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors" do %>
+        <%= lucide_icon :edit_3, class: "w-4 h-4" %>
       <% end %>
-    </tbody>
-  </table>
-</div>
+      <%= button_to admin_mobile_operator_path(op), method: :delete, data: { turbo_confirm: "Supprimer l'opérateur #{op.name} ?" }, class: "p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors border-0" do %>
+        <%= lucide_icon :trash_2, class: "w-4 h-4" %>
+      <% end %>
+    <% end
+  } %>

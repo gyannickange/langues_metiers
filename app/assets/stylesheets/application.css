@@ -8,14 +8,99 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
-/* Police par défaut: Roboto */
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+/*
+ * This is a manifest file that'll be compiled into application.css.
+ */
 
-body {
-  letter-spacing: 0.025em;
-  line-height: 1.5;
+/* Import Brand Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu+Condensed&family=Roboto:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap");
+
+:root {
+  /* Brand Tokens - OKLCH (Converted from Tailwind Hex) */
+  --brand-gold: oklch(0.82 0.12 85);    /* #e7c873 */
+  --brand-green: oklch(0.35 0.05 160);  /* #1f4b43 */
+  
+  /* Design Tokens Mapping */
+  --color-primary: var(--brand-gold);
+  --color-secondary: var(--brand-green);
+  --color-accent: oklch(0.85 0.12 140); /* Soft Mint variation */
+  
+  --color-surface-50: oklch(0.99 0.01 160);
+  --color-surface-100: oklch(0.97 0.01 160);
+  --color-surface-200: oklch(0.94 0.01 160);
+  
+  /* Primary Font for Headings/Brand */
+  --font-display: 'Ubuntu Condensed', sans-serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  
+  --shadow-premium: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.5);
 }
 
-button {
-  cursor: pointer;
+/* Dynamic Theme Support (Per-Page overrides) */
+.primary-cle { --color-primary: oklch(0.55 0.12 210); }   /* Example override for CLE theme */
+.secondary-cle { --color-secondary: oklch(0.65 0.22 35); } /* Example override for CLE theme */
+
+body {
+  font-family: var(--font-sans);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  letter-spacing: -0.01em;
+  line-height: 1.6;
+  color: oklch(0.2 0.02 160);
+  background-color: var(--color-surface-50);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 400; /* Ubuntu Condensed looks best at 400 */
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-premium);
+}
+
+/* Circular Charts (from results.css implementation) */
+.chart-circle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  background: white;
+  border-radius: 9999px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.03);
+  border: 1px solid oklch(0.95 0.01 160);
+}
+
+.chart-circle svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
+}
+
+.chart-percentage {
+  position: absolute;
+  font-size: 1.875rem;
+  font-weight: 900;
+  color: var(--color-secondary);
+  letter-spacing: -0.05em;
+  font-family: var(--font-display);
+}
+
+/* Animations */
+@keyframes fadeInSlideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-premium-in {
+  animation: fadeInSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
