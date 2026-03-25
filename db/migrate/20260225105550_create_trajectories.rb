@@ -1,7 +1,7 @@
 class CreateTrajectories < ActiveRecord::Migration[8.0]
   def change
     create_table :trajectories, id: :uuid, default: -> { "gen_random_uuid()" } do |t|
-      t.references :profile, null: false, foreign_key: true,
+      t.references :career, null: false, foreign_key: true,
                    type: :uuid, default: -> { "gen_random_uuid()" }
       t.text :axe_1
       t.text :axe_2

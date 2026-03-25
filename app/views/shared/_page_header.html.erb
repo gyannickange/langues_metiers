@@ -1,14 +1,3 @@
-<%#
-  Usage:
-  render "shared/page_header",
-         title: "Fields",
-         action_url: new_admin_field_path,
-         action_text: "New Field",
-         action_type: "primary"
-  
-  action_type: primary, secondary (optional, defaults to primary)
-  If action_url or action_text is nil, no button is rendered
-%>
 <%
   action_type ||= "primary"
   action_classes = {

@@ -37,15 +37,6 @@
         animation_delay: "0.3s" %>
 
     <%= render "shared/stat_card",
-        title: t("Fields"),
-        count: Field.count,
-        description: t("admin.dashboard.fields.description"),
-        icon: "🏷️",
-        url: admin_fields_path,
-        color_scheme: "primary_dark",
-        animation_delay: "0.4s" %>
-
-    <%= render "shared/stat_card",
         title: t("admin.dashboard.roadmaps.title"),
         count: Roadmap.count,
         description: t("admin.dashboard.roadmaps.description"),
@@ -83,14 +74,6 @@
           icon: "🧩",
           url: admin_skills_path,
           color_scheme: "secondary" %>
-
-      <%= render "shared/quick_action_card",
-          title: t("admin.dashboard.quick_actions.manage_fields"),
-          count: Field.count,
-          count_label: t("Fields"),
-          icon: "🏷️",
-          url: admin_fields_path,
-          color_scheme: "primary" %>
 
       <%= render "shared/quick_action_card",
           title: t("admin.dashboard.quick_actions.manage_careers"),

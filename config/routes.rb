@@ -4,8 +4,6 @@ Rails.application.routes.draw do
     omniauth_callbacks: "users/omniauth_callbacks"
   }
 
-  resources :fields, only: [ :index, :show ], param: :slug
-
   devise_scope :user do
     post "login/request_otp", to: "users/sessions#request_otp", as: :send_otp
     post "login/verify_otp", to: "users/sessions#verify_otp", as: :verify_otp
@@ -77,11 +75,5 @@ Rails.application.routes.draw do
     resources :trajectories
     resources :questions
     resources :mobile_operators
-
-    resources :fields, path: "fields" do
-      resources :roadmaps do
-        resources :roadmap_steps
-      end
-    end
   end
 end
