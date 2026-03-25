@@ -7,35 +7,49 @@
     action_url: new_admin_career_path,
     action_icon: :plus %>
 
-<div class="mb-6 flex flex-wrap gap-4 items-center bg-white/50 backdrop-blur-sm p-4 rounded-2xl border border-slate-100/50 shadow-sm animate-premium-in" data-controller="filters">
-  <%= form_with url: admin_careers_path, method: :get, data: { turbo_frame: "careers" }, class: "flex items-center gap-4 w-full" do %>
-    <div class="relative flex-1 max-w-md">
-      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+<div class="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6 animate-premium-in" data-controller="filters">
+  <!-- Status Tabs -->
+  <div class="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+    <%# All Order equivalent %>
+    <%= link_to admin_careers_path(q: @query), 
+                class: "px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest whitespace-nowrap transition-all duration-300 #{!@status.present? ? "bg-slate-900 text-white shadow-lg shadow-slate-200" : "bg-white text-slate-400 hover:text-slate-600 hover:bg-slate-50 border border-slate-100"}",
+                data: { turbo_frame: "careers" } do %>
+      <%= t("All Careers") %>
+    <% end %>
+
+    <% Career.statuses.keys.each do |st| %>
+      <%= link_to admin_careers_path(status: st, q: @query), 
+                  class: "px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest whitespace-nowrap transition-all duration-300 #{st == @status ? "bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/20" : "bg-white text-slate-400 hover:text-slate-600 hover:bg-slate-50 border border-slate-100"}",
+                  data: { turbo_frame: "careers" } do %>
+        <%= st.humanize %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <!-- Search & Date Range (Placeholder for Date range to match image) -->
+  <div class="flex items-center gap-3">
+    <%= form_with url: admin_careers_path, method: :get, data: { turbo_frame: "careers" }, class: "relative group" do %>
+      <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-300 group-focus-within:text-[var(--color-primary)] transition-colors">
         <%= lucide_icon :search, class: "w-4 h-4" %>
       </div>
+      <input type="hidden" name="status" value="<%= @status %>">
       <input type="text" name="q" value="<%= @query %>" placeholder="<%= t("Search careers") %>..." 
-             class="block w-full pl-10 pr-3 py-2.5 border-0 bg-slate-50 rounded-xl text-sm placeholder:text-slate-400 focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all font-medium" 
+             class="block w-full md:w-64 pl-11 pr-4 py-3 bg-white border border-slate-100 rounded-[1.5rem] text-sm font-bold text-slate-700 placeholder:text-slate-300 focus:ring-4 focus:ring-[var(--color-primary)]/10 focus:border-[var(--color-primary)]/30 transition-all shadow-sm" 
              data-filters-target="query" data-action="input->filters#submit" />
+    <% end %>
+    
+    <div class="hidden xl:flex items-center gap-2 bg-white border border-slate-100 rounded-[1.5rem] px-4 py-3 shadow-sm">
+      <%= lucide_icon :calendar, class: "w-4 h-4 text-slate-400" %>
+      <span class="text-[10px] font-black uppercase tracking-widest text-slate-500">2026-03-01 to 2026-03-31</span>
     </div>
-
-    <div class="flex items-center space-x-2">
-      <label class="text-[10px] font-black uppercase tracking-widest text-slate-400"><%= t("Status") %></label>
-      <select name="status" class="bg-slate-50 border-0 rounded-xl px-4 py-2.5 text-sm font-bold text-slate-600 focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all cursor-pointer" 
-              data-filters-target="status" data-action="change->filters#submit">
-        <option value=""><%= t("All statuses") %></option>
-        <% Career.statuses.keys.each do |st| %>
-          <option value="<%= st %>" <%= "selected" if st == @status %>><%= st.humanize %></option>
-        <% end %>
-      </select>
-    </div>
-  <% end %>
+  </div>
 </div>
 
 <%= turbo_frame_tag "careers" do %>
   <%= render "shared/table",
     columns: [
       { header: "Titre",  cell: ->(r){ content_tag(:span, r.title, class: "font-bold text-slate-800") } },
-      { header: "Statut", cell: ->(r){ render "shared/badge", text: r.status, color: (r.active? ? :green : :gray) } }
+      { header: "Statut", cell: ->(r){ render "shared/badge", text: r.status, color: (r.published? ? :green : :gray) } }
     ],
     rows: @careers,
     pagy: @pagy,

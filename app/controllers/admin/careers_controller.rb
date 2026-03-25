@@ -1,6 +1,6 @@
 module Admin
   class CareersController < BaseController
-    before_action :set_career, only: [ :show, :edit, :update, :destroy ]
+    before_action :set_career, only: [ :edit, :update, :destroy ]
 
     def index
       @query = params[:q].to_s.strip

@@ -10,44 +10,51 @@
          pagy: @pagy
 %>
 
-<div class="glass-card rounded-2xl overflow-hidden shadow-premium animate-premium-in" style="animation-delay: 0.1s;">
-  <div class="overflow-x-auto">
-    <table class="min-w-full divide-y divide-slate-100/50">
-      <thead>
-        <tr class="bg-slate-50/50">
-          <% columns.each do |col| %>
-            <th class="px-6 py-4 text-left text-[10px] font-black text-slate-500 uppercase tracking-widest font-display">
-              <%= col[:header] %>
-            </th>
-          <% end %>
-          <% if defined?(actions) && actions %>
-            <th class="px-6 py-4"></th>
-          <% end %>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-slate-100/30">
-        <% rows.each_with_index do |row, index| %>
-          <tr class="hover:bg-slate-50/30 transition-colors duration-200">
-            <% columns.each do |col| %>
-              <td class="px-6 py-4 text-sm text-slate-600 font-medium whitespace-nowrap">
+<div class="space-y-4 animate-premium-in">
+  <!-- Table Header (Desktop only) -->
+  <div class="hidden md:grid grid-cols-<%= columns.size + (defined?(actions) && actions ? 1 : 0) %> gap-4 px-8 py-4 bg-slate-50/50 rounded-2xl border border-slate-100/50">
+    <% columns.each do |col| %>
+      <div class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
+        <%= col[:header] %>
+      </div>
+    <% end %>
+    <% if defined?(actions) && actions %>
+      <div class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">
+        <%= t("Actions") %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Rows / Cards -->
+  <div class="space-y-3">
+    <% rows.each_with_index do |row, index| %>
+      <div class="group bg-white rounded-[2rem] p-6 md:px-8 md:py-5 border border-slate-100/80 shadow-sm hover:shadow-premium-lg hover:border-[var(--color-primary)]/30 transition-all duration-300 transform hover:-translate-y-1">
+        <div class="flex flex-col md:grid md:grid-cols-<%= columns.size + (defined?(actions) && actions ? 1 : 0) %> gap-4 items-start md:items-center">
+          <% columns.each_with_index do |col, col_index| %>
+            <div class="<%= "flex flex-col gap-1" if col_index == 0 %>">
+              <% if col_index > 0 %>
+                <span class="md:hidden text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1"><%= col[:header] %></span>
+              <% end %>
+              <div class="text-slate-700 font-bold transition-colors group-hover:text-slate-900">
                 <%= col[:cell].call(row) %>
-              </td>
-            <% end %>
-            <% if defined?(actions) && actions %>
-              <td class="px-6 py-4 text-right whitespace-nowrap">
-                <div class="flex items-center justify-end space-x-2">
-                  <%= actions.call(row) %>
-                </div>
-              </td>
-            <% end %>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+              </div>
+            </div>
+          <% end %>
+
+          <% if defined?(actions) && actions %>
+            <div class="w-full md:w-auto mt-4 md:mt-0 pt-4 md:pt-0 border-t md:border-t-0 border-slate-50 flex items-center justify-end gap-2">
+              <%= actions.call(row) %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
   </div>
 
   <% if defined?(pagy) && pagy.present? && pagy.pages > 1 %>
-    <%= render "shared/pagination", pagy: pagy %>
+    <div class="mt-8">
+      <%= render "shared/pagination", pagy: pagy %>
+    </div>
   <% end %>
 </div>
 

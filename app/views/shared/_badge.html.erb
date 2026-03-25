@@ -3,17 +3,18 @@
   Colors: gold, green, blue, purple, orange, yellow, red, gray, slate
 %>
 <% badge_classes = {
-  gold: "bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-[var(--color-primary)]/20",
-  green: "bg-[var(--color-secondary)]/10 text-[var(--color-secondary)] border-[var(--color-secondary)]/20",
-  blue: "bg-blue-50 text-blue-600 border-blue-100",
-  purple: "bg-purple-50 text-purple-600 border-purple-100",
-  orange: "bg-orange-50 text-orange-600 border-orange-100",
-  yellow: "bg-yellow-50 text-yellow-600 border-yellow-100",
-  red: "bg-red-50 text-red-600 border-red-100",
-  gray: "bg-slate-50 text-slate-600 border-slate-100",
-  slate: "bg-slate-50 text-slate-600 border-slate-100"
+  gold: "bg-amber-50 text-amber-700 border-amber-100",
+  green: "bg-emerald-50 text-emerald-700 border-emerald-100",
+  blue: "bg-blue-50 text-blue-700 border-blue-100",
+  purple: "bg-violet-50 text-violet-700 border-violet-100",
+  orange: "bg-orange-50 text-orange-700 border-orange-100",
+  yellow: "bg-yellow-50 text-yellow-700 border-yellow-100",
+  red: "bg-rose-50 text-rose-700 border-rose-100",
+  gray: "bg-slate-50 text-slate-500 border-slate-100",
+  slate: "bg-slate-50 text-slate-500 border-slate-100"
 } %>
-<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest border <%= badge_classes[color.to_sym] || badge_classes[:slate] %>">
+<span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.15em] border transition-all duration-300 shadow-sm <%= badge_classes[color.to_sym] || badge_classes[:slate] %>">
+  <span class="w-1.5 h-1.5 rounded-full mr-2 <%= "bg-emerald-500" if color.to_sym == :green || color.to_sym == :published %><%= "bg-amber-500" if color.to_sym == :gold || color.to_sym == :draft %><%= "bg-slate-400" if color.to_sym == :gray || color.to_sym == :archived %>"></span>
   <%= text %>
 </span>
 

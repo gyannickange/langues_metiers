@@ -1,13 +1,17 @@
 # app/controllers/diagnostics_controller.rb
 class DiagnosticsController < ApplicationController
-  before_action :authenticate_user!, except: [ :new ]
+  before_action :authenticate_user!
   before_action :set_diagnostic, only: [ :show, :questionnaire, :submit_bloc, :pay, :process_payment, :results, :pdf_status, :download_pdf ]
   before_action :require_paid!,      only: [ :results, :pdf_status, :download_pdf ]
 
   def new
-    # @diagnostic = current_user.diagnostics.create!(status: :in_progress)
-    # redirect_to questionnaire_diagnostic_path(@diagnostic)
-    render "coming_soon"
+    unless current_user.admin?
+      render "coming_soon"
+      return
+    end
+
+    @diagnostic = current_user.diagnostics.create!(status: :in_progress)
+    redirect_to questionnaire_diagnostic_path(@diagnostic)
   end
 
   def pay
