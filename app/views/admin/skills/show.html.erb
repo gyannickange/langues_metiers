@@ -5,7 +5,7 @@
     subtitle: "Consulter les détails du référentiel de compétences",
     action_text: "Modifier",
     action_url: edit_admin_skill_path(@skill),
-    action_icon: :edit_3,
+    action_icon: "edit-3",
     action_type: :primary %>
 
 <div class="space-y-8 max-w-2xl">
@@ -19,12 +19,12 @@
 
   <div class="flex items-center gap-4">
     <%= link_to admin_skills_path, class: "inline-flex items-center px-4 py-2 bg-slate-100 text-slate-700 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-slate-200 transition-colors" do %>
-      <%= lucide_icon :arrow_left, class: "w-4 h-4 mr-2" %>
+      <%= lucide_icon "arrow-left", class: "w-4 h-4 mr-2" %>
       Retour à la liste
     <% end %>
 
     <%= button_to admin_skill_path(@skill), method: :delete, data: { turbo_confirm: "Confirmer la suppression ?" }, class: "inline-flex items-center px-4 py-2 bg-red-50 text-red-600 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-red-100 transition-colors border-0 cursor-pointer" do %>
-      <%= lucide_icon :trash_2, class: "w-4 h-4 mr-2" %>
+      <%= lucide_icon "trash-2", class: "w-4 h-4 mr-2" %>
       Supprimer
     <% end %>
   </div>

@@ -5,7 +5,7 @@
     subtitle: "Gérer le référentiel des compétences techniques et transversales",
     action_text: "Nouvelle Compétence",
     action_url: new_admin_skill_path,
-    action_icon: :plus %>
+    action_icon: "plus" %>
 
 <%= render "shared/table",
   columns: [
@@ -17,10 +17,10 @@
   actions: ->(s){
     capture do %>
       <%= link_to edit_admin_skill_path(s), class: "p-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors" do %>
-        <%= lucide_icon :edit_3, class: "w-4 h-4" %>
+        <%= lucide_icon "edit-3", class: "w-4 h-4" %>
       <% end %>
       <%= button_to admin_skill_path(s), method: :delete, data: { turbo_confirm: t("admin.shared.confirm_delete") }, class: "p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors border-0" do %>
-        <%= lucide_icon :trash_2, class: "w-4 h-4" %>
+        <%= lucide_icon "trash-2", class: "w-4 h-4" %>
       <% end %>
     <% end
   } %>

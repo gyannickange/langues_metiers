@@ -5,7 +5,7 @@
     subtitle: "Gérer les blocs de questions du diagnostic",
     action_text: "Nouvelle Question",
     action_url: new_admin_question_path,
-    action_icon: :plus %>
+    action_icon: "plus" %>
 
 <%= render "shared/table",
   columns: [
@@ -20,10 +20,10 @@
   actions: ->(q){
     capture do %>
       <%= link_to edit_admin_question_path(q), class: "p-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors" do %>
-        <%= lucide_icon :edit_3, class: "w-4 h-4" %>
+        <%= lucide_icon "edit-3", class: "w-4 h-4" %>
       <% end %>
       <%= button_to admin_question_path(q), method: :delete, data: { turbo_confirm: "Confirmer la suppression ?" }, class: "p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors border-0" do %>
-        <%= lucide_icon :trash_2, class: "w-4 h-4" %>
+        <%= lucide_icon "trash-2", class: "w-4 h-4" %>
       <% end %>
     <% end
   } %>

@@ -5,7 +5,7 @@
     subtitle: "Gérer la liste des opérateurs mobiles et codes de paiement par pays",
     action_text: "Nouvel Opérateur",
     action_url: new_admin_mobile_operator_path,
-    action_icon: :plus %>
+    action_icon: "plus" %>
 
 <%= render "shared/table",
   columns: [
@@ -19,10 +19,10 @@
   actions: ->(op){
     capture do %>
       <%= link_to edit_admin_mobile_operator_path(op), class: "p-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors" do %>
-        <%= lucide_icon :edit_3, class: "w-4 h-4" %>
+        <%= lucide_icon "edit-3", class: "w-4 h-4" %>
       <% end %>
       <%= button_to admin_mobile_operator_path(op), method: :delete, data: { turbo_confirm: "Supprimer l'opérateur #{op.name} ?" }, class: "p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors border-0" do %>
-        <%= lucide_icon :trash_2, class: "w-4 h-4" %>
+        <%= lucide_icon "trash-2", class: "w-4 h-4" %>
       <% end %>
     <% end
   } %>

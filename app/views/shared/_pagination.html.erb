@@ -37,7 +37,7 @@
                 <% query_params = request.query_parameters.merge(page: pagy.prev) %>
                 <%= link_to "#{request.path}?#{query_params.to_query}", class: "relative inline-flex items-center rounded-l-xl px-2 py-2 text-slate-400 bg-white hover:bg-slate-50 shadow-sm transition-all" do %>
                   <span class="sr-only"><%= t("actions.previous") %></span>
-                  <%= lucide_icon :chevron_left, class: "h-4 w-4" %>
+                  <%= lucide_icon "chevron-left", class: "h-4 w-4" %>
                 <% end %>
               <% end %>
             <% elsif item == :next_page %>
@@ -45,7 +45,7 @@
                 <% query_params = request.query_parameters.merge(page: pagy.next) %>
                 <%= link_to "#{request.path}?#{query_params.to_query}", class: "relative inline-flex items-center rounded-r-xl px-2 py-2 text-slate-400 bg-white hover:bg-slate-50 shadow-sm transition-all" do %>
                   <span class="sr-only"><%= t("actions.next") %></span>
-                  <%= lucide_icon :chevron_right, class: "h-4 w-4" %>
+                  <%= lucide_icon "chevron-right", class: "h-4 w-4" %>
                 <% end %>
               <% end %>
             <% end %>
