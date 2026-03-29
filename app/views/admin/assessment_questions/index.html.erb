@@ -57,7 +57,7 @@
         { header: "", width: "50px", cell: ->(aq){ content_tag(:div, lucide_icon("grip-vertical", class: "w-4 h-4 text-slate-300 cursor-grab active:cursor-grabbing"), data: { sortable_handle: true }) } },
         { header: "Texte de la question", cell: ->(aq){ content_tag(:div, aq.text&.truncate(100), class: "max-w-md whitespace-normal leading-tight font-medium text-slate-700") } },
         { header: "Type", cell: ->(aq){ content_tag(:span, aq.kind&.upcase, class: "text-[10px] font-black text-slate-400 tracking-widest") } },
-        { header: "Statut", cell: ->(aq){ render "shared/badge", text: (aq.active? ? "Active" : "Inactive"), color: (aq.active? ? :green : :gray) } }
+        { header: "Statut", cell: ->(aq){ render "shared/badge", label: (aq.active? ? "Active" : "Inactive"), color: (aq.active? ? :green : :gray) } }
       ],
       rows: @assessment_questions,
       pagy: @pagy,

@@ -27,7 +27,7 @@
     <%= render "shared/table",
         columns: [
           { header: "Utilisateur", cell: ->(d){ d.user&.email } },
-          { header: "Statut", cell: ->(d){ render "shared/badge", text: d.status, color: d.completed? ? :green : (d.in_progress? ? :blue : :gray) } },
+          { header: "Statut", cell: ->(d){ render "shared/badge", label: d.status, color: d.completed? ? :green : (d.in_progress? ? :blue : :gray) } },
           { header: "Profil principal", cell: ->(d){ d.primary_career&.title || "—" } },
           { header: "Créé le", cell: ->(d){ l(d.created_at, format: :short) } }
         ],

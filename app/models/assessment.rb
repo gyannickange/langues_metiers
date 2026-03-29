@@ -16,4 +16,3 @@ class Assessment < ApplicationRecord
     Assessment.where.not(id: id).update_all(active: false)
   end
 end
-

@@ -170,4 +170,3 @@ class DiagnosticsController < ApplicationController
     (params[:bloc] || 1).to_i.clamp(1, 5)
   end
 end
-

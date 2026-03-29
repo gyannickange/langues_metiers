@@ -4,4 +4,3 @@ class AddAssessmentToTables < ActiveRecord::Migration[8.0]
     add_reference :diagnostics, :assessment, type: :uuid, foreign_key: true, null: true
   end
 end
-

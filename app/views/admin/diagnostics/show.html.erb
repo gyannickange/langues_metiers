@@ -16,7 +16,7 @@
         icon: :info,
         show_border: true,
         items: [
-          { label: "Statut", value: render("shared/badge", text: @diagnostic.status, color: @diagnostic.completed? ? :green : :gray) },
+          { label: "Statut", value: render("shared/badge", label: @diagnostic.status, color: @diagnostic.completed? ? :green : :gray) },
           { label: "Utilisateur", value: @diagnostic.user&.email },
           { label: "Créé le", value: l(@diagnostic.created_at, format: :short) }
         ] %>
@@ -38,7 +38,7 @@
         icon: "file-text",
         show_border: true,
         items: [
-          { label: "PDF Généré", value: render("shared/badge", text: (@diagnostic.pdf_generated? ? "OUI" : "NON"), color: (@diagnostic.pdf_generated? ? :green : :gray)) }
+          { label: "PDF Généré", value: render("shared/badge", label: (@diagnostic.pdf_generated? ? "OUI" : "NON"), color: (@diagnostic.pdf_generated? ? :green : :gray)) }
         ] %>
   </div>
 
@@ -107,7 +107,7 @@
             icon: :credit_card,
             show_border: true,
             items: [
-              { label: "Statut", value: render("shared/badge", text: @diagnostic.payment.status, color: @diagnostic.payment.completed? ? :green : :orange) },
+              { label: "Statut", value: render("shared/badge", label: @diagnostic.payment.status, color: @diagnostic.payment.completed? ? :green : :orange) },
               { label: "Montant", value: number_to_currency(@diagnostic.payment.amount, unit: "CFA ", precision: 0) },
               { label: "Méthode", value: content_tag(:span, @diagnostic.payment_provider&.upcase, class: "font-mono text-[10px]") }
             ] %>

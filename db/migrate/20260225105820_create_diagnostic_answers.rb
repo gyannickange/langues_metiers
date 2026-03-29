@@ -13,4 +13,3 @@ class CreateDiagnosticAnswers < ActiveRecord::Migration[8.0]
     add_index :diagnostic_answers, [ :diagnostic_id, :assessment_question_id ], unique: true, name: "idx_diag_answers_on_diag_and_assess_quest"
   end
 end
-

@@ -4,6 +4,8 @@ require "test_helper"
 class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
   def setup
     @user = User.create!(email: "ctrl#{SecureRandom.hex(4)}@test.com", password: "password123", first_name: "Test", last_name: "User", city: "Test City", country: "CI", diploma: "Master", employment_status: "En emploi")
+    @assessment = Assessment.create!(title: "Diagnostic Ivoirien", active: true)
+    @assessment.assessment_questions.create!(bloc: 1, text: "Question 1", kind: "mcq", position: 1)
   end
 
   test "GET new redirects to sign-in for unauthenticated users" do

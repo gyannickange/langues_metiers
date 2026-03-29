@@ -92,4 +92,3 @@ Rails.application.routes.draw do
     resources :mobile_operators
   end
 end
-

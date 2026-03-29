@@ -28,9 +28,8 @@ class Admin::AssessmentsController < Admin::BaseController
   private
 
   def set_assessment = @assessment = Assessment.find(params[:id])
-  
+
   def assessment_params
     params.require(:assessment).permit(:title, :description, :active)
   end
 end
-

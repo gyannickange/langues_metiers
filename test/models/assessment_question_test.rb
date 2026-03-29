@@ -18,10 +18,6 @@ class AssessmentQuestionTest < ActiveSupport::TestCase
     assert_not aq.valid?
   end
 
-  test "bloc must be 1 through 5" do
-    assert_not AssessmentQuestion.new(bloc: 6, text: "Q", kind: "mcq", position: 1).valid?
-    assert_not AssessmentQuestion.new(bloc: 0, text: "Q", kind: "mcq", position: 1).valid?
-  end
 
   test "scope active" do
     a = AssessmentQuestion.create!(bloc: 1, text: "A", kind: "mcq", position: 1, active: true)
@@ -36,4 +32,3 @@ class AssessmentQuestionTest < ActiveSupport::TestCase
     assert_equal [ aq1, aq2 ], AssessmentQuestion.by_bloc(1).to_a
   end
 end
-

@@ -9,10 +9,10 @@
 
 <%= render "shared/table",
   columns: [
-    { header: "Pays", cell: ->(op){ render "shared/badge", text: op.country_code, color: :blue } },
+    { header: "Pays", cell: ->(op){ render "shared/badge", label: op.country_code, color: :blue } },
     { header: "Nom de l'Opérateur", cell: ->(op){ content_tag(:span, op.name, class: "font-bold text-slate-800") } },
     { header: "Code", cell: ->(op){ content_tag(:span, op.code, class: "font-mono text-xs text-slate-500") } },
-    { header: "Statut", cell: ->(op){ render "shared/badge", text: (op.active? ? "Actif" : "Inactif"), color: (op.active? ? :green : :gray) } }
+    { header: "Statut", cell: ->(op){ render "shared/badge", label: (op.active? ? "Actif" : "Inactif"), color: (op.active? ? :green : :gray) } }
   ],
   rows: @operators,
   pagy: @pagy,

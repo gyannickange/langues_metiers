@@ -9,7 +9,7 @@
 <%= render "shared/table",
   columns: [
     { header: "Email",  cell: ->(r){ r.email } },
-    { header: "Rôle",   cell: ->(r){ render "shared/badge", text: r.role, color: (r.role == "admin" ? :gold : :gray) } },
+    { header: "Rôle",   cell: ->(r){ render "shared/badge", label: r.role, color: (r.role == "admin" ? :gold : :gray) } },
     { header: "Créé le", cell: ->(r){ l(r.created_at, format: :short) } }
   ],
   rows: @users,

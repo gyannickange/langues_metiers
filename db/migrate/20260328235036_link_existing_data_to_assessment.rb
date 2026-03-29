@@ -16,4 +16,3 @@ class LinkExistingDataToAssessment < ActiveRecord::Migration[8.0]
     Assessment.destroy_all
   end
 end
-

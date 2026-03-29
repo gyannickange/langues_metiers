@@ -81,4 +81,3 @@ class Diagnostics::ScoringServiceTest < ActiveSupport::TestCase
     )
   end
 end
-

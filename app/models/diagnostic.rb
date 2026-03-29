@@ -20,7 +20,7 @@ class Diagnostic < ApplicationRecord
     pawapay: 1
   }, prefix: :provider
 
-  after_commit :schedule_abandonment_reminders, on: [:create, :update], if: -> { saved_change_to_status? && in_progress? }
+  after_commit :schedule_abandonment_reminders, on: [ :create, :update ], if: -> { saved_change_to_status? && in_progress? }
 
   def self.price
     Rails.env.production? ? 2000 : 0

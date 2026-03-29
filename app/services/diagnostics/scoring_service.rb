@@ -60,6 +60,5 @@ module Diagnostics
 
       counts.any? ? counts.max_by { |_, v| v }.first : tied_slugs.first
     end
-
   end
 end

@@ -13,7 +13,7 @@
     { header: "Description", cell: ->(a){ content_tag(:div, a.description&.truncate(60), class: "text-slate-500 text-sm") } },
     { header: "Questions", cell: ->(a){ content_tag(:span, a.assessment_questions.count, class: "font-mono font-bold text-xs bg-slate-100 px-2 py-0.5 rounded text-slate-600") } },
     { header: "Blocs", cell: ->(a){ content_tag(:span, a.total_blocs, class: "font-mono font-bold text-xs bg-slate-100 px-2 py-0.5 rounded text-slate-600") } },
-    { header: "Statut", cell: ->(a){ render "shared/badge", text: (a.active? ? "Actif" : "Inactif"), color: (a.active? ? :green : :gray) } }
+    { header: "Statut", cell: ->(a){ render "shared/badge", label: (a.active? ? "Actif" : "Inactif"), color: (a.active? ? :green : :gray) } }
   ],
   rows: @assessments,
   pagy: @pagy,

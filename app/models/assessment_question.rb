@@ -51,4 +51,3 @@ class AssessmentQuestion < ApplicationRecord
     self.position = max_pos + 1
   end
 end
-

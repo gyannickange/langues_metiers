@@ -7,7 +7,7 @@ module Admin
       @status = params[:status]
 
       @careers = Career.order(created_at: :desc)
-      
+
       if @query.present?
         search_query = "%#{@query}%"
         @careers = @careers.where("title ILIKE :q OR description ILIKE :q OR slug ILIKE :q", q: search_query)

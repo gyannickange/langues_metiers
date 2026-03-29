@@ -19,5 +19,4 @@ class Admin::DiagnosticsController < Admin::BaseController
                           .where(assessment_questions: { bloc: @current_bloc })
                           .order("assessment_questions.position")
   end
-
 end

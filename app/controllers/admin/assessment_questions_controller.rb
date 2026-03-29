@@ -57,4 +57,3 @@ class Admin::AssessmentQuestionsController < Admin::BaseController
     )
   end
 end
-

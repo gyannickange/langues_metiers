@@ -62,7 +62,7 @@
     <%= render "shared/table",
       columns: [
         { header: "Titre",  cell: ->(r){ content_tag(:span, r.title, class: "font-bold text-slate-800") } },
-        { header: "Statut", cell: ->(r){ render "shared/badge", text: r.status, color: (r.published? ? :green : :gray) } }
+        { header: "Statut", cell: ->(r){ render "shared/badge", label: r.status, color: (r.published? ? :green : :gray) } }
       ],
       rows: @careers,
       pagy: @pagy,
