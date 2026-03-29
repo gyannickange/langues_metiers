@@ -8,15 +8,16 @@
     action_icon: "arrow-left",
     action_type: :secondary %>
 
-<div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-  <!-- Left Side: Detail Cards -->
-  <div class="lg:col-span-1 space-y-6">
+<div class="space-y-8">
+  <!-- Top Side: Detail Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     <%= render "shared/show_card", 
         title: "Session",
         icon: :info,
+        show_border: true,
         items: [
-          { label: "Utilisateur", value: @diagnostic.user&.email },
           { label: "Statut", value: render("shared/badge", text: @diagnostic.status, color: @diagnostic.completed? ? :green : :gray) },
+          { label: "Utilisateur", value: @diagnostic.user&.email },
           { label: "Créé le", value: l(@diagnostic.created_at, format: :short) }
         ] %>
 
@@ -24,56 +25,45 @@
       <%= render "shared/show_card", 
           title: "Orientation",
           icon: :compass,
+          show_border: true,
+          action: { text: "Voir le Résultat", url: results_diagnostic_path(@diagnostic), target: "_blank" },
           items: [
             { label: "Métier 1", value: content_tag(:span, @diagnostic.primary_career&.title || "—", class: "font-bold text-[var(--color-primary)]") },
             { label: "Métier 2", value: @diagnostic.complementary_career&.title || "—" }
           ] %>
     <% end %>
 
-    <% if @diagnostic.payment %>
-      <%= render "shared/show_card", 
-          title: "Paiement",
-          icon: :credit_card,
-          items: [
-            { label: "Statut", value: render("shared/badge", text: @diagnostic.payment.status, color: @diagnostic.payment.completed? ? :green : :orange) },
-            { label: "Montant", value: number_to_currency(@diagnostic.payment.amount, unit: "CFA ", precision: 0) },
-            { label: "Méthode", value: content_tag(:span, @diagnostic.payment_provider&.upcase, class: "font-mono text-[10px]") }
-          ] %>
-    <% end %>
-
-    <div class="glass-card rounded-2xl p-6 shadow-premium border-l-4 border-[var(--color-primary)]">
-      <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
-        <%= lucide_icon "file-text", class: "w-3 h-3" %> Export Rapport
-      </h4>
-      <div class="flex items-center justify-between">
-        <span class="text-sm font-medium text-slate-700">PDF Généré</span>
-        <%= render "shared/badge", text: (@diagnostic.pdf_generated? ? "OUI" : "NON"), color: (@diagnostic.pdf_generated? ? :green : :gray) %>
-      </div>
-    </div>
+    <%= render "shared/show_card", 
+        title: "Export Rapport",
+        icon: "file-text",
+        show_border: true,
+        items: [
+          { label: "PDF Généré", value: render("shared/badge", text: (@diagnostic.pdf_generated? ? "OUI" : "NON"), color: (@diagnostic.pdf_generated? ? :green : :gray)) }
+        ] %>
   </div>
 
-  <!-- Right Side: Answers with Bloc Filter -->
-  <div class="lg:col-span-3 space-y-6">
-    <div class="glass-card rounded-[2rem] p-8 shadow-premium min-h-[600px]">
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 pb-6 border-b border-slate-100">
-        <div>
-          <h3 class="text-xl font-bold text-slate-800">Détail des Réponses</h3>
-          <p class="text-slate-400 text-xs font-medium uppercase tracking-widest mt-1">Inspection par bloc technique</p>
-        </div>
-
-        <!-- Bloc Tabs -->
-        <div class="flex items-center gap-2 bg-slate-50 p-1.5 rounded-2xl border border-slate-100/50">
-          <% (1..(@questionnaire&.total_blocs || 5)).each do |i| %>
-            <%= link_to admin_diagnostic_path(@diagnostic, bloc: i), 
-                        class: "px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-tighter transition-all duration-300 #{i == @current_bloc ? "bg-white text-[var(--color-primary)] shadow-sm border border-slate-100" : "text-slate-400 hover:text-slate-600"}",
-                        data: { turbo_frame: "diagnostic_answers", turbo_action: "advance" } do %>
-              Bloc <%= i %>
-            <% end %>
-          <% end %>
-        </div>
-      </div>
-
+  <!-- Bottom Side: Answers with Bloc Filter -->
+  <div>
+    <div class="glass-card rounded-[2rem] shadow-premium min-h-[600px]">
       <%= turbo_frame_tag "diagnostic_answers", class: "animate-premium-in" do %>
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 pb-6 border-b border-slate-100">
+          <div>
+            <h3 class="text-xl font-bold text-slate-800">Détail des Réponses</h3>
+            <p class="text-slate-400 text-xs font-medium uppercase tracking-widest mt-1">Inspection par bloc technique</p>
+          </div>
+
+          <!-- Bloc Tabs -->
+          <div class="flex items-center gap-2 bg-slate-50 p-1.5 rounded-2xl border border-slate-100/50 overflow-x-auto whitespace-nowrap">
+            <% (1..(@questionnaire&.total_blocs || 5)).each do |i| %>
+              <%= link_to admin_diagnostic_path(@diagnostic, bloc: i), 
+                          class: "px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-tighter transition-all duration-300 #{i.to_i == @current_bloc.to_i ? "bg-white text-[var(--color-primary)] shadow-sm border border-slate-100" : "text-slate-400 hover:text-slate-600"}",
+                          data: { turbo_frame: "diagnostic_answers", turbo_action: "advance" } do %>
+                Bloc <%= i %>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+
         <% if @answers.any? %>
           <div class="space-y-4">
             <% @answers.each_with_index do |answer, idx| %>
@@ -86,10 +76,11 @@
                     <p class="text-slate-800 font-bold leading-relaxed mb-3">
                       <%= answer.question.text %>
                     </p>
-                    <div class="flex items-center gap-2">
+                    <div class="flex flex-col items-start gap-2 mt-4">
                        <span class="text-[10px] font-black text-slate-300 uppercase tracking-widest">Réponse :</span>
                        <span class="px-3 py-1 bg-green-50 text-green-700 text-xs font-bold rounded-lg border border-green-100">
-                         <%= answer.answer_value %>
+                         <% selected_option = answer.question.options&.find { |o| o["value"] == answer.answer_value } %>
+                         <%= selected_option ? "#{answer.answer_value}: #{selected_option['text']}" : answer.answer_value %>
                        </span>
                     </div>
                   </div>
@@ -106,4 +97,21 @@
       <% end %>
     </div>
   </div>
+
+  <% if @diagnostic.payment %>
+    <!-- Footer Side: Paiement -->
+    <div class="mt-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <%= render "shared/show_card", 
+            title: "Paiement",
+            icon: :credit_card,
+            show_border: true,
+            items: [
+              { label: "Statut", value: render("shared/badge", text: @diagnostic.payment.status, color: @diagnostic.payment.completed? ? :green : :orange) },
+              { label: "Montant", value: number_to_currency(@diagnostic.payment.amount, unit: "CFA ", precision: 0) },
+              { label: "Méthode", value: content_tag(:span, @diagnostic.payment_provider&.upcase, class: "font-mono text-[10px]") }
+            ] %>
+      </div>
+    </div>
+  <% end %>
 </div>

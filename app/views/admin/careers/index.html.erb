@@ -9,17 +9,17 @@
 
 <div class="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6 animate-premium-in" data-controller="filters">
   <!-- Status Tabs -->
-  <div class="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
-    <%# All Order equivalent %>
+  <div class="flex items-center gap-2 bg-slate-50 p-1.5 rounded-2xl border border-slate-100/50 overflow-x-auto whitespace-nowrap scrollbar-hide">
+    <%# All Careers %>
     <%= link_to admin_careers_path(q: @query), 
-                class: "px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest whitespace-nowrap transition-all duration-300 #{!@status.present? ? "bg-slate-900 text-white shadow-lg shadow-slate-200" : "bg-white text-slate-400 hover:text-slate-600 hover:bg-slate-50 border border-slate-100"}",
+                class: "px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-tighter transition-all duration-300 #{!@status.present? ? "bg-white text-[var(--color-primary)] shadow-sm border border-slate-100" : "text-slate-400 hover:text-slate-600"}",
                 data: { turbo_frame: "careers", turbo_action: "advance" } do %>
-      <%= t("All Careers") %>
+      <%= t("Toutes les carrières") %>
     <% end %>
 
     <% Career.statuses.keys.each do |st| %>
       <%= link_to admin_careers_path(status: st, q: @query), 
-                  class: "px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest whitespace-nowrap transition-all duration-300 #{st == @status ? "bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/20" : "bg-white text-slate-400 hover:text-slate-600 hover:bg-slate-50 border border-slate-100"}",
+                  class: "px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-tighter transition-all duration-300 #{st == @status ? "bg-white text-[var(--color-primary)] shadow-sm border border-slate-100" : "text-slate-400 hover:text-slate-600"}",
                   data: { turbo_frame: "careers", turbo_action: "advance" } do %>
         <%= st.humanize %>
       <% end %>

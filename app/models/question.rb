@@ -25,12 +25,13 @@ class Question < ApplicationRecord
 
   def process_options
     if parsed_options.present? && parsed_options.is_a?(Array)
-      self.options = parsed_options.reject { |opt| opt[:text].blank? || opt[:label].blank? }.map do |opt|
+      self.options = parsed_options.reject { |opt| opt[:text].blank? }.each_with_index.map do |opt, index|
+        generated_label = (65 + index).chr
         {
           "text"         => opt[:text],
-          "label"        => opt[:label],
-          "value"        => opt[:value].presence || opt[:label],
-          "points"       => opt[:points].to_i,
+          "label"        => generated_label,
+          "value"        => generated_label,
+          "points"       => 1,
           "profile_slug" => opt[:profile_slug].presence
         }.compact
       end

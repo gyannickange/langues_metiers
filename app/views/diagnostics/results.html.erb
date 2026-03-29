@@ -27,7 +27,7 @@
     </div>
     <div class="flex flex-col xl:flex-row xl:items-end justify-between gap-8 border-b border-gray-200 pb-8">
       <div>
-         <h1 class="text-4xl md:text-6xl font-black text-secondary-900 uppercase tracking-tighter leading-none mb-4">Repositionnement <br/><span class="text-primary-500">Stratégique</span></h1>
+         <h1 class="text-4xl lg:text-5xl font-black text-secondary-900 uppercase tracking-tighter leading-none mb-4">Repositionnement <br/><span class="text-primary-500">Stratégique</span></h1>
          <p class="text-sm font-bold text-gray-500 uppercase tracking-widest">Émis le <%= @diagnostic.completed_at&.strftime("%d.%m.%Y") %></p>
       </div>
       
@@ -35,19 +35,19 @@
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 xl:gap-8 w-full xl:w-auto text-left">
         <div class="bg-white p-4 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-100 flex flex-col justify-center transition-shadow hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
           <span class="text-[9px] text-gray-400 font-black uppercase tracking-widest mb-1">Participant</span>
-          <span class="text-sm font-bold text-secondary-900 leading-tight truncate"><%= current_user.first_name %> <%= current_user.last_name %></span>
+          <span class="text-sm font-bold text-secondary-900"><%= @diagnostic.user.first_name %> <%= @diagnostic.user.last_name %></span>
         </div>
         <div class="bg-white p-4 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-100 flex flex-col justify-center transition-shadow hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
           <span class="text-[9px] text-gray-400 font-black uppercase tracking-widest mb-1">Localisation</span>
-          <span class="text-sm font-bold text-secondary-900 leading-tight"><%= current_user.city %>, <%= current_user.country %></span>
+          <span class="text-sm font-bold text-secondary-900"><%= @diagnostic.user.city %>, <%= @diagnostic.user.country %></span>
         </div>
         <div class="bg-white p-4 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-100 flex flex-col justify-center transition-shadow hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
           <span class="text-[9px] text-gray-400 font-black uppercase tracking-widest mb-1">Diplôme</span>
-          <span class="text-sm font-bold text-secondary-900 leading-tight truncate"><%= current_user.diploma %></span>
+          <span class="text-sm font-bold text-secondary-900"><%= @diagnostic.user.diploma %></span>
         </div>
         <div class="bg-primary-50/50 p-4 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-primary-100/50 flex flex-col justify-center transition-shadow hover:shadow-[0_8px_30px_rgba(231,200,115,0.15)]">
           <span class="text-[9px] text-primary-600 font-black uppercase tracking-widest mb-1">Statut</span>
-          <span class="text-sm font-bold text-primary-900 leading-tight"><%= current_user.employment_status %></span>
+          <span class="text-sm font-bold text-primary-900"><%= @diagnostic.user.employment_status %></span>
         </div>
       </div>
     </div>
@@ -67,7 +67,7 @@
           <span class="text-[10px] font-black text-white uppercase tracking-[0.3em]">Profil Dominant</span>
         </div>
         
-        <h2 class="text-5xl md:text-6xl font-black text-white uppercase tracking-tighter leading-[0.9] mb-8 relative z-10 drop-shadow-md">
+        <h2 class="text-5xl lg:text-5xl font-black text-white uppercase tracking-tighter leading-[0.9] mb-8 relative z-10 drop-shadow-md">
           <%= dominant_name %>
         </h2>
         
@@ -165,12 +165,12 @@
     <div class="mb-8 flex justify-center text-primary-500 drop-shadow-[0_0_15px_rgba(231,200,115,0.4)]">
       <svg class="w-12 h-12 md:w-16 md:h-16" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C19.5693 16 20.017 15.5523 20.017 15V9C20.017 8.44772 19.5693 8 19.017 8H14.017C13.4647 8 13.017 8.44772 13.017 9V15C13.017 16.5161 12.0381 17.8037 10.655 18.2533L9.01705 18.7849L8.35515 16.3473L10.0171 15.8279C10.5901 15.644 11.0171 15.1165 11.0171 14.5V9C11.0171 7.34315 12.3602 6 14.0171 6H19.0171C20.6739 6 22.0171 7.34315 22.0171 9V15C22.0171 18.3137 19.3308 21 16.0171 21H14.0171ZM3.01705 21L3.01705 18C3.01705 16.8954 3.91242 16 5.01705 16H8.01705C8.56933 16 9.01705 15.5523 9.01705 15V9C9.01705 8.44772 8.56933 8 8.01705 8H3.01705C2.46477 8 2.01705 8.44772 2.01705 9V15C2.01705 16.5161 1.03814 17.8037 -0.344937 18.2533L-1.9829 18.7849L-2.6448 16.3473L-0.98285 15.8279C-0.409874 15.644 0.0170505 15.1165 0.0170505 14.5V9C0.0170505 7.34315 1.3602 6 3.01705 6H8.01705C9.67391 6 11.0171 7.34315 11.0171 9V15C11.0171 18.3137 8.33076 21 5.01705 21H3.01705Z" /></svg>
     </div>
-    <blockquote class="text-3xl md:text-5xl lg:text-6xl font-black text-secondary-900 leading-[1.1] tracking-tighter mb-10 max-w-4xl mx-auto uppercase">
+    <blockquote class="text-3xl md:text-5xl font-black text-secondary-900 leading-[1.1] tracking-tighter mb-10 max-w-4xl mx-auto uppercase">
       "Le repositionnement est le début d'une <span class="bg-secondary-900 text-primary-500 px-4 md:px-6 py-1 md:py-2 rounded-[1.5rem] inline-block shadow-xl transform -rotate-2">expertise 4.0</span>"
     </blockquote>
     <div class="inline-flex items-center space-x-6">
       <div class="w-8 h-[2px] bg-gray-300"></div>
-      <cite class="text-gray-400 font-black uppercase tracking-[0.4em] not-italic text-[9px] md:text-[10px]">L'Équipe d'Analyse L&M 4.0</cite>
+      <cite class="text-gray-400 font-black uppercase tracking-[0.4em] not-italic text-[9px] md:text-[10px]">L'Équipe d'Analyse Insertrice</cite>
       <div class="w-8 h-[2px] bg-gray-300"></div>
     </div>
   </div>
@@ -179,7 +179,7 @@
   <div class="flex justify-center pb-20">
     <div class="w-full max-w-xl px-4">
       <% if @diagnostic.pdf_generated? %>
-        <%= link_to download_pdf_diagnostic_path(@diagnostic), class: "group flex items-center justify-between w-full p-4 md:p-6 bg-secondary-900 rounded-[2.5rem] hover:bg-primary-500 hover:scale-[1.03] hover:shadow-[0_20px_50px_rgba(26,54,93,0.3)] transition-all duration-500 border border-white/10" do %>
+        <%= link_to download_pdf_diagnostic_path(@diagnostic), class: "group flex items-center justify-between w-full p-4 bg-secondary-900 rounded-[2.5rem] hover:bg-primary-500 hover:scale-[1.03] hover:shadow-[0_20px_50px_rgba(26,54,93,0.3)] transition-all duration-500 border border-white/10" do %>
           <div class="flex items-center space-x-5 md:space-x-6 ml-2 md:ml-4">
              <div class="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-white/10 flex items-center justify-center group-hover:bg-secondary-900/20 transition-colors shadow-inner">
                <svg class="w-6 h-6 md:w-8 md:h-8 text-primary-500 group-hover:text-secondary-900 transform group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>

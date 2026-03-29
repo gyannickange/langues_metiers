@@ -67,7 +67,7 @@ class DiagnosticsController < ApplicationController
     bloc_number = params[:bloc].to_i
 
     @questionnaire = @diagnostic.questionnaire || Questionnaire.find_by(active: true)
-    
+
     @questionnaire.questions.active.by_bloc(bloc_number).each do |question|
       value  = params.dig(:answers, question.id.to_s)
       next if value.blank?
@@ -93,12 +93,11 @@ class DiagnosticsController < ApplicationController
   end
 
   def results
-    @trajectory = @diagnostic.primary_profile&.active_trajectory
+    @trajectory = @diagnostic.primary_career&.active_trajectory
 
-    unless @diagnostic.pdf_generated?
-      Diagnostics::GeneratePdfService.call(@diagnostic)
-      @diagnostic.reload
-    end
+    # Always regenerate PDF to ensure it reflects current data
+    Diagnostics::GeneratePdfService.call(@diagnostic)
+    @diagnostic.reload
   end
 
   def pdf_status
@@ -116,7 +115,11 @@ class DiagnosticsController < ApplicationController
   private
 
   def set_diagnostic
-    @diagnostic = current_user.diagnostics.find(params[:id])
+    @diagnostic = if current_user.admin?
+      Diagnostic.find(params[:id])
+    else
+      current_user.diagnostics.find(params[:id])
+    end
   rescue ActiveRecord::RecordNotFound
     redirect_to root_path
   end

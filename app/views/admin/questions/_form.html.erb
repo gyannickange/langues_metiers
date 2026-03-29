@@ -41,18 +41,6 @@
                 <label class="block text-[9px] font-black uppercase text-slate-400 mb-1">Texte / Enoncé*</label>
                 <input type="text" name="question[parsed_options][][text]" value="<%= opt["text"] %>" class="w-full text-xs font-medium rounded-lg border-slate-200 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] shadow-sm px-3 py-2" required>
               </div>
-              <div class="w-full sm:w-20">
-                <label class="block text-[9px] font-black uppercase text-slate-400 mb-1">Label*</label>
-                <input type="text" name="question[parsed_options][][label]" value="<%= opt["label"] %>" placeholder="Ex: A" class="w-full text-xs font-bold font-mono rounded-lg border-slate-200 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] shadow-sm px-3 py-2 text-center" required>
-              </div>
-              <div class="w-full sm:w-20">
-                <label class="block text-[9px] font-black uppercase text-slate-400 mb-1">Valeur</label>
-                <input type="text" name="question[parsed_options][][value]" value="<%= opt["value"] %>" class="w-full text-xs font-mono rounded-lg border-slate-200 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] shadow-sm px-3 py-2 text-center">
-              </div>
-              <div class="w-full sm:w-16">
-                <label class="block text-[9px] font-black uppercase text-slate-400 mb-1">Points</label>
-                <input type="number" name="question[parsed_options][][points]" value="<%= opt["points"] || 0 %>" class="w-full text-xs font-mono rounded-lg border-slate-200 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] shadow-sm px-2 py-2 text-center">
-              </div>
               <div class="flex-1 min-w-[180px]">
                 <label class="block text-[9px] font-black uppercase text-slate-400 mb-1">Profil Mappé</label>
                 <%= select_tag "question[parsed_options][][profile_slug]", options_for_select(careers, opt["profile_slug"]), include_blank: "- Aucun profil -", class: "w-full text-xs rounded-lg border-slate-200 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] shadow-sm px-3 py-2 cursor-pointer" %>
@@ -70,18 +58,6 @@
             <div class="flex-1 min-w-[200px]">
               <label class="block text-[9px] font-black uppercase text-slate-400 mb-1">Texte / Enoncé*</label>
               <input type="text" name="question[parsed_options][][text]" class="w-full text-xs font-medium rounded-lg border-slate-200 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] shadow-sm px-3 py-2" required>
-            </div>
-            <div class="w-full sm:w-20">
-              <label class="block text-[9px] font-black uppercase text-slate-400 mb-1">Label*</label>
-              <input type="text" name="question[parsed_options][][label]" placeholder="Ex: A" class="w-full text-xs font-bold font-mono rounded-lg border-slate-200 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] shadow-sm px-3 py-2 text-center" required>
-            </div>
-            <div class="w-full sm:w-20">
-              <label class="block text-[9px] font-black uppercase text-slate-400 mb-1">Valeur</label>
-              <input type="text" name="question[parsed_options][][value]" class="w-full text-xs font-mono rounded-lg border-slate-200 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] shadow-sm px-3 py-2 text-center">
-            </div>
-            <div class="w-full sm:w-16">
-              <label class="block text-[9px] font-black uppercase text-slate-400 mb-1">Points</label>
-              <input type="number" name="question[parsed_options][][points]" value="0" class="w-full text-xs font-mono rounded-lg border-slate-200 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] shadow-sm px-2 py-2 text-center">
             </div>
             <div class="flex-1 min-w-[180px]">
               <label class="block text-[9px] font-black uppercase text-slate-400 mb-1">Profil Mappé</label>
