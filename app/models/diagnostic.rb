@@ -19,6 +19,8 @@ class Diagnostic < ApplicationRecord
     pawapay: 1
   }, prefix: :provider
 
+  after_commit :schedule_abandonment_reminders, on: [:create, :update], if: -> { saved_change_to_status? && in_progress? }
+
   def self.price
     Rails.env.production? ? 2000 : 0
   end
@@ -29,5 +31,13 @@ class Diagnostic < ApplicationRecord
 
   def pdf_generated?
     pdf_report.attached?
+  end
+
+  private
+
+  def schedule_abandonment_reminders
+    DiagnosticReminderJob.set(wait: 30.minutes).perform_later(id, "30m")
+    DiagnosticReminderJob.set(wait: 1.hour).perform_later(id, "1h")
+    DiagnosticReminderJob.set(wait: 1.day).perform_later(id, "1d")
   end
 end

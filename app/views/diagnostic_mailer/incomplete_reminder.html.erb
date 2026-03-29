@@ -1,0 +1,21 @@
+<p>Bonjour <%= @user.first_name || @user.email %>,</p>
+
+<% case @delay_type %>
+<% when "30m" %>
+  <p>Nous avons remarqué que vous avez commencé un diagnostic d'orientation, mais que vous ne l'avez pas encore terminé. Ne perdez pas votre progression !</p>
+<% when "1h" %>
+  <p>Votre diagnostic d'orientation n'attend plus que vous. Terminer ce questionnaire est la première étape vers la découverte des métiers qui correspondent vraiment à votre profil.</p>
+<% when "1d" %>
+  <p>C'est votre dernier rappel. Ne laissez pas votre diagnostic inachevé ! Prenez quelques minutes dès maintenant pour explorer votre potentiel et découvrir vos résultats personnalisés.</p>
+<% end %>
+
+<p>Cliquez sur le bouton ci-dessous pour reprendre là où vous vous étiez arrêté :</p>
+
+<p style="text-align: center; margin: 30px 0;">
+  <a href="<%= url_for(controller: 'diagnostics', action: 'questionnaire', id: @diagnostic.id, only_path: false) %>" 
+     style="background-color: #D4AF37; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">
+    Reprendre mon diagnostic
+  </a>
+</p>
+
+<p>À très bientôt,<br>L'équipe Langues & Métiers</p>

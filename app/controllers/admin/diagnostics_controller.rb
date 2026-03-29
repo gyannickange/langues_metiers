@@ -1,9 +1,12 @@
 # app/controllers/admin/diagnostics_controller.rb
 class Admin::DiagnosticsController < Admin::BaseController
   def index
-    @pagy, @diagnostics = pagy(
-      Diagnostic.includes(:user, :primary_career, :payment).order(created_at: :desc)
-    )
+    @status_filter = params[:status] || "completed"
+
+    scope = Diagnostic.includes(:user, :primary_career, :payment).order(created_at: :desc)
+    scope = scope.where(status: @status_filter) if @status_filter != "all"
+
+    @pagy, @diagnostics = pagy(scope)
   end
 
   def show
