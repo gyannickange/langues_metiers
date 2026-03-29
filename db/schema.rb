@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_09_180447) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_28_235036) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -41,6 +41,23 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_09_180447) do
     t.uuid "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "careers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.integer "status"
+    t.text "required_skills"
+    t.text "recommended_path"
+    t.string "sector"
+    t.string "slug"
+    t.string "kind"
+    t.jsonb "key_skills", default: []
+    t.text "first_action"
+    t.text "premium_pitch"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_careers_on_slug", unique: true, where: "(slug IS NOT NULL)"
   end
 
   create_table "categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -81,8 +98,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_09_180447) do
     t.datetime "completed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "primary_career_slug"
-    t.string "complementary_career_slug"
+    t.uuid "primary_career_id"
+    t.uuid "complementary_career_id"
+    t.uuid "questionnaire_id"
+    t.index ["questionnaire_id"], name: "index_diagnostics_on_questionnaire_id"
     t.index ["user_id"], name: "index_diagnostics_on_user_id"
   end
 
@@ -125,6 +144,14 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_09_180447) do
     t.index ["user_id"], name: "index_payments_on_user_id"
   end
 
+  create_table "questionnaires", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.boolean "active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "bloc", null: false
     t.text "text", null: false
@@ -135,7 +162,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_09_180447) do
     t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "questionnaire_id"
     t.index ["bloc", "position"], name: "index_questions_on_bloc_and_position"
+    t.index ["questionnaire_id"], name: "index_questions_on_questionnaire_id"
   end
 
   create_table "skills", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -152,7 +181,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_09_180447) do
     t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "career_slug"
+    t.uuid "career_id"
   end
 
   create_table "user_skills", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -194,9 +223,11 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_09_180447) do
   add_foreign_key "categories_skills", "skills"
   add_foreign_key "diagnostic_answers", "diagnostics"
   add_foreign_key "diagnostic_answers", "questions"
+  add_foreign_key "diagnostics", "questionnaires"
   add_foreign_key "diagnostics", "users"
   add_foreign_key "payments", "diagnostics"
   add_foreign_key "payments", "users"
+  add_foreign_key "questions", "questionnaires"
   add_foreign_key "user_skills", "skills"
   add_foreign_key "user_skills", "users"
 end

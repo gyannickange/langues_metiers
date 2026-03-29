@@ -1,0 +1,10 @@
+<% content_for :page_title, "Modifier le Questionnaire" %>
+
+<%= render "shared/page_header", 
+    title: "Modifier : #{@questionnaire.title}",
+    subtitle: "Mettre à jour les informations du questionnaire",
+    action_text: "Retour aux questionnaires",
+    action_url: admin_questionnaires_path,
+    action_icon: "arrow-left" %>
+
+<%= render "form", questionnaire: @questionnaire %>

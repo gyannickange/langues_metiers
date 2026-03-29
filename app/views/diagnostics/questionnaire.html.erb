@@ -6,7 +6,7 @@
       <h1 class="text-4xl font-extrabold text-slate-800 tracking-tight mb-2">
         Diagnostic de Repositionnement
       </h1>
-      <p class="text-slate-500 font-medium">Questionnaire stratégique — 25 questions</p>
+      <p class="text-slate-500 font-medium">Questionnaire stratégique — <%= @questionnaire.questions.count %> questions</p>
     </div>
 
     <!-- Progress Card -->
@@ -14,13 +14,13 @@
       <div class="flex justify-between items-end mb-6">
         <div>
           <span class="text-[10px] font-bold text-primary tracking-widest uppercase mb-1 block">
-            ÉTAPE <%= @current_bloc %> SUR 5
+            ÉTAPE <%= @current_bloc %> SUR <%= @total_blocs %>
           </span>
-          <h2 class="text-xl font-bold text-slate-800"><%= bloc_title(@current_bloc) %></h2>
+          <h2 class="text-xl font-bold text-slate-800">Bloc <%= @current_bloc %></h2>
         </div>
         <div class="text-right">
           <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">
-            <%= (@current_bloc - 1) * 20 %>% complété
+            <%= ((@current_bloc - 1) * 100 / @total_blocs).to_i %>% complété
           </span>
         </div>
       </div>
@@ -29,7 +29,7 @@
       <div class="relative mb-8">
         <div class="absolute top-4 left-0 w-full h-0.5 bg-slate-100"></div>
         <div class="relative flex justify-between">
-          <% (1..5).each do |i| %>
+          <% (1..@total_blocs).each do |i| %>
             <div class="flex flex-col items-center">
               <div class="w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold z-10 transition-all duration-300
                 <%= i <= @current_bloc ? 'stepper-active' : 'bg-white border-slate-100 text-slate-300' %>">
@@ -37,7 +37,7 @@
               </div>
               <span class="mt-2 text-[9px] font-bold tracking-tighter transition-colors duration-300
                 <%= i <= @current_bloc ? 'text-slate-800' : 'text-slate-300' %>">
-                <%= bloc_label(i) %>
+                Bloc <%= i %>
               </span>
             </div>
           <% end %>
@@ -47,13 +47,13 @@
       <!-- Linear Progress Bar -->
       <div class="w-full bg-slate-50 rounded-full h-1.5 overflow-hidden">
         <div class="progress-fill h-full rounded-full transition-all duration-700 ease-out"
-             style="width: <%= (@current_bloc - 1) * 20 %>%"></div>
+             style="width: <%= ((@current_bloc - 1) * 100 / @total_blocs).to_i %>%"></div>
       </div>
     </div>
 
     <div class="flex items-center gap-2 mb-8 px-2">
-      <h3 class="text-lg font-bold text-slate-800">Questions <%= (@current_bloc - 1) * 5 + 1 %>–<%= @current_bloc * 5 %></h3>
-      <span class="text-slate-300 font-medium">sur 25</span>
+      <h3 class="text-lg font-bold text-slate-800"><%= @questions.count %> Questions</h3>
+      <span class="text-slate-300 font-medium">dans ce bloc</span>
     </div>
 
     <%= form_with url: submit_bloc_diagnostic_path(@diagnostic), method: :post, class: "space-y-6" do |f| %>
@@ -66,7 +66,7 @@
 
       <div class="mt-12 flex justify-center">
         <button type="submit" class="btn-questionnaire group relative flex items-center justify-center gap-3 py-4 px-12 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl active:scale-95 min-w-[320px]">
-          <%= @current_bloc < 5 ? "Continuer vers l'étape suivante" : "Voir mes résultats" %>
+          <%= @current_bloc < @total_blocs ? "Continuer vers l'étape suivante" : "Voir mes résultats" %>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
           </svg>

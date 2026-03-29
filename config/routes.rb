@@ -73,7 +73,22 @@ Rails.application.routes.draw do
 
     resources :diagnostics,      only: [ :index, :show ]
     resources :trajectories
-    resources :questions
+    resources :questionnaires do
+      member do
+        patch :activate
+      end
+      resources :questions do
+        collection do
+          patch :reorder
+        end
+      end
+    end
+    # Keep flat questions route for backward compatibility if needed, but we mostly use nested now
+    resources :questions do
+      collection do
+        patch :reorder
+      end
+    end
     resources :mobile_operators
   end
 end

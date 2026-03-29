@@ -1,0 +1,19 @@
+<div class="flex flex-col items-center justify-center p-12 text-center bg-white/50 backdrop-blur-sm rounded-[3rem] border border-dashed border-slate-200 animate-premium-in">
+  <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-6 text-slate-400 group-hover:scale-110 transition-transform duration-500">
+    <%= lucide_icon icon, class: "w-10 h-10" %>
+  </div>
+  
+  <h3 class="text-xl font-black text-slate-800 mb-2 tracking-tight"><%= title %></h3>
+  <p class="text-slate-500 text-sm max-w-xs mb-8 font-medium leading-relaxed">
+    <%= description %>
+  </p>
+
+  <% if defined?(clear_url) && clear_url.present? %>
+    <%= link_to clear_url, 
+                class: "flex items-center gap-2 px-8 py-3 bg-slate-900 text-white rounded-full text-xs font-black uppercase tracking-widest hover:bg-slate-800 hover:shadow-lg transition-all duration-300",
+                data: { turbo_frame: "careers", turbo_action: "advance" } do %>
+      <%= lucide_icon "rotate-ccw", class: "w-4 h-4" %>
+      <%= t("Clear all filters") %>
+    <% end %>
+  <% end %>
+</div>

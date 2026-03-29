@@ -10,7 +10,13 @@ class DiagnosticsController < ApplicationController
       return
     end
 
-    @diagnostic = current_user.diagnostics.create!(status: :in_progress)
+    questionnaire = Questionnaire.find_by(active: true) || Questionnaire.first
+    unless questionnaire
+      redirect_to root_path, alert: "Aucun diagnostic disponible pour le moment."
+      return
+    end
+
+    @diagnostic = current_user.diagnostics.create!(status: :in_progress, questionnaire: questionnaire)
     redirect_to questionnaire_diagnostic_path(@diagnostic)
   end
 
@@ -52,13 +58,17 @@ class DiagnosticsController < ApplicationController
 
   def questionnaire
     @current_bloc = current_bloc
-    @questions    = Question.active.by_bloc(@current_bloc)
+    @questionnaire = @diagnostic.questionnaire || Questionnaire.find_by(active: true)
+    @questions = @questionnaire.questions.active.by_bloc(@current_bloc)
+    @total_blocs = @questionnaire.total_blocs
   end
 
   def submit_bloc
     bloc_number = params[:bloc].to_i
 
-    Question.active.by_bloc(bloc_number).each do |question|
+    @questionnaire = @diagnostic.questionnaire || Questionnaire.find_by(active: true)
+    
+    @questionnaire.questions.active.by_bloc(bloc_number).each do |question|
       value  = params.dig(:answers, question.id.to_s)
       next if value.blank?
 
@@ -74,7 +84,7 @@ class DiagnosticsController < ApplicationController
 
     @diagnostic.update!(status: :in_progress) if @diagnostic.paid?
 
-    if bloc_number >= 5
+    if bloc_number >= @questionnaire.total_blocs
       Diagnostics::ScoringService.call(@diagnostic)
       redirect_to pay_diagnostic_path(@diagnostic)
     else

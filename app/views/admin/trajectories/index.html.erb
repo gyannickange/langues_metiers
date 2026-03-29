@@ -9,7 +9,7 @@
 
 <%= render "shared/table",
     columns: [
-      { header: "Profil", cell: ->(t){ t.profile&.name } },
+      { header: "Profil", cell: ->(t){ t.career&.title || "—" } },
       { header: "Axe Principal", cell: ->(t){ content_tag(:span, t.axe_1&.truncate(60), class: "text-slate-500") } },
       { header: "Statut", cell: ->(t){ render "shared/badge", text: (t.active? ? "Active" : "Inactive"), color: (t.active? ? :green : :gray) } }
     ],

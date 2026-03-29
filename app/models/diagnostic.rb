@@ -1,5 +1,6 @@
 class Diagnostic < ApplicationRecord
   belongs_to :user
+  belongs_to :questionnaire, optional: true
   belongs_to :primary_career,       class_name: "Career", optional: true
   belongs_to :complementary_career, class_name: "Career", optional: true
   has_many   :diagnostic_answers, dependent: :destroy

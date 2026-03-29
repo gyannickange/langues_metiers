@@ -10,7 +10,7 @@
     columns: [
       { header: "Utilisateur", cell: ->(d){ d.user&.email } },
       { header: "Statut", cell: ->(d){ render "shared/badge", text: d.status, color: d.completed? ? :green : :gray } },
-      { header: "Profil principal", cell: ->(d){ d.primary_profile&.name || "—" } },
+      { header: "Profil principal", cell: ->(d){ d.primary_career&.title || "—" } },
       { header: "Créé le", cell: ->(d){ l(d.created_at, format: :short) } }
     ],
     rows: @diagnostics,
