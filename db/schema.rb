@@ -43,21 +43,44 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_28_235036) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "assessment_questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "bloc", null: false
+    t.text "text", null: false
+    t.string "kind", default: "mcq", null: false
+    t.jsonb "options", default: []
+    t.boolean "scored", default: false, null: false
+    t.integer "position", default: 0, null: false
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "assessment_id"
+    t.index ["assessment_id"], name: "index_assessment_questions_on_assessment_id"
+    t.index ["bloc", "position"], name: "index_assessment_questions_on_bloc_and_position"
+  end
+
+  create_table "assessments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.boolean "active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "careers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title"
     t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "status"
-    t.text "required_skills"
+    t.jsonb "required_skills", default: []
     t.text "recommended_path"
     t.string "sector"
     t.string "slug"
-    t.string "kind"
+    t.string "kind", default: "behavioral"
     t.jsonb "key_skills", default: []
     t.text "first_action"
     t.text "premium_pitch"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["slug"], name: "index_careers_on_slug", unique: true, where: "(slug IS NOT NULL)"
+    t.index ["slug"], name: "index_careers_on_slug", unique: true
   end
 
   create_table "categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -77,31 +100,31 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_28_235036) do
 
   create_table "diagnostic_answers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "diagnostic_id", default: -> { "gen_random_uuid()" }, null: false
-    t.uuid "question_id", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "assessment_question_id", default: -> { "gen_random_uuid()" }, null: false
     t.string "answer_value"
     t.string "profile_dimension"
     t.integer "points_awarded", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["diagnostic_id", "question_id"], name: "index_diagnostic_answers_on_diagnostic_id_and_question_id", unique: true
+    t.index ["assessment_question_id"], name: "index_diagnostic_answers_on_assessment_question_id"
+    t.index ["diagnostic_id", "assessment_question_id"], name: "idx_diag_answers_on_diag_and_assess_quest", unique: true
     t.index ["diagnostic_id"], name: "index_diagnostic_answers_on_diagnostic_id"
-    t.index ["question_id"], name: "index_diagnostic_answers_on_question_id"
   end
 
   create_table "diagnostics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id", default: -> { "gen_random_uuid()" }, null: false
     t.integer "status", default: 0, null: false
     t.integer "payment_provider"
+    t.uuid "primary_career_id"
+    t.uuid "complementary_career_id"
     t.jsonb "score_data", default: {}
     t.boolean "pdf_generated", default: false, null: false
     t.datetime "paid_at"
     t.datetime "completed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "primary_career_id"
-    t.uuid "complementary_career_id"
-    t.uuid "questionnaire_id"
-    t.index ["questionnaire_id"], name: "index_diagnostics_on_questionnaire_id"
+    t.uuid "assessment_id"
+    t.index ["assessment_id"], name: "index_diagnostics_on_assessment_id"
     t.index ["user_id"], name: "index_diagnostics_on_user_id"
   end
 
@@ -144,29 +167,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_28_235036) do
     t.index ["user_id"], name: "index_payments_on_user_id"
   end
 
-  create_table "questionnaires", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "title"
-    t.text "description"
-    t.boolean "active"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "bloc", null: false
-    t.text "text", null: false
-    t.string "kind", default: "mcq", null: false
-    t.jsonb "options", default: []
-    t.boolean "scored", default: false, null: false
-    t.integer "position", default: 0, null: false
-    t.boolean "active", default: true, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.uuid "questionnaire_id"
-    t.index ["bloc", "position"], name: "index_questions_on_bloc_and_position"
-    t.index ["questionnaire_id"], name: "index_questions_on_questionnaire_id"
-  end
-
   create_table "skills", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -175,13 +175,14 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_28_235036) do
   end
 
   create_table "trajectories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "career_id", default: -> { "gen_random_uuid()" }, null: false
     t.text "axe_1"
     t.text "axe_2"
     t.text "axe_3"
     t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "career_id"
+    t.index ["career_id"], name: "index_trajectories_on_career_id"
   end
 
   create_table "user_skills", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -219,15 +220,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_28_235036) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "assessment_questions", "assessments"
   add_foreign_key "categories_skills", "categories"
   add_foreign_key "categories_skills", "skills"
+  add_foreign_key "diagnostic_answers", "assessment_questions"
   add_foreign_key "diagnostic_answers", "diagnostics"
-  add_foreign_key "diagnostic_answers", "questions"
-  add_foreign_key "diagnostics", "questionnaires"
+  add_foreign_key "diagnostics", "assessments"
+  add_foreign_key "diagnostics", "careers", column: "complementary_career_id"
+  add_foreign_key "diagnostics", "careers", column: "primary_career_id"
   add_foreign_key "diagnostics", "users"
   add_foreign_key "payments", "diagnostics"
   add_foreign_key "payments", "users"
-  add_foreign_key "questions", "questionnaires"
+  add_foreign_key "trajectories", "careers"
   add_foreign_key "user_skills", "skills"
   add_foreign_key "user_skills", "users"
 end

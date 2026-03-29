@@ -1,0 +1,12 @@
+<% content_for :page_title, "Modifier la Question d'Évaluation" %>
+
+<%= render "shared/page_header", 
+    title: "Modifier la Question d'Évaluation",
+    subtitle: @assessment_question.assessment ? "Modèle : #{@assessment_question.assessment.title}" : "Question d'évaluation isolée",
+    action_text: "Retour",
+    action_url: @assessment_question.assessment ? admin_assessment_assessment_questions_path(@assessment_question.assessment) : admin_assessment_questions_path,
+    action_icon: "arrow-left",
+    action_type: :secondary %>
+
+<%= render "form", assessment_question: @assessment_question, assessment: @assessment_question.assessment, url: @assessment_question.assessment ? admin_assessment_assessment_question_path(@assessment_question.assessment, @assessment_question) : admin_assessment_question_path(@assessment_question) %>
+

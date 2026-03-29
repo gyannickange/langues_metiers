@@ -1,0 +1,9 @@
+fr:
+  activerecord:
+    models:
+      assessment: "Évaluation"
+    attributes:
+      assessment:
+        title: "Titre"
+        description: "Description"
+        active: "Actif"

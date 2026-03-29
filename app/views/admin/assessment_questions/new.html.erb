@@ -1,0 +1,12 @@
+<% content_for :page_title, "Nouvelle Question d'Évaluation" %>
+
+<%= render "shared/page_header", 
+    title: "Nouvelle Question d'Évaluation",
+    subtitle: @assessment ? "Modèle : #{@assessment.title}" : "Question d'évaluation isolée",
+    action_text: "Retour",
+    action_url: @assessment ? admin_assessment_assessment_questions_path(@assessment) : admin_assessment_questions_path,
+    action_icon: "arrow-left",
+    action_type: :secondary %>
+
+<%= render "form", assessment_question: @assessment_question, assessment: @assessment, url: @assessment ? admin_assessment_assessment_questions_path(@assessment) : admin_assessment_questions_path %>
+

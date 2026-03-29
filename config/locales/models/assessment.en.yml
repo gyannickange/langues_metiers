@@ -1,0 +1,9 @@
+en:
+  activerecord:
+    models:
+      assessment: "Assessment"
+    attributes:
+      assessment:
+        title: "Title"
+        description: "Description"
+        active: "Active"

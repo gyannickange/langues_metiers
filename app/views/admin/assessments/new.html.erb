@@ -1,0 +1,11 @@
+<% content_for :page_title, "Nouvelle Évaluation" %>
+
+<%= render "shared/page_header", 
+    title: "Nouvelle Évaluation",
+    subtitle: "Créer un nouveau modèle de diagnostic",
+    action_text: "Retour aux évaluations",
+    action_url: admin_assessments_path,
+    action_icon: "arrow-left" %>
+
+<%= render "form", assessment: @assessment %>
+

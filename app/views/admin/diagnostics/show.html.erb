@@ -54,7 +54,7 @@
 
           <!-- Bloc Tabs -->
           <div class="flex items-center gap-2 bg-slate-50 p-1.5 rounded-2xl border border-slate-100/50 overflow-x-auto whitespace-nowrap">
-            <% (1..(@questionnaire&.total_blocs || 5)).each do |i| %>
+            <% (1..(@assessment&.total_blocs || 5)).each do |i| %>
               <%= link_to admin_diagnostic_path(@diagnostic, bloc: i), 
                           class: "px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-tighter transition-all duration-300 #{i.to_i == @current_bloc.to_i ? "bg-white text-[var(--color-primary)] shadow-sm border border-slate-100" : "text-slate-400 hover:text-slate-600"}",
                           data: { turbo_frame: "diagnostic_answers", turbo_action: "advance" } do %>
@@ -74,12 +74,12 @@
                   </div>
                   <div class="flex-1">
                     <p class="text-slate-800 font-bold leading-relaxed mb-3">
-                      <%= answer.question.text %>
+                      <%= answer.assessment_question.text %>
                     </p>
                     <div class="flex flex-col items-start gap-2 mt-4">
                        <span class="text-[10px] font-black text-slate-300 uppercase tracking-widest">Réponse :</span>
                        <span class="px-3 py-1 bg-green-50 text-green-700 text-xs font-bold rounded-lg border border-green-100">
-                         <% selected_option = answer.question.options&.find { |o| o["value"] == answer.answer_value } %>
+                         <% selected_option = answer.assessment_question.options&.find { |o| o["value"] == answer.answer_value } %>
                          <%= selected_option ? "#{answer.answer_value}: #{selected_option['text']}" : answer.answer_value %>
                        </span>
                     </div>
@@ -115,3 +115,4 @@
     </div>
   <% end %>
 </div>
+

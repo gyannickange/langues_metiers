@@ -24,10 +24,11 @@
       <span class="ml-3"><%= t("Skills") %></span>
     <% end %>
 
-    <%= link_to admin_questionnaires_path, class: nav_link_class(admin_questionnaires_path) do %>
+    <%= link_to admin_assessments_path, class: nav_link_class(admin_assessments_path) do %>
       <%= lucide_icon "file-question", class: "w-5 h-5" %>
-      <span class="ml-3">Questionnaires</span>
+      <span class="ml-3">Évaluations</span>
     <% end %>
+
 
     <%= link_to admin_trajectories_path, class: nav_link_class(admin_trajectories_path) do %>
       <%= lucide_icon "trending-up", class: "w-5 h-5" %>

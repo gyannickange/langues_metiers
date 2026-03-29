@@ -1,9 +1,0 @@
-fr:
-  activerecord:
-    models:
-      question: "Question"
-    attributes:
-      question:
-        content: "Contenu"
-        category: "Catégorie"
-        points: "Points"

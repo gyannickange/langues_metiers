@@ -10,17 +10,17 @@ class Diagnostics::ScoringServiceTest < ActiveSupport::TestCase
     @p_coordinateur  = Career.create!(title: "Coordinateur",  slug: "coordo-#{SecureRandom.hex(3)}", status: :published, kind: :behavioral)
     @p_digital       = Career.create!(title: "Digital",       slug: "digital-#{SecureRandom.hex(3)}", status: :published, kind: :behavioral)
 
-    @q_bloc1 = Question.create!(bloc: 1, text: "Q1", kind: "mcq", position: 1, scored: true,
+    @q_bloc1 = AssessmentQuestion.create!(bloc: 1, text: "Q1", kind: "mcq", position: 1, scored: true,
       options: [
         { "value" => "A", "profile_slug" => @p_analytique.slug,   "points" => 1 },
         { "value" => "B", "profile_slug" => @p_digital.slug,      "points" => 1 }
       ])
-    @q_bloc2 = Question.create!(bloc: 2, text: "Q2", kind: "mcq", position: 1, scored: true,
+    @q_bloc2 = AssessmentQuestion.create!(bloc: 2, text: "Q2", kind: "mcq", position: 1, scored: true,
       options: [
         { "value" => "A", "profile_slug" => @p_analytique.slug,   "points" => 1 },
         { "value" => "B", "profile_slug" => @p_coordinateur.slug, "points" => 1 }
       ])
-    @q_interp = Question.create!(bloc: 4, text: "Q3", kind: "mcq", position: 1, scored: false,
+    @q_interp = AssessmentQuestion.create!(bloc: 4, text: "Q3", kind: "mcq", position: 1, scored: false,
       options: [ { "value" => "A", "profile_slug" => nil, "points" => 0 } ])
   end
 
@@ -39,7 +39,7 @@ class Diagnostics::ScoringServiceTest < ActiveSupport::TestCase
     answer(@q_bloc1, "A", @p_analytique.slug, 1)
     answer(@q_bloc2, "B", @p_coordinateur.slug, 1)
 
-    q3 = Question.create!(bloc: 1, text: "Q3", kind: "mcq", position: 2, scored: true,
+    q3 = AssessmentQuestion.create!(bloc: 1, text: "Q3", kind: "mcq", position: 2, scored: true,
       options: [ { "value" => "A", "profile_slug" => @p_analytique.slug, "points" => 1 } ])
     answer(q3, "A", @p_analytique.slug, 1)
 
@@ -74,10 +74,11 @@ class Diagnostics::ScoringServiceTest < ActiveSupport::TestCase
 
   private
 
-  def answer(question, value, dimension, points)
+  def answer(assessment_question, value, dimension, points)
     DiagnosticAnswer.create!(
-      diagnostic: @d, question: question,
+      diagnostic: @d, assessment_question: assessment_question,
       answer_value: value, profile_dimension: dimension, points_awarded: points
     )
   end
 end
+

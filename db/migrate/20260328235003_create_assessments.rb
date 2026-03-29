@@ -1,6 +1,6 @@
-class CreateQuestionnaires < ActiveRecord::Migration[8.0]
+class CreateAssessments < ActiveRecord::Migration[8.0]
   def change
-    create_table :questionnaires, id: :uuid do |t|
+    create_table :assessments, id: :uuid do |t|
       t.string :title
       t.text :description
       t.boolean :active
@@ -9,3 +9,4 @@ class CreateQuestionnaires < ActiveRecord::Migration[8.0]
     end
   end
 end
+

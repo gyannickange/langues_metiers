@@ -27,8 +27,8 @@ module Diagnostics
 
     def calculate_scores
       scored = @diagnostic.diagnostic_answers
-        .joins(:question)
-        .where(questions: { scored: true })
+        .joins(:assessment_question)
+        .where(assessment_questions: { scored: true })
         .where.not(profile_dimension: [ nil, "" ])
 
       scores = Hash.new(0)
@@ -44,15 +44,15 @@ module Diagnostics
       tied      = sorted.select { |_, v| v == top_score }.map(&:first)
 
       primary_slug = tied.size > 1 ? resolve_tiebreak(tied) : tied.first
-      secondary_slug = sorted.find { |slug, _| slug != primary_slug }&.first
+      secondary_slug = sorted.select { |slug, _| slug != primary_slug }.first&.first
 
       [ Career.behavioral.find_by(slug: primary_slug), Career.behavioral.find_by(slug: secondary_slug) ]
     end
 
     def resolve_tiebreak(tied_slugs)
       bloc2 = @diagnostic.diagnostic_answers
-        .joins(:question)
-        .where(questions: { bloc: 2, scored: true })
+        .joins(:assessment_question)
+        .where(assessment_questions: { bloc: 2, scored: true })
         .where(profile_dimension: tied_slugs)
 
       counts = Hash.new(0)
@@ -60,5 +60,6 @@ module Diagnostics
 
       counts.any? ? counts.max_by { |_, v| v }.first : tied_slugs.first
     end
+
   end
 end

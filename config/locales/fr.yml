@@ -162,8 +162,8 @@ fr:
     how_it_works:
       title: "Comment ça fonctionne"
       steps:
-        step1: "Questionnaire"
-        step1_desc: "Tu réponds au questionnaire structuré en 20 minutes."
+        step1: "Évaluation"
+        step1_desc: "Tu réponds à l'évaluation structurée en 20 minutes."
         step2: "Analyse"
         step2_desc: "Le système analyse tes réponses selon un modèle stratégique propriétaire."
         step3: "Rapport"
@@ -209,7 +209,7 @@ fr:
       subtitle: "Un processus simple en 3 étapes"
       steps:
         - title: "Découvrez votre profil"
-          content: "Répondez à notre questionnaire personnalisé pour identifier vos compétences linguistiques actuelles et vos objectifs professionnels."
+          content: "Répondez à notre évaluation personnalisée pour identifier vos compétences linguistiques actuelles et vos objectifs professionnels."
           icon: "person_search"
         - title: "Choisissez votre parcours"
           content: "Explorez nos filières adaptées à votre profil et sélectionnez le parcours qui correspond le mieux à vos ambitions."

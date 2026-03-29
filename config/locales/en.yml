@@ -75,12 +75,13 @@ en:
     how_it_works:
       title: "How it works"
       steps:
-        step1: "Questionnaire"
-        step1_desc: "You answer the structured questionnaire in 20 minutes."
+        step1: "Assessment"
+        step1_desc: "You answer the structured assessment in 20 minutes."
         step2: "Analysis"
         step2_desc: "The system analyzes your answers according to a proprietary strategic model."
         step3: "Report"
         step3_desc: "You immediately receive your personalized report with your score and trajectories."
+
     target:
       title: "Who is this diagnostic for?"
       subtitle: "Whether you are at the beginning or already in place, this diagnostic is the essential tool to clarify your added value."

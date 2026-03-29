@@ -24,7 +24,7 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     assert_difference "Diagnostic.count", 1 do
       get new_diagnostic_path
     end
-    assert_redirected_to questionnaire_diagnostic_path(Diagnostic.last)
+    assert_redirected_to assessment_diagnostic_path(Diagnostic.last)
   end
 
   test "GET results blocks unpaid diagnostic" do
@@ -34,10 +34,10 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to pay_diagnostic_path(d)
   end
 
-  test "GET questionnaire allows paid diagnostic" do
+  test "GET assessment allows paid diagnostic" do
     sign_in @user
     d = Diagnostic.create!(user: @user, status: :paid)
-    get questionnaire_diagnostic_path(d)
+    get assessment_diagnostic_path(d)
     assert_response :success
   end
 

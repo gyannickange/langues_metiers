@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "./questionnaire.css";
+@import "./assessment.css";
 @import "./results.css";
 
 :root {

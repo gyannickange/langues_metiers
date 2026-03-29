@@ -1,0 +1,13 @@
+en:
+  activerecord:
+    models:
+      assessment_question: "Assessment Question"
+    attributes:
+      assessment_question:
+        bloc: "Block"
+        text: "Text"
+        kind: "Type"
+        scored: "Scored"
+        position: "Position"
+        active: "Active"
+        assessment_id: "Assessment"

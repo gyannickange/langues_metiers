@@ -1,4 +1,4 @@
-<%# app/views/diagnostics/questionnaire.html.erb %>
+<%# app/views/diagnostics/assessment.html.erb %>
 <div class="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 font-sans text-slate-900">
   <div class="max-w-3xl mx-auto">
     <!-- Header -->
@@ -6,7 +6,7 @@
       <h1 class="text-4xl font-extrabold text-slate-800 tracking-tight mb-2">
         Diagnostic de Repositionnement
       </h1>
-      <p class="text-slate-500 font-medium">Questionnaire stratégique — <%= @questionnaire.questions.count %> questions</p>
+      <p class="text-slate-500 font-medium">Évaluation stratégique — <%= @assessment.assessment_questions.count %> questions</p>
     </div>
 
     <!-- Progress Card -->
@@ -52,20 +52,20 @@
     </div>
 
     <div class="flex items-center gap-2 mb-8 px-2">
-      <h3 class="text-lg font-bold text-slate-800"><%= @questions.count %> Questions</h3>
+      <h3 class="text-lg font-bold text-slate-800"><%= @assessment_questions.count %> Questions</h3>
       <span class="text-slate-300 font-medium">dans ce bloc</span>
     </div>
 
     <%= form_with url: submit_bloc_diagnostic_path(@diagnostic), method: :post, class: "space-y-6" do |f| %>
       <%= f.hidden_field :bloc, value: @current_bloc %>
 
-      <% @questions.each_with_index do |question, index| %>
-        <%= render "question", question: question, form: f,
-                               number: (@current_bloc - 1) * 5 + index + 1 %>
+      <% @assessment_questions.each_with_index do |aq, index| %>
+        <%= render "assessment_question", assessment_question: aq, form: f,
+                                number: (@current_bloc - 1) * 5 + index + 1 %>
       <% end %>
 
       <div class="mt-12 flex justify-center">
-        <button type="submit" class="btn-questionnaire group relative flex items-center justify-center gap-3 py-4 px-12 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl active:scale-95 min-w-[320px]">
+        <button type="submit" class="btn-assessment group relative flex items-center justify-center gap-3 py-4 px-12 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl active:scale-95 min-w-[320px]">
           <%= @current_bloc < @total_blocs ? "Continuer vers l'étape suivante" : "Voir mes résultats" %>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -87,3 +87,4 @@
     <% end %>
   </div>
 </div>
+

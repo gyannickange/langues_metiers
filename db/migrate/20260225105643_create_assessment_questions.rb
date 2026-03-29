@@ -1,6 +1,6 @@
-class CreateQuestions < ActiveRecord::Migration[8.0]
+class CreateAssessmentQuestions < ActiveRecord::Migration[8.0]
   def change
-    create_table :questions, id: :uuid, default: -> { "gen_random_uuid()" } do |t|
+    create_table :assessment_questions, id: :uuid, default: -> { "gen_random_uuid()" } do |t|
       t.integer  :bloc,     null: false
       t.text     :text,     null: false
       t.string   :kind,     null: false, default: "mcq"
@@ -10,6 +10,6 @@ class CreateQuestions < ActiveRecord::Migration[8.0]
       t.boolean  :active,   default: true, null: false
       t.timestamps
     end
-    add_index :questions, [ :bloc, :position ]
+    add_index :assessment_questions, [ :bloc, :position ]
   end
 end

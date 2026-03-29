@@ -40,7 +40,7 @@ Rails.application.routes.draw do
   # Diagnostics
   resources :diagnostics, only: [ :new, :show ] do
     member do
-      get  :questionnaire
+      get  :assessment
       post :submit_bloc
       get  :pay
       post :process_payment
@@ -73,18 +73,18 @@ Rails.application.routes.draw do
 
     resources :diagnostics,      only: [ :index, :show ]
     resources :trajectories
-    resources :questionnaires do
+    resources :assessments do
       member do
         patch :activate
       end
-      resources :questions do
+      resources :assessment_questions do
         collection do
           patch :reorder
         end
       end
     end
-    # Keep flat questions route for backward compatibility if needed, but we mostly use nested now
-    resources :questions do
+    # Keep flat assessment_questions route for backward compatibility if needed, but we mostly use nested now
+    resources :assessment_questions do
       collection do
         patch :reorder
       end
@@ -92,3 +92,4 @@ Rails.application.routes.draw do
     resources :mobile_operators
   end
 end
+

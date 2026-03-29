@@ -1,5 +1,5 @@
-class Question < ApplicationRecord
-  belongs_to :questionnaire, optional: true
+class AssessmentQuestion < ApplicationRecord
+  belongs_to :assessment, optional: true
   KINDS = %w[likert mcq].freeze
 
   attr_writer :options_string
@@ -47,7 +47,8 @@ class Question < ApplicationRecord
   def set_default_position
     return if position.present? && position > 0
 
-    max_pos = Question.where(questionnaire_id: questionnaire_id, bloc: bloc).maximum(:position) || 0
+    max_pos = AssessmentQuestion.where(assessment_id: assessment_id, bloc: bloc).maximum(:position) || 0
     self.position = max_pos + 1
   end
 end
+
