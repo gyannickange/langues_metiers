@@ -9,7 +9,8 @@
          ]
 %>
 
-<div class="glass-card rounded-2xl p-6 shadow-premium animate-premium-in">
+<% border_classes = local_assigns[:show_border] ? "border border-slate-100 hover:border-[var(--color-primary)]/20 hover:shadow-premium-sm transition-colors" : "" %>
+<div class="glass-card rounded-2xl p-6 shadow-premium animate-premium-in <%= border_classes %>">
   <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
     <div class="p-2 bg-[var(--color-primary)]/10 text-[var(--color-primary)] rounded-lg">
       <%= lucide_icon icon.to_s.gsub('_', '-'), class: "h-5 w-5" if icon %>
@@ -25,4 +26,10 @@
       </div>
     <% end %>
   </dl>
+
+  <% if local_assigns[:action].present? %>
+    <div class="mt-6 pt-4 border-t border-slate-100">
+      <%= link_to local_assigns[:action][:text], local_assigns[:action][:url], target: local_assigns[:action][:target] || "_self", class: "block w-full text-center px-4 py-2 bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-widest rounded-xl hover:opacity-90 transition-opacity" %>
+    </div>
+  <% end %>
 </div>

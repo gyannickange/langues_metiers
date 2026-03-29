@@ -15,7 +15,7 @@
     <div data-controller="menu" class="min-h-screen flex flex-col md:flex-row p-0 md:p-4 lg:p-6 gap-0 md:gap-4 lg:gap-6">
       <!-- Sidebar / Navigation -->
       <aside data-menu-target="sidebar" 
-             class="w-80 bg-white/80 backdrop-blur-xl border border-slate-200/50 rounded-none md:rounded-[2.5rem] shadow-premium hidden md:flex flex-col fixed inset-y-0 left-0 md:relative z-40 transform -translate-x-full md:translate-x-0 transition-all duration-500 ease-in-out">
+             class="w-72 bg-white/80 backdrop-blur-xl border border-slate-200/50 rounded-none md:rounded-[2.5rem] shadow-premium hidden md:flex flex-col fixed inset-y-0 left-0 md:relative z-40 transform -translate-x-full md:translate-x-0 transition-all duration-500 ease-in-out">
         
         <div class="p-8 flex items-center justify-between">
           <div class="flex items-center gap-4">
@@ -75,7 +75,7 @@
           </div>
         </header>
 
-        <main class="flex-1 p-6 md:p-10 lg:p-12 overflow-y-auto custom-scrollbar">
+        <main class="flex-1 p-6 md:p-8 lg:p-10 overflow-y-auto custom-scrollbar">
           <%= yield %>
         </main>
       </div>
