@@ -3,46 +3,36 @@
   render "shared/quick_action_card",
          title: "Manage users",
          count: User.count,
-         icon: "👥",
+         icon: :users,
          url: admin_users_path,
          color_scheme: "primary"
-  
-  Color schemes: primary, secondary
 %>
 <%
   color_scheme ||= "primary"
   
-  border_hover_classes = {
-    primary: "hover:border-primary-300",
-    secondary: "hover:border-secondary-300"
+  color_vars = {
+    primary: "text-[var(--color-primary)] bg-[var(--color-primary)]/10",
+    secondary: "text-[var(--color-secondary)] bg-[var(--color-secondary)]/10",
+    accent: "text-[var(--color-accent)] bg-[var(--color-accent)]/10"
   }
   
-  icon_bg_classes = {
-    primary: "bg-primary/10 group-hover:bg-primary/20",
-    secondary: "bg-secondary/10 group-hover:bg-secondary/20"
-  }
-  
-  text_hover_classes = {
-    primary: "group-hover:text-primary",
-    secondary: "group-hover:text-secondary"
-  }
-  
-  border_hover = border_hover_classes[color_scheme.to_sym] || border_hover_classes[:primary]
-  icon_bg = icon_bg_classes[color_scheme.to_sym] || icon_bg_classes[:primary]
-  text_hover = text_hover_classes[color_scheme.to_sym] || text_hover_classes[:primary]
+  active_color = color_vars[color_scheme.to_sym] || color_vars[:primary]
 %>
 
-<%= link_to url, class: "bg-card border border-border rounded-xl p-4 #{border_hover} hover:shadow-md transition-all duration-300 group" do %>
-  <div class="flex items-center space-x-3">
-    <div class="w-10 h-10 <%= icon_bg %> rounded-lg flex items-center justify-center text-xl transition-colors">
-      <%= icon %>
+<%= link_to url, class: "glass-card rounded-xl p-5 hover:translate-y-[-2px] transition-all duration-300 group" do %>
+  <div class="flex items-center space-x-4">
+    <div class="w-10 h-10 rounded-lg flex items-center justify-center <%= active_color %> group-hover:scale-110 transition-transform duration-300">
+      <%= lucide_icon icon, class: "w-5 h-5" %>
     </div>
-    <div>
-      <div class="font-semibold text-foreground <%= text_hover %> transition-colors"><%= title %></div>
-      <% if count_label.present? %>
-        <div class="text-xs text-muted-foreground"><%= count %> <%= count_label.downcase %></div>
+    <div class="flex-1 min-w-0">
+      <div class="font-bold text-slate-800 truncate font-display uppercase tracking-wider text-sm"><%= title %></div>
+      <% if defined?(count) && count.present? %>
+        <div class="text-[10px] text-slate-500 font-black uppercase tracking-widest mt-0.5">
+          <%= count %> <%= (defined?(count_label) ? count_label : "items").downcase %>
+        </div>
       <% end %>
     </div>
+    <%= lucide_icon "chevron-right", class: "w-4 h-4 text-slate-300 group-hover:text-[var(--color-secondary)] group-hover:translate-x-1 transition-all" %>
   </div>
 <% end %>
 

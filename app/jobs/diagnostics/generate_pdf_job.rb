@@ -5,7 +5,7 @@ module Diagnostics
 
     def perform(diagnostic_id)
       diagnostic = Diagnostic.find_by(id: diagnostic_id)
-      return if diagnostic.nil? || diagnostic.pdf_generated?
+      return if diagnostic.nil?
       Diagnostics::GeneratePdfService.call(diagnostic)
     end
   end

@@ -1,78 +1,63 @@
 <% content_for :page_title, t("admin.dashboard.title") %>
 
-<div class="space-y-8">
+<div class="space-y-12">
   <!-- Header Section -->
-  <div class="animate-fade-in-up">
-    <h1 class="text-3xl font-bold text-foreground mb-2"><%= t("admin.dashboard.welcome") %></h1>
-    <p class="text-muted-foreground"><%= t("admin.dashboard.subtitle") %></p>
+  <div class="animate-premium-in">
+    <h1 class="text-4xl font-bold mb-3 tracking-tight text-slate-900"><%= t("admin.dashboard.welcome") %></h1>
+    <p class="text-lg text-slate-500 max-w-2xl leading-relaxed"><%= t("admin.dashboard.subtitle") %></p>
   </div>
 
   <!-- Statistics Cards Grid -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <%= render "shared/stat_card",
-        title: t("Users"),
-        count: User.count,
-        description: t("admin.dashboard.users.description"),
-        icon: "👥",
-        url: admin_users_path,
-        color_scheme: "primary",
-        animation_delay: "0.1s" %>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+  <%= render "shared/stat_card",
+      title: "Diagnostics",
+      count: Diagnostic.count,
+      description: "Analyses complétées",
+      percentage: 82,
+      url: admin_diagnostics_path,
+      color_scheme: "primary",
+      animation_delay: "0.1s" %>
 
-    <%= render "shared/stat_card",
-        title: t("Skills"),
-        count: Skill.count,
-        description: t("admin.dashboard.skills.description"),
-        icon: "🧩",
-        url: admin_skills_path,
-        color_scheme: "secondary",
-        animation_delay: "0.2s" %>
+  <%= render "shared/stat_card",
+      title: t("Users"),
+      count: User.count,
+      description: t("admin.dashboard.users.description"),
+      icon: :users,
+      url: admin_users_path,
+      color_scheme: "secondary",
+      animation_delay: "0.2s" %>
 
-    <%= render "shared/stat_card",
-        title: t("admin.dashboard.categories.title"),
-        count: Category.count,
-        description: t("admin.dashboard.categories.description"),
-        icon: "📁",
-        url: nil,
-        color_scheme: "mixed",
-        animation_delay: "0.3s" %>
+  <%= render "shared/stat_card",
+      title: t("Skills"),
+      count: Skill.count,
+      description: t("admin.dashboard.skills.description"),
+      icon: :puzzle,
+      url: admin_skills_path,
+      color_scheme: "accent",
+      animation_delay: "0.3s" %>
 
-    <%= render "shared/stat_card",
-        title: t("Fields"),
-        count: Field.count,
-        description: t("admin.dashboard.fields.description"),
-        icon: "🏷️",
-        url: admin_fields_path,
-        color_scheme: "primary_dark",
-        animation_delay: "0.4s" %>
-
-    <%= render "shared/stat_card",
-        title: t("admin.dashboard.roadmaps.title"),
-        count: Roadmap.count,
-        description: t("admin.dashboard.roadmaps.description"),
-        icon: "🗺️",
-        url: nil,
-        color_scheme: "secondary_dark",
-        animation_delay: "0.5s" %>
-
-    <%= render "shared/stat_card",
-        title: t("Careers"),
-        count: Career.count,
-        description: t("admin.dashboard.careers.description"),
-        icon: "🧭",
-        url: admin_careers_path,
-        color_scheme: "mixed",
-        animation_delay: "0.6s" %>
-  </div>
+  <%= render "shared/stat_card",
+      title: t("Careers"),
+      count: Career.count,
+      description: t("admin.dashboard.careers.description"),
+      icon: :compass,
+      url: admin_careers_path,
+      color_scheme: "primary",
+      animation_delay: "0.4s" %>
+</div>
 
   <!-- Quick Actions Section -->
-  <div class="animate-fade-in-up" style="animation-delay: 0.7s;">
-    <h2 class="text-2xl font-bold text-foreground mb-4"><%= t("admin.dashboard.quick_actions.title") %></h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+  <div class="animate-premium-in" style="animation-delay: 0.6s;">
+    <div class="flex items-center justify-between mb-8">
+      <h2 class="text-2xl font-bold tracking-tight text-slate-900"><%= t("admin.dashboard.quick_actions.title") %></h2>
+      <div class="h-px flex-1 bg-slate-200 ml-6"></div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <%= render "shared/quick_action_card",
           title: t("admin.dashboard.quick_actions.manage_users"),
           count: User.count,
           count_label: t("Users"),
-          icon: "👥",
+          icon: :users,
           url: admin_users_path,
           color_scheme: "primary" %>
 
@@ -80,25 +65,17 @@
           title: t("admin.dashboard.quick_actions.manage_skills"),
           count: Skill.count,
           count_label: t("Skills"),
-          icon: "🧩",
+          icon: :puzzle,
           url: admin_skills_path,
           color_scheme: "secondary" %>
-
-      <%= render "shared/quick_action_card",
-          title: t("admin.dashboard.quick_actions.manage_fields"),
-          count: Field.count,
-          count_label: t("Fields"),
-          icon: "🏷️",
-          url: admin_fields_path,
-          color_scheme: "primary" %>
 
       <%= render "shared/quick_action_card",
           title: t("admin.dashboard.quick_actions.manage_careers"),
           count: Career.count,
           count_label: t("Careers"),
-          icon: "🧭",
+          icon: :compass,
           url: admin_careers_path,
-          color_scheme: "secondary" %>
+          color_scheme: "mixed" %>
     </div>
   </div>
 </div>

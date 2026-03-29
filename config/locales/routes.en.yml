@@ -1,6 +1,5 @@
 en:
   routes:
-    fields: "fields"
     users: "users"
     login: "login"
 

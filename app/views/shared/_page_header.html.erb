@@ -1,27 +1,36 @@
-<%#
-  Usage:
-  render "shared/page_header",
-         title: "Fields",
-         action_url: new_admin_field_path,
-         action_text: "New Field",
-         action_type: "primary"
-  
-  action_type: primary, secondary (optional, defaults to primary)
-  If action_url or action_text is nil, no button is rendered
-%>
 <%
   action_type ||= "primary"
+  action_icon ||= :plus
+  
   action_classes = {
-    primary: "bg-primary-500 text-white hover:bg-primary-600",
-    secondary: "bg-secondary-500 text-white hover:bg-secondary-600"
+    primary: "bg-[var(--color-primary)] text-white hover:opacity-90 shadow-sm",
+    secondary: "bg-[var(--color-secondary)] text-white hover:opacity-90 shadow-sm",
+    accent: "bg-[var(--color-accent)] text-slate-800 hover:opacity-90 shadow-sm"
   }
   action_class = action_classes[action_type.to_sym] || action_classes[:primary]
 %>
 
-<div class="mb-4 flex items-center justify-between">
-  <h1 class="text-xl font-semibold text-foreground"><%= title %></h1>
-  <% if action_url.present? && action_text.present? %>
-    <%= link_to action_text, action_url, class: "inline-flex items-center #{action_class} px-4 py-2 rounded transition-colors" %>
-  <% end %>
+<div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6 animate-premium-in">
+  <div class="space-y-1">
+    <div class="flex items-center gap-2 mb-2">
+      <span class="h-px w-8 bg-[var(--color-primary)]"></span>
+      <span class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-primary)]">Administration</span>
+    </div>
+    <h1 class="text-4xl font-black text-slate-800 tracking-tight"><%= title %></h1>
+    <% if defined?(subtitle) && subtitle.present? %>
+      <p class="text-sm text-slate-500 font-medium max-w-lg"><%= subtitle %></p>
+    <% end %>
+  </div>
+
+  <div class="flex items-center gap-3">
+    <% if action_url.present? && action_text.present? %>
+      <%= link_to action_url, class: "inline-flex items-center justify-center bg-slate-900 text-white px-6 py-3.5 rounded-2xl transition-all duration-300 hover:shadow-xl hover:shadow-slate-200 hover:-translate-y-0.5 font-bold text-xs uppercase tracking-widest group" do %>
+        <div class="w-5 h-5 rounded-lg bg-white/10 flex items-center justify-center mr-3 group-hover:bg-white/20 transition-colors">
+          <%= lucide_icon action_icon, class: "w-3 h-3 text-white" if action_icon %>
+        </div>
+        <%= action_text %>
+      <% end %>
+    <% end %>
+  </div>
 </div>
 

@@ -4,8 +4,6 @@ Rails.application.routes.draw do
     omniauth_callbacks: "users/omniauth_callbacks"
   }
 
-  resources :fields, only: [ :index, :show ], param: :slug
-
   devise_scope :user do
     post "login/request_otp", to: "users/sessions#request_otp", as: :send_otp
     post "login/verify_otp", to: "users/sessions#verify_otp", as: :verify_otp
@@ -42,7 +40,7 @@ Rails.application.routes.draw do
   # Diagnostics
   resources :diagnostics, only: [ :new, :show ] do
     member do
-      get  :questionnaire
+      get  :assessment
       post :submit_bloc
       get  :pay
       post :process_payment
@@ -75,13 +73,22 @@ Rails.application.routes.draw do
 
     resources :diagnostics,      only: [ :index, :show ]
     resources :trajectories
-    resources :questions
-    resources :mobile_operators
-
-    resources :fields, path: "fields" do
-      resources :roadmaps do
-        resources :roadmap_steps
+    resources :assessments do
+      member do
+        patch :activate
+      end
+      resources :assessment_questions do
+        collection do
+          patch :reorder
+        end
       end
     end
+    # Keep flat assessment_questions route for backward compatibility if needed, but we mostly use nested now
+    resources :assessment_questions do
+      collection do
+        patch :reorder
+      end
+    end
+    resources :mobile_operators
   end
 end

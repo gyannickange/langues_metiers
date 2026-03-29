@@ -1,0 +1,87 @@
+<div class="glass-card rounded-2xl p-8 shadow-premium animate-premium-in max-w-3xl" data-controller="assessment-question-form">
+  <%= form_with model: assessment_question, url: local_assigns[:url] || (assessment_question.persisted? ? admin_assessment_question_path(assessment_question) : admin_assessment_questions_path), class: "space-y-6" do |f| %>
+    <% if assessment_question.errors.any? %>
+      <div class="bg-red-50 border border-red-100 p-4 rounded-xl text-sm text-red-700 mb-6 animate-shake">
+        <div class="font-bold flex items-center gap-2 mb-1">
+          <%= lucide_icon "alert-circle", class: "w-4 h-4" %>
+          <%= t("errors.messages.not_saved", count: assessment_question.errors.count, resource: "assessment_question") %>
+        </div>
+        <ul class="list-disc list-inside opacity-90">
+          <% assessment_question.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <%= render partial: "shared/form_field", locals: { form: f, field: :bloc, label: "Bloc", type: "number" } %>
+      <%= render partial: "shared/form_field", locals: { form: f, field: :position, label: "Position", type: "number" } %>
+      <%= render partial: "shared/form_field", locals: { form: f, field: :kind, label: "Type", type: "select", options: [["Likert", "likert"], ["Choix multiple", "mcq"]], data: { assessment_question_form_target: "kind", action: "change->assessment-question-form#toggleFields" } } %>
+    </div>
+
+    <% careers = Career.published.order(:title).map { |c| [c.title, c.slug] } %>
+    
+    <div data-assessment-question-form-target="optionsField" class="<%= assessment_question.kind == 'mcq' ? 'block animate-premium-in' : 'hidden' %>">
+      <div class="bg-slate-50 border border-slate-100 p-6 rounded-2xl mb-6 shadow-sm" data-controller="nested-options">
+        <div class="flex items-center justify-between mb-4 pb-4 border-b border-slate-200">
+          <div>
+            <h3 class="text-xs font-bold text-slate-800 uppercase tracking-widest">Options (QCM)</h3>
+            <p class="text-[10px] text-slate-500 mt-1">Gérez visuellement les options sans coder.</p>
+          </div>
+          <button type="button" data-action="nested-options#add" class="text-[10px] font-black uppercase text-[var(--color-primary)] hover:opacity-80 transition-opacity flex items-center gap-1 bg-[var(--color-primary)]/10 px-4 py-2 rounded-lg cursor-pointer">
+            <%= lucide_icon "plus", class: "w-3 h-3 pointer-events-none" %> Ajouter Option
+          </button>
+        </div>
+        
+        <div data-nested-options-target="list" class="space-y-3">
+          <% (assessment_question.options || []).each do |opt| %>
+            <div class="option-row flex flex-wrap xl:flex-nowrap items-center gap-3 p-3 bg-white border border-slate-200 rounded-xl shadow-sm relative pr-12 group">
+              <div class="flex-1 min-w-[200px]">
+                <label class="block text-[9px] font-black uppercase text-slate-400 mb-1">Texte / Enoncé*</label>
+                <input type="text" name="assessment_question[parsed_options][][text]" value="<%= opt["text"] %>" class="w-full text-xs font-medium rounded-lg border-slate-200 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] shadow-sm px-3 py-2" required>
+              </div>
+              <div class="flex-1 min-w-[180px]">
+                <label class="block text-[9px] font-black uppercase text-slate-400 mb-1">Profil Mappé</label>
+                <%= select_tag "assessment_question[parsed_options][][profile_slug]", options_for_select(careers, opt["profile_slug"]), include_blank: "- Aucun profil -", class: "w-full text-xs rounded-lg border-slate-200 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] shadow-sm px-3 py-2 cursor-pointer" %>
+              </div>
+              
+              <button type="button" data-action="nested-options#remove" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-300 hover:text-red-500 transition-colors p-2 cursor-pointer">
+                <%= lucide_icon "trash-2", class: "w-4 h-4 pointer-events-none" %>
+              </button>
+            </div>
+          <% end %>
+        </div>
+
+        <template data-nested-options-target="template">
+          <div class="option-row flex flex-wrap xl:flex-nowrap items-center gap-3 p-3 bg-white border border-slate-200 rounded-xl shadow-sm relative pr-12 group animate-premium-in">
+            <div class="flex-1 min-w-[200px]">
+              <label class="block text-[9px] font-black uppercase text-slate-400 mb-1">Texte / Enoncé*</label>
+              <input type="text" name="assessment_question[parsed_options][][text]" class="w-full text-xs font-medium rounded-lg border-slate-200 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] shadow-sm px-3 py-2" required>
+            </div>
+            <div class="flex-1 min-w-[180px]">
+              <label class="block text-[9px] font-black uppercase text-slate-400 mb-1">Profil Mappé</label>
+              <%= select_tag "assessment_question[parsed_options][][profile_slug]", options_for_select(careers), include_blank: "- Aucun profil -", class: "w-full text-xs rounded-lg border-slate-200 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] shadow-sm px-3 py-2 cursor-pointer" %>
+            </div>
+            <button type="button" data-action="nested-options#remove" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-300 hover:text-red-500 transition-colors p-2 cursor-pointer">
+              <%= lucide_icon "trash-2", class: "w-4 h-4 pointer-events-none" %>
+            </button>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <%= render partial: "shared/form_field", locals: { form: f, field: :text, label: "Texte de la question", type: "text_area", rows: 4 } %>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl">
+      <%= render partial: "shared/form_field", locals: { form: f, field: :scored, label: "Question Scorée", type: "checkbox" } %>
+      <%= render partial: "shared/form_field", locals: { form: f, field: :active, label: "Question Active", type: "checkbox" } %>
+    </div>
+
+    <div class="pt-4 flex items-center gap-4">
+      <%= f.submit "Enregistrer", class: "bg-[var(--color-primary)] text-white px-8 py-3 rounded-xl font-bold text-sm uppercase tracking-widest hover:opacity-90 transition-all shadow-sm transform hover:translate-y-[-1px] cursor-pointer" %>
+      <%= link_to "Annuler", local_assigns[:url] ? admin_assessment_assessment_questions_path(assessment_question.assessment || local_assigns[:assessment]) : admin_assessment_questions_path, class: "text-slate-400 text-xs font-bold uppercase tracking-widest hover:text-slate-600 transition-colors" %>
+    </div>
+  <% end %>
+</div>
+

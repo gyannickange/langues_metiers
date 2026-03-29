@@ -1,0 +1,28 @@
+<div class="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm max-w-3xl mx-auto">
+  <%= form_with model: [:admin, assessment], class: "space-y-6" do |f| %>
+    <% if assessment.errors.any? %>
+      <div class="bg-red-50 text-red-600 p-4 rounded-xl text-sm mb-6">
+        <ul class="list-disc pl-5">
+          <% assessment.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= render partial: "shared/form_field", locals: { form: f, field: :title, label: "Titre de l'évaluation", type: "text" } %>
+
+    <%= render partial: "shared/form_field", locals: { form: f, field: :description, label: "Description (optionnelle)", type: "text_area", rows: 4 } %>
+
+    <div class="flex items-center gap-3">
+      <%= f.check_box :active, class: "rounded border-slate-300 text-primary focus:ring-primary w-5 h-5 cursor-pointer" %>
+      <%= f.label :active, "Définir comme évaluation active (désactivera les autres)", class: "text-sm font-medium text-slate-700 cursor-pointer" %>
+    </div>
+
+    <div class="pt-6 border-t border-slate-100 flex justify-end gap-4">
+      <%= link_to "Annuler", admin_assessments_path, class: "px-6 py-2.5 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-colors" %>
+      <%= f.submit "Enregistrer", class: "btn-primary hover:scale-[1.02] active:scale-95 transition-all shadow-md" %>
+    </div>
+  <% end %>
+</div>
+

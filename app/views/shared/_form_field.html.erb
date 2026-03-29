@@ -5,27 +5,48 @@
 <div class="mb-4">
   <% case type
      when "text_area" %>
-    <%= form.label field, label || field.to_s.humanize, class: "block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" %>
-    <%= form.text_area field, class: "mt-1 block w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-gabon-blue focus:border-gabon-blue sm:text-sm", rows: rows || 3 %>
+    <%= form.label field, label || field.to_s.humanize, class: "block text-sm font-medium text-slate-700 mb-1" %>
+    <%= form.text_area field, class: "mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gabon-blue focus:border-gabon-blue sm:text-sm", rows: rows || 3, data: local_assigns[:data] %>
   <% when "select" %>
-    <%= form.label field, label || field.to_s.humanize, class: "block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" %>
+    <%= form.label field, label || field.to_s.humanize, class: "block text-sm font-medium text-slate-700 mb-1" %>
     <% select_options = local_assigns[:prompt] ? { prompt: local_assigns[:prompt] } : {} %>
-    <%= form.select field, options || [], select_options, { class: "mt-1 block w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-gabon-blue focus:border-gabon-blue sm:text-sm" } %>
+    <%= form.select field, options || [], select_options, { class: "mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gabon-blue focus:border-gabon-blue sm:text-sm", data: local_assigns[:data] } %>
   <% when "date" %>
-    <%= form.label field, label || field.to_s.humanize, class: "block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" %>
-    <%= form.date_field field, class: "mt-1 block w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-gabon-blue focus:border-gabon-blue sm:text-sm" %>
+    <%= form.label field, label || field.to_s.humanize, class: "block text-sm font-medium text-slate-700 mb-1" %>
+    <%= form.date_field field, class: "mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gabon-blue focus:border-gabon-blue sm:text-sm", data: local_assigns[:data] %>
   <% when "datetime" %>
-    <%= form.label field, label || field.to_s.humanize, class: "block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" %>
-    <%= form.datetime_local_field field, class: "mt-1 block w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-gabon-blue focus:border-gabon-blue sm:text-sm" %>
+    <%= form.label field, label || field.to_s.humanize, class: "block text-sm font-medium text-slate-700 mb-1" %>
+    <%= form.datetime_local_field field, class: "mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gabon-blue focus:border-gabon-blue sm:text-sm", data: local_assigns[:data] %>
   <% when "number" %>
-    <%= form.label field, label || field.to_s.humanize, class: "block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" %>
-    <%= form.number_field field, class: "mt-1 block w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-gabon-blue focus:border-gabon-blue sm:text-sm" %>
+    <%= form.label field, label || field.to_s.humanize, class: "block text-sm font-medium text-slate-700 mb-1" %>
+    <%= form.number_field field, class: "mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gabon-blue focus:border-gabon-blue sm:text-sm", data: local_assigns[:data] %>
+  <% when "checkbox" %>
+    <div class="flex items-center group cursor-pointer">
+      <div class="relative flex items-center justify-center">
+        <%= form.check_box field, class: "peer h-6 w-6 cursor-pointer appearance-none rounded-lg border-2 border-slate-200 bg-white transition-all checked:border-slate-900 checked:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-slate-900/10", data: local_assigns[:data] %>
+        <svg class="pointer-events-none absolute h-4 w-4 text-white opacity-0 peer-checked:opacity-100 transition-opacity" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <%= form.label field, label || field.to_s.humanize, class: "ml-3 text-sm font-bold text-slate-700 cursor-pointer group-hover:text-slate-900 transition-colors" %>
+    </div>
+  <% when "radio" %>
+    <%= form.label field, label || field.to_s.humanize, class: "block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-3" %>
+    <div class="flex flex-wrap gap-4">
+      <% (options || []).each do |opt_label, opt_value| %>
+        <label class="flex items-center group cursor-pointer">
+          <div class="relative flex items-center justify-center">
+            <%= form.radio_button field, opt_value, class: "peer h-6 w-6 cursor-pointer appearance-none rounded-full border-2 border-slate-200 bg-white transition-all checked:border-slate-900 focus:outline-none focus:ring-4 focus:ring-slate-900/10", data: local_assigns[:data] %>
+            <div class="pointer-events-none absolute h-2.5 w-2.5 rounded-full bg-slate-900 opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+          </div>
+          <span class="ml-3 text-sm font-bold text-slate-600 group-hover:text-slate-900 transition-colors"><%= opt_label %></span>
+        </label>
+      <% end %>
+    </div>
   <% else %>
-    <%= form.label field, label || field.to_s.humanize, class: "block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" %>
-    <%= form.text_field field, class: "mt-1 block w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-gabon-blue focus:border-gabon-blue sm:text-sm", type: type || "text" %>
+    <%= form.label field, label || field.to_s.humanize, class: "block text-sm font-medium text-slate-700 mb-1" %>
+    <%= form.text_field field, class: "mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gabon-blue focus:border-gabon-blue sm:text-sm", type: type || "text", data: local_assigns[:data] %>
   <% end %>
   <% if form.object&.errors&.[](field)&.any? %>
-    <p class="mt-1 text-sm text-red-600 dark:text-red-400"><%= form.object&.errors&.[](field)&.first %></p>
+    <p class="mt-1 text-sm text-red-600"><%= form.object&.errors&.[](field)&.first %></p>
   <% end %>
 </div>
 

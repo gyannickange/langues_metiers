@@ -1,6 +1,5 @@
 fr:
   routes:
-    fields: "filieres"
     users: "utilisateurs"
     login: "connexion"
     logout: "deconnexion"

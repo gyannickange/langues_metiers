@@ -3,9 +3,7 @@ class Users::SessionsController < Devise::SessionsController
 
   # GET /login
   def new
-    # self.resource = resource_class.new
-    # super
-    redirect_to new_diagnostic_path
+    super
   end
 
   # POST /login/request_otp

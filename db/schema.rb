@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_09_180447) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_28_235036) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -43,13 +43,36 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_09_180447) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "assessment_questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "bloc", null: false
+    t.text "text", null: false
+    t.string "kind", default: "mcq", null: false
+    t.jsonb "options", default: []
+    t.boolean "scored", default: false, null: false
+    t.integer "position", default: 0, null: false
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "assessment_id"
+    t.index ["assessment_id"], name: "index_assessment_questions_on_assessment_id"
+    t.index ["bloc", "position"], name: "index_assessment_questions_on_bloc_and_position"
+  end
+
+  create_table "assessments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.boolean "active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "careers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title"
     t.text "description"
-    t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.jsonb "required_skills"
+    t.integer "status"
+    t.jsonb "required_skills", default: []
     t.text "recommended_path"
     t.string "sector"
     t.string "slug"
@@ -57,7 +80,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_09_180447) do
     t.jsonb "key_skills", default: []
     t.text "first_action"
     t.text "premium_pitch"
-    t.index ["slug"], name: "index_careers_on_slug", unique: true, where: "(slug IS NOT NULL)"
+    t.index ["slug"], name: "index_careers_on_slug", unique: true
   end
 
   create_table "categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -77,15 +100,15 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_09_180447) do
 
   create_table "diagnostic_answers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "diagnostic_id", default: -> { "gen_random_uuid()" }, null: false
-    t.uuid "question_id", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "assessment_question_id", default: -> { "gen_random_uuid()" }, null: false
     t.string "answer_value"
     t.string "profile_dimension"
     t.integer "points_awarded", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["diagnostic_id", "question_id"], name: "index_diagnostic_answers_on_diagnostic_id_and_question_id", unique: true
+    t.index ["assessment_question_id"], name: "index_diagnostic_answers_on_assessment_question_id"
+    t.index ["diagnostic_id", "assessment_question_id"], name: "idx_diag_answers_on_diag_and_assess_quest", unique: true
     t.index ["diagnostic_id"], name: "index_diagnostic_answers_on_diagnostic_id"
-    t.index ["question_id"], name: "index_diagnostic_answers_on_question_id"
   end
 
   create_table "diagnostics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -100,18 +123,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_09_180447) do
     t.datetime "completed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "assessment_id"
+    t.index ["assessment_id"], name: "index_diagnostics_on_assessment_id"
     t.index ["user_id"], name: "index_diagnostics_on_user_id"
-  end
-
-  create_table "fields", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.text "description"
-    t.string "slug"
-    t.integer "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_fields_on_name", unique: true
-    t.index ["slug"], name: "index_fields_on_slug", unique: true
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -151,49 +165,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_09_180447) do
     t.index ["diagnostic_id"], name: "index_payments_on_diagnostic_id"
     t.index ["provider_payment_id"], name: "index_payments_on_provider_payment_id", unique: true, where: "(provider_payment_id IS NOT NULL)"
     t.index ["user_id"], name: "index_payments_on_user_id"
-  end
-
-  create_table "questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "bloc", null: false
-    t.text "text", null: false
-    t.string "kind", default: "mcq", null: false
-    t.jsonb "options", default: []
-    t.boolean "scored", default: false, null: false
-    t.integer "position", default: 0, null: false
-    t.boolean "active", default: true, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["bloc", "position"], name: "index_questions_on_bloc_and_position"
-  end
-
-  create_table "roadmap_fields", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "roadmap_id", null: false
-    t.uuid "field_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["field_id"], name: "index_roadmap_fields_on_field_id"
-    t.index ["roadmap_id", "field_id"], name: "index_roadmap_fields_on_roadmap_id_and_field_id", unique: true
-    t.index ["roadmap_id"], name: "index_roadmap_fields_on_roadmap_id"
-  end
-
-  create_table "roadmap_steps", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "title"
-    t.text "objective"
-    t.text "skills"
-    t.text "activities"
-    t.integer "order"
-    t.uuid "roadmap_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["roadmap_id", "order"], name: "index_roadmap_steps_on_roadmap_id_and_order", unique: true
-    t.index ["roadmap_id"], name: "index_roadmap_steps_on_roadmap_id"
-  end
-
-  create_table "roadmaps", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "title"
-    t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "skills", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -249,18 +220,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_09_180447) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "assessment_questions", "assessments"
   add_foreign_key "categories_skills", "categories"
   add_foreign_key "categories_skills", "skills"
+  add_foreign_key "diagnostic_answers", "assessment_questions"
   add_foreign_key "diagnostic_answers", "diagnostics"
-  add_foreign_key "diagnostic_answers", "questions"
+  add_foreign_key "diagnostics", "assessments"
   add_foreign_key "diagnostics", "careers", column: "complementary_career_id"
   add_foreign_key "diagnostics", "careers", column: "primary_career_id"
   add_foreign_key "diagnostics", "users"
   add_foreign_key "payments", "diagnostics"
   add_foreign_key "payments", "users"
-  add_foreign_key "roadmap_fields", "fields"
-  add_foreign_key "roadmap_fields", "roadmaps"
-  add_foreign_key "roadmap_steps", "roadmaps"
   add_foreign_key "trajectories", "careers"
   add_foreign_key "user_skills", "skills"
   add_foreign_key "user_skills", "users"

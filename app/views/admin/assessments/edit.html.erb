@@ -1,0 +1,11 @@
+<% content_for :page_title, "Modifier l'Évaluation" %>
+
+<%= render "shared/page_header", 
+    title: "Modifier : #{@assessment.title}",
+    subtitle: "Mettre à jour les informations de l'évaluation",
+    action_text: "Retour aux évaluations",
+    action_url: admin_assessments_path,
+    action_icon: "arrow-left" %>
+
+<%= render "form", assessment: @assessment %>
+
