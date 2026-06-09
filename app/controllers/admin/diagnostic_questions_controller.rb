@@ -18,6 +18,7 @@ class Admin::DiagnosticQuestionsController < Admin::BaseController
 
   def create
     @question = @assessment ? @assessment.diagnostic_questions.build(question_params) : DiagnosticQuestion.new(question_params)
+    @question.options = parsed_options
     if @question.save
       redirect_to redirect_path, notice: "Question créée."
     else
@@ -26,7 +27,8 @@ class Admin::DiagnosticQuestionsController < Admin::BaseController
   end
 
   def update
-    if @question.update(question_params)
+    merged = question_params.merge(options: parsed_options)
+    if @question.update(merged)
       redirect_to redirect_path, notice: "Question mise à jour."
     else
       render :edit, status: :unprocessable_entity
@@ -36,6 +38,10 @@ class Admin::DiagnosticQuestionsController < Admin::BaseController
   def destroy
     @question.destroy
     redirect_to redirect_path, notice: "Question supprimée."
+  end
+
+  def reorder
+    head :no_content
   end
 
   private
@@ -55,8 +61,15 @@ class Admin::DiagnosticQuestionsController < Admin::BaseController
 
   def question_params
     params.require(:diagnostic_question).permit(
-      :kind, :text, :disc_type, :competence_slug, :position, :active,
-      options: [ :label, :filiere_slug ]
+      :kind, :text, :disc_type, :competence_slug, :position, :active
     )
+  end
+
+  def parsed_options
+    raw = params.dig(:diagnostic_question, :options_json).presence
+    return [] if raw.blank?
+    JSON.parse(raw)
+  rescue JSON::ParserError
+    []
   end
 end
