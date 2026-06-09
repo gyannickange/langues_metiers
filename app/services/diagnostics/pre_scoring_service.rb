@@ -33,6 +33,7 @@ module Diagnostics
 
         case q.kind
         when "disc"
+          next if q.disc_type.nil?
           disc_scores[q.disc_type] += answer.points_awarded.to_i
         when "interest"
           filiere_scores[answer.dimension_slug] += 1

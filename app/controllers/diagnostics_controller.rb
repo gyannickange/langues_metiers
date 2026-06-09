@@ -83,11 +83,7 @@ class DiagnosticsController < ApplicationController
         answer.save!
       end
     end
-    begin
-      Diagnostics::PreScoringService.call(@diagnostic)
-    rescue => e
-      Rails.logger.error("PreScoringService failed for diagnostic #{@diagnostic.id}: #{e.message}")
-    end
+    Diagnostics::PreScoringService.call(@diagnostic)
     redirect_to validation_diagnostic_path(@diagnostic)
   end
 
