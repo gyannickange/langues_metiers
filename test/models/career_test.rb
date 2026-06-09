@@ -31,4 +31,26 @@ class CareerTest < ActiveSupport::TestCase
   test "has_many trajectories" do
     assert_respond_to Career.new, :trajectories
   end
+
+  test "diagnostic scope returns only careers with filiere_slug" do
+    c1 = Career.create!(title: "Métier A", filiere_slug: "langues", status: :published, kind: :profession)
+    c2 = Career.create!(title: "Métier B", status: :published, kind: :profession)
+    assert_includes Career.diagnostic, c1
+    assert_not_includes Career.diagnostic, c2
+  end
+
+  test "disc_types defaults to empty array" do
+    c = Career.create!(title: "Test Career #{SecureRandom.hex(4)}", status: :published, kind: :profession)
+    assert_equal [], c.disc_types
+  end
+
+  test "required_competences defaults to empty array" do
+    c = Career.create!(title: "Test Career #{SecureRandom.hex(4)}", status: :published, kind: :profession)
+    assert_equal [], c.required_competences
+  end
+
+  test "affirmations defaults to empty array" do
+    c = Career.create!(title: "Test Career #{SecureRandom.hex(4)}", status: :published, kind: :profession)
+    assert_equal [], c.affirmations
+  end
 end

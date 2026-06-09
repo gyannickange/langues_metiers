@@ -2,6 +2,8 @@ class Career < ApplicationRecord
   enum :status, { draft: 0, published: 1, archived: 2 }, default: :published
   enum :kind, { behavioral: "behavioral", profession: "profession" }, default: "behavioral"
 
+  scope :diagnostic, -> { where.not(filiere_slug: nil) }
+
   has_many :trajectories, dependent: :destroy
 
   validates :title, presence: true
