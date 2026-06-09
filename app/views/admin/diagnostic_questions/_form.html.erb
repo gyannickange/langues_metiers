@@ -1,0 +1,55 @@
+<%# app/views/admin/diagnostic_questions/_form.html.erb %>
+<div class="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm max-w-2xl mx-auto">
+  <%= form_with model: [:admin, assessment, question], class: "space-y-6" do |f| %>
+    <% if question.errors.any? %>
+      <div class="bg-red-50 border border-red-200 rounded-xl p-4 text-red-700 text-sm">
+        <ul class="list-disc pl-5">
+          <% question.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div>
+      <%= f.label :kind, "Type de question", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+      <%= f.select :kind, [["DISC (personnalité)", "disc"], ["Intérêt thématique", "interest"], ["Compétence", "competence"]],
+            {}, class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
+    </div>
+
+    <div>
+      <%= f.label :text, "Texte de la question / affirmation", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+      <%= f.text_area :text, rows: 2, class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
+    </div>
+
+    <div>
+      <%= f.label :disc_type, "Type DISC (si type = disc)", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+      <%= f.select :disc_type, [["D — Dominant", "D"], ["I — Influent", "I"], ["S — Stable", "S"], ["C — Consciencieux", "C"]],
+            { include_blank: "— choisir —" }, class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
+    </div>
+
+    <div>
+      <%= f.label :competence_slug, "Slug de compétence (si type = compétence)", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+      <%= f.select :competence_slug,
+            %w[langues_etrangeres communication_ecrite communication_orale analyse_donnees gestion_projet numerique negociation creativite ecoute rigueur_scientifique culture_generale droit_politiques],
+            { include_blank: "— choisir —" }, class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
+    </div>
+
+    <div>
+      <%= f.label :position, "Position (ordre d'affichage)", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+      <%= f.number_field :position, min: 1, class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <%= f.check_box :active, class: "rounded border-slate-300 text-primary focus:ring-primary w-5 h-5 cursor-pointer" %>
+      <%= f.label :active, "Active", class: "text-sm font-semibold text-slate-700 cursor-pointer" %>
+    </div>
+
+    <div class="pt-6 border-t border-slate-100 flex justify-end gap-4">
+      <%= link_to "Annuler", assessment ? admin_assessment_diagnostic_questions_path(assessment) : admin_diagnostic_questions_path,
+            class: "px-6 py-2.5 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-colors" %>
+      <%= f.submit question.persisted? ? "Mettre à jour" : "Créer",
+            class: "btn-primary hover:scale-[1.02] active:scale-95 transition-all shadow-md cursor-pointer" %>
+    </div>
+  <% end %>
+</div>
