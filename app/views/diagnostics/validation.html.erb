@@ -8,8 +8,8 @@
 
   <%= form_with url: submit_validation_diagnostic_path(@diagnostic), method: :post, data: { turbo: false } do |f| %>
     <div class="space-y-6">
+      <% border_colors = %w[border-violet-500 border-cyan-500 border-emerald-500] %>
       <% @top_careers.each_with_index do |career, i| %>
-        <% border_colors = %w[border-violet-500 border-cyan-500 border-emerald-500] %>
         <div class="bg-white rounded-2xl border-2 <%= border_colors[i] %> p-6 shadow-sm">
           <div class="mb-4">
             <span class="text-xs font-bold uppercase tracking-widest text-slate-400 block mb-1">

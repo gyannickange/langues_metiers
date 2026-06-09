@@ -9,7 +9,7 @@ class Diagnostics::ScoringServiceTest < ActiveSupport::TestCase
     @diagnostic = Diagnostic.create!(user: @user, assessment: @assessment, status: :in_progress)
 
     @c1 = Career.create!(title: "Métier 1 #{SecureRandom.hex(4)}", slug: "metier-1-#{SecureRandom.hex(4)}", status: :published, filiere_slug: "langues", disc_types: [ "C" ], required_competences: [])
-    @c2 = Career.create!(title: "Métier 2 #{SecureRandom.hex(4)}", slug: "metier-2-#{SecureRandom.hex(4)}", status: :published, filiere_slug: "socio",   disc_types: [ "I" ], required_competences: [])
+    @c2 = Career.create!(title: "Métier 2 #{SecureRandom.hex(4)}", slug: "metier-2-#{SecureRandom.hex(4)}", status: :published, filiere_slug: "socio",   disc_types: [ "I" ], required_competences: [], affirmations: %w[a b c d e f])
     @c3 = Career.create!(title: "Métier 3 #{SecureRandom.hex(4)}", slug: "metier-3-#{SecureRandom.hex(4)}", status: :published, filiere_slug: "lettres", disc_types: [ "S" ], required_competences: [])
 
     @diagnostic.update!(score_data: {
@@ -33,7 +33,7 @@ class Diagnostics::ScoringServiceTest < ActiveSupport::TestCase
 
   test "affirmation bonus can change ranking" do
     # Give c2 so many affirmations it overtakes c1 (c1 score=20, c2 score=15, need 6+ affirmations)
-    affirmations = { @c2.id => %w[a b c d e f] }
+    affirmations = { @c2.id.to_s => %w[a b c d e f] }
     Diagnostics::ScoringService.call(@diagnostic, affirmations)
     @diagnostic.reload
     assert_equal @c2, @diagnostic.primary_career

@@ -12,14 +12,20 @@ module Diagnostics
 
     def call
       top_career_data = @diagnostic.score_data["top_career_ids"] || []
+      top_career_ids  = top_career_data.map { |e| e["id"] }
+      careers_by_id   = Career.where(id: top_career_ids).index_by { |c| c.id.to_s }
 
       adjusted = top_career_data.map do |entry|
-        bonus = Array(@affirmation_counts[entry["id"]]).length
+        id_str    = entry["id"].to_s
+        career    = careers_by_id[id_str]
+        max_bonus = (career&.affirmations || []).length
+        raw_bonus = Array(@affirmation_counts[id_str]).length
+        bonus     = [raw_bonus, max_bonus].min
         { "id" => entry["id"], "score" => entry["score"].to_i + bonus }
       end.sort_by { |e| -e["score"] }
 
-      primary   = Career.find_by(id: adjusted.dig(0, "id"))
-      secondary = Career.find_by(id: adjusted.dig(1, "id"))
+      primary   = careers_by_id[adjusted.dig(0, "id").to_s]
+      secondary = careers_by_id[adjusted.dig(1, "id").to_s]
 
       @diagnostic.update!(
         primary_career:       primary,

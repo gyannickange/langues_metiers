@@ -89,7 +89,8 @@ class DiagnosticsController < ApplicationController
   end
 
   def submit_validation
-    affirmation_counts = (params[:affirmations] || {}).to_unsafe_h
+    known_ids = (@diagnostic.score_data["top_career_ids"] || []).map { |h| h["id"].to_s }
+    affirmation_counts = (params[:affirmations] || {}).to_unsafe_h.slice(*known_ids)
     Diagnostics::ScoringService.call(@diagnostic, affirmation_counts)
     redirect_to pay_diagnostic_path(@diagnostic)
   end
