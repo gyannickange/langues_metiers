@@ -102,37 +102,6 @@ end
 
 puts "✓ #{Career.behavioral.count} profiles comportementaux (careers), #{Trajectory.count} trajectoires"
 
-# ===== CARRIÈRES / MÉTIERS (20) =====
-careers_data = [
-  { title: "Chargé d’études socio-économiques", description: "Ce professionnel analyse les dynamiques sociales, économiques et territoriales pour aider les organisations à prendre des décisions stratégiques.", sector: "Sociologie – Géographie – Histoire" },
-  { title: "Analyste de politiques publiques", description: "L’analyste de politiques publiques étudie les programmes gouvernementaux et les politiques publiques.", sector: "Histoire – Sociologie – Sciences politiques" },
-  { title: "Chargé de suivi-évaluation (Monitoring & Evaluation)", description: "Le spécialiste du suivi-évaluation analyse les résultats des projets et programmes.", sector: "Sociologie – Géographie – Statistiques sociales" },
-  { title: "Chef de projet développement", description: "Le chef de projet coordonne des projets dans les domaines du développement, de l’éducation, de la santé ou de l’environnement.", sector: "Histoire – Sociologie – Géographie" },
-  { title: "Consultant en développement", description: "Le consultant accompagne les organisations, les ONG et les institutions dans la conception.", sector: "Sociologie – Histoire – Géographie" },
-  { title: "Responsable communication", description: "Le responsable communication conçoit et pilote la stratégie de communication d’une organisation.", sector: "Lettres – Communication – Langues" },
-  { title: "Content strategist (stratégie de contenu)", description: "Le content strategist conçoit des stratégies de contenu pour les entreprises.", sector: "Lettres – Langues – Communication" },
-  { title: "Rédacteur stratégique", description: "Le rédacteur stratégique produit des contenus à forte valeur ajoutée.", sector: "Lettres – Langues – Journalisme" },
-  { title: "Content manager digital", description: "Le content manager gère la création et la diffusion des contenus sur les plateformes digitales.", sector: "Langues – Lettres – Communication" },
-  { title: "Concepteur e-learning", description: "Le concepteur e-learning crée des formations en ligne et des contenus pédagogiques digitaux.", sector: "Langues – Lettres – Pédagogie" },
-  { title: "Analyste de données sociales", description: "Ce professionnel analyse les données sociales pour comprendre les comportements.", sector: "Sociologie – Géographie – Sciences sociales" },
-  { title: "Chargé de coopération internationale", description: "Ce professionnel développe des partenariats entre organisations, institutions et pays.", sector: "Langues – Relations internationales" },
-  { title: "Responsable partenariats", description: "Le responsable partenariats développe des collaborations stratégiques.", sector: "Langues – Communication – Sciences humaines" },
-  { title: "Médiateur culturel", description: "Le médiateur culturel conçoit des activités et des programmes pour valoriser la culture.", sector: "Histoire – Lettres – Langues" },
-  { title: "Chargé de projets culturels", description: "Il conçoit et coordonne des projets culturels : festivals, expositions.", sector: "Histoire – Lettres – Arts" },
-  { title: "Chargé d’aménagement territorial", description: "Ce professionnel analyse les dynamiques territoriales et participe à la planification.", sector: "Géographie – Urbanisme – Développement local" },
-  { title: "Analyste développement local", description: "Il travaille sur les stratégies de développement économique et social des territoires.", sector: "Géographie – Sociologie – Développement" },
-  { title: "Entrepreneur social", description: "L’entrepreneur social crée des projets ou entreprises visant à résoudre des problèmes sociaux.", sector: "SHS" },
-  { title: "Concepteur de programmes éducatifs", description: "Il conçoit des programmes de formation et d’apprentissage.", sector: "Langues – Lettres – Pédagogie" },
-  { title: "Chargé de plaidoyer", description: "Le chargé de plaidoyer défend des causes sociales ou environnementales.", sector: "Sociologie – Sciences politiques" }
-]
-
-careers_data.each do |data|
-  career = Career.find_or_initialize_by(title: data[:title])
-  career.assign_attributes(data.merge(status: :published, kind: :profession))
-  career.save!
-end
-puts "✓ #{Career.profession.count} métiers (careers)"
-
 # ===== MOBILE OPERATORS =====
 operators = [
   { name: "Orange Money",     code: "ORANGE_CI",      country_code: "CI" },
@@ -159,250 +128,149 @@ operators.each do |op|
 end
 puts "✓ #{MobileOperator.count} opérateurs mobiles"
 
-# ===== QUESTIONS (25) =====
-assessment_questions_data = [
-  {
-    bloc: 1, position: 1, text: "Lorsque vous décrivez votre profil, vous mettez en avant :",
-    options: [
-      { value: "A", label: "A", text: "Votre capacité d’analyse", profile_slug: "analyste-veille", points: 1 },
-      { value: "B", label: "B", text: "Votre sens de l’organisation", profile_slug: "coordinateur-strategique", points: 1 },
-      { value: "C", label: "C", text: "Votre créativité", profile_slug: "digital-strategie-contenu", points: 1 },
-      { value: "D", label: "D", text: "Votre leadership", profile_slug: "coordinateur-strategique", points: 1 },
-      { value: "E", label: "E", text: "Votre capacité à accompagner les autres", profile_slug: "impact-social-communautaire", points: 1 }
-    ]
-  },
-  {
-    bloc: 1, position: 2, text: "Vous vous sentez le plus à l’aise lorsque vous :",
-    options: [
-      { value: "A", label: "A", text: "Analysez un problème complexe", profile_slug: "analyste-veille", points: 1 },
-      { value: "B", label: "B", text: "Structurez un projet", profile_slug: "coordinateur-strategique", points: 1 },
-      { value: "C", label: "C", text: "Concevez du contenu ou des idées", profile_slug: "communication-influence", points: 1 },
-      { value: "D", label: "D", text: "Coordonnez une équipe", profile_slug: "coordinateur-strategique", points: 1 },
-      { value: "E", label: "E", text: "Soutenez un projet social", profile_slug: "impact-social-communautaire", points: 1 }
-    ]
-  },
-  {
-    bloc: 1, position: 3, text: "Votre formation vous a principalement appris à :",
-    options: [
-      { value: "A", label: "A", text: "Rechercher et synthétiser", profile_slug: "analyste-veille", points: 1 },
-      { value: "B", label: "B", text: "Structurer des processus", profile_slug: "coordinateur-strategique", points: 1 },
-      { value: "C", label: "C", text: "Produire des contenus", profile_slug: "communication-influence", points: 1 },
-      { value: "D", label: "D", text: "Argumenter et convaincre", profile_slug: "communication-influence", points: 1 },
-      { value: "E", label: "E", text: "Comprendre les dynamiques humaines", profile_slug: "impact-social-communautaire", points: 1 }
-    ]
-  },
-  {
-    bloc: 1, position: 4, text: "Face à un défi professionnel, vous :",
-    options: [
-      { value: "A", label: "A", text: "Faites des recherches approfondies", profile_slug: "analyste-veille", points: 1 },
-      { value: "B", label: "B", text: "Planifiez méthodiquement", profile_slug: "coordinateur-strategique", points: 1 },
-      { value: "C", label: "C", text: "Cherchez une solution innovante", profile_slug: "digital-strategie-contenu", points: 1 },
-      { value: "D", label: "D", text: "Prenez une décision rapidement", profile_slug: "coordinateur-strategique", points: 1 },
-      { value: "E", label: "E", text: "Consultez les parties prenantes", profile_slug: "impact-social-communautaire", points: 1 }
-    ]
-  },
-  {
-    bloc: 1, position: 5, text: "Votre ambition principale est :",
-    options: [
-      { value: "A", label: "A", text: "Devenir expert reconnu", profile_slug: "analyste-veille", points: 1 },
-      { value: "B", label: "B", text: "Manager des projets", profile_slug: "coordinateur-strategique", points: 1 },
-      { value: "C", label: "C", text: "Créer des initiatives", profile_slug: "impact-social-communautaire", points: 1 },
-      { value: "D", label: "D", text: "Influencer des décisions", profile_slug: "communication-influence", points: 1 },
-      { value: "E", label: "E", text: "Avoir un impact social fort", profile_slug: "impact-social-communautaire", points: 1 }
-    ]
-  },
-  {
-    bloc: 2, position: 6, text: "Avez-vous une idée claire des métiers accessibles avec votre diplôme ?",
-    options: [
-      { value: "A", label: "A", text: "Oui, très claire", profile_slug: "market_maturity", points: 2 },
-      { value: "B", label: "B", text: "Partiellement", profile_slug: "market_maturity", points: 1 },
-      { value: "C", label: "C", text: "Non", profile_slug: "market_maturity", points: 0 }
-    ]
-  },
-  {
-    bloc: 2, position: 7, text: "Avez-vous déjà identifié 3 secteurs précis qui vous intéressent ?",
-    options: [
-      { value: "A", label: "A", text: "Oui", profile_slug: "market_maturity", points: 2 },
-      { value: "B", label: "B", text: "Non", profile_slug: "market_maturity", points: 0 }
-    ]
-  },
-  {
-    bloc: 2, position: 8, text: "Votre CV met-il en valeur des compétences concrètes recherchées ?",
-    options: [
-      { value: "A", label: "A", text: "Oui", profile_slug: "market_maturity", points: 2 },
-      { value: "B", label: "B", text: "Partiellement", profile_slug: "market_maturity", points: 1 },
-      { value: "C", label: "C", text: "Non", profile_slug: "market_maturity", points: 0 }
-    ]
-  },
-  {
-    bloc: 2, position: 9, text: "Avez-vous déjà adapté votre profil à un secteur spécifique ?",
-    options: [
-      { value: "A", label: "A", text: "Oui", profile_slug: "market_maturity", points: 2 },
-      { value: "B", label: "B", text: "Non", profile_slug: "market_maturity", points: 0 }
-    ]
-  },
-  {
-    bloc: 2, position: 10, text: "Vous considérez que votre profil est :",
-    options: [
-      { value: "A", label: "A", text: "Bien positionné", profile_slug: "market_maturity", points: 2 },
-      { value: "B", label: "B", text: "Sous-exploité", profile_slug: "market_maturity", points: 1 },
-      { value: "C", label: "C", text: "Mal positionné", profile_slug: "market_maturity", points: 0 }
-    ]
-  },
-  {
-    bloc: 3, position: 11, text: "Vous utilisez régulièrement des outils numériques professionnels ?",
-    options: [
-      { value: "A", label: "A", text: "Oui", profile_slug: "digital_potential", points: 2 },
-      { value: "B", label: "B", text: "Occasionnellement", profile_slug: "digital_potential", points: 1 },
-      { value: "C", label: "C", text: "Très peu", profile_slug: "digital_potential", points: 0 }
-    ]
-  },
-  {
-    bloc: 3, position: 12, text: "Vous maîtrisez au moins un outil digital stratégique (ex : gestion projet, data, création contenu) ?",
-    options: [
-      { value: "A", label: "A", text: "Oui", profile_slug: "digital_potential", points: 2 },
-      { value: "B", label: "B", text: "Non", profile_slug: "digital_potential", points: 0 }
-    ]
-  },
-  {
-    bloc: 3, position: 13, text: "Vous avez déjà travaillé sur :",
-    options: [
-      { value: "A", label: "A", text: "Analyse de données", profile_slug: "data-transformation", points: 2 },
-      { value: "B", label: "B", text: "Création de contenu digital", profile_slug: "digital-strategie-contenu", points: 2 },
-      { value: "C", label: "C", text: "Gestion de projet digital", profile_slug: "digital_potential", points: 2 },
-      { value: "D", label: "D", text: "Aucun", profile_slug: "digital_potential", points: 0 }
-    ]
-  },
-  {
-    bloc: 3, position: 14, text: "Votre présence professionnelle en ligne (LinkedIn ou autre) est :",
-    options: [
-      { value: "A", label: "A", text: "Structurée et active", profile_slug: "digital_potential", points: 2 },
-      { value: "B", label: "B", text: "Basique", profile_slug: "digital_potential", points: 1 },
-      { value: "C", label: "C", text: "Inexistante", profile_slug: "digital_potential", points: 0 }
-    ]
-  },
-  {
-    bloc: 3, position: 15, text: "Êtes-vous à l’aise avec l’apprentissage d’outils numériques ?",
-    options: [
-      { value: "A", label: "A", text: "Oui", profile_slug: "digital_potential", points: 2 },
-      { value: "B", label: "B", text: "Moyennement", profile_slug: "digital_potential", points: 1 },
-      { value: "C", label: "C", text: "Non", profile_slug: "digital_potential", points: 0 }
-    ]
-  },
-  {
-    bloc: 4, position: 16, text: "Vous prenez des décisions plutôt :",
-    options: [
-      { value: "A", label: "A", text: "Basées sur les données", profile_slug: "analyste-veille", points: 1 },
-      { value: "B", label: "B", text: "Basées sur l’intuition", profile_slug: "communication-influence", points: 1 },
-      { value: "C", label: "C", text: "Basées sur l’expérience", profile_slug: "coordinateur-strategique", points: 1 }
-    ]
-  },
-  {
-    bloc: 4, position: 17, text: "Vous préférez :",
-    options: [
-      { value: "A", label: "A", text: "Analyser", profile_slug: "analyste-veille", points: 1 },
-      { value: "B", label: "B", text: "Exécuter", profile_slug: "developpement-territorial", points: 1 },
-      { value: "C", label: "C", text: "Concevoir", profile_slug: "digital-strategie-contenu", points: 1 },
-      { value: "D", label: "D", text: "Coordonner", profile_slug: "coordinateur-strategique", points: 1 }
-    ]
-  },
-  {
-    bloc: 4, position: 18, text: "Vous êtes plus motivé par :",
-    options: [
-      { value: "A", label: "A", text: "Expertise", profile_slug: "analyste-veille", points: 1 },
-      { value: "B", label: "B", text: "Impact", profile_slug: "impact-social-communautaire", points: 1 },
-      { value: "C", label: "C", text: "Influence", profile_slug: "communication-influence", points: 1 },
-      { value: "D", label: "D", text: "Innovation", profile_slug: "digital-strategie-contenu", points: 1 }
-    ]
-  },
-  {
-    bloc: 4, position: 19, text: "Vous vous projetez dans :",
-    options: [
-      { value: "A", label: "A", text: "Conseil / stratégie", profile_slug: "coordinateur-strategique", points: 1 },
-      { value: "B", label: "B", text: "Gestion / coordination", profile_slug: "coordinateur-strategique", points: 1 },
-      { value: "C", label: "C", text: "Digital / innovation", profile_slug: "digital-strategie-contenu", points: 1 },
-      { value: "D", label: "D", text: "Secteur social / ONG", profile_slug: "impact-social-communautaire", points: 1 }
-    ]
-  },
-  {
-    bloc: 4, position: 20, text: "Face à un échec, vous :",
-    options: [
-      { value: "A", label: "A", text: "Analysez les causes", profile_slug: "analyste-veille", points: 1 },
-      { value: "B", label: "B", text: "Ajustez rapidement", profile_slug: "coordinateur-strategique", points: 1 },
-      { value: "C", label: "C", text: "Cherchez du soutien", profile_slug: "impact-social-communautaire", points: 1 }
-    ]
-  },
-  {
-    bloc: 5, position: 21, text: "Avez-vous un plan professionnel à 2 ans ?",
-    options: [
-      { value: "A", label: "A", text: "Oui", profile_slug: "clarity_score", points: 2 },
-      { value: "B", label: "B", text: "Partiellement", profile_slug: "clarity_score", points: 1 },
-      { value: "C", label: "C", text: "Non", profile_slug: "clarity_score", points: 0 }
-    ]
-  },
-  {
-    bloc: 5, position: 22, text: "Savez-vous quelles compétences développer dans les 6 prochains mois ?",
-    options: [
-      { value: "A", label: "A", text: "Oui", profile_slug: "clarity_score", points: 2 },
-      { value: "B", label: "B", text: "Non", profile_slug: "clarity_score", points: 0 }
-    ]
-  },
-  {
-    bloc: 5, position: 23, text: "Avez-vous identifié un secteur prioritaire ?",
-    options: [
-      { value: "A", label: "A", text: "Oui", profile_slug: "clarity_score", points: 2 },
-      { value: "B", label: "B", text: "Non", profile_slug: "clarity_score", points: 0 }
-    ]
-  },
-  {
-    bloc: 5, position: 24, text: "Êtes-vous prêt à vous repositionner stratégiquement ?",
-    options: [
-      { value: "A", label: "A", text: "Oui", profile_slug: "clarity_score", points: 2 },
-      { value: "B", label: "B", text: "J’hésite", profile_slug: "clarity_score", points: 1 },
-      { value: "C", label: "C", text: "Non", profile_slug: "clarity_score", points: 0 }
-    ]
-  },
-  {
-    bloc: 5, position: 25, text: "Sur une échelle de 1 à 5, votre clarté professionnelle actuelle est :",
-    kind: "likert",
-    options: [
-      { value: "1", text: "Très floue",  profile_slug: "clarity_score", points: 1 },
-      { value: "2", text: "Floue",       profile_slug: "clarity_score", points: 2 },
-      { value: "3", text: "Moyenne",     profile_slug: "clarity_score", points: 3 },
-      { value: "4", text: "Assez claire", profile_slug: "clarity_score", points: 4 },
-      { value: "5", text: "Très claire",  profile_slug: "clarity_score", points: 5 }
-    ]
-  }
+# ===== ASSESSMENT =====
+assessment = Assessment.find_or_initialize_by(title: "Diagnostic Langues & Métiers")
+assessment.assign_attributes(description: "Diagnostic d'orientation par profil DISC, intérêt thématique et compétences.", active: true)
+assessment.save!
+
+# ===== 37 MÉTIERS (Career) =====
+careers_data = [
+  { title: "Traducteur / Interprète",                  filiere_slug: "langues",   disc_types: %w[C S], required_competences: %w[langues_etrangeres communication_ecrite culture_generale],        affirmations: ["Je suis passionné(e) par les nuances linguistiques entre les langues.", "Je peux reformuler un texte complexe sans en perdre le sens.", "Je suis à l'aise pour travailler seul(e) de façon concentrée et rigoureuse.", "J'aime décoder les subtilités culturelles derrière les mots.", "Je peux jongler entre plusieurs langues dans une même journée."] },
+  { title: "Chargé de communication internationale",   filiere_slug: "langues",   disc_types: %w[I D], required_competences: %w[communication_ecrite communication_orale langues_etrangeres],     affirmations: ["J'aime concevoir des messages clairs pour des publics internationaux.", "Je maîtrise les codes culturels de différents pays.", "Je me sens à l'aise pour représenter une organisation à l'extérieur.", "Adapter un discours à différentes audiences m'intéresse.", "La communication interculturelle est une force que je veux développer."] },
+  { title: "Responsable export",                       filiere_slug: "langues",   disc_types: %w[D I], required_competences: %w[negociation langues_etrangeres gestion_projet],                    affirmations: ["Je suis attiré(e) par le commerce international et les marchés étrangers.", "Négocier des contrats avec des partenaires étrangers m'attire.", "Je suis capable de gérer une équipe commerciale à distance.", "Les voyages professionnels fréquents ne me posent pas de problème.", "Je suis motivé(e) par les objectifs chiffrés et les résultats mesurables."] },
+  { title: "Localisation Manager",                     filiere_slug: "langues",   disc_types: %w[C S], required_competences: %w[langues_etrangeres gestion_projet numerique],                      affirmations: ["Adapter un produit numérique à différentes cultures m'intéresse.", "Je comprends les enjeux techniques de la traduction logicielle.", "Gérer des projets multilingues avec plusieurs prestataires me plaît.", "La qualité et la cohérence des contenus sont primordiales pour moi.", "Je suis à l'aise avec les outils de gestion de la traduction (CAT tools)."] },
+  { title: "Diplomate",                                filiere_slug: "langues",   disc_types: %w[D C], required_competences: %w[langues_etrangeres negociation droit_politiques],                  affirmations: ["Les relations internationales et la géopolitique me passionnent.", "Je suis capable de défendre une position complexe avec tact et conviction.", "Représenter un État ou une institution dans un contexte formel m'attire.", "Je maîtrise les règles du protocole diplomatique.", "Je suis prêt(e) à m'expatrier pour des missions de longue durée."] },
+  { title: "Urbaniste",                                filiere_slug: "geo",       disc_types: %w[C S], required_competences: %w[analyse_donnees gestion_projet droit_politiques],                  affirmations: ["Concevoir des villes durables et inclusives est un projet qui me tient à cœur.", "J'aime analyser les usages des espaces publics.", "Je peux lire et produire des plans d'aménagement urbain.", "Équilibrer contraintes réglementaires et vision créative m'intéresse.", "Travailler avec des élus, des habitants et des techniciens me convient."] },
+  { title: "Cartographe / Géomaticien",                filiere_slug: "geo",       disc_types: %w[C S], required_competences: %w[analyse_donnees numerique rigueur_scientifique],                   affirmations: ["La cartographie et la représentation spatiale des données m'enthousiasment.", "Je maîtrise ou souhaite maîtriser des outils SIG comme QGIS ou ArcGIS.", "Les données géographiques sont pour moi une source d'informations précieuse.", "Je peux synthétiser des informations complexes en une carte lisible.", "L'exactitude et la rigueur dans la représentation graphique sont essentielles."] },
+  { title: "Consultant en développement local",        filiere_slug: "geo",       disc_types: %w[D I], required_competences: %w[gestion_projet negociation analyse_donnees],                       affirmations: ["Aider des territoires défavorisés à se redynamiser est une vocation pour moi.", "Je suis à l'aise pour mener des diagnostics territoriaux.", "Coordonner des acteurs publics, privés et associatifs me plaît.", "Je peux rédiger des rapports d'analyse pour des décideurs.", "Les enjeux de développement rural et péri-urbain m'intéressent."] },
+  { title: "Chargé de mission environnement",          filiere_slug: "geo",       disc_types: %w[S C], required_competences: %w[rigueur_scientifique communication_ecrite gestion_projet],         affirmations: ["Les questions environnementales et écologiques sont au cœur de mes valeurs.", "Je peux rédiger des études d'impact et des plans d'action environnementaux.", "Sensibiliser des équipes à la démarche RSE m'enthousiasme.", "Je suis capable de suivre des indicateurs environnementaux sur le long terme.", "Collaborer avec des services techniques et des partenaires institutionnels me convient."] },
+  { title: "UX Researcher",                            filiere_slug: "socio",     disc_types: %w[C S], required_competences: %w[analyse_donnees communication_ecrite numerique],                   affirmations: ["Comprendre les comportements humains face aux interfaces numériques m'intéresse.", "Je suis à l'aise pour concevoir et animer des entretiens utilisateurs.", "J'aime synthétiser des données qualitatives en recommandations actionnables.", "Les méthodologies de recherche (observation, test A/B, persona) me sont familières.", "Travailler en équipe avec des designers et des développeurs me plaît."] },
+  { title: "Statisticien social",                      filiere_slug: "socio",     disc_types: %w[C S], required_competences: %w[analyse_donnees rigueur_scientifique numerique],                   affirmations: ["L'analyse statistique de données sociales est une activité qui m'enthousiasme.", "Je maîtrise ou veux maîtriser des outils comme R, SPSS ou Python.", "Transformer des chiffres bruts en insights exploitables est un défi qui me motive.", "Je suis rigoureux(se) dans le traitement et la vérification des données.", "Produire des rapports quantitatifs pour des décideurs m'intéresse."] },
+  { title: "Consultant D&I",                           filiere_slug: "socio",     disc_types: %w[I S], required_competences: %w[communication_orale negociation culture_generale],                 affirmations: ["Promouvoir la diversité et l'inclusion au sein des organisations est une mission qui me tient à cœur.", "Je suis capable d'animer des formations sur la discrimination et les biais inconscients.", "Accompagner des changements culturels au sein des entreprises m'attire.", "Je peux concevoir des politiques RH inclusives.", "Travailler avec des directions générales sur des sujets sensibles ne me fait pas peur."] },
+  { title: "Chargé de projet ONG",                     filiere_slug: "socio",     disc_types: %w[S I], required_competences: %w[gestion_projet communication_orale langues_etrangeres],            affirmations: ["Je suis motivé(e) par les causes humanitaires et sociales.", "Coordonner des projets de terrain dans des contextes difficiles m'attire.", "Je peux gérer un budget et rédiger des rapports pour des bailleurs de fonds.", "Travailler dans des environnements multiculturels et souvent précaires me convient.", "La mobilité internationale est compatible avec mon mode de vie."] },
+  { title: "Analyste en intelligence culturelle",      filiere_slug: "socio",     disc_types: %w[C I], required_competences: %w[analyse_donnees langues_etrangeres culture_generale],              affirmations: ["L'analyse des identités culturelles dans un contexte globalisé m'intéresse.", "Je peux produire des études sur les comportements interculturels pour des entreprises.", "Je maîtrise des méthodologies mixtes (quantitatives et qualitatives).", "Conseiller des organisations sur leur stratégie interculturelle m'attire.", "Les questions d'appartenance, de représentation et de culture organisationnelle me passionnent."] },
+  { title: "UX Writer",                                filiere_slug: "lettres",   disc_types: %w[C S], required_competences: %w[communication_ecrite numerique creativite],                        affirmations: ["Rédiger des contenus clairs pour des applications numériques m'intéresse.", "Je comprends les principes de l'expérience utilisateur (UX).", "Je peux adapter mon style d'écriture à différents tons et contextes.", "La cohérence éditoriale dans un produit digital est primordiale pour moi.", "Collaborer avec des designers et des chefs de produit me plaît."] },
+  { title: "Content Designer",                         filiere_slug: "lettres",   disc_types: %w[I C], required_competences: %w[creativite communication_ecrite numerique],                        affirmations: ["Concevoir des expériences de contenu engageantes pour le numérique m'enthousiasme.", "Je mêle stratégie éditoriale et sens du design.", "Je peux créer des contenus interactifs et pédagogiques.", "Tester et itérer sur des formats de contenu est une démarche que j'apprécie.", "Je suis à l'aise avec les outils de prototypage et de création de contenu."] },
+  { title: "Correcteur / Réviseur éditorial",          filiere_slug: "lettres",   disc_types: %w[C S], required_competences: %w[communication_ecrite rigueur_scientifique culture_generale],       affirmations: ["La relecture minutieuse de textes est une activité que je pratique avec plaisir.", "Je détecte instinctivement les erreurs de syntaxe, d'orthographe et de style.", "Je connais les normes typographiques et éditoriales professionnelles.", "Je peux travailler sur des volumes importants de textes avec concentration.", "La langue française et ses règles me fascinent."] },
+  { title: "Auteur / Scénariste",                      filiere_slug: "lettres",   disc_types: %w[I C], required_competences: %w[creativite communication_ecrite culture_generale],                 affirmations: ["Écrire des histoires ou des scénarios est une passion qui me définit.", "Je peux développer des univers narratifs cohérents et originaux.", "La fiction comme outil de réflexion sur la société m'intéresse.", "Je suis prêt(e) à accepter l'incertitude économique liée à la carrière d'auteur.", "Les processus créatifs et la réécriture font partie intégrante de mon travail."] },
+  { title: "Responsable éditorial",                    filiere_slug: "lettres",   disc_types: %w[D C], required_competences: %w[gestion_projet communication_ecrite creativite],                   affirmations: ["Piloter la ligne éditoriale d'une revue, d'un éditeur ou d'un média m'attire.", "Je peux gérer une équipe de rédacteurs et de correcteurs.", "L'identification de nouveaux talents et sujets éditoriaux m'enthousiasme.", "Je comprends les enjeux économiques de l'édition (ventes, droits, diffusion).", "Arbitrer entre créativité et contraintes commerciales est un défi que j'accepte."] },
+  { title: "Consultant RH / DRH",                      filiere_slug: "psycho",    disc_types: %w[D I], required_competences: %w[negociation communication_orale gestion_projet],                   affirmations: ["Accompagner les organisations dans leur gestion des ressources humaines m'intéresse.", "Je peux mener des audits RH et proposer des plans d'amélioration.", "La négociation sociale et le dialogue avec les partenaires sociaux ne me font pas peur.", "Je suis à l'aise pour présenter des recommandations à des comités de direction.", "Les enjeux de transformation des organisations (digitalisation, RSE) m'animent."] },
+  { title: "Psychologue du travail",                   filiere_slug: "psycho",    disc_types: %w[S C], required_competences: %w[communication_orale rigueur_scientifique ecoute],                  affirmations: ["Comprendre les dynamiques psychologiques au sein des organisations m'intéresse.", "Je peux réaliser des bilans de compétences et des évaluations psychométriques.", "Accompagner des personnes en souffrance au travail (burnout, conflits) m'attire.", "Je maîtrise ou veux maîtriser les outils d'évaluation psychologique (MBTI, 16PF…).", "Intervenir dans des contextes de crise organisationnelle me convient."] },
+  { title: "Coach professionnel",                      filiere_slug: "psycho",    disc_types: %w[I S], required_competences: %w[communication_orale ecoute negociation],                           affirmations: ["Accompagner des individus dans leur développement personnel et professionnel est ma vocation.", "Je pose des questions puissantes plutôt que de donner des réponses toutes faites.", "Je suis à l'aise pour créer un espace de confiance et de bienveillance.", "Les techniques de coaching (PNL, analyse transactionnelle, pleine conscience) m'intéressent.", "Je suis prêt(e) à me certifier et à exercer en libéral."] },
+  { title: "Ingénieur pédagogique",                    filiere_slug: "psycho",    disc_types: %w[C S], required_competences: %w[gestion_projet numerique communication_ecrite],                    affirmations: ["Concevoir des dispositifs de formation sur mesure m'enthousiasme.", "Je maîtrise ou veux maîtriser des logiciels de création e-learning (Articulate, Rise…).", "Adapter les contenus aux besoins des apprenants adultes m'intéresse.", "Je travaille de façon méthodique selon des référentiels pédagogiques reconnus.", "Collaborer avec des experts métier pour structurer leurs savoirs me plaît."] },
+  { title: "Ergonome",                                 filiere_slug: "psycho",    disc_types: %w[C S], required_competences: %w[analyse_donnees rigueur_scientifique numerique],                   affirmations: ["Améliorer les conditions de travail et les interfaces homme-machine m'intéresse.", "Je peux réaliser des analyses d'activité et des études de poste.", "La prévention des risques professionnels (TMS, RPS) est un enjeu qui me mobilise.", "Je suis à l'aise pour observer, interviewer et synthétiser des données de terrain.", "Travailler à l'interface entre technique, humain et organisation me convient."] },
+  { title: "Éthicien en IA",                           filiere_slug: "philo",     disc_types: %w[C D], required_competences: %w[rigueur_scientifique communication_ecrite numerique],              affirmations: ["Les enjeux éthiques liés à l'intelligence artificielle me préoccupent profondément.", "Je peux analyser des systèmes algorithmiques pour en déceler les biais.", "Rédiger des chartes éthiques et des cadres de gouvernance des données m'intéresse.", "Je suis capable de vulgariser des concepts complexes pour des publics non techniques.", "Travailler avec des équipes techniques, juridiques et managériales me convient."] },
+  { title: "Analyste en politiques publiques",         filiere_slug: "philo",     disc_types: %w[C D], required_competences: %w[analyse_donnees droit_politiques communication_ecrite],            affirmations: ["L'évaluation des politiques publiques et leur impact social m'intéresse.", "Je peux produire des notes de synthèse pour des décideurs politiques.", "La modélisation des effets des réformes sur les populations m'attire.", "Je suis à l'aise avec les sources institutionnelles (rapports, données officielles).", "Travailler dans un think tank, un cabinet ou une administration centrale me motive."] },
+  { title: "Consultant en stratégie",                  filiere_slug: "philo",     disc_types: %w[D C], required_competences: %w[negociation analyse_donnees gestion_projet],                      affirmations: ["Résoudre des problèmes complexes pour des organisations est ce qui me motive le plus.", "Je peux structurer un raisonnement en hypothèses et recommandations claires.", "Travailler dans des secteurs variés sur des missions courtes et intenses me convient.", "Les outils de la stratégie (SWOT, matrices de portefeuille, business cases) me sont naturels.", "Je suis prêt(e) à investir du temps dans des missions exigeantes à fort enjeu."] },
+  { title: "Rédacteur juridique",                      filiere_slug: "philo",     disc_types: %w[C S], required_competences: %w[communication_ecrite droit_politiques rigueur_scientifique],       affirmations: ["La rédaction de textes juridiques précis et sans ambiguïté m'attire.", "Je comprends la structure et la logique des textes de droit.", "Adapter un langage technique à des non-juristes est une compétence que j'affectionne.", "Je peux rédiger des contrats, notes juridiques et supports de conformité.", "La rigueur terminologique dans le domaine juridique est une priorité pour moi."] },
+  { title: "Archiviste / Documentaliste",              filiere_slug: "histoire",  disc_types: %w[C S], required_competences: %w[rigueur_scientifique culture_generale numerique],                  affirmations: ["La conservation et la valorisation des archives historiques me passionnent.", "Je peux classer, indexer et numériser des fonds documentaires.", "L'accès à la mémoire collective et institutionnelle est une mission qui a du sens pour moi.", "Je suis rigoureux(se) et méthodique dans le traitement des documents.", "Travailler en bibliothèque, aux Archives nationales ou en entreprise me convient."] },
+  { title: "Médiateur culturel",                       filiere_slug: "histoire",  disc_types: %w[I S], required_competences: %w[communication_orale culture_generale creativite],                  affirmations: ["Mettre en relation le public avec le patrimoine culturel et artistique m'enthousiasme.", "Je peux concevoir et animer des visites, ateliers et événements culturels.", "La médiation entre les œuvres et les publics éloignés de la culture m'intéresse.", "Je suis à l'aise pour parler devant des groupes variés (enfants, adultes, scolaires).", "Travailler dans des musées, centres d'art ou territoires culturels me motive."] },
+  { title: "Guide touristique / patrimonial",          filiere_slug: "histoire",  disc_types: %w[I S], required_competences: %w[communication_orale langues_etrangeres culture_generale],          affirmations: ["Partager ma passion pour l'histoire et le patrimoine avec des visiteurs me comble.", "Je suis à l'aise pour parler en public de façon dynamique et pédagogique.", "Je peux m'adapter à des publics très différents (touristes, scolaires, professionnels).", "Maîtriser plusieurs langues pour guider des groupes internationaux m'attire.", "Travailler dans des sites patrimoniaux ou touristiques est un environnement qui me plaît."] },
+  { title: "Data analyst culturel",                    filiere_slug: "histoire",  disc_types: %w[C D], required_competences: %w[analyse_donnees numerique culture_generale],                       affirmations: ["L'analyse de données culturelles (fréquentation, pratiques, tendances) m'intéresse.", "Je maîtrise ou veux maîtriser des outils comme Excel, Python ou Tableau.", "Trouver des insights dans les données pour éclairer des décisions culturelles m'attire.", "Je peux produire des tableaux de bord et des rapports analytiques.", "Travailler au service d'institutions culturelles (musées, collectivités, médias) me motive."] },
+  { title: "Instructional Designer",                   filiere_slug: "edu",       disc_types: %w[C S], required_competences: %w[gestion_projet numerique communication_ecrite],                    affirmations: ["Concevoir des parcours de formation engageants et efficaces est ma vocation.", "Je travaille en étroite collaboration avec des experts pour structurer leurs connaissances.", "Les théories de l'apprentissage (cognitivisme, socioconstructivisme) me guident.", "Je peux produire des storyboards et des modules e-learning complets.", "L'évaluation de l'efficacité des formations est une étape que j'inclus systématiquement."] },
+  { title: "Formateur",                                filiere_slug: "edu",       disc_types: %w[I S], required_competences: %w[communication_orale ecoute creativite],                            affirmations: ["Transmettre des compétences et des savoirs à des adultes est une passion.", "Je peux animer des sessions de formation de façon dynamique et inclusive.", "Adapter mon discours pédagogique à des profils et niveaux très différents me plaît.", "Je crée des supports de formation clairs et attractifs (slides, fiches, vidéos).", "Le feedback des apprenants m'aide à m'améliorer continuellement."] },
+  { title: "Chef de projet e-learning",                filiere_slug: "edu",       disc_types: %w[D C], required_competences: %w[gestion_projet numerique negociation],                            affirmations: ["Piloter des projets de formation en ligne de A à Z m'intéresse.", "Je coordonne des équipes pluridisciplinaires (pédagogues, développeurs, graphistes).", "Je maîtrise ou veux maîtriser des LMS comme Moodle, 360Learning ou Cornerstone.", "Respecter des délais, des budgets et des cahiers des charges est une discipline naturelle pour moi.", "L'innovation pédagogique (serious game, social learning, IA) m'enthousiasme."] },
+  { title: "Conseiller en orientation",                filiere_slug: "edu",       disc_types: %w[S I], required_competences: %w[ecoute communication_orale culture_generale],                      affirmations: ["Accompagner des individus dans leurs choix de carrière est un métier qui a du sens pour moi.", "Je sais écouter sans juger et reformuler avec précision.", "Je connais les mécanismes du marché du travail et les dispositifs d'orientation.", "Aider une personne à identifier ses forces et ses valeurs est un exercice que j'apprécie.", "Travailler dans un lycée, une université ou un cabinet de conseil en évolution professionnelle me convient."] },
+  { title: "Consultant en transformation digitale",    filiere_slug: "edu",       disc_types: %w[D C], required_competences: %w[numerique gestion_projet negociation],                            affirmations: ["Accompagner des organisations dans leur transformation numérique m'enthousiasme.", "Je comprends les enjeux stratégiques liés à la data, l'IA et les nouveaux usages.", "Je peux diagnostiquer la maturité digitale d'une organisation et proposer une feuille de route.", "La gestion du changement et l'accompagnement humain dans les projets digitaux m'intéressent.", "Travailler en transverse avec les directions métier, IT et RH me convient."] }
 ]
 
-assessment_questions_data.each do |q|
-  AssessmentQuestion.find_or_initialize_by(bloc: q[:bloc], position: q[:position]).tap do |aq|
-    aq.text     = q[:text]
-    aq.kind     = q[:kind] || "mcq"
-    aq.options  = q[:options]
-    aq.scored   = true
-    aq.active   = true
-    aq.save!
+careers_data.each do |attrs|
+  career = Career.find_or_initialize_by(title: attrs[:title])
+  career.assign_attributes(
+    status: :published,
+    kind: :profession,
+    filiere_slug: attrs[:filiere_slug],
+    disc_types: attrs[:disc_types],
+    required_competences: attrs[:required_competences],
+    affirmations: attrs[:affirmations]
+  )
+  career.save!
+  career.trajectories.create!(axe_1: "Poste junior dans une organisation — première expérience terrain.", axe_2: "Montée en responsabilités — expert ou chef de projet.", axe_3: "Expert reconnu ou consultant indépendant — leadership sectoriel.") unless career.trajectories.exists?
+end
+puts "✓ #{Career.diagnostic.count} métiers avec profil diagnostic"
+
+# ===== 8 QUESTIONS D'INTÉRÊT THÉMATIQUE =====
+interest_questions = [
+  { text: "Parmi ces activités, laquelle vous attire le plus ?", position: 1,
+    options: [{ "label" => "Écrire, analyser des textes et décoder des métaphores", "filiere_slug" => "lettres" }, { "label" => "Comprendre pourquoi les sociétés fonctionnent comme elles le font", "filiere_slug" => "socio" }, { "label" => "Analyser des cartes et comprendre les dynamiques territoriales", "filiere_slug" => "geo" }, { "label" => "Apprendre et maîtriser des langues étrangères", "filiere_slug" => "langues" }] },
+  { text: "Si vous deviez choisir un projet dans votre formation, vous préféreriez :", position: 2,
+    options: [{ "label" => "Rédiger une analyse critique d'une œuvre ou d'un texte", "filiere_slug" => "lettres" }, { "label" => "Mener une enquête sur un groupe social ou une communauté", "filiere_slug" => "socio" }, { "label" => "Réaliser une étude géographique ou environnementale d'un territoire", "filiere_slug" => "geo" }, { "label" => "Traduire ou adapter un contenu pour un public étranger", "filiere_slug" => "langues" }] },
+  { text: "Le travail qui vous donnerait le plus de sens serait de :", position: 3,
+    options: [{ "label" => "Transmettre un savoir, former et accompagner des apprenants", "filiere_slug" => "edu" }, { "label" => "Aider des individus à traverser des difficultés personnelles", "filiere_slug" => "psycho" }, { "label" => "Défendre une idée ou une cause avec des arguments solides", "filiere_slug" => "philo" }, { "label" => "Valoriser un patrimoine historique ou culturel oublié", "filiere_slug" => "histoire" }] },
+  { text: "Vous êtes naturellement plus à l'aise avec :", position: 4,
+    options: [{ "label" => "Les concepts abstraits, l'argumentation et les grands débats", "filiere_slug" => "philo" }, { "label" => "Les données, les statistiques et les analyses quantitatives", "filiere_slug" => "socio" }, { "label" => "Les relations humaines, l'écoute et l'empathie", "filiere_slug" => "psycho" }, { "label" => "La créativité, l'écriture et la narration", "filiere_slug" => "lettres" }] },
+  { text: "Si vous pouviez transformer un hobby en métier, ce serait :", position: 5,
+    options: [{ "label" => "Écrire des articles, des histoires ou des analyses", "filiere_slug" => "lettres" }, { "label" => "Comprendre et expliquer les comportements humains", "filiere_slug" => "psycho" }, { "label" => "Concevoir des solutions pour améliorer un territoire ou une ville", "filiere_slug" => "geo" }, { "label" => "Enseigner, animer des ateliers ou créer des formations", "filiere_slug" => "edu" }] },
+  { text: "Votre entourage vous décrit plutôt comme quelqu'un qui :", position: 6,
+    options: [{ "label" => "Maîtrise ou apprend facilement les langues étrangères", "filiere_slug" => "langues" }, { "label" => "Réfléchit profondément avant d'agir et questionne tout", "filiere_slug" => "philo" }, { "label" => "S'intéresse à l'histoire, aux origines et aux civilisations", "filiere_slug" => "histoire" }, { "label" => "Aime aider les autres et trouver des solutions aux problèmes humains", "filiere_slug" => "psycho" }] },
+  { text: "Dans une équipe, vous aimez apporter :", position: 7,
+    options: [{ "label" => "Une vision analytique et une capacité à traiter des données complexes", "filiere_slug" => "socio" }, { "label" => "Une maîtrise des langues et une aisance avec les partenaires internationaux", "filiere_slug" => "langues" }, { "label" => "La compréhension des dynamiques humaines et relationnelles du groupe", "filiere_slug" => "psycho" }, { "label" => "Une organisation rigoureuse et des approches pédagogiques structurées", "filiere_slug" => "edu" }] },
+  { text: "Ce qui vous passionne le plus dans vos études, c'est :", position: 8,
+    options: [{ "label" => "Décoder les textes, les langues et la richesse du langage", "filiere_slug" => "lettres" }, { "label" => "Comprendre les grandes transformations sociales et politiques", "filiere_slug" => "socio" }, { "label" => "Analyser l'espace, les territoires et les phénomènes géographiques", "filiere_slug" => "geo" }, { "label" => "Explorer les grandes questions philosophiques, éthiques ou historiques", "filiere_slug" => "philo" }] }
+]
+
+interest_questions.each do |q|
+  DiagnosticQuestion.find_or_initialize_by(assessment: assessment, position: q[:position], kind: "interest").tap do |dq|
+    dq.text    = q[:text]
+    dq.options = q[:options]
+    dq.active  = true
+    dq.save!
   end
 end
-puts "✓ #{AssessmentQuestion.count} questions d'évaluation"
+puts "✓ #{DiagnosticQuestion.where(assessment: assessment, kind: 'interest').count} questions d'intérêt"
 
-admin_user = User.find_by(email: "admin@admin.com")
-if admin_user && Diagnostic.where(user: admin_user).blank?
-  primary   = Career.behavioral.find_by(slug: "coordinateur-strategique")
-  secondary = Career.behavioral.find_by(slug: "digital-strategie-contenu")
-  score_data = {
-    participant_info: { nom_prenom: "Admin Démo", email: "admin@admin.com", pays_ville: "CI", diplome_principal: "Master", domaine_etude: "Langues", niveau_etude: "Master", situation_actuelle: "Diplômé", date_diagnostic: Time.current.strftime("%d/%m/%Y") },
-    dominant_profile: { name: primary&.title, slug: primary&.slug, label: "Profil dominant" },
-    secondary_profile: { name: secondary&.title, slug: secondary&.slug, label: "Profil secondaire" },
-    global_score: { score: 75, level: "bien_positionne", label: "Score global" }
-  }
-  diagnostic = Diagnostic.create!(user: admin_user, status: :completed, payment_provider: :stripe, primary_career: primary, complementary_career: secondary, score_data: score_data, paid_at: 2.hours.ago, completed_at: 1.hour.ago)
+# ===== 16 QUESTIONS DISC =====
+disc_questions = [
+  { text: "Je prends facilement des décisions même sous pression.",                    disc_type: "D", position: 9 },
+  { text: "J'aime diriger des projets et déléguer les tâches.",                         disc_type: "D", position: 10 },
+  { text: "Je préfère agir vite plutôt que d'attendre la perfection.",                  disc_type: "D", position: 11 },
+  { text: "J'assume la responsabilité des résultats, bons ou mauvais.",                 disc_type: "D", position: 12 },
+  { text: "J'adore rencontrer de nouvelles personnes et élargir mon réseau.",           disc_type: "I", position: 13 },
+  { text: "Je convaincs facilement mon entourage avec enthousiasme.",                   disc_type: "I", position: 14 },
+  { text: "En groupe, j'aime animer et créer une bonne ambiance.",                      disc_type: "I", position: 15 },
+  { text: "Je me motive par la reconnaissance et les encouragements.",                   disc_type: "I", position: 16 },
+  { text: "Je préfère les environnements stables et prévisibles.",                       disc_type: "S", position: 17 },
+  { text: "Je suis à l'écoute et j'aide volontiers mes collègues.",                     disc_type: "S", position: 18 },
+  { text: "Je prends le temps d'analyser avant de changer mes habitudes.",               disc_type: "S", position: 19 },
+  { text: "Je suis loyal(e) et m'implique sur le long terme dans mes engagements.",     disc_type: "S", position: 20 },
+  { text: "Je travaille avec méthode et j'attache de l'importance aux détails.",        disc_type: "C", position: 21 },
+  { text: "Je vérifie plusieurs fois avant de rendre un travail.",                       disc_type: "C", position: 22 },
+  { text: "Je me documente en profondeur avant de prendre position.",                    disc_type: "C", position: 23 },
+  { text: "Je préfère les règles claires et les processus bien définis.",                disc_type: "C", position: 24 }
+]
 
-  (1..25).each do |pos|
-    aq = AssessmentQuestion.find_by(position: pos)
-    next unless aq
-    DiagnosticAnswer.create!(diagnostic: diagnostic, assessment_question: aq, answer_value: "B", profile_dimension: "coordinateur-strategique", points_awarded: 1)
+disc_questions.each do |q|
+  DiagnosticQuestion.find_or_initialize_by(assessment: assessment, position: q[:position], kind: "disc").tap do |dq|
+    dq.text       = q[:text]
+    dq.disc_type  = q[:disc_type]
+    dq.active     = true
+    dq.save!
   end
-  puts "✓ Diagnostic complet créé pour #{admin_user.email}"
 end
+puts "✓ #{DiagnosticQuestion.where(assessment: assessment, kind: 'disc').count} questions DISC"
+
+# ===== 12 QUESTIONS COMPÉTENCES =====
+competence_questions = [
+  { text: "Je parle couramment au moins une langue étrangère.",                                              competence_slug: "langues_etrangeres",    position: 25 },
+  { text: "Je rédige des textes clairs, structurés et adaptés à mon audience.",                              competence_slug: "communication_ecrite",  position: 26 },
+  { text: "Je m'exprime avec aisance en public ou face à des interlocuteurs variés.",                        competence_slug: "communication_orale",   position: 27 },
+  { text: "Je sais collecter, traiter et interpréter des données (qualitatives ou quantitatives).",          competence_slug: "analyse_donnees",       position: 28 },
+  { text: "Je peux planifier, coordonner et suivre un projet de A à Z.",                                     competence_slug: "gestion_projet",        position: 29 },
+  { text: "Je maîtrise des outils numériques avancés (tableurs, logiciels métier, code…).",                  competence_slug: "numerique",             position: 30 },
+  { text: "Je suis capable de défendre une position et trouver des compromis satisfaisants.",                competence_slug: "negociation",           position: 31 },
+  { text: "J'ai une forte capacité à imaginer des solutions ou des contenus originaux.",                     competence_slug: "creativite",            position: 32 },
+  { text: "Je comprends les besoins implicites de mes interlocuteurs avec empathie.",                        competence_slug: "ecoute",                position: 33 },
+  { text: "Je travaille de façon précise, vérifiable et conforme aux standards de mon domaine.",             competence_slug: "rigueur_scientifique",   position: 34 },
+  { text: "J'ai une bonne connaissance historique, littéraire, artistique et géopolitique.",                 competence_slug: "culture_generale",      position: 35 },
+  { text: "Je comprends le cadre juridique, réglementaire et institutionnel de mon secteur.",                competence_slug: "droit_politiques",      position: 36 }
+]
+
+competence_questions.each do |q|
+  DiagnosticQuestion.find_or_initialize_by(assessment: assessment, position: q[:position], kind: "competence").tap do |dq|
+    dq.text            = q[:text]
+    dq.competence_slug = q[:competence_slug]
+    dq.active          = true
+    dq.save!
+  end
+end
+puts "✓ #{DiagnosticQuestion.where(assessment: assessment, kind: 'competence').count} questions compétences"
