@@ -13,7 +13,7 @@
                value="<%= value %>"
                class="sr-only peer"
                <%= "checked" if current_value == value.to_s %>
-               required>
+               <%= "required" if value == 1 %>>
         <div class="w-full py-3 rounded-xl border-2 border-slate-200 text-center text-slate-500 text-sm font-bold
                     peer-checked:border-[var(--color-primary)] peer-checked:bg-[var(--color-primary)] peer-checked:text-white
                     group-hover:border-slate-400 transition-all">

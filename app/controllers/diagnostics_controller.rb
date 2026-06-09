@@ -40,28 +40,32 @@ class DiagnosticsController < ApplicationController
   end
 
   def submit_interest
-    active_assessment.diagnostic_questions.interest.active.ordered.each do |q|
-      filiere_slug = params.dig(:answers, q.id.to_s)
-      valid_slugs = q.options.map { |o| o["filiere_slug"] }
-      next unless valid_slugs.include?(filiere_slug)
-      answer = @diagnostic.diagnostic_answers.find_or_initialize_by(diagnostic_question: q)
-      answer.assign_attributes(dimension_slug: filiere_slug, answer_value: filiere_slug, points_awarded: 1)
-      answer.save!
+    ActiveRecord::Base.transaction do
+      active_assessment.diagnostic_questions.interest.active.ordered.each do |q|
+        filiere_slug = params.dig(:answers, q.id.to_s)
+        valid_slugs = q.options.map { |o| o["filiere_slug"] }
+        next unless valid_slugs.include?(filiere_slug)
+        answer = @diagnostic.diagnostic_answers.find_or_initialize_by(diagnostic_question: q)
+        answer.assign_attributes(dimension_slug: filiere_slug, answer_value: filiere_slug, points_awarded: 1)
+        answer.save!
+      end
     end
     redirect_to disc_diagnostic_path(@diagnostic)
   end
 
   def submit_disc
-    active_assessment.diagnostic_questions.disc.active.ordered.each do |q|
-      value = params.dig(:answers, q.id.to_s).to_i
-      next unless (1..5).include?(value)
-      answer = @diagnostic.diagnostic_answers.find_or_initialize_by(diagnostic_question: q)
-      answer.assign_attributes(
-        dimension_slug: q.disc_type,
-        answer_value:   value.to_s,
-        points_awarded: value
-      )
-      answer.save!
+    ActiveRecord::Base.transaction do
+      active_assessment.diagnostic_questions.disc.active.ordered.each do |q|
+        value = params.dig(:answers, q.id.to_s).to_i
+        next unless (1..5).include?(value)
+        answer = @diagnostic.diagnostic_answers.find_or_initialize_by(diagnostic_question: q)
+        answer.assign_attributes(
+          dimension_slug: q.disc_type,
+          answer_value:   value.to_s,
+          points_awarded: value
+        )
+        answer.save!
+      end
     end
     redirect_to competences_diagnostic_path(@diagnostic)
   end
