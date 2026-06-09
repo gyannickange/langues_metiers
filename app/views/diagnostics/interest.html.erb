@@ -1,0 +1,40 @@
+<%# app/views/diagnostics/interest.html.erb %>
+<div class="max-w-2xl mx-auto px-4 py-8">
+  <div class="mb-8">
+    <p class="text-xs font-bold uppercase tracking-widest text-[var(--color-primary)] mb-2">Étape 1 sur 4</p>
+    <h1 class="text-2xl font-bold text-slate-800">Découvrons ce qui vous anime</h1>
+    <p class="text-slate-500 mt-1">Répondez spontanément — il n'y a pas de bonne ou mauvaise réponse.</p>
+  </div>
+
+  <%= form_with url: submit_interest_diagnostic_path(@diagnostic), method: :post, data: { turbo: false } do |f| %>
+    <div class="space-y-8">
+      <% @questions.each_with_index do |question, i| %>
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+          <p class="font-semibold text-slate-700 mb-4">
+            <span class="text-[var(--color-primary)] mr-2"><%= i + 1 %>.</span>
+            <%= question.text %>
+          </p>
+          <div class="space-y-3">
+            <% question.options.each do |option| %>
+              <label class="flex items-start gap-3 cursor-pointer group">
+                <input type="radio"
+                       name="answers[<%= question.id %>]"
+                       value="<%= option['filiere_slug'] %>"
+                       class="mt-1 accent-[var(--color-primary)]"
+                       required>
+                <span class="text-slate-600 group-hover:text-slate-800 transition-colors">
+                  <%= option['label'] %>
+                </span>
+              </label>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="mt-8">
+      <%= f.submit "Continuer →",
+            class: "w-full py-4 bg-[var(--color-primary)] text-white font-bold rounded-2xl hover:opacity-90 transition-opacity cursor-pointer" %>
+    </div>
+  <% end %>
+</div>

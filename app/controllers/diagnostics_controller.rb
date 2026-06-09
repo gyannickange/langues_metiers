@@ -24,7 +24,6 @@ class DiagnosticsController < ApplicationController
 
   def interest
     @questions = active_assessment.diagnostic_questions.interest.active.ordered
-    render plain: "interest step"
   end
 
   def disc
@@ -42,7 +41,16 @@ class DiagnosticsController < ApplicationController
   end
 
   def submit_interest
-    head :ok
+    active_assessment.diagnostic_questions.interest.active.ordered.each do |q|
+      filiere_slug = params.dig(:answers, q.id.to_s)
+      next if filiere_slug.blank?
+      @diagnostic.diagnostic_answers.find_or_create_by!(diagnostic_question: q) do |a|
+        a.dimension_slug  = filiere_slug
+        a.answer_value    = filiere_slug
+        a.points_awarded  = 1
+      end
+    end
+    redirect_to disc_diagnostic_path(@diagnostic)
   end
 
   def submit_disc
