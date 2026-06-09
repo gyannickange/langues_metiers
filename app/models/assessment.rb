@@ -1,5 +1,6 @@
 class Assessment < ApplicationRecord
   has_many :assessment_questions, -> { order(:bloc, :position) }, dependent: :destroy
+  has_many :diagnostic_questions, -> { order(:position) }, dependent: :destroy
   has_many :diagnostics, dependent: :nullify
 
   validates :title, presence: true
