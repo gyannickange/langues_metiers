@@ -1,64 +1,32 @@
+# app/services/diagnostics/scoring_service.rb
 module Diagnostics
-  # Service responsible for calculating diagnostic scores and determining
-  # the primary and complementary profiles based on user answers.
   class ScoringService
-    def self.call(diagnostic)
-      new(diagnostic).call
+    def self.call(diagnostic, affirmation_counts = {})
+      new(diagnostic, affirmation_counts).call
     end
 
-    def initialize(diagnostic)
-      @diagnostic = diagnostic
+    def initialize(diagnostic, affirmation_counts)
+      @diagnostic         = diagnostic
+      @affirmation_counts = affirmation_counts
     end
 
     def call
-      scores = calculate_scores
-      primary, complementary = determine_profiles(scores)
+      top_career_data = @diagnostic.score_data["top_career_ids"] || []
+
+      adjusted = top_career_data.map do |entry|
+        bonus = Array(@affirmation_counts[entry["id"]]).length
+        { "id" => entry["id"], "score" => entry["score"].to_i + bonus }
+      end.sort_by { |e| -e["score"] }
+
+      primary   = Career.find_by(id: adjusted.dig(0, "id"))
+      secondary = Career.find_by(id: adjusted.dig(1, "id"))
 
       @diagnostic.update!(
-        score_data:              scores,
-        primary_career:          primary,
-        complementary_career:    complementary,
-        status:                  :pending_payment,
-        completed_at:            Time.current
+        primary_career:       primary,
+        complementary_career: secondary,
+        status:               :pending_payment,
+        completed_at:         Time.current
       )
-    end
-
-    private
-
-    def calculate_scores
-      scored = @diagnostic.diagnostic_answers
-        .joins(:assessment_question)
-        .where(assessment_questions: { scored: true })
-        .where.not(profile_dimension: [ nil, "" ])
-
-      scores = Hash.new(0)
-      scored.each { |a| scores[a.profile_dimension] += a.points_awarded.to_i }
-      scores
-    end
-
-    def determine_profiles(scores)
-      return [ nil, nil ] if scores.empty?
-
-      sorted    = scores.sort_by { |_, v| -v }
-      top_score = sorted.first[1]
-      tied      = sorted.select { |_, v| v == top_score }.map(&:first)
-
-      primary_slug = tied.size > 1 ? resolve_tiebreak(tied) : tied.first
-      secondary_slug = sorted.select { |slug, _| slug != primary_slug }.first&.first
-
-      [ Career.behavioral.find_by(slug: primary_slug), Career.behavioral.find_by(slug: secondary_slug) ]
-    end
-
-    def resolve_tiebreak(tied_slugs)
-      bloc2 = @diagnostic.diagnostic_answers
-        .joins(:assessment_question)
-        .where(assessment_questions: { bloc: 2, scored: true })
-        .where(profile_dimension: tied_slugs)
-
-      counts = Hash.new(0)
-      bloc2.each { |a| counts[a.profile_dimension] += a.points_awarded.to_i }
-
-      counts.any? ? counts.max_by { |_, v| v }.first : tied_slugs.first
     end
   end
 end

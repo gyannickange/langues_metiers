@@ -35,7 +35,8 @@ class DiagnosticsController < ApplicationController
   end
 
   def validation
-    render plain: "validation step"
+    top_ids = (@diagnostic.score_data["top_career_ids"] || []).map { |h| h["id"] }
+    @top_careers = Career.where(id: top_ids).index_by(&:id).values_at(*top_ids).compact
   end
 
   def submit_interest
@@ -88,7 +89,9 @@ class DiagnosticsController < ApplicationController
   end
 
   def submit_validation
-    head :ok
+    affirmation_counts = (params[:affirmations] || {}).to_unsafe_h
+    Diagnostics::ScoringService.call(@diagnostic, affirmation_counts)
+    redirect_to pay_diagnostic_path(@diagnostic)
   end
 
   def pay

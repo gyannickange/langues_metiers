@@ -1,0 +1,43 @@
+<%# app/views/diagnostics/validation.html.erb %>
+<div class="max-w-2xl mx-auto px-4 py-8">
+  <div class="mb-8">
+    <p class="text-xs font-bold uppercase tracking-widest text-[var(--color-primary)] mb-2">Étape 4 sur 4</p>
+    <h1 class="text-2xl font-bold text-slate-800">Ces métiers vous correspondent-ils ?</h1>
+    <p class="text-slate-500 mt-1">Cochez les affirmations qui vous décrivent vraiment.</p>
+  </div>
+
+  <%= form_with url: submit_validation_diagnostic_path(@diagnostic), method: :post, data: { turbo: false } do |f| %>
+    <div class="space-y-6">
+      <% @top_careers.each_with_index do |career, i| %>
+        <% border_colors = %w[border-violet-500 border-cyan-500 border-emerald-500] %>
+        <div class="bg-white rounded-2xl border-2 <%= border_colors[i] %> p-6 shadow-sm">
+          <div class="mb-4">
+            <span class="text-xs font-bold uppercase tracking-widest text-slate-400 block mb-1">
+              <%= i == 0 ? "Métier principal" : "Alternative #{i}" %>
+            </span>
+            <span class="font-bold text-slate-800 text-lg"><%= career.title %></span>
+          </div>
+
+          <div class="space-y-3">
+            <% (career.affirmations || []).each_with_index do |affirmation, j| %>
+              <label class="flex items-start gap-3 cursor-pointer group">
+                <input type="checkbox"
+                       name="affirmations[<%= career.id %>][]"
+                       value="<%= j %>"
+                       class="mt-1 accent-[var(--color-primary)]">
+                <span class="text-slate-600 group-hover:text-slate-800 text-sm transition-colors">
+                  <%= affirmation %>
+                </span>
+              </label>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="mt-8">
+      <%= f.submit "Confirmer et voir mes résultats →",
+            class: "w-full py-4 bg-[var(--color-primary)] text-white font-bold rounded-2xl hover:opacity-90 transition-opacity cursor-pointer" %>
+    </div>
+  <% end %>
+</div>
