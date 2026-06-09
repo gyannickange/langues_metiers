@@ -40,8 +40,14 @@ Rails.application.routes.draw do
   # Diagnostics
   resources :diagnostics, only: [ :new, :show ] do
     member do
-      get  :assessment
-      post :submit_bloc
+      get  :interest
+      post :submit_interest
+      get  :disc
+      post :submit_disc
+      get  :competences
+      post :submit_competences
+      get  :validation
+      post :submit_validation
       get  :pay
       post :process_payment
       get  :results
@@ -74,20 +80,13 @@ Rails.application.routes.draw do
     resources :diagnostics,      only: [ :index, :show ]
     resources :trajectories
     resources :assessments do
-      member do
-        patch :activate
-      end
-      resources :assessment_questions do
-        collection do
-          patch :reorder
-        end
+      member { patch :activate }
+      resources :diagnostic_questions do
+        collection { patch :reorder }
       end
     end
-    # Keep flat assessment_questions route for backward compatibility if needed, but we mostly use nested now
-    resources :assessment_questions do
-      collection do
-        patch :reorder
-      end
+    resources :diagnostic_questions do
+      collection { patch :reorder }
     end
     resources :mobile_operators
   end

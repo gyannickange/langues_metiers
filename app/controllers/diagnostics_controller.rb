@@ -1,23 +1,60 @@
 # app/controllers/diagnostics_controller.rb
 class DiagnosticsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_diagnostic, only: [ :show, :assessment, :submit_bloc, :pay, :process_payment, :results, :pdf_status, :download_pdf ]
-  before_action :require_paid!,      only: [ :results, :pdf_status, :download_pdf ]
+  before_action :set_diagnostic, only: [
+    :show, :interest, :submit_interest, :disc, :submit_disc,
+    :competences, :submit_competences, :validation, :submit_validation,
+    :pay, :process_payment, :results, :pdf_status, :download_pdf
+  ]
+  before_action :require_paid!, only: [ :results, :pdf_status, :download_pdf ]
 
   def new
-    unless current_user.admin?
-      render "coming_soon"
-      return
-    end
-
     assessment = Assessment.find_by(active: true) || Assessment.first
     unless assessment
       redirect_to root_path, alert: "Aucune évaluation disponible pour le moment."
       return
     end
-
     @diagnostic = current_user.diagnostics.create!(status: :in_progress, assessment: assessment)
-    redirect_to assessment_diagnostic_path(@diagnostic)
+    redirect_to interest_diagnostic_path(@diagnostic)
+  end
+
+  def show
+    redirect_to current_step_path(@diagnostic)
+  end
+
+  def interest
+    @questions = active_assessment.diagnostic_questions.interest.active.ordered
+    render plain: "interest step"
+  end
+
+  def disc
+    @questions = active_assessment.diagnostic_questions.disc.active.ordered
+    render plain: "disc step"
+  end
+
+  def competences
+    @questions = active_assessment.diagnostic_questions.competence.active.ordered
+    render plain: "competences step"
+  end
+
+  def validation
+    render plain: "validation step"
+  end
+
+  def submit_interest
+    head :ok
+  end
+
+  def submit_disc
+    head :ok
+  end
+
+  def submit_competences
+    head :ok
+  end
+
+  def submit_validation
+    head :ok
   end
 
   def pay
@@ -44,51 +81,6 @@ class DiagnosticsController < ApplicationController
     case payment_provider_param
     when "stripe"  then handle_stripe_payment
     when "pawapay" then handle_pawapay_payment
-    end
-  end
-
-  def show
-    redirect_to case @diagnostic.status
-    when "in_progress" then assessment_diagnostic_path(@diagnostic)
-    when "pending_payment" then pay_diagnostic_path(@diagnostic)
-    when "paid", "completed" then results_diagnostic_path(@diagnostic)
-    else root_path
-    end
-  end
-
-  def assessment
-    @current_bloc = current_bloc
-    @assessment = @diagnostic.assessment || Assessment.find_by(active: true)
-    @assessment_questions = @assessment.assessment_questions.active.by_bloc(@current_bloc)
-    @total_blocs = @assessment.total_blocs
-  end
-
-  def submit_bloc
-    bloc_number = params[:bloc].to_i
-
-    @assessment = @diagnostic.assessment || Assessment.find_by(active: true)
-
-    @assessment.assessment_questions.active.by_bloc(bloc_number).each do |aq|
-      value  = params.dig(:answers, aq.id.to_s)
-      next if value.blank?
-
-      option = aq.options.find { |o| o["value"] == value }
-      next unless option
-
-      @diagnostic.diagnostic_answers.find_or_create_by!(assessment_question: aq) do |a|
-        a.answer_value      = value
-        a.profile_dimension = option["profile_slug"]
-        a.points_awarded    = option["points"].to_i
-      end
-    end
-
-    @diagnostic.update!(status: :in_progress) if @diagnostic.paid?
-
-    if bloc_number >= @assessment.total_blocs
-      Diagnostics::ScoringService.call(@diagnostic)
-      redirect_to pay_diagnostic_path(@diagnostic)
-    else
-      redirect_to assessment_diagnostic_path(@diagnostic, bloc: bloc_number + 1)
     end
   end
 
@@ -130,6 +122,36 @@ class DiagnosticsController < ApplicationController
     end
   end
 
+  def current_step_path(diagnostic)
+    case diagnostic.status
+    when "paid", "completed" then results_diagnostic_path(diagnostic)
+    when "pending_payment"   then pay_diagnostic_path(diagnostic)
+    when "in_progress"       then in_progress_step_path(diagnostic)
+    else root_path
+    end
+  end
+
+  def in_progress_step_path(diagnostic)
+    answered_kinds = diagnostic.diagnostic_answers
+      .joins(:diagnostic_question)
+      .distinct
+      .pluck("diagnostic_questions.kind")
+
+    if answered_kinds.include?("competence")
+      validation_diagnostic_path(diagnostic)
+    elsif answered_kinds.include?("disc")
+      competences_diagnostic_path(diagnostic)
+    elsif answered_kinds.include?("interest")
+      disc_diagnostic_path(diagnostic)
+    else
+      interest_diagnostic_path(diagnostic)
+    end
+  end
+
+  def active_assessment
+    @active_assessment ||= @diagnostic.assessment || Assessment.find_by(active: true)
+  end
+
   def payment_provider_param
     params[:payment_method].in?(%w[stripe pawapay]) ? params[:payment_method] : "stripe"
   end
@@ -164,9 +186,5 @@ class DiagnosticsController < ApplicationController
 
   def detect_country
     request.headers["HTTP_X_RAILWAY_COUNTRY"] || cookies[:country].presence || "BJ"
-  end
-
-  def current_bloc
-    (params[:bloc] || 1).to_i.clamp(1, 5)
   end
 end

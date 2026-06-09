@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_09_151306) do
+ActiveRecord::Schema[8.0].define(version: 2026_06_09_152918) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -104,15 +104,19 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_09_151306) do
 
   create_table "diagnostic_answers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "diagnostic_id", default: -> { "gen_random_uuid()" }, null: false
-    t.uuid "assessment_question_id", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "assessment_question_id"
     t.string "answer_value"
     t.string "profile_dimension"
     t.integer "points_awarded", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "diagnostic_question_id"
+    t.string "dimension_slug"
     t.index ["assessment_question_id"], name: "index_diagnostic_answers_on_assessment_question_id"
     t.index ["diagnostic_id", "assessment_question_id"], name: "idx_diag_answers_on_diag_and_assess_quest", unique: true
     t.index ["diagnostic_id"], name: "index_diagnostic_answers_on_diagnostic_id"
+    t.index ["diagnostic_question_id"], name: "index_diagnostic_answers_on_diagnostic_question_id"
+    t.index ["dimension_slug"], name: "index_diagnostic_answers_on_dimension_slug"
   end
 
   create_table "diagnostic_questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -242,7 +246,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_09_151306) do
   add_foreign_key "assessment_questions", "assessments"
   add_foreign_key "categories_skills", "categories"
   add_foreign_key "categories_skills", "skills"
-  add_foreign_key "diagnostic_answers", "assessment_questions"
+  add_foreign_key "diagnostic_answers", "diagnostic_questions"
   add_foreign_key "diagnostic_answers", "diagnostics"
   add_foreign_key "diagnostic_questions", "assessments"
   add_foreign_key "diagnostics", "assessments"
