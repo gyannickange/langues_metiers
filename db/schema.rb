@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_09_152918) do
+ActiveRecord::Schema[8.0].define(version: 2026_06_09_215215) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -41,21 +41,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_09_152918) do
     t.uuid "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
-  end
-
-  create_table "assessment_questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "bloc", null: false
-    t.text "text", null: false
-    t.string "kind", default: "mcq", null: false
-    t.jsonb "options", default: []
-    t.boolean "scored", default: false, null: false
-    t.integer "position", default: 0, null: false
-    t.boolean "active", default: true, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.uuid "assessment_id"
-    t.index ["assessment_id"], name: "index_assessment_questions_on_assessment_id"
-    t.index ["bloc", "position"], name: "index_assessment_questions_on_bloc_and_position"
   end
 
   create_table "assessments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -104,7 +89,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_09_152918) do
 
   create_table "diagnostic_answers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "diagnostic_id", default: -> { "gen_random_uuid()" }, null: false
-    t.uuid "assessment_question_id"
     t.string "answer_value"
     t.string "profile_dimension"
     t.integer "points_awarded", default: 0
@@ -112,8 +96,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_09_152918) do
     t.datetime "updated_at", null: false
     t.uuid "diagnostic_question_id"
     t.string "dimension_slug"
-    t.index ["assessment_question_id"], name: "index_diagnostic_answers_on_assessment_question_id"
-    t.index ["diagnostic_id", "assessment_question_id"], name: "idx_diag_answers_on_diag_and_assess_quest", unique: true
+    t.index ["diagnostic_id", "diagnostic_question_id"], name: "idx_diag_answers_on_diag_and_diag_quest", unique: true, where: "(diagnostic_question_id IS NOT NULL)"
     t.index ["diagnostic_id"], name: "index_diagnostic_answers_on_diagnostic_id"
     t.index ["diagnostic_question_id"], name: "index_diagnostic_answers_on_diagnostic_question_id"
     t.index ["dimension_slug"], name: "index_diagnostic_answers_on_dimension_slug"
@@ -243,7 +226,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_09_152918) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "assessment_questions", "assessments"
   add_foreign_key "categories_skills", "categories"
   add_foreign_key "categories_skills", "skills"
   add_foreign_key "diagnostic_answers", "diagnostic_questions"
