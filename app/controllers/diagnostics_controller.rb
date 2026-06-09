@@ -126,12 +126,12 @@ class DiagnosticsController < ApplicationController
     case diagnostic.status
     when "paid", "completed" then results_diagnostic_path(diagnostic)
     when "pending_payment"   then pay_diagnostic_path(diagnostic)
-    when "in_progress"       then in_progress_step_path(diagnostic)
+    when "in_progress"       then resolve_in_progress_step(diagnostic)
     else root_path
     end
   end
 
-  def in_progress_step_path(diagnostic)
+  def resolve_in_progress_step(diagnostic)
     answered_kinds = diagnostic.diagnostic_answers
       .joins(:diagnostic_question)
       .distinct
