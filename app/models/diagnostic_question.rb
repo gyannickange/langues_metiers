@@ -1,5 +1,6 @@
 class DiagnosticQuestion < ApplicationRecord
   belongs_to :assessment
+  has_many :diagnostic_answers, dependent: :nullify
 
   enum :kind, { disc: "disc", interest: "interest", competence: "competence" }
 
