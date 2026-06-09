@@ -32,7 +32,6 @@ class DiagnosticsController < ApplicationController
 
   def competences
     @questions = active_assessment.diagnostic_questions.competence.active.ordered
-    render plain: "competences step"
   end
 
   def validation
@@ -71,7 +70,21 @@ class DiagnosticsController < ApplicationController
   end
 
   def submit_competences
-    head :ok
+    ActiveRecord::Base.transaction do
+      active_assessment.diagnostic_questions.competence.active.ordered.each do |q|
+        value = params.dig(:answers, q.id.to_s).to_i
+        next unless (1..5).include?(value)
+        answer = @diagnostic.diagnostic_answers.find_or_initialize_by(diagnostic_question: q)
+        answer.assign_attributes(
+          dimension_slug: q.competence_slug,
+          answer_value:   value.to_s,
+          points_awarded: value
+        )
+        answer.save!
+      end
+    end
+    Diagnostics::PreScoringService.call(@diagnostic)
+    redirect_to validation_diagnostic_path(@diagnostic)
   end
 
   def submit_validation
