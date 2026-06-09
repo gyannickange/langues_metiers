@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_28_235036) do
+ActiveRecord::Schema[8.0].define(version: 2026_06_09_151306) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -80,6 +80,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_28_235036) do
     t.jsonb "key_skills", default: []
     t.text "first_action"
     t.text "premium_pitch"
+    t.jsonb "disc_types", default: [], null: false
+    t.string "filiere_slug"
+    t.jsonb "required_competences", default: [], null: false
+    t.jsonb "affirmations", default: [], null: false
     t.index ["slug"], name: "index_careers_on_slug", unique: true
   end
 
@@ -109,6 +113,21 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_28_235036) do
     t.index ["assessment_question_id"], name: "index_diagnostic_answers_on_assessment_question_id"
     t.index ["diagnostic_id", "assessment_question_id"], name: "idx_diag_answers_on_diag_and_assess_quest", unique: true
     t.index ["diagnostic_id"], name: "index_diagnostic_answers_on_diagnostic_id"
+  end
+
+  create_table "diagnostic_questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "assessment_id", null: false
+    t.string "kind", null: false
+    t.text "text", null: false
+    t.string "disc_type"
+    t.string "competence_slug"
+    t.jsonb "options", default: []
+    t.integer "position", default: 1, null: false
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assessment_id", "kind", "position"], name: "idx_on_assessment_id_kind_position_16450dfe68"
+    t.index ["assessment_id"], name: "index_diagnostic_questions_on_assessment_id"
   end
 
   create_table "diagnostics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -225,6 +244,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_28_235036) do
   add_foreign_key "categories_skills", "skills"
   add_foreign_key "diagnostic_answers", "assessment_questions"
   add_foreign_key "diagnostic_answers", "diagnostics"
+  add_foreign_key "diagnostic_questions", "assessments"
   add_foreign_key "diagnostics", "assessments"
   add_foreign_key "diagnostics", "careers", column: "complementary_career_id"
   add_foreign_key "diagnostics", "careers", column: "primary_career_id"
