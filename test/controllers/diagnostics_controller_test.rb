@@ -21,20 +21,75 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to interest_diagnostic_path(Diagnostic.last)
   end
 
-  test "GET interest renders for in_progress diagnostic" do
+  test "GET interest renders Likert questions for in_progress diagnostic" do
     sign_in @user
+    @assessment.diagnostic_questions.create!(
+      kind: :interest, text: "Les langues m'attirent.", filiere_slug: "langues", position: 1
+    )
     d = Diagnostic.create!(user: @user, status: :in_progress, assessment: @assessment)
     get interest_diagnostic_path(d)
     assert_response :success
+    assert_select "fieldset", count: 1
+    assert_select "legend", text: /Les langues m'attirent/
+    assert_select "input[type='radio'][value='1']", count: 1
+    assert_select "input[type='radio'][value='5']", count: 1
+  end
+
+  test "GET interest renders Likert scale labels" do
+    sign_in @user
+    @assessment.diagnostic_questions.create!(
+      kind: :interest, text: "L'espace m'attire.", filiere_slug: "geo", position: 1
+    )
+    d = Diagnostic.create!(user: @user, status: :in_progress, assessment: @assessment)
+    get interest_diagnostic_path(d)
+    assert_response :success
+    assert_includes response.body, "Pas du tout moi"
+    assert_includes response.body, "Tout à fait moi"
   end
 
   test "GET disc renders for diagnostic with interest answers" do
     sign_in @user
-    q = @assessment.diagnostic_questions.create!(kind: :interest, text: "Q?", options: [{ "label" => "X", "filiere_slug" => "langues" }], position: 1)
+    q = @assessment.diagnostic_questions.create!(
+      kind: :interest, text: "Q?", filiere_slug: "langues", position: 1
+    )
+    @assessment.diagnostic_questions.create!(
+      kind: :disc, text: "Je prends des initiatives.", disc_type: "D", position: 2
+    )
     d = Diagnostic.create!(user: @user, status: :in_progress, assessment: @assessment)
-    d.diagnostic_answers.create!(diagnostic_question: q, dimension_slug: "langues", answer_value: "langues", points_awarded: 1)
+    d.diagnostic_answers.create!(
+      diagnostic_question: q, dimension_slug: "langues", answer_value: "3", points_awarded: 3
+    )
     get disc_diagnostic_path(d)
     assert_response :success
+    assert_select "fieldset", count: 1
+    assert_select "fieldset.diagnostic-motion-item"
+    assert_select ".peer-focus-visible\\:ring-2", count: 5
+  end
+
+  test "GET validation explains that payment is the next step" do
+    sign_in @user
+    careers = 2.times.map do |index|
+      Career.create!(
+        title: "Métier #{index}",
+        slug: "validation-#{index}-#{SecureRandom.hex(3)}",
+        status: :published,
+        kind: :behavioral,
+        affirmations: [ "Cette affirmation me décrit." ]
+      )
+    end
+    d = Diagnostic.create!(
+      user: @user,
+      status: :in_progress,
+      assessment: @assessment,
+      score_data: { "top_career_ids" => careers.map { |career| { "id" => career.id } } }
+    )
+
+    get validation_diagnostic_path(d)
+
+    assert_response :success
+    assert_select "fieldset", count: 2
+    assert_select "input[type='submit'][value*='paiement']"
+    assert_select ".border-secondary-200", minimum: 2
   end
 
   test "GET results blocked for pending_payment diagnostic" do
@@ -44,11 +99,139 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to pay_diagnostic_path(d)
   end
 
+  test "GET results renders honest empty states for sparse diagnostic data" do
+    sign_in @user
+    career = Career.create!(title: "Analyste", slug: "analyste-#{SecureRandom.hex(3)}", status: :published, kind: :behavioral)
+    d = Diagnostic.create!(
+      user: @user,
+      status: :completed,
+      assessment: @assessment,
+      primary_career: career,
+      score_data: nil
+    )
+
+    get results_diagnostic_path(d)
+
+    assert_response :success
+    assert_select "h2", text: /Analyste/
+    assert_select "[data-controller='pdf-status']", count: 0
+    assert_select "p", text: /Aucune compétence clé n'est encore renseignée/
+    assert_select "p", text: /Aucun axe de développement n'est encore renseigné/
+    assert_not_includes response.body, "Analyse Stratégique"
+    assert_not_includes response.body, "Stratège de projet"
+  end
+
+  test "GET pdf status reports whether the report is ready" do
+    sign_in @user
+    d = Diagnostic.create!(user: @user, status: :completed, assessment: @assessment)
+
+    get pdf_status_diagnostic_path(d, format: :json)
+
+    assert_response :success
+    assert_equal({ "ready" => false }, response.parsed_body)
+  end
+
+  test "GET results remains available and queues a retry when PDF generation fails" do
+    sign_in @user
+    career = Career.create!(title: "Analyste", slug: "retry-#{SecureRandom.hex(3)}", status: :published, kind: :behavioral)
+    d = Diagnostic.create!(user: @user, status: :completed, assessment: @assessment, primary_career: career)
+
+    Diagnostics::GeneratePdfService.stub(:call, ->(_diagnostic) { raise Prawn::Errors::CannotFit }) do
+      assert_enqueued_with(job: Diagnostics::GeneratePdfJob, args: [ d.id ]) do
+        get results_diagnostic_path(d)
+      end
+    end
+
+    assert_response :success
+    assert_select "[data-controller='pdf-status']", count: 1
+    assert_select ".diagnostic-status-pulse", count: 1
+  end
+
   test "GET show redirects in_progress to interest when no answers" do
     sign_in @user
     d = Diagnostic.create!(user: @user, status: :in_progress, assessment: @assessment)
     get diagnostic_path(d)
     assert_redirected_to interest_diagnostic_path(d)
+  end
+
+  test "POST submit_interest rejects missing answers" do
+    sign_in @user
+    @assessment.diagnostic_questions.create!(
+      kind: :interest, text: "Q?", filiere_slug: "langues", position: 1
+    )
+    d = Diagnostic.create!(user: @user, status: :in_progress, assessment: @assessment)
+
+    assert_no_difference "DiagnosticAnswer.count" do
+      post submit_interest_diagnostic_path(d), params: { answers: {} }
+    end
+
+    assert_redirected_to interest_diagnostic_path(d)
+  end
+
+  test "POST submit_interest saves answer with filiere_slug from question and Likert value" do
+    sign_in @user
+    q = @assessment.diagnostic_questions.create!(
+      kind: :interest, text: "Q?", filiere_slug: "lettres", position: 1
+    )
+    d = Diagnostic.create!(user: @user, status: :in_progress, assessment: @assessment)
+
+    assert_difference "DiagnosticAnswer.count", 1 do
+      post submit_interest_diagnostic_path(d), params: { answers: { q.id => "4" } }
+    end
+
+    answer = d.diagnostic_answers.last
+    assert_equal "lettres", answer.dimension_slug
+    assert_equal "4",       answer.answer_value
+    assert_equal 4,         answer.points_awarded
+    assert_redirected_to disc_diagnostic_path(d)
+  end
+
+  test "POST submit_interest rejects out-of-range Likert value" do
+    sign_in @user
+    q = @assessment.diagnostic_questions.create!(
+      kind: :interest, text: "Q?", filiere_slug: "langues", position: 1
+    )
+    d = Diagnostic.create!(user: @user, status: :in_progress, assessment: @assessment)
+
+    assert_no_difference "DiagnosticAnswer.count" do
+      post submit_interest_diagnostic_path(d), params: { answers: { q.id => "6" } }
+    end
+
+    assert_redirected_to interest_diagnostic_path(d)
+  end
+
+  test "POST submit_disc rejects invalid answers" do
+    sign_in @user
+    question = @assessment.diagnostic_questions.create!(kind: :disc, text: "Q?", disc_type: "D", position: 1)
+    d = Diagnostic.create!(user: @user, status: :in_progress, assessment: @assessment)
+
+    assert_no_difference "DiagnosticAnswer.count" do
+      post submit_disc_diagnostic_path(d), params: { answers: { question.id => "6" } }
+    end
+
+    assert_redirected_to disc_diagnostic_path(d)
+  end
+
+  test "POST submit_competences rejects missing answers before pre-scoring" do
+    sign_in @user
+    @assessment.diagnostic_questions.create!(kind: :competence, text: "Q?", competence_slug: "analyse_donnees", position: 1)
+    d = Diagnostic.create!(user: @user, status: :in_progress, assessment: @assessment)
+
+    assert_no_difference "DiagnosticAnswer.count" do
+      post submit_competences_diagnostic_path(d), params: { answers: {} }
+    end
+
+    assert_redirected_to competences_diagnostic_path(d)
+    assert_equal({}, d.reload.score_data)
+  end
+
+  test "GET validation redirects when score data is malformed" do
+    sign_in @user
+    d = Diagnostic.create!(user: @user, status: :in_progress, assessment: @assessment, score_data: nil)
+
+    get validation_diagnostic_path(d)
+
+    assert_redirected_to competences_diagnostic_path(d)
   end
 
   private

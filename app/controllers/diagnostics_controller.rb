@@ -14,8 +14,45 @@ class DiagnosticsController < ApplicationController
       redirect_to root_path, alert: "Aucune évaluation disponible pour le moment."
       return
     end
-    @diagnostic = current_user.diagnostics.create!(status: :in_progress, assessment: assessment)
-    redirect_to interest_diagnostic_path(@diagnostic)
+    redirect_to interest_diagnostics_path
+  end
+
+  def interest_start
+    assessment = Assessment.find_by(active: true) || Assessment.first
+    unless assessment
+      redirect_to root_path, alert: "Aucune évaluation disponible pour le moment."
+      return
+    end
+    @questions = assessment.diagnostic_questions.interest.active.ordered
+  end
+
+  def create_from_interest
+    assessment = Assessment.find_by(active: true) || Assessment.first
+    unless assessment
+      redirect_to root_path, alert: "Aucune évaluation disponible pour le moment."
+      return
+    end
+
+    questions = assessment.diagnostic_questions.interest.active.ordered
+    answers = valid_answers_for(questions) do |_question, value|
+      numeric_value = Integer(value, exception: false)
+      numeric_value if (1..5).include?(numeric_value)
+    end
+    return redirect_to interest_diagnostics_path, alert: "Veuillez répondre à toutes les questions." unless answers
+
+    ActiveRecord::Base.transaction do
+      @diagnostic = current_user.diagnostics.create!(status: :in_progress, assessment: assessment)
+      answers.each do |question, value|
+        @diagnostic.diagnostic_answers.create!(
+          diagnostic_question: question,
+          dimension_slug:      question.filiere_slug,
+          answer_value:        value.to_s,
+          points_awarded:      value
+        )
+      end
+    end
+
+    redirect_to disc_diagnostic_path(@diagnostic)
   end
 
   def show
@@ -35,18 +72,34 @@ class DiagnosticsController < ApplicationController
   end
 
   def validation
-    top_ids = (@diagnostic.score_data["top_career_ids"] || []).map { |h| h["id"] }
+    top_ids = top_career_ids
+    if top_ids.empty?
+      redirect_to competences_diagnostic_path(@diagnostic), alert: "Veuillez compléter les étapes précédentes."
+      return
+    end
+
     @top_careers = Career.where(id: top_ids).index_by(&:id).values_at(*top_ids).compact
+    if @top_careers.size < 2
+      redirect_to competences_diagnostic_path(@diagnostic), alert: "Veuillez compléter les étapes précédentes."
+    end
   end
 
   def submit_interest
+    questions = active_assessment.diagnostic_questions.interest.active.ordered
+    answers = valid_answers_for(questions) do |_question, value|
+      numeric_value = Integer(value, exception: false)
+      numeric_value if (1..5).include?(numeric_value)
+    end
+    return redirect_incomplete_answers(:interest) unless answers
+
     ActiveRecord::Base.transaction do
-      active_assessment.diagnostic_questions.interest.active.ordered.each do |q|
-        filiere_slug = params.dig(:answers, q.id.to_s)
-        valid_slugs = q.options.map { |o| o["filiere_slug"] }
-        next unless valid_slugs.include?(filiere_slug)
-        answer = @diagnostic.diagnostic_answers.find_or_initialize_by(diagnostic_question: q)
-        answer.assign_attributes(dimension_slug: filiere_slug, answer_value: filiere_slug, points_awarded: 1)
+      answers.each do |question, value|
+        answer = @diagnostic.diagnostic_answers.find_or_initialize_by(diagnostic_question: question)
+        answer.assign_attributes(
+          dimension_slug: question.filiere_slug,
+          answer_value:   value.to_s,
+          points_awarded: value
+        )
         answer.save!
       end
     end
@@ -54,13 +107,18 @@ class DiagnosticsController < ApplicationController
   end
 
   def submit_disc
+    questions = active_assessment.diagnostic_questions.disc.active.ordered
+    answers = valid_answers_for(questions) do |_question, value|
+      numeric_value = Integer(value, exception: false)
+      numeric_value if (1..5).include?(numeric_value)
+    end
+    return redirect_incomplete_answers(:disc) unless answers
+
     ActiveRecord::Base.transaction do
-      active_assessment.diagnostic_questions.disc.active.ordered.each do |q|
-        value = params.dig(:answers, q.id.to_s).to_i
-        next unless (1..5).include?(value)
-        answer = @diagnostic.diagnostic_answers.find_or_initialize_by(diagnostic_question: q)
+      answers.each do |question, value|
+        answer = @diagnostic.diagnostic_answers.find_or_initialize_by(diagnostic_question: question)
         answer.assign_attributes(
-          dimension_slug: q.disc_type,
+          dimension_slug: question.disc_type,
           answer_value:   value.to_s,
           points_awarded: value
         )
@@ -71,13 +129,18 @@ class DiagnosticsController < ApplicationController
   end
 
   def submit_competences
+    questions = active_assessment.diagnostic_questions.competence.active.ordered
+    answers = valid_answers_for(questions) do |_question, value|
+      numeric_value = Integer(value, exception: false)
+      numeric_value if (1..5).include?(numeric_value)
+    end
+    return redirect_incomplete_answers(:competences) unless answers
+
     ActiveRecord::Base.transaction do
-      active_assessment.diagnostic_questions.competence.active.ordered.each do |q|
-        value = params.dig(:answers, q.id.to_s).to_i
-        next unless (1..5).include?(value)
-        answer = @diagnostic.diagnostic_answers.find_or_initialize_by(diagnostic_question: q)
+      answers.each do |question, value|
+        answer = @diagnostic.diagnostic_answers.find_or_initialize_by(diagnostic_question: question)
         answer.assign_attributes(
-          dimension_slug: q.competence_slug,
+          dimension_slug: question.competence_slug,
           answer_value:   value.to_s,
           points_awarded: value
         )
@@ -89,10 +152,12 @@ class DiagnosticsController < ApplicationController
   end
 
   def submit_validation
-    known_ids = (@diagnostic.score_data["top_career_ids"] || []).map { |h| h["id"].to_s }
+    known_ids = top_career_ids.map(&:to_s)
     affirmation_counts = (params[:affirmations] || {}).to_unsafe_h.slice(*known_ids)
     Diagnostics::ScoringService.call(@diagnostic, affirmation_counts)
     redirect_to pay_diagnostic_path(@diagnostic)
+  rescue Diagnostics::ScoringService::InsufficientCareersError
+    redirect_to competences_diagnostic_path(@diagnostic), alert: "Impossible de finaliser le diagnostic. Veuillez vérifier vos réponses."
   end
 
   def pay
@@ -123,11 +188,14 @@ class DiagnosticsController < ApplicationController
   end
 
   def results
-    @trajectory = @diagnostic.primary_career&.active_trajectory
+    @results = Diagnostics::ResultsPresenter.new(@diagnostic)
 
     # Always regenerate PDF to ensure it reflects current data
     Diagnostics::GeneratePdfService.call(@diagnostic)
     @diagnostic.reload
+  rescue StandardError => error
+    Rails.logger.error("Diagnostic PDF generation failed for #{@diagnostic.id}: #{error.class}: #{error.message}")
+    Diagnostics::GeneratePdfJob.perform_later(@diagnostic.id)
   end
 
   def pdf_status
@@ -188,6 +256,28 @@ class DiagnosticsController < ApplicationController
 
   def active_assessment
     @active_assessment ||= @diagnostic.assessment || Assessment.find_by(active: true)
+  end
+
+  def valid_answers_for(questions)
+    answers = questions.filter_map do |question|
+      value = yield(question, params.dig(:answers, question.id.to_s))
+      [ question, value ] unless value.nil?
+    end
+
+    answers.to_h if answers.any? && answers.size == questions.size
+  end
+
+  def redirect_incomplete_answers(step)
+    redirect_to public_send(:"#{step}_diagnostic_path", @diagnostic), alert: "Veuillez répondre à toutes les questions."
+  end
+
+  def top_career_ids
+    score_data = @diagnostic.score_data
+    return [] unless score_data.is_a?(Hash) && score_data["top_career_ids"].is_a?(Array)
+
+    score_data["top_career_ids"].filter_map do |entry|
+      entry.is_a?(Hash) ? entry["id"] : entry
+    end
   end
 
   def payment_provider_param
