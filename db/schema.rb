@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_09_215215) do
+ActiveRecord::Schema[8.0].define(version: 2026_06_18_100000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -88,7 +88,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_09_215215) do
   end
 
   create_table "diagnostic_answers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "diagnostic_id", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "diagnostic_id", null: false
     t.string "answer_value"
     t.string "profile_dimension"
     t.integer "points_awarded", default: 0
@@ -113,6 +113,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_09_215215) do
     t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "filiere_slug"
     t.index ["assessment_id", "kind", "position"], name: "idx_on_assessment_id_kind_position_16450dfe68"
     t.index ["assessment_id"], name: "index_diagnostic_questions_on_assessment_id"
   end
