@@ -59,4 +59,15 @@ class DiagnosticQuestionTest < ActiveSupport::TestCase
     assert_not q.valid?
     assert_includes q.errors[:competence_slug], "ne peut pas être vide"
   end
+
+  test "disc_type must be D I S or C" do
+    q = DiagnosticQuestion.new(
+      assessment: @assessment,
+      kind:       :disc,
+      text:       "Je décide vite.",
+      disc_type:  "Z",
+      position:   1
+    )
+    assert_not q.valid?
+  end
 end
