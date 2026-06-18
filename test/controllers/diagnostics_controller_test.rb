@@ -13,12 +13,12 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_user_session_path
   end
 
-  test "GET new creates diagnostic and redirects to interest for authenticated user" do
+  test "GET new redirects to interest collection path for authenticated user" do
     sign_in @user
-    assert_difference "Diagnostic.count", 1 do
+    assert_no_difference "Diagnostic.count" do
       get new_diagnostic_path
     end
-    assert_redirected_to interest_diagnostic_path(Diagnostic.last)
+    assert_redirected_to interest_diagnostics_path
   end
 
   test "GET interest renders Likert questions for in_progress diagnostic" do
@@ -198,6 +198,36 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to interest_diagnostic_path(d)
+  end
+
+  test "POST create_from_interest creates diagnostic and saves answers with filiere_slug" do
+    sign_in @user
+    q = @assessment.diagnostic_questions.create!(
+      kind: :interest, text: "Q?", filiere_slug: "geo", position: 1
+    )
+
+    assert_difference ["Diagnostic.count", "DiagnosticAnswer.count"], 1 do
+      post submit_interest_diagnostics_path, params: { answers: { q.id => "3" } }
+    end
+
+    answer = DiagnosticAnswer.last
+    assert_equal "geo", answer.dimension_slug
+    assert_equal "3",   answer.answer_value
+    assert_equal 3,     answer.points_awarded
+    assert_redirected_to disc_diagnostic_path(Diagnostic.last)
+  end
+
+  test "POST create_from_interest rejects out-of-range Likert value" do
+    sign_in @user
+    @assessment.diagnostic_questions.create!(
+      kind: :interest, text: "Q?", filiere_slug: "langues", position: 1
+    )
+
+    assert_no_difference ["Diagnostic.count", "DiagnosticAnswer.count"] do
+      post submit_interest_diagnostics_path, params: { answers: { DiagnosticQuestion.last.id => "7" } }
+    end
+
+    assert_redirected_to interest_diagnostics_path
   end
 
   test "POST submit_disc rejects invalid answers" do

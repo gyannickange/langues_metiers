@@ -81,6 +81,7 @@ class DiagnosticsController < ApplicationController
     @top_careers = Career.where(id: top_ids).index_by(&:id).values_at(*top_ids).compact
     if @top_careers.size < 2
       redirect_to competences_diagnostic_path(@diagnostic), alert: "Veuillez compléter les étapes précédentes."
+      return
     end
   end
 
