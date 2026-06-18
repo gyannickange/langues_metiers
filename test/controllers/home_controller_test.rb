@@ -2,7 +2,13 @@ require "test_helper"
 
 class HomeControllerTest < ActionDispatch::IntegrationTest
   setup do
-    Career.create!(title: "Traducteur", status: :published, sector: "Langues", kind: "profession")
+    Career.create!(
+      title: "Traducteur",
+      status: :published,
+      sector: "Langues",
+      kind: "profession",
+      filiere_slug: "langues"
+    )
   end
 
   test "GET index renders the updated home page copy" do
@@ -16,6 +22,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_not_includes response.body, "Beaucoup de profils académiques possèdent ces bases"
     assert_not_includes response.body, "Diagnostic de Repositionnement Stratégique"
     assert_not_includes response.body, "Score de positionnement visible"
+    assert_includes response.body, "Voir les 37 métiers"
   end
 
   test "GET index renders mobile-friendly navigation and layouts" do
