@@ -1,0 +1,10 @@
+{
+  "files": [
+    "app/views/layouts/application.html.erb",
+    "app/views/layouts/admin.html.erb",
+    "app/views/layouts/auth.html.erb"
+  ],
+  "insertBefore": "</body>",
+  "commentSyntax": "html",
+  "cspChecked": true
+}
