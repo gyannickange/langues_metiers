@@ -1,16 +1,7 @@
 require "test_helper"
 
 class QuestionnaireSeedTest < ActiveSupport::TestCase
-  FILIERES = [
-    { "label" => "Langues", "filiere_slug" => "langues", "icon" => "🌍" },
-    { "label" => "Géographie / Aménagement", "filiere_slug" => "geo", "icon" => "🗺️" },
-    { "label" => "Sociologie / Anthropologie", "filiere_slug" => "socio", "icon" => "👥" },
-    { "label" => "Lettres Modernes", "filiere_slug" => "lettres", "icon" => "📚" },
-    { "label" => "Psychologie", "filiere_slug" => "psycho", "icon" => "🧠" },
-    { "label" => "Philosophie", "filiere_slug" => "philo", "icon" => "💡" },
-    { "label" => "Histoire / Archéologie", "filiere_slug" => "histoire", "icon" => "🏛️" },
-    { "label" => "Sciences de l'Éducation", "filiere_slug" => "edu", "icon" => "🎓" }
-  ].freeze
+  FILIERE_SLUGS = %w[langues geo socio lettres psycho philo histoire edu].freeze
 
   test "seed matches the questionnaire source data exactly" do
     load Rails.root.join("db/seeds.rb")
@@ -23,7 +14,7 @@ class QuestionnaireSeedTest < ActiveSupport::TestCase
     assert_equal 12, questions.competence.count
 
     filiere_tally = questions.interest.pluck(:filiere_slug).tally
-    assert_equal FILIERES.map { |f| f["filiere_slug"] }.sort, filiere_tally.keys.sort
+    assert_equal FILIERE_SLUGS.sort, filiere_tally.keys.sort
     assert filiere_tally.values.all? { |count| count == 2 }, "Each filière should have exactly 2 questions"
 
     careers = Career.diagnostic.published
