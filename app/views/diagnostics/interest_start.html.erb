@@ -1,4 +1,4 @@
-<%# app/views/diagnostics/interest.html.erb %>
+<%# app/views/diagnostics/interest_start.html.erb %>
 <div class="max-w-2xl mx-auto px-4 py-8">
   <div class="mb-8">
     <p class="text-xs font-bold uppercase tracking-widest text-[var(--color-primary)] mb-2">Étape 1 sur 4</p>
@@ -6,7 +6,7 @@
     <p class="text-slate-500 mt-1">Évaluez chaque affirmation de 1 (pas du tout moi) à 5 (tout à fait moi).</p>
   </div>
 
-  <%= form_with url: submit_interest_diagnostic_path(@diagnostic), method: :post, data: { turbo: false } do |f| %>
+  <%= form_with url: submit_interest_diagnostics_path, method: :post, data: { turbo: false } do |f| %>
     <div class="space-y-4">
       <% @questions.each_with_index do |question, i| %>
         <%= render "likert_question", question: question, index: i, current_value: nil %>
