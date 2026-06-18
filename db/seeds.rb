@@ -253,20 +253,24 @@ disc_questions.each do |q|
 end
 
 # ===== 12 QUESTIONS COMPÉTENCES =====
-competence_questions = [
-  { label: "Langues étrangères", text: "Je parle couramment au moins une langue étrangère.",                                              competence_slug: "langues_etrangeres",   position: 18 },
-  { label: "Communication écrite", text: "Je rédige des textes clairs, structurés et adaptés à mon audience.",                              competence_slug: "communication_ecrite", position: 19 },
-  { label: "Communication orale", text: "Je m'exprime avec aisance en public ou face à des interlocuteurs variés.",                        competence_slug: "communication_orale",  position: 20 },
-  { label: "Analyse de données", text: "Je sais collecter, traiter et interpréter des données (qualitatives ou quantitatives).",            competence_slug: "analyse_donnees",      position: 21 },
-  { label: "Gestion de projet", text: "Je peux planifier, coordonner et suivre un projet de A à Z.",                                       competence_slug: "gestion_projet",       position: 22 },
-  { label: "Compétences numériques", text: "Je maîtrise des outils numériques avancés (tableurs, logiciels métier, code…).",               competence_slug: "numerique",            position: 23 },
-  { label: "Négociation", text: "Je suis capable de défendre une position et trouver des compromis satisfaisants.",                        competence_slug: "negociation",          position: 24 },
-  { label: "Créativité", text: "J'ai une forte capacité à imaginer des solutions ou des contenus originaux.",                              competence_slug: "creativite",           position: 25 },
-  { label: "Écoute active", text: "Je comprends les besoins implicites de mes interlocuteurs avec empathie.",                              competence_slug: "ecoute",               position: 26 },
-  { label: "Rigueur et méthode", text: "Je travaille de façon précise, vérifiable et conforme aux standards de mon domaine.",              competence_slug: "rigueur_scientifique", position: 27 },
-  { label: "Culture générale", text: "J'ai une bonne connaissance historique, littéraire, artistique et géopolitique.",                    competence_slug: "culture_generale",     position: 28 },
-  { label: "Droit et politiques publiques", text: "Je comprends le cadre juridique, réglementaire et institutionnel de mon secteur.",     competence_slug: "droit_politiques",     position: 29 }
-]
+competence_texts = {
+  "langues_etrangeres"   => "Je parle couramment au moins une langue étrangère.",
+  "communication_ecrite" => "Je rédige des textes clairs, structurés et adaptés à mon audience.",
+  "communication_orale"  => "Je m'exprime avec aisance en public ou face à des interlocuteurs variés.",
+  "analyse_donnees"      => "Je sais collecter, traiter et interpréter des données (qualitatives ou quantitatives).",
+  "gestion_projet"       => "Je peux planifier, coordonner et suivre un projet de A à Z.",
+  "numerique"            => "Je maîtrise des outils numériques avancés (tableurs, logiciels métier, code…).",
+  "negociation"          => "Je suis capable de défendre une position et trouver des compromis satisfaisants.",
+  "creativite"           => "J'ai une forte capacité à imaginer des solutions ou des contenus originaux.",
+  "ecoute"               => "Je comprends les besoins implicites de mes interlocuteurs avec empathie.",
+  "rigueur_scientifique" => "Je travaille de façon précise, vérifiable et conforme aux standards de mon domaine.",
+  "culture_generale"     => "J'ai une bonne connaissance historique, littéraire, artistique et géopolitique.",
+  "droit_politiques"     => "Je comprends le cadre juridique, réglementaire et institutionnel de mon secteur."
+}
+
+competence_questions = competence_texts.each_with_index.map do |(slug, text), index|
+  { label: Diagnostics::Vocabulary::COMPETENCES.fetch(slug), text: text, competence_slug: slug, position: 18 + index }
+end
 
 competence_questions.each do |q|
   DiagnosticQuestion.find_or_initialize_by(assessment: assessment, position: q[:position], kind: "competence").tap do |dq|

@@ -1,7 +1,7 @@
 require "test_helper"
 
 class QuestionnaireSeedTest < ActiveSupport::TestCase
-  FILIERE_SLUGS = %w[langues geo socio lettres psycho philo histoire edu].freeze
+  FILIERE_SLUGS = Diagnostics::Vocabulary.filiere_slugs
 
   test "seed matches the questionnaire source data exactly" do
     load Rails.root.join("db/seeds.rb")
