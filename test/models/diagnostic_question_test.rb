@@ -74,12 +74,12 @@ class DiagnosticQuestionTest < ActiveSupport::TestCase
   test "competence_label writes into the options array" do
     q = DiagnosticQuestion.new
     q.competence_label = "  Langues étrangères  "
-    assert_equal [{ "label" => "Langues étrangères" }], q.options
+    assert_equal [ { "label" => "Langues étrangères" } ], q.options
     assert_equal "Langues étrangères", q.competence_label
   end
 
   test "blank competence_label clears the options array" do
-    q = DiagnosticQuestion.new(options: [{ "label" => "X" }])
+    q = DiagnosticQuestion.new(options: [ { "label" => "X" } ])
     q.competence_label = ""
     assert_equal [], q.options
     assert_nil q.competence_label
@@ -87,6 +87,6 @@ class DiagnosticQuestionTest < ActiveSupport::TestCase
 
   test "competence_label is nil when options is not an array of hashes" do
     assert_nil DiagnosticQuestion.new(options: nil).competence_label
-    assert_nil DiagnosticQuestion.new(options: ["foo"]).competence_label
+    assert_nil DiagnosticQuestion.new(options: [ "foo" ]).competence_label
   end
 end

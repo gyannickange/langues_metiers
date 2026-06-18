@@ -17,8 +17,8 @@ class Diagnostics::VocabularyTest < ActiveSupport::TestCase
   end
 
   test "option helpers return [label, slug] pairs for selects" do
-    assert_equal ["Langues", "langues"], Diagnostics::Vocabulary.filiere_options.first
-    assert_equal ["Dominant", "D"], Diagnostics::Vocabulary.disc_type_options.first
+    assert_equal [ "Langues", "langues" ], Diagnostics::Vocabulary.filiere_options.first
+    assert_equal [ "Dominant", "D" ], Diagnostics::Vocabulary.disc_type_options.first
     label, slug = Diagnostics::Vocabulary.competence_options.first
     assert_equal "Langues étrangères", label
     assert_equal "langues_etrangeres", slug

@@ -23,9 +23,9 @@ class QuestionnaireSeedTest < ActiveSupport::TestCase
     assert_not careers.exists?(title: "Guide touristique / patrimonial")
     assert_equal %w[gestion_projet numerique gestion_projet],
       careers.find_by!(title: "Chef de projet e-learning").required_competences
-    assert_equal ["Langues étrangères", "Communication écrite", "Communication orale", "Analyse de données",
+    assert_equal [ "Langues étrangères", "Communication écrite", "Communication orale", "Analyse de données",
       "Gestion de projet", "Compétences numériques", "Négociation", "Créativité", "Écoute active",
-      "Rigueur et méthode", "Culture générale", "Droit et politiques publiques"],
+      "Rigueur et méthode", "Culture générale", "Droit et politiques publiques" ],
       questions.competence.ordered.map { |question| question.options.dig(0, "label") }
   end
 end

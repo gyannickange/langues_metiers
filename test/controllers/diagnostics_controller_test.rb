@@ -206,7 +206,7 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
       kind: :interest, text: "Q?", filiere_slug: "geo", position: 1
     )
 
-    assert_difference ["Diagnostic.count", "DiagnosticAnswer.count"], 1 do
+    assert_difference [ "Diagnostic.count", "DiagnosticAnswer.count" ], 1 do
       post submit_interest_diagnostics_path, params: { answers: { q.id => "3" } }
     end
 
@@ -223,7 +223,7 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
       kind: :interest, text: "Q?", filiere_slug: "langues", position: 1
     )
 
-    assert_no_difference ["Diagnostic.count", "DiagnosticAnswer.count"] do
+    assert_no_difference [ "Diagnostic.count", "DiagnosticAnswer.count" ] do
       post submit_interest_diagnostics_path, params: { answers: { DiagnosticQuestion.last.id => "7" } }
     end
 

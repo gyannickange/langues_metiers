@@ -12,17 +12,17 @@ class Admin::CareersControllerTest < ActionDispatch::IntegrationTest
   test "update persists the four diagnostic fields on a profession career" do
     patch admin_career_path(@metier), params: { career: {
       filiere_slug: "langues",
-      disc_types: ["C", "S"],
-      required_competences: ["langues_etrangeres", "communication_ecrite"],
+      disc_types: [ "C", "S" ],
+      required_competences: [ "langues_etrangeres", "communication_ecrite" ],
       affirmations_text: "Affirmation une\nAffirmation deux"
     } }
 
     assert_redirected_to admin_careers_path
     @metier.reload
     assert_equal "langues", @metier.filiere_slug
-    assert_equal ["C", "S"], @metier.disc_types
-    assert_equal ["langues_etrangeres", "communication_ecrite"], @metier.required_competences
-    assert_equal ["Affirmation une", "Affirmation deux"], @metier.affirmations
+    assert_equal [ "C", "S" ], @metier.disc_types
+    assert_equal [ "langues_etrangeres", "communication_ecrite" ], @metier.required_competences
+    assert_equal [ "Affirmation une", "Affirmation deux" ], @metier.affirmations
   end
 
   test "update with invalid filiere re-renders with an error" do
@@ -42,6 +42,6 @@ class Admin::CareersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to admin_careers_path
     @profil.reload
     assert_equal "Faites X", @profil.first_action
-    assert_equal ["Leadership", "Communication"], @profil.key_skills
+    assert_equal [ "Leadership", "Communication" ], @profil.key_skills
   end
 end

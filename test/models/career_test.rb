@@ -57,32 +57,32 @@ class CareerTest < ActiveSupport::TestCase
   test "affirmations_text round-trips through newlines, stripping blanks" do
     c = Career.new
     c.affirmations_text = "Première\n  Deuxième  \n\n Troisième \n"
-    assert_equal ["Première", "Deuxième", "Troisième"], c.affirmations
+    assert_equal [ "Première", "Deuxième", "Troisième" ], c.affirmations
     assert_equal "Première\nDeuxième\nTroisième", c.affirmations_text
   end
 
   test "key_skills_text round-trips through newlines" do
     c = Career.new
     c.key_skills_text = "Leadership\nGestion de projet\n"
-    assert_equal ["Leadership", "Gestion de projet"], c.key_skills
+    assert_equal [ "Leadership", "Gestion de projet" ], c.key_skills
   end
 
   test "normalizes array fields by removing blank entries" do
     c = Career.new(title: "X", slug: "x-#{SecureRandom.hex(4)}", kind: :profession,
-                   disc_types: ["D", "", nil], required_competences: ["numerique", ""])
+                   disc_types: [ "D", "", nil ], required_competences: [ "numerique", "" ])
     c.valid?
-    assert_equal ["D"], c.disc_types
-    assert_equal ["numerique"], c.required_competences
+    assert_equal [ "D" ], c.disc_types
+    assert_equal [ "numerique" ], c.required_competences
   end
 
   test "rejects disc_types outside the DISC vocabulary" do
-    c = Career.new(title: "X", slug: "x-#{SecureRandom.hex(4)}", kind: :profession, disc_types: ["Z"])
+    c = Career.new(title: "X", slug: "x-#{SecureRandom.hex(4)}", kind: :profession, disc_types: [ "Z" ])
     assert_not c.valid?
     assert_includes c.errors[:disc_types].join, "Z"
   end
 
   test "rejects required_competences outside the vocabulary" do
-    c = Career.new(title: "X", slug: "x-#{SecureRandom.hex(4)}", kind: :profession, required_competences: ["bogus"])
+    c = Career.new(title: "X", slug: "x-#{SecureRandom.hex(4)}", kind: :profession, required_competences: [ "bogus" ])
     assert_not c.valid?
     assert_includes c.errors[:required_competences].join, "bogus"
   end
