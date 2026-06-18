@@ -9,7 +9,7 @@ class DiagnosticQuestion < ApplicationRecord
   validates :text,     presence: true
   validates :kind,     presence: true
   validates :position, presence: true, numericality: { greater_than: 0 }
-  validates :disc_type, inclusion: { in: %w[D I S C] }, allow_nil: true
+  validates :disc_type, inclusion: { in: Diagnostics::Vocabulary.disc_type_slugs }, allow_nil: true
   validate  :parse_options_json
   validate  :kind_specific_fields_present
 
