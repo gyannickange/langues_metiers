@@ -21,7 +21,10 @@ class DiagnosticQuestion < ApplicationRecord
   end
 
   def competence_label
-    options.is_a?(Array) ? options.dig(0, "label") : nil
+    return nil unless options.is_a?(Array)
+
+    first = options.first
+    first.is_a?(Hash) ? first["label"] : nil
   end
 
   def competence_label=(value)

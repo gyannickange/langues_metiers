@@ -84,4 +84,9 @@ class DiagnosticQuestionTest < ActiveSupport::TestCase
     assert_equal [], q.options
     assert_nil q.competence_label
   end
+
+  test "competence_label is nil when options is not an array of hashes" do
+    assert_nil DiagnosticQuestion.new(options: nil).competence_label
+    assert_nil DiagnosticQuestion.new(options: ["foo"]).competence_label
+  end
 end
