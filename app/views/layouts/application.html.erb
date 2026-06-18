@@ -2,7 +2,7 @@
 <html>
   <head>
     <title><%= content_for(:title) || "Insertrice" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
 
@@ -36,7 +36,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+  <body<%= ' data-controller="home-motion"'.html_safe if (controller_name == "home" && action_name == "index") || (controller_name == "careers" && action_name == "index") %>>
     <%= render "shared/flash" %>
     <%= yield :header %>    
     <%= yield %>

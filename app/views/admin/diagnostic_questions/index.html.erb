@@ -38,7 +38,7 @@
           </td>
           <td class="px-4 py-3 text-slate-700 max-w-xs truncate"><%= q.text %></td>
           <td class="px-4 py-3 text-slate-400 text-xs">
-            <%= q.disc_type || q.competence_slug || "#{q.options.length} options" %>
+            <%= q.disc_type || q.competence_slug || (q.options.any? ? "#{q.options.length} options" : "—") %>
           </td>
           <td class="px-4 py-3 text-slate-400"><%= q.position %></td>
           <td class="px-4 py-3 flex gap-2 justify-end">

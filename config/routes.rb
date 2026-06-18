@@ -39,6 +39,10 @@ Rails.application.routes.draw do
 
   # Diagnostics
   resources :diagnostics, only: [ :new, :show ] do
+    collection do
+      get  :interest,        action: :interest_start
+      post :submit_interest, action: :create_from_interest
+    end
     member do
       get  :interest
       post :submit_interest

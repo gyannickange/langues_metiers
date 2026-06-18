@@ -9,13 +9,14 @@
   <%= form_with url: submit_competences_diagnostic_path(@diagnostic), method: :post, data: { turbo: false } do |f| %>
     <div class="space-y-4">
       <% @questions.each_with_index do |question, i| %>
+        <h2 class="font-semibold text-slate-800"><%= question.options.dig(0, "label") %></h2>
         <%= render "likert_question", question: question, index: i, current_value: nil %>
       <% end %>
     </div>
 
     <div class="mt-8">
-      <%= f.submit "Voir mes résultats →",
-            class: "w-full py-4 bg-[var(--color-primary)] text-white font-bold rounded-2xl hover:opacity-90 transition-opacity cursor-pointer" %>
+      <%= f.submit "Continuer vers la validation →",
+            class: "diagnostic-action w-full min-h-12 py-4 bg-[var(--color-primary)] text-secondary-900 font-bold rounded-xl hover:bg-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-700 focus-visible:ring-offset-2 transition-colors cursor-pointer" %>
     </div>
   <% end %>
 </div>

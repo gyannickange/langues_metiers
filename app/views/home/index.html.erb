@@ -3,21 +3,21 @@
 <% end %>
 
 <!-- Problème Section -->
-<section class="py-24 bg-white relative">
-  <div class="container mx-auto px-6">
-    <div class="grid lg:grid-cols-2 gap-16 items-center">
+<section id="problem" class="relative scroll-mt-8 bg-white py-16 md:py-24">
+  <div class="container mx-auto px-4 sm:px-6">
+    <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
       <div>
-        <h2 class="text-3xl md:text-4xl font-bold text-secondary mb-8">
+        <h2 class="lp-section-title mb-8">
           <%= t('home.problem.title') %>
         </h2>
 
-        <div class="space-y-6 text-lg text-gray-600 leading-relaxed">
-          <p>
-            <%= t('home.problem.description') %>
-          </p>
+        <div class="lp-section-copy max-w-[70ch] space-y-6 text-lg">
+          <% t('home.problem.description').each do |paragraph| %>
+            <p><%= paragraph %></p>
+          <% end %>
 
-          <div class="bg-gray-50 p-8 rounded-2xl border-l-4 border-primary">
-            <h3 class="font-bold text-secondary mb-4 uppercase tracking-wider text-sm"><%= t('home.problem.subtitle') %></h3>
+          <div class="rounded-2xl border border-gray-200 bg-gray-50 p-5 sm:p-8">
+            <h3 class="mb-4 text-sm font-semibold text-secondary"><%= t('home.problem.subtitle') %></h3>
 
             <ul class="space-y-3">
               <% t('home.problem.items').each do |item| %>
@@ -36,25 +36,24 @@
         </div>
       </div>
       <div class="relative">
-        <div class="aspect-square bg-gray-100 rounded-3xl overflow-hidden shadow-2xl rotate-3">
-          <%= image_tag "img-1.png", class: "w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" %>
+        <div class="aspect-square overflow-hidden rounded-2xl border border-gray-200 bg-gray-100">
+          <%= image_tag "img-1.png", alt: "Jeune diplômée réfléchissant à ses prochaines étapes professionnelles", loading: "lazy", class: "h-full w-full object-cover" %>
         </div>
-        <div class="absolute -bottom-10 -left-10 w-64 h-64 bg-primary/20 rounded-full blur-3xl -z-10"></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- Réalité du Marché Section -->
-<section class="py-24 bg-secondary text-white relative overflow-hidden">
-  <div class="container mx-auto px-6 relative z-10">
-    <div class="text-center mb-16">
-      <h2 class="text-3xl md:text-5xl font-bold mb-6"><%= t('home.market.title') %></h2>
-      <p class="text-xl text-gray-400 font-light"><%= t('home.market.subtitle') %></p>
+<section id="market" class="relative scroll-mt-8 overflow-hidden bg-secondary py-16 text-white md:py-24">
+  <div class="container relative z-10 mx-auto px-4 sm:px-6">
+    <div class="mb-10 text-center md:mb-16">
+      <h2 class="mb-6 text-balance text-3xl font-bold leading-tight md:text-5xl"><%= t('home.market.title') %></h2>
+      <p class="mx-auto max-w-3xl text-pretty text-xl text-white/75"><%= t('home.market.subtitle') %></p>
 
     </div>
     
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div data-home-motion-target="group" class="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
       <% [
         { title: t('home.market.features.analysis'), icon: "troubleshoot" },
         { title: t('home.market.features.digital'), icon: "devices" },
@@ -62,101 +61,63 @@
         { title: t('home.market.features.operational'), icon: "visibility" },
         { title: t('home.market.features.tools'), icon: "terminal" },
         { title: t('home.market.features.data'), icon: "bar_chart" }
-      ].each do |item| %>
+      ].each_with_index do |item, index| %>
 
-        <div class="bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all group">
-          <span class="material-icons text-primary text-4xl mb-4 group-hover:scale-110 transition-transform"><%= item[:icon] %></span>
+        <div data-motion-item style="--motion-index: <%= index %>" class="rounded-2xl border border-white/15 bg-white/5 p-5 sm:p-8">
+          <span class="material-icons mb-4 text-3xl text-primary"><%= item[:icon] %></span>
           <h3 class="text-xl font-semibold"><%= item[:title] %></h3>
         </div>
       <% end %>
     </div>
     
-    <div class="mt-20 text-center max-w-3xl mx-auto">
-      <p class="text-lg text-gray-300 italic">
-        "<%= t('home.market.quote') %>"
-      </p>
-
-    </div>
   </div>
 </section>
 
 <!-- Métiers Section -->
-<section class="py-24 bg-gray-50 relative overflow-hidden">
-  <div class="container mx-auto px-6 relative z-10">
-    <div class="text-center mb-16">
-      <h2 class="text-3xl font-bold text-secondary mb-4">
+<section id="careers" class="relative scroll-mt-8 overflow-hidden bg-gray-50 py-16 md:py-24">
+  <div class="container relative z-10 mx-auto px-4 sm:px-6">
+    <div class="mb-10 text-center md:mb-16">
+      <h2 class="lp-section-title mb-4">
         <%= t('home.metiers.title') %>
       </h2>
-      <p class="text-gray-500 max-w-2xl mx-auto">Explorez des carrières stratégiques adaptées à votre profil en sciences humaines, lettres et langues.</p>
+      <p class="lp-section-copy mx-auto max-w-2xl">Explorez des carrières stratégiques adaptées à votre profil en sciences humaines, lettres et langues.</p>
     </div>
 
-    <!-- Liquid Glass Grid for Careers -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-      <% @random_careers.each do |career| %>
-        <div class="group relative bg-white border border-gray-100 p-8 rounded-[2rem] shadow-[0_10px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_50px_rgba(231,200,115,0.15)] hover:-translate-y-2 transition-all duration-500 overflow-hidden flex flex-col justify-between">
-          
-          <!-- Liquid Hover Effect -->
-          <div class="absolute -right-20 -bottom-20 w-48 h-48 bg-gradient-to-br from-primary-100 to-primary-300 rounded-full blur-[50px] opacity-0 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none"></div>
-
-          <div class="relative z-10 mb-8 flex-grow">
-            <div class="flex items-center space-x-4 mb-6">
-              <div class="w-12 h-12 rounded-2xl bg-secondary-900 text-primary-500 flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform duration-500 shrink-0">
-                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-              </div>
-              <h3 class="text-lg font-black text-secondary-900 uppercase leading-tight group-hover:text-primary-600 transition-colors"><%= career.title %></h3>
-            </div>
-            
-            <p class="text-sm text-gray-500 font-medium leading-relaxed line-clamp-3 group-hover:text-gray-700 transition-colors">
-              <%= career.description %>
-            </p>
-          </div>
-
-          <div class="relative z-10 mt-auto pt-6 border-t border-gray-100 group-hover:border-primary-100 transition-colors">
-             <div class="flex items-center space-x-2 mb-2">
-                <svg class="w-4 h-4 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Secteurs</p>
-             </div>
-             <p class="text-xs font-bold text-secondary-800 leading-snug"><%= career.sector %></p>
-          </div>
-        </div>
+    <div data-home-motion-target="group" class="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-8 lg:grid-cols-3 lg:gap-10">
+      <% @random_careers.each_with_index do |career, index| %>
+        <%= render "shared/career_card", career: career, index: index, heading_tag: :h3 %>
       <% end %>
     </div>
     
     <div class="text-center mt-12 relative z-10">
       <p class="text-gray-500 italic mb-6"><%= t('home.metiers.footer') %></p>
-      <%= link_to careers_path, class: "btn-premium-primary" do %>
+      <%= link_to careers_path, class: "lp-action-primary min-h-12 w-full sm:w-auto" do %>
         <span>Découvrir les 20 métiers</span>
-        <div class="w-6 h-6 rounded-full bg-secondary-900/10 flex items-center justify-center group-hover:bg-secondary-900/20 transition-colors">
-          <svg class="w-3 h-3 text-secondary-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-        </div>
+        <svg class="h-4 w-4 text-secondary-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
       <% end %>
     </div>
   </div>
 </section>
 
 <!-- Solution Section -->
-<section class="py-24 bg-white">
-  <div class="container mx-auto px-6">
-    <div class="bg-secondary p-12 lg:p-20 rounded-[3rem] text-white overflow-hidden relative">
-      <div class="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl -mr-48 -mt-48"></div>
-      
-      <div class="relative z-10 grid lg:grid-cols-2 gap-16 items-center">
+<section id="solution" class="scroll-mt-8 bg-white py-16 md:py-24">
+  <div class="container mx-auto px-4 sm:px-6">
+    <div class="rounded-3xl bg-secondary p-6 text-white sm:p-12 lg:p-20">
+      <div class="max-w-4xl">
         <div>
-          <span class="inline-block bg-primary text-secondary text-xs font-bold px-4 py-2 rounded-full mb-6 uppercase tracking-widest"><%= t('home.solution.badge') %></span>
-          <h2 class="text-4xl md:text-5xl font-bold mb-8"><%= t('home.solution.title') %></h2>
+          <span class="mb-6 inline-block rounded-lg bg-primary px-3 py-1.5 text-sm font-semibold text-secondary"><%= t('home.solution.badge') %></span>
           <p class="text-xl text-gray-300 mb-10 leading-relaxed font-light"><%= t('home.solution.subtitle') %></p>
 
           
-          <div class="grid sm:grid-cols-2 gap-6">
+          <div data-home-motion-target="group" class="grid gap-6 sm:grid-cols-2">
             <% [
-                "Score de positionnement visible",
                 "Ton profil dominant",
                 "Ton potentiel inexploité",
                 "Trois trajectoires réalistes",
                 "Combinaison stratégique prioritaire",
                 "Plan d’action synthétique"
-            ].each do |item| %>
-              <div class="flex items-center space-x-3">
+            ].each_with_index do |item, index| %>
+              <div data-motion-item style="--motion-index: <%= index %>" class="flex items-center space-x-3">
                 <div class="flex-shrink-0 w-6 h-6 bg-primary text-secondary rounded-full flex items-center justify-center">
                   <span class="material-icons text-secondary !text-sm">check</span>
                 </div>
@@ -174,46 +135,32 @@
           </div>
         </div>
         
-        <div class="hidden lg:block">
-          <div class="bg-white/10 backdrop-blur-md p-8 rounded-3xl border border-white/10 shadow-2xl skew-y-3">
-            <div class="h-4 w-1/3 bg-primary/50 rounded-full mb-8"></div>
-            <div class="space-y-6">
-              <div class="h-10 bg-white/10 rounded-xl"></div>
-              <div class="h-10 bg-white/10 rounded-xl"></div>
-              <div class="h-10 bg-white/10 rounded-xl"></div>
-              <div class="h-32 bg-primary/20 rounded-xl border border-primary/30 flex items-center justify-center">
-                <span class="text-primary font-bold text-2xl animate-pulse">RAPPORT GÉNÉRÉ</span>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- How it Works -->
-<section class="py-24 bg-white text-secondary">
-  <div class="container mx-auto px-6">
-    <div class="text-center mb-16">
-      <h2 class="text-3xl font-bold mb-4"><%= t('home.how_it_works.title') %></h2>
+<section id="process" class="scroll-mt-8 bg-white py-16 text-secondary md:py-24">
+  <div class="container mx-auto px-4 sm:px-6">
+    <div class="mb-10 text-center md:mb-16">
+      <h2 class="lp-section-title mb-4"><%= t('home.how_it_works.title') %></h2>
 
-      <div class="w-24 h-1 bg-primary mx-auto rounded-full"></div>
     </div>
     
-    <div class="grid md:grid-cols-3 gap-12 max-w-5xl mx-auto">
+    <div data-home-motion-target="group" class="mx-auto grid max-w-5xl gap-10 md:grid-cols-3 md:gap-12">
       <% [
         { step: "1", title: t('home.how_it_works.steps.step1'), content: t('home.how_it_works.steps.step1_desc') },
         { step: "2", title: t('home.how_it_works.steps.step2'), content: t('home.how_it_works.steps.step2_desc') },
         { step: "3", title: t('home.how_it_works.steps.step3'), content: t('home.how_it_works.steps.step3_desc') }
-      ].each do |item| %>
+      ].each_with_index do |item, index| %>
 
-        <div class="text-center group">
-          <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-8 border border-gray-100 group-hover:bg-primary group-hover:text-secondary transition-all duration-300 shadow-inner">
-            <span class="text-3xl font-bold"><%= item[:step] %></span>
+        <div data-motion-item style="--motion-index: <%= index %>" class="text-center">
+          <div class="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-xl border border-secondary-100 bg-secondary-50">
+            <span class="text-xl font-semibold text-secondary"><%= item[:step] %></span>
           </div>
-          <h3 class="text-2xl font-bold mb-4 group-hover:text-primary transition-colors"><%= item[:title] %></h3>
-          <p class="text-gray-500 leading-relaxed"><%= item[:content] %></p>
+          <h3 class="mb-4 text-2xl font-semibold"><%= item[:title] %></h3>
+          <p class="lp-section-copy"><%= item[:content] %></p>
         </div>
       <% end %>
     </div>
@@ -221,37 +168,37 @@
 </section>
 
 <!-- Exemple Restitution -->
-<section class="py-24 bg-gray-50">
-  <div class="container mx-auto px-6">
-    <div class="max-w-3xl mx-auto bg-white rounded-[2rem] shadow-2xl p-10 lg:p-16 border border-gray-200">
-      <div class="flex justify-between items-start mb-12 border-b border-gray-100 pb-8">
+<section id="report" class="scroll-mt-8 bg-gray-50 py-16 md:py-24">
+  <div class="container mx-auto px-4 sm:px-6">
+    <div class="mx-auto max-w-3xl rounded-3xl border border-gray-200 bg-white p-6 shadow-sm sm:p-10 lg:p-16">
+      <div class="mb-8 flex flex-col gap-5 border-b border-gray-100 pb-6 sm:mb-12 sm:flex-row sm:items-start sm:justify-between sm:pb-8">
         <div>
-          <h2 class="text-2xl font-bold text-secondary uppercase tracking-tighter">Exemple de Restitution</h2>
-          <p class="text-gray-400 text-sm">Aperçu du rapport final</p>
+          <h2 class="text-2xl font-semibold text-secondary">Exemple de restitution</h2>
+          <p class="text-sm text-gray-600">Aperçu du rapport final</p>
         </div>
-        <div class="text-right">
+        <div class="sm:text-right">
           <div class="text-4xl font-black text-primary">72<span class="text-lg text-gray-300">/100</span></div>
-          <div class="text-xs font-bold text-secondary-400">SCORE GLOBAL</div>
+          <div class="text-sm font-semibold text-secondary-700">Score global</div>
         </div>
       </div>
       
       <div class="space-y-10">
         <div class="flex flex-col sm:flex-row justify-between gap-6">
           <div class="flex-1">
-            <h3 class="text-sm font-bold text-gray-400 uppercase mb-2">Profil dominant</h3>
+            <h3 class="mb-2 text-sm font-semibold text-gray-500">Profil dominant</h3>
             <div class="text-xl font-bold text-secondary">Stratège analytique digital</div>
           </div>
           <div class="flex-1">
-            <h3 class="text-sm font-bold text-gray-400 uppercase mb-2">Potentiel inexploité</h3>
+            <h3 class="mb-2 text-sm font-semibold text-gray-500">Potentiel inexploité</h3>
             <div class="text-xl font-bold text-green-600">Élevé</div>
           </div>
           <div class="flex-1">
-            <h3 class="text-sm font-bold text-gray-400 uppercase mb-2">Risque d’invisibilité</h3>
+            <h3 class="mb-2 text-sm font-semibold text-gray-500">Risque d’invisibilité</h3>
             <div class="text-xl font-bold text-yellow-600">Modéré</div>
           </div>
         </div>
         
-        <div class="bg-secondary rounded-2xl p-8 text-white">
+        <div class="rounded-2xl bg-secondary p-5 text-white sm:p-8">
           <h3 class="text-primary font-bold mb-6 flex items-center text-lg">
             <span class="material-icons mr-2">trending_up</span>
             Trajectoires recommandées
@@ -277,13 +224,13 @@
 </section>
 
 <!-- Public Cible Section -->
-<section class="py-24 bg-white text-secondary">
-  <div class="container mx-auto px-6">
-    <div class="flex flex-col lg:flex-row gap-16 items-center">
+<section id="public" class="scroll-mt-8 bg-white py-16 text-secondary md:py-24">
+  <div class="container mx-auto px-4 sm:px-6">
+    <div class="flex flex-col items-center gap-10 lg:flex-row lg:gap-16">
       <div class="lg:w-1/2">
-        <h2 class="text-4xl font-bold mb-4 leading-tight"><%= t('home.target.title') %></h2>
+        <h2 class="lp-section-title mb-4"><%= t('home.target.title') %></h2>
 
-        <p class="text-xl text-gray-500 mb-8 leading-relaxed font-light">
+        <p class="lp-section-copy mb-8 text-xl">
           <%= t('home.target.subtitle') %>
         </p>
 
@@ -297,34 +244,31 @@
             <div class="flex flex-col">
               <span class="material-icons text-primary !text-4xl mb-4"><%= item[:icon] %></span>
               <h4 class="font-bold text-xl mb-2"><%= item[:title] %></h4>
-              <p class="text-gray-500"><%= item[:desc] %></p>
+              <p class="text-gray-600"><%= item[:desc] %></p>
             </div>
           <% end %>
         </div>
       </div>
-      <div class="lg:w-1/2 bg-gray-50 p-4 rounded-[2.5rem]">
-        <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=800&q=80" alt="Audience" class="rounded-[2rem] shadow-xl grayscale contrast-125">
+      <div class="rounded-2xl border border-gray-200 bg-gray-50 p-2 lg:w-1/2">
+        <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=800&q=80" alt="Jeunes professionnels échangeant autour d'une table" loading="lazy" class="rounded-xl">
       </div>
     </div>
   </div>
 </section>
 
 <!-- Tarification -->
-<section class="py-24 bg-secondary overflow-hidden relative">
-  <div class="container mx-auto px-6 relative z-10">
-    <div class="text-center mb-16">
-      <h2 class="text-4xl font-bold text-white mb-4 italic"><%= t('home.pricing.title') %></h2>
+<section id="pricing" class="relative scroll-mt-8 overflow-hidden bg-secondary py-16 md:py-24">
+  <div class="container relative z-10 mx-auto px-4 sm:px-6">
+    <div class="mb-10 text-center md:mb-16">
+      <h2 class="mb-4 text-balance text-4xl font-bold leading-tight text-white"><%= t('home.pricing.title') %></h2>
 
-      <p class="text-primary tracking-widest uppercase font-bold text-sm"><%= t('home.pricing.subtitle') %></p>
+      <p class="text-sm font-semibold text-primary"><%= t('home.pricing.subtitle') %></p>
 
     </div>
     
     <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
       <!-- Diagnostic Essentiel -->
-      <div class="bg-white rounded-3xl p-10 shadow-2xl relative overflow-hidden group">
-        <div class="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform">
-          <span class="material-icons !text-9xl">bookmark</span>
-        </div>
+      <div class="relative rounded-2xl border border-gray-200 bg-white p-6 sm:p-10">
         <h3 class="text-2xl font-bold text-secondary mb-2"><%= t('home.pricing.essential') %></h3>
 
         <div class="text-4xl font-black text-secondary mb-6 flex items-baseline">
@@ -338,17 +282,14 @@
           <li class="flex items-center"><span class="material-icons text-green-500 mr-3 !text-lg">check_circle</span> Profil dominant identifié</li>
           <li class="flex items-center"><span class="material-icons text-green-500 mr-3 !text-lg">check_circle</span> 3 trajectoires conseillées</li>
         </ul>
-        <%= link_to (user_signed_in? ? new_diagnostic_path : new_user_session_path(redirect_to: new_diagnostic_path)), class: "btn-premium-secondary group w-full justify-center py-4 rounded-xl" do %>
+        <%= link_to (user_signed_in? ? new_diagnostic_path : new_user_session_path(redirect_to: new_diagnostic_path)), class: "lp-action-secondary min-h-12 w-full" do %>
           <span><%= t('home.pricing.order') %></span>
-          <div class="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors ml-2">
-            <svg class="w-3 h-3 text-primary-500 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-          </div>
+          <svg class="h-4 w-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
         <% end %>
       </div>
 
       <!-- Roadmap Premium -->
-      <div class="bg-white/10 backdrop-blur-md rounded-3xl p-10 border border-white/20 text-white relative overflow-hidden group">
-        <div class="absolute -top-4 -right-4 bg-primary text-secondary text-[10px] font-black uppercase px-12 py-6 rotate-45 shadow-lg">PREMIUM</div>
+      <div class="relative rounded-2xl border border-white/25 bg-white/5 p-6 text-white sm:p-10">
         <h3 class="text-2xl font-bold text-primary mb-2"><%= t('home.pricing.premium') %></h3>
 
         <div class="text-4xl font-black mb-6 flex items-baseline">
@@ -359,14 +300,12 @@
           <li class="flex items-center"><span class="material-icons text-primary mr-3 !text-lg">auto_awesome</span> Tout du Diagnostic Essentiel</li>
           <li class="flex items-center"><span class="material-icons text-primary mr-3 !text-lg">auto_awesome</span> Plan détaillé 6-12 mois</li>
           <li class="flex items-center"><span class="material-icons text-primary mr-3 !text-lg">auto_awesome</span> Compétences à développer</li>
-          <li class="flex items-center"><span class="material-icons text-primary mr-3 !text-lg">auto_awesome</span> Outil digitaux à maîtriser</li>
+          <li class="flex items-center"><span class="material-icons text-primary mr-3 !text-lg">auto_awesome</span> Outils digitaux à maîtriser</li>
           <li class="flex items-center"><span class="material-icons text-primary mr-3 !text-lg">auto_awesome</span> Étapes concrètes de mise en œuvre</li>
         </ul>
-        <a href="mailto:contact@languesmetiers.com" class="btn-premium-primary group w-full justify-center py-4 rounded-xl">
+        <a href="mailto:contact@languesmetiers.com" class="lp-action-primary min-h-12 w-full">
           <span>Prendre RDV</span>
-          <div class="w-6 h-6 rounded-full bg-secondary-900/10 flex items-center justify-center group-hover:bg-secondary-900/20 transition-colors ml-2">
-            <svg class="w-3 h-3 text-secondary-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-          </div>
+          <svg class="h-4 w-4 text-secondary-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
         </a>
       </div>
     </div>
@@ -374,26 +313,22 @@
 </section>
 
 <!-- Final CTA Section -->
-<section class="py-24 bg-white relative">
-  <div class="container mx-auto px-6 text-center">
+<section class="relative bg-white py-16 md:py-24">
+  <div class="container mx-auto px-4 text-center sm:px-6">
     <div class="max-w-4xl mx-auto">
-      <h2 class="text-3xl md:text-4xl font-bold text-secondary mb-4 leading-tight">
+      <h2 class="lp-section-title mb-4">
         Une trajectoire professionnelle se structure. <br/>Elle ne s'improvise pas.
       </h2>
-      <p class="text-xl text-gray-500 mb-8 font-light"><%= t('home.final.subtitle') %></p>
+      <p class="lp-section-copy mx-auto mb-8 max-w-2xl text-xl"><%= t('home.final.subtitle') %></p>
 
       
       <div class="flex flex-col sm:flex-row justify-center items-center gap-6">
-        <%= link_to (user_signed_in? ? new_diagnostic_path : new_user_session_path(redirect_to: new_diagnostic_path)), class: "btn-premium-primary px-12 py-6 text-xl justify-center relative overflow-hidden" do %>
-          <div class="absolute inset-0 w-full h-full bg-white/20 -skew-x-12 translate-x-full group-hover:-translate-x-full transition-transform duration-700"></div>
-          <span class="relative z-10"><%= t('home.final.cta') %></span>
+        <%= link_to (user_signed_in? ? new_diagnostic_path : new_user_session_path(redirect_to: new_diagnostic_path)), class: "lp-action-primary min-h-12 w-full px-6 py-4 text-base sm:w-auto sm:px-10 sm:text-lg" do %>
+          <span><%= t('home.final.cta') %></span>
 
         <% end %>
       </div>
       
-      <div class="mt-4 flex items-center justify-center space-x-8 opacity-50 grayscale hover:grayscale-0 transition-all">
-        <span class="font-bold text-secondary text-sm tracking-widest uppercase italic">Rapport Instantané</span>
-      </div>
     </div>
   </div>
 </section>

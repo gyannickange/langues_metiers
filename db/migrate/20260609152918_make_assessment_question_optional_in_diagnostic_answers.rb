@@ -11,8 +11,6 @@ class MakeAssessmentQuestionOptionalInDiagnosticAnswers < ActiveRecord::Migratio
   end
 
   def down
-    change_column_default :diagnostic_answers, :assessment_question_id, from: nil, to: -> { "gen_random_uuid()" }
-    change_column_null :diagnostic_answers, :assessment_question_id, false
-    add_foreign_key :diagnostic_answers, :assessment_questions
+    raise ActiveRecord::IrreversibleMigration
   end
 end

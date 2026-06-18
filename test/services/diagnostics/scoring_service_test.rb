@@ -50,4 +50,33 @@ class Diagnostics::ScoringServiceTest < ActiveSupport::TestCase
     @diagnostic.reload
     assert_not_nil @diagnostic.completed_at
   end
+
+  test "rejects missing score data without completing diagnostic" do
+    @diagnostic.update!(score_data: nil)
+
+    assert_raises Diagnostics::ScoringService::InsufficientCareersError do
+      Diagnostics::ScoringService.call(@diagnostic, {})
+    end
+
+    @diagnostic.reload
+    assert @diagnostic.in_progress?
+    assert_nil @diagnostic.completed_at
+  end
+
+  test "rejects unresolved careers without completing diagnostic" do
+    @diagnostic.update!(score_data: {
+      "top_career_ids" => [
+        { "id" => @c1.id, "score" => 20 },
+        { "id" => SecureRandom.uuid, "score" => 15 }
+      ]
+    })
+
+    assert_raises Diagnostics::ScoringService::InsufficientCareersError do
+      Diagnostics::ScoringService.call(@diagnostic, {})
+    end
+
+    @diagnostic.reload
+    assert @diagnostic.in_progress?
+    assert_nil @diagnostic.completed_at
+  end
 end

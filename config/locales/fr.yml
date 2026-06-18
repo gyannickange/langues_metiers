@@ -121,15 +121,18 @@ fr:
 
     hero:
       badge: "NOUS GUIDONS VOTRE PARCOURS"
-      title_part1: "Transforme ton diplôme en"
+      title_part1: "Trouve ta"
       title_part2: "trajectoire professionnelle"
       title_part3: "claire et stratégique."
       description: "Un diagnostic structuré pour identifier ton positionnement réel, ton potentiel inexploité et les métiers alignés au marché actuel — y compris dans les secteurs digitaux."
       cta: "Faire mon diagnostic"
     problem:
-      title: "Pourquoi tant de diplômés restent sous-valorisés ?"
-      description: "Tu as un diplôme. Tu as des compétences. Mais tu n’as pas une stratégie de positionnement claire."
-      subtitle: "Conséquences fréquentes :"
+      title: "Pourquoi tant de diplômés peinent-ils à s'en sortir professionnellement ?"
+      description:
+        - "De récentes études menées par l'Organisation Internationale du Travail montrent qu'en Afrique subsaharienne, 1 jeune sur 3 est soit au chômage, soit sous-employé, même avec un diplôme."
+        - "Tu as des compétences. Tu as un diplôme."
+        - "Mais cela n’est pas suffisant pour te garantir un avenir professionnel s’il te manque une stratégie de positionnement claire."
+      subtitle: "Résultats :"
       items:
         - "Difficulté à identifier des débouchés précis"
         - "CV peu différenciant"
@@ -146,7 +149,6 @@ fr:
         operational: "Vision opérationnelle"
         tools: "Maîtrise des outils numériques"
         data: "Lecture et utilisation de données"
-      quote: "Beaucoup de profils académiques possèdent ces bases, mais ne savent pas les transformer en opportunités conrètes."
     metiers:
       title: "Exemples de métiers accessibles après repositionnement"
       dimensions:
@@ -156,14 +158,13 @@ fr:
       footer: "Ces orientations sont proposées en fonction du profil stratégique dominant identifié par ton diagnostic."
     solution:
       badge: "La Solution"
-      title: "Diagnostic de Repositionnement Stratégique"
-      subtitle: "En 20 minutes seulement, change ta vision de l'avenir et obtiens une roadmap concrète pour ta carrière."
+      subtitle: "En quelques minutes seulement, change ta vision de l'avenir et obtiens une roadmap concrète pour ta carrière."
       report: "Restitution sous forme de rapport personnalisé."
     how_it_works:
       title: "Comment ça fonctionne"
       steps:
         step1: "Évaluation"
-        step1_desc: "Tu réponds à l'évaluation structurée en 20 minutes."
+        step1_desc: "Tu réponds à l'évaluation structurée en quelques minutes."
         step2: "Analyse"
         step2_desc: "Le système analyse tes réponses selon un modèle stratégique propriétaire."
         step3: "Rapport"
