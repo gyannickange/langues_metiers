@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-11T00:00:00Z",
+  "title": "Design System: Insertrice",
+  "extensions": {
+    "colorMeta": {
+      "guidance-gold": {
+        "role": "primary",
+        "displayName": "Guidance Gold",
+        "canonical": "#e7c873",
+        "tonalRamp": ["#fefdf8", "#fdf9e7", "#faf0c7", "#f5e3a3", "#f0d47e", "#e7c873", "#e4b942", "#d4a52a", "#b8901f", "#9c7a1a"]
+      },
+      "confidence-green": {
+        "role": "secondary",
+        "displayName": "Confidence Green",
+        "canonical": "#1f4b43",
+        "tonalRamp": ["#ecf8f4", "#d7f0ea", "#b9e3d0", "#8fd3b7", "#63c19e", "#41b39b", "#2d8c74", "#246f5d", "#1f4b43", "#14302b"]
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Page titles and important results."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Instructions, explanations, and product content."
+      }
+    },
+    "shadows": [
+      {
+        "name": "resting-surface",
+        "value": "0 1px 3px 0 rgba(0,0,0,0.10)",
+        "purpose": "Standard cards and controls."
+      },
+      {
+        "name": "raised-surface",
+        "value": "0 8px 10px -1px rgba(0,0,0,0.10)",
+        "purpose": "Menus, active panels, and elevated actions."
+      }
+    ],
+    "motion": [
+      {
+        "name": "state-fast",
+        "value": "150ms ease-out",
+        "purpose": "Hover, focus, and selected-state feedback."
+      },
+      {
+        "name": "state-standard",
+        "value": "250ms ease-out",
+        "purpose": "Panel and navigation state transitions."
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": []
+}

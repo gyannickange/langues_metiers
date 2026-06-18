@@ -318,6 +318,60 @@
   animation: bounce-slow 3s ease-in-out infinite;
 }
 
+@keyframes diagnostic-item-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes diagnostic-status-pulse {
+  50% {
+    opacity: 0.45;
+    transform: scale(0.82);
+  }
+}
+
+.diagnostic-motion-item {
+  animation: diagnostic-item-enter 180ms cubic-bezier(0.25, 1, 0.5, 1) both;
+  animation-delay: calc(var(--motion-index, 0) * 35ms);
+}
+
+.diagnostic-choice {
+  transition: background-color 150ms ease-out, border-color 150ms ease-out, transform 100ms ease-out;
+}
+
+.diagnostic-choice:active {
+  transform: scale(0.985);
+}
+
+.diagnostic-action {
+  transition: background-color 150ms ease-out, border-color 150ms ease-out, transform 100ms ease-out;
+}
+
+.diagnostic-action:active {
+  transform: scale(0.985);
+}
+
+.diagnostic-status-pulse {
+  animation: diagnostic-status-pulse 1.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 /* Global button classes */
 .btn-primary {
   @apply bg-gradient-to-r from-primary to-primary-600 hover:from-primary-600 hover:to-primary-700 text-secondary px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105;
@@ -333,4 +387,63 @@
 
 .btn-premium-primary {
   @apply inline-flex items-center space-x-3 px-8 py-4 bg-primary-500 text-secondary-900 rounded-full font-black text-xs md:text-sm uppercase tracking-[0.2em] transform transition-all duration-300 hover:scale-105 hover:bg-white hover:shadow-[0_15px_40px_rgba(231,200,115,0.3)];
+}
+
+.lp-action-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 font-semibold text-secondary-900 transition-colors duration-150 hover:bg-primary-600 active:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-700 focus:ring-offset-2;
+}
+
+.lp-action-secondary {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl bg-secondary px-6 py-3 font-semibold text-white transition-colors duration-150 hover:bg-secondary-700 active:bg-secondary-900 focus:outline-none focus:ring-2 focus:ring-secondary-600 focus:ring-offset-2;
+}
+
+.lp-section-title {
+  @apply text-balance text-3xl font-bold leading-tight tracking-tight text-secondary md:text-4xl;
+}
+
+.lp-section-copy {
+  @apply text-pretty leading-relaxed text-gray-600;
+}
+
+.home-motion-ready [data-home-motion-target="hero"] {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.home-motion-ready [data-home-motion-target="hero"].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.home-motion-ready [data-home-motion-target="group"] [data-motion-item] {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 320ms cubic-bezier(0.25, 1, 0.5, 1),
+    transform 320ms cubic-bezier(0.25, 1, 0.5, 1);
+  transition-delay: calc(min(var(--motion-index, 0), 5) * 45ms);
+}
+
+.home-motion-ready [data-home-motion-target="group"].is-visible [data-motion-item] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.lp-action-primary,
+.lp-action-secondary {
+  transition-property: background-color, color, transform;
+}
+
+.lp-action-primary:active,
+.lp-action-secondary:active {
+  transform: scale(0.985);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-motion-ready [data-home-motion-target="hero"],
+  .home-motion-ready [data-home-motion-target="group"] [data-motion-item] {
+    opacity: 1;
+    transform: none;
+  }
 }

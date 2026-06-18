@@ -1,0 +1,43 @@
+<%# app/views/diagnostics/validation.html.erb %>
+<div class="max-w-2xl mx-auto px-4 py-8">
+  <div class="mb-8">
+    <p class="text-xs font-bold uppercase tracking-widest text-[var(--color-primary)] mb-2">Étape 4 sur 4</p>
+    <h1 class="text-2xl font-bold text-slate-800">Ces métiers vous correspondent-ils ?</h1>
+    <p class="text-slate-500 mt-1">Cochez les affirmations qui vous décrivent vraiment. L'étape suivante présente le paiement avant l'accès au rapport complet.</p>
+  </div>
+
+  <%= form_with url: submit_validation_diagnostic_path(@diagnostic), method: :post, data: { turbo: false } do |f| %>
+    <div class="space-y-6">
+      <% @top_careers.each_with_index do |career, i| %>
+        <fieldset class="diagnostic-motion-item bg-white rounded-2xl border border-secondary-200 p-5 sm:p-6 shadow-sm"
+                  style="--motion-index: <%= [i, 5].min %>">
+          <legend class="w-full mb-4">
+            <span class="text-sm font-semibold text-secondary-700 block mb-1">
+              <%= i == 0 ? "Métier principal" : "Alternative #{i}" %>
+            </span>
+            <span class="font-bold text-slate-800 text-lg"><%= career.title %></span>
+          </legend>
+
+          <div class="space-y-3">
+            <% (career.affirmations || []).each_with_index do |affirmation, j| %>
+              <label class="diagnostic-choice flex items-start gap-3 min-h-11 py-2 cursor-pointer group">
+                <input type="checkbox"
+                       name="affirmations[<%= career.id %>][]"
+                       value="<%= j %>"
+                       class="mt-1 h-5 w-5 shrink-0 accent-[var(--color-primary)] focus-visible:ring-2 focus-visible:ring-secondary-700 focus-visible:ring-offset-2">
+                <span class="text-slate-600 group-hover:text-slate-800 text-sm transition-colors">
+                  <%= affirmation %>
+                </span>
+              </label>
+            <% end %>
+          </div>
+        </fieldset>
+      <% end %>
+    </div>
+
+    <div class="mt-8">
+      <%= f.submit "Confirmer et continuer vers le paiement",
+            class: "diagnostic-action w-full min-h-12 py-4 bg-[var(--color-primary)] text-secondary-900 font-bold rounded-xl hover:bg-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-700 focus-visible:ring-offset-2 transition-colors cursor-pointer" %>
+    </div>
+  <% end %>
+</div>

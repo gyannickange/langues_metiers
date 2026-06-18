@@ -1,0 +1,40 @@
+<% home_anchors = local_assigns.fetch(:home_anchors, false) %>
+<% about_path = home_anchors ? "#public" : root_path(anchor: "public") %>
+<% contact_path = home_anchors ? "#contact" : root_path(anchor: "contact") %>
+
+<header class="relative z-20 container mx-auto px-4 py-5 sm:px-6 sm:py-8" data-controller="mobile-menu">
+  <div class="flex items-center justify-between gap-6">
+    <%= link_to root_path, class: "flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-700 focus-visible:ring-offset-4" do %>
+      <span class="text-2xl font-extrabold tracking-tight text-secondary sm:text-3xl">
+        Insertrice<span class="text-primary">.</span>
+      </span>
+    <% end %>
+
+    <nav class="hidden items-center space-x-8 font-medium text-gray-600 lg:flex">
+      <%= link_to t("home.navigation.home"), root_path, class: "transition-colors duration-150 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-700 focus-visible:ring-offset-4" %>
+      <%= link_to "Les Métiers", careers_path, class: "transition-colors duration-150 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-700 focus-visible:ring-offset-4" %>
+      <%= link_to "Nouveau Diagnostic", (user_signed_in? ? new_diagnostic_path : new_user_session_path(redirect_to: new_diagnostic_path)), class: "transition-colors duration-150 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-700 focus-visible:ring-offset-4" %>
+      <%= link_to "CLE", cle_path, class: "transition-colors duration-150 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-700 focus-visible:ring-offset-4" %>
+      <%= link_to t("home.navigation.about"), about_path, class: "transition-colors duration-150 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-700 focus-visible:ring-offset-4" %>
+      <%= link_to t("home.navigation.contact"), contact_path, class: "transition-colors duration-150 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-700 focus-visible:ring-offset-4" %>
+    </nav>
+
+    <button data-mobile-menu-target="button" data-action="click->mobile-menu#toggle keydown.esc@window->mobile-menu#close" type="button" aria-controls="mobile-menu" aria-expanded="false" class="flex min-h-11 min-w-11 items-center justify-center rounded-lg text-gray-600 hover:text-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary lg:hidden">
+      <span class="sr-only">Ouvrir le menu principal</span>
+      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+
+  <div id="mobile-menu" data-mobile-menu-target="menu" class="absolute left-4 right-4 z-50 mt-4 hidden max-h-[calc(100svh-6rem)] overflow-y-auto rounded-2xl border border-gray-200 bg-white px-4 pb-4 shadow-sm lg:hidden">
+    <nav class="flex flex-col space-y-2 pt-4">
+      <%= link_to t("home.navigation.home"), root_path, class: "flex min-h-11 items-center rounded-lg px-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-primary", data: { action: "click->mobile-menu#close" } %>
+      <%= link_to "Les Métiers", careers_path, class: "flex min-h-11 items-center rounded-lg px-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-primary", data: { action: "click->mobile-menu#close" } %>
+      <%= link_to "Nouveau Diagnostic", (user_signed_in? ? new_diagnostic_path : new_user_session_path(redirect_to: new_diagnostic_path)), class: "flex min-h-11 items-center rounded-lg px-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-primary", data: { action: "click->mobile-menu#close" } %>
+      <%= link_to "CLE", cle_path, class: "flex min-h-11 items-center rounded-lg px-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-primary", data: { action: "click->mobile-menu#close" } %>
+      <%= link_to t("home.navigation.about"), about_path, class: "flex min-h-11 items-center rounded-lg px-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-primary", data: { action: "click->mobile-menu#close" } %>
+      <%= link_to t("home.navigation.contact"), contact_path, class: "flex min-h-11 items-center rounded-lg px-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-primary", data: { action: "click->mobile-menu#close" } %>
+    </nav>
+  </div>
+</header>

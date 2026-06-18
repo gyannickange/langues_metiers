@@ -23,13 +23,7 @@ module Diagnostics
       @primary = diagnostic.primary_career
       @second  = diagnostic.complementary_career
       @user    = diagnostic.user
-
-      # Helper to get score data
-      @gsd = ->(key) { @d.score_data[key.to_s] || @d.score_data[key.to_sym] }
-
-      @dominant_name = @primary&.title || @gsd.call(:dominant_profile)&.dig("name") || "Stratège de projet"
-      @dominant_desc = @primary&.description || @gsd.call(:dominant_profile)&.dig("description") || "Votre profil indique une forte capacité à : structurer des initiatives, coordonner des projets, organiser des ressources et transformer des idées en actions concrètes."
-      @secondary_name = @second&.title || @gsd.call(:secondary_profile)&.dig("name") || "Créateur de contenu"
+      @results = ResultsPresenter.new(diagnostic)
     end
 
     def call
@@ -128,20 +122,21 @@ module Diagnostics
           pdf.text "PROFIL DOMINANT", size: 8, style: :bold, character_spacing: 1
           pdf.move_down 15
           pdf.fill_color WHITE
-          pdf.text @dominant_name.upcase, size: 24, style: :bold, leading: -2
-          pdf.move_down 15
+          pdf.text_box @results.primary_name.upcase, at: [ 0, pdf.cursor ], width: width_main - 50, height: 55, size: 24, style: :bold, leading: -2, overflow: :shrink_to_fit
+          pdf.move_down 60
           pdf.fill_color "D1D5DB"
-          pdf.text @dominant_desc, size: 9, leading: 4
+          pdf.text_box @results.primary_description, at: [ 0, pdf.cursor ], width: width_main - 50, height: 65, size: 9, leading: 4, overflow: :shrink_to_fit
         end
 
         # Decorative tag footer
         pdf.bounding_box([ 25, 40 ], width: pdf.bounds.width - 50) do
-          pdf.fill_color GOLD
-          pdf.text "TERRAINS D'EXPRESSION FAVORISÉS", size: 7, style: :bold
-          pdf.move_down 5
-          # Just text tags
-          pdf.fill_color WHITE
-          pdf.text "ONG • INSTITUTIONS • ENTREPRISES • INTERNATIONAL", size: 8, style: :bold
+          if @results.sectors.any?
+            pdf.fill_color GOLD
+            pdf.text "SECTEURS ASSOCIÉS", size: 7, style: :bold
+            pdf.move_down 5
+            pdf.fill_color WHITE
+            pdf.text @results.sectors.join(" • ").upcase, size: 8, style: :bold, overflow: :shrink_to_fit
+          end
         end
       end
 
@@ -158,16 +153,10 @@ module Diagnostics
           pdf.text "PROFIL SECONDAIRE", size: 7, style: :bold, character_spacing: 1
           pdf.move_down 30
           pdf.fill_color SECONDARY
-          pdf.text @secondary_name.upcase, size: 18, style: :bold, leading: -1
-          pdf.move_down 10
+          pdf.text_box @results.secondary_name.upcase, at: [ 0, pdf.cursor ], width: width_side - 40, height: 45, size: 18, style: :bold, leading: -1, overflow: :shrink_to_fit
+          pdf.move_down 50
           pdf.fill_color TEXT_GRAY
-          pdf.text "Votre profil secondaire apporte une capacité complémentaire analytique et stratégique majeure.", size: 8
-
-          pdf.move_down 15
-          pdf.fill_color GOLD
-          pdf.text "SYNERGIE PUISSANTE", size: 7, style: :bold
-          pdf.fill_color TEXT_GRAY
-          pdf.text "Vision globale + Exigence", size: 8
+          pdf.text_box @results.secondary_description, at: [ 0, pdf.cursor ], width: width_side - 40, height: 70, size: 8, overflow: :shrink_to_fit
         end
       end
     end
@@ -189,7 +178,9 @@ module Diagnostics
           pdf.text "FORCES PRINCIPALES", size: 14, style: :bold
           pdf.move_down 15
 
-          [ "Analyse Stratégique", "Structuration Projet", "Communication Impactante", "Intelligence Sociale" ].each do |force|
+          forces = @results.key_skills.first(4)
+          forces = [ "Aucune compétence clé renseignée" ] if forces.empty?
+          forces.each do |force|
             pdf.fill_color "F9FAFB"
             pdf.fill_rounded_rectangle [ 0, pdf.cursor ], width - 40, 22, 5
             pdf.indent(10) do
@@ -213,7 +204,9 @@ module Diagnostics
           pdf.text "AXES DE DÉVELOPPEMENT", size: 13, style: :bold
           pdf.move_down 15
 
-          [ "Alignement du projet pro", "Maîtrise technologique", "Visibilité & Branding" ].each do |axe|
+          axes = @results.development_axes.first(3)
+          axes = [ "Aucun axe renseigné" ] if axes.empty?
+          axes.each do |axe|
             pdf.fill_color "FDE68A" # Lighter gold
             pdf.fill_rounded_rectangle [ 0, pdf.cursor ], width - 40, 30, 8
             pdf.indent(10) do
@@ -233,11 +226,13 @@ module Diagnostics
       pdf.stroke_horizontal_line 0, pdf.bounds.width, at: pdf.cursor
       pdf.move_down 20
 
-      pdf.fill_color SECONDARY
-      pdf.text "\"LE REPOSITIONNEMENT EST LE DÉBUT D'UNE EXPERTISE 4.0\"", size: 16, style: :bold, align: :center
+      return unless @results.first_action
+
+      pdf.fill_color GOLD
+      pdf.text "PREMIÈRE ACTION RECOMMANDÉE", size: 8, style: :bold, align: :center
       pdf.move_down 8
-      pdf.fill_color TEXT_GRAY
-      pdf.text "L'ÉQUIPE D'ANALYSE INSERTTRICE", size: 7, align: :center, character_spacing: 3
+      pdf.fill_color SECONDARY
+      pdf.text @results.first_action, size: 13, style: :bold, align: :center, overflow: :shrink_to_fit
     end
 
     def attach(pdf_string)

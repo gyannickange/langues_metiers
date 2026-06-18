@@ -37,4 +37,23 @@ class Diagnostics::GeneratePdfServiceTest < ActiveSupport::TestCase
     assert data.start_with?("%PDF")
     assert data.length > 500
   end
+
+  test "generates a valid PDF when optional diagnostic data is missing" do
+    sparse_diagnostic = Diagnostic.create!(
+      user: @user,
+      status: :completed,
+      primary_career: Career.create!(
+        title: "Métier avec un titre très long #{'international ' * 12}",
+        slug: "sparse-#{SecureRandom.hex(3)}",
+        status: :published,
+        kind: :behavioral
+      ),
+      score_data: nil
+    )
+
+    Diagnostics::GeneratePdfService.call(sparse_diagnostic)
+
+    assert sparse_diagnostic.reload.pdf_generated?
+    assert sparse_diagnostic.pdf_report.download.start_with?("%PDF")
+  end
 end

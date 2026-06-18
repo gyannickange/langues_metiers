@@ -1,83 +1,82 @@
-# test/services/diagnostics/scoring_service_test.rb
 require "test_helper"
 
 class Diagnostics::ScoringServiceTest < ActiveSupport::TestCase
   def setup
-    @user = User.create!(email: "scorer#{SecureRandom.hex(4)}@test.com", password: "password123", first_name: "Test", last_name: "User", city: "Test City", country: "CI", diploma: "Master", employment_status: "En emploi")
-    @d    = Diagnostic.create!(user: @user, status: :in_progress)
+    @user       = User.create!(email: "final#{SecureRandom.hex(4)}@test.com", password: "password123",
+                                first_name: "Final", last_name: "Test", city: "Cotonou",
+                                country: "BJ", diploma: "Licence", employment_status: "Étudiant")
+    @assessment = Assessment.create!(title: "Final Score Test #{SecureRandom.hex(4)}", active: false)
+    @diagnostic = Diagnostic.create!(user: @user, assessment: @assessment, status: :in_progress)
 
-    @p_analytique    = Career.create!(title: "Analyste",      slug: "analyste-#{SecureRandom.hex(3)}", status: :published, kind: :behavioral)
-    @p_coordinateur  = Career.create!(title: "Coordinateur",  slug: "coordo-#{SecureRandom.hex(3)}", status: :published, kind: :behavioral)
-    @p_digital       = Career.create!(title: "Digital",       slug: "digital-#{SecureRandom.hex(3)}", status: :published, kind: :behavioral)
+    @c1 = Career.create!(title: "Métier 1 #{SecureRandom.hex(4)}", slug: "metier-1-#{SecureRandom.hex(4)}", status: :published, filiere_slug: "langues", disc_types: [ "C" ], required_competences: [])
+    @c2 = Career.create!(title: "Métier 2 #{SecureRandom.hex(4)}", slug: "metier-2-#{SecureRandom.hex(4)}", status: :published, filiere_slug: "socio",   disc_types: [ "I" ], required_competences: [], affirmations: %w[a b c d e f])
+    @c3 = Career.create!(title: "Métier 3 #{SecureRandom.hex(4)}", slug: "metier-3-#{SecureRandom.hex(4)}", status: :published, filiere_slug: "lettres", disc_types: [ "S" ], required_competences: [])
 
-    @q_bloc1 = AssessmentQuestion.create!(bloc: 1, text: "Q1", kind: "mcq", position: 1, scored: true,
-      options: [
-        { "value" => "A", "profile_slug" => @p_analytique.slug,   "points" => 1 },
-        { "value" => "B", "profile_slug" => @p_digital.slug,      "points" => 1 }
-      ])
-    @q_bloc2 = AssessmentQuestion.create!(bloc: 2, text: "Q2", kind: "mcq", position: 1, scored: true,
-      options: [
-        { "value" => "A", "profile_slug" => @p_analytique.slug,   "points" => 1 },
-        { "value" => "B", "profile_slug" => @p_coordinateur.slug, "points" => 1 }
-      ])
-    @q_interp = AssessmentQuestion.create!(bloc: 4, text: "Q3", kind: "mcq", position: 1, scored: false,
-      options: [ { "value" => "A", "profile_slug" => nil, "points" => 0 } ])
+    @diagnostic.update!(score_data: {
+      "disc_scores"       => { "C" => 18 },
+      "filiere_scores"    => { "langues" => 3 },
+      "competence_scores" => {},
+      "top_career_ids"    => [
+        { "id" => @c1.id, "score" => 20 },
+        { "id" => @c2.id, "score" => 15 },
+        { "id" => @c3.id, "score" => 10 }
+      ]
+    })
   end
 
-  test "sets primary profile to highest-scoring dimension" do
-    answer(@q_bloc1, "A", @p_analytique.slug, 1)
-    answer(@q_bloc2, "A", @p_analytique.slug, 1)
-
-    Diagnostics::ScoringService.call(@d)
-    @d.reload
-
-    assert_equal @p_analytique.id, @d.primary_career_id
-    assert_equal 2, @d.score_data[@p_analytique.slug]
+  test "sets primary and complementary careers" do
+    Diagnostics::ScoringService.call(@diagnostic, {})
+    @diagnostic.reload
+    assert_equal @c1, @diagnostic.primary_career
+    assert_equal @c2, @diagnostic.complementary_career
   end
 
-  test "sets complementary to second-highest" do
-    answer(@q_bloc1, "A", @p_analytique.slug, 1)
-    answer(@q_bloc2, "B", @p_coordinateur.slug, 1)
-
-    q3 = AssessmentQuestion.create!(bloc: 1, text: "Q3", kind: "mcq", position: 2, scored: true,
-      options: [ { "value" => "A", "profile_slug" => @p_analytique.slug, "points" => 1 } ])
-    answer(q3, "A", @p_analytique.slug, 1)
-
-    Diagnostics::ScoringService.call(@d)
-    @d.reload
-
-    assert_equal @p_analytique.id,   @d.primary_career_id
-    assert_equal @p_coordinateur.id, @d.complementary_career_id
+  test "affirmation bonus can change ranking" do
+    # Give c2 so many affirmations it overtakes c1 (c1 score=20, c2 score=15, need 6+ affirmations)
+    affirmations = { @c2.id.to_s => %w[a b c d e f] }
+    Diagnostics::ScoringService.call(@diagnostic, affirmations)
+    @diagnostic.reload
+    assert_equal @c2, @diagnostic.primary_career
   end
 
-  test "tiebreak favors bloc 2 profile" do
-    answer(@q_bloc1, "A", @p_analytique.slug,   1)  # bloc 1 → analytique
-    answer(@q_bloc2, "B", @p_coordinateur.slug,  1)  # bloc 2 → coordinateur
-    # tied at 1-1; bloc 2 winner = coordinateur
-
-    Diagnostics::ScoringService.call(@d)
-    @d.reload
-
-    assert_equal @p_coordinateur.id, @d.primary_career_id
+  test "sets status to pending_payment" do
+    Diagnostics::ScoringService.call(@diagnostic, {})
+    @diagnostic.reload
+    assert @diagnostic.pending_payment?
   end
 
-  test "marks diagnostic as completed" do
-    Diagnostics::ScoringService.call(@d)
-    assert @d.reload.pending_payment?
+  test "sets completed_at" do
+    Diagnostics::ScoringService.call(@diagnostic, {})
+    @diagnostic.reload
+    assert_not_nil @diagnostic.completed_at
   end
 
-  test "ignores unscored answers" do
-    answer(@q_interp, "A", nil, 0)
-    Diagnostics::ScoringService.call(@d)
-    assert @d.reload.pending_payment?  # no crash, graceful
+  test "rejects missing score data without completing diagnostic" do
+    @diagnostic.update!(score_data: nil)
+
+    assert_raises Diagnostics::ScoringService::InsufficientCareersError do
+      Diagnostics::ScoringService.call(@diagnostic, {})
+    end
+
+    @diagnostic.reload
+    assert @diagnostic.in_progress?
+    assert_nil @diagnostic.completed_at
   end
 
-  private
+  test "rejects unresolved careers without completing diagnostic" do
+    @diagnostic.update!(score_data: {
+      "top_career_ids" => [
+        { "id" => @c1.id, "score" => 20 },
+        { "id" => SecureRandom.uuid, "score" => 15 }
+      ]
+    })
 
-  def answer(assessment_question, value, dimension, points)
-    DiagnosticAnswer.create!(
-      diagnostic: @d, assessment_question: assessment_question,
-      answer_value: value, profile_dimension: dimension, points_awarded: points
-    )
+    assert_raises Diagnostics::ScoringService::InsufficientCareersError do
+      Diagnostics::ScoringService.call(@diagnostic, {})
+    end
+
+    @diagnostic.reload
+    assert @diagnostic.in_progress?
+    assert_nil @diagnostic.completed_at
   end
 end

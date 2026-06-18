@@ -52,7 +52,12 @@ module Admin
     end
 
     def career_params
-      params.require(:career).permit(:title, :slug, :description, :status, :kind, :first_action, :premium_pitch, key_skills: [])
+      params.require(:career).permit(
+        :title, :slug, :description, :status, :kind,
+        :first_action, :premium_pitch, :key_skills_text,
+        :filiere_slug, :affirmations_text,
+        key_skills: [], disc_types: [], required_competences: []
+      )
     end
   end
 end
