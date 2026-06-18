@@ -2,235 +2,394 @@
   <%= render 'shared/lp_header' %>
 <% end %>
 
-<!-- Problème Section -->
-<section id="problem" class="relative scroll-mt-8 bg-white py-16 md:py-24">
-  <div class="container mx-auto px-4 sm:px-6">
-    <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+<%# ═══════════════════════════════════════════════════════════ %>
+<%# 01 — PROBLÈME                                              %>
+<%# ═══════════════════════════════════════════════════════════ %>
+<section class="py-28 bg-[#f7f3ec] relative overflow-hidden">
+
+  <%# Faint background word %>
+  <div class="absolute -right-4 top-1/2 -translate-y-1/2 font-editorial text-[12vw] font-bold text-secondary/[0.04] select-none pointer-events-none leading-none hidden xl:block">CONSTAT</div>
+
+  <div class="container mx-auto px-6 relative z-10">
+    <div class="grid lg:grid-cols-2 gap-20 items-center">
+
       <div>
-        <h2 class="lp-section-title mb-8">
+        <span class="text-[0.63rem] font-bold tracking-[0.25em] uppercase text-secondary/35 mb-5 block">01 — Le Constat</span>
+        <h2 class="font-editorial text-[3rem] lg:text-[4.5rem] font-bold text-secondary leading-[1.0] mb-8">
           <%= t('home.problem.title') %>
         </h2>
 
-        <div class="lp-section-copy max-w-[70ch] space-y-6 text-lg">
-          <% t('home.problem.description').each do |paragraph| %>
+        <div class="space-y-4 text-gray-500 text-lg leading-relaxed mb-8 font-light">
+          <% Array(t('home.problem.description')).each do |paragraph| %>
             <p><%= paragraph %></p>
           <% end %>
+        </div>
 
-          <div class="rounded-2xl border border-gray-200 bg-gray-50 p-5 sm:p-8">
-            <h3 class="mb-4 text-sm font-semibold text-secondary"><%= t('home.problem.subtitle') %></h3>
+        <div class="border-l-2 border-primary pl-7 mb-10">
+          <h3 class="text-[0.62rem] font-black text-secondary/40 uppercase tracking-[0.22em] mb-4"><%= t('home.problem.subtitle') %></h3>
+          <ul class="space-y-3">
+            <% t('home.problem.items').each do |item| %>
+              <li class="flex items-start gap-3 text-gray-500 text-sm">
+                <svg class="w-4 h-4 text-red-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+                <%= item %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
 
-            <ul class="space-y-3">
-              <% t('home.problem.items').each do |item| %>
-                <li class="flex items-center">
-                  <svg class="w-5 h-5 text-red-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                  <%= item %>
-                </li>
+        <blockquote class="font-editorial text-xl lg:text-2xl italic text-secondary/70 leading-relaxed">
+          "<%= t('home.problem.quote') %>"
+        </blockquote>
+      </div>
+
+      <div class="relative">
+        <div class="aspect-[4/5] rounded-3xl overflow-hidden shadow-[0_30px_80px_rgba(31,75,67,0.12)]">
+          <%= image_tag "img-1.png", class: "w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000" %>
+        </div>
+        <div class="absolute -bottom-5 -left-5 w-24 h-24 rounded-full border-[3px] border-primary/30 bg-[#f7f3ec]"></div>
+        <div class="absolute -top-4 -right-4 w-10 h-10 rounded-full bg-primary/20"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<%# ═══════════════════════════════════════════════════════════ %>
+<%# 02 — MARCHÉ                                                %>
+<%# ═══════════════════════════════════════════════════════════ %>
+<section class="py-28 bg-secondary text-white relative overflow-hidden">
+
+  <div class="absolute inset-0 pointer-events-none opacity-[0.03]"
+    style="background-image: radial-gradient(circle, #e7c873 1px, transparent 1px); background-size: 40px 40px;"></div>
+
+  <div class="container mx-auto px-6 relative z-10">
+    <div class="max-w-3xl mb-20">
+      <span class="text-[0.63rem] font-bold tracking-[0.25em] uppercase text-primary/55 mb-4 block">02 — Le Marché</span>
+      <h2 class="font-editorial text-[3rem] lg:text-[4.5rem] font-bold leading-[1.0] mb-5">
+        <%= t('home.market.title') %>
+      </h2>
+      <p class="text-white/45 text-xl font-light"><%= t('home.market.subtitle') %></p>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-px bg-white/[0.08] rounded-2xl overflow-hidden">
+      <% [
+        { num: "01", title: t('home.market.features.analysis'), icon: "troubleshoot", desc: t('home.market.features.digital') },
+        { num: "02", title: t('home.market.features.structured'), icon: "account_tree", desc: t('home.market.features.operational') },
+        { num: "03", title: t('home.market.features.tools'), icon: "terminal", desc: t('home.market.features.data') }
+      ].each do |item| %>
+        <div class="bg-secondary p-10 hover:bg-white/[0.05] transition-colors duration-300 group">
+          <div class="font-editorial text-[5rem] font-bold text-white/[0.04] leading-none mb-5 group-hover:text-primary/10 transition-colors duration-300"><%= item[:num] %></div>
+          <span class="material-icons text-primary !text-3xl mb-5 block"><%= item[:icon] %></span>
+          <h3 class="text-base font-bold text-white mb-3 leading-snug"><%= item[:title] %></h3>
+          <p class="text-white/35 text-sm leading-relaxed"><%= item[:desc] %></p>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="mt-16 pt-16 border-t border-white/[0.08] max-w-2xl">
+      <blockquote class="font-editorial text-2xl lg:text-3xl italic text-white/60 leading-relaxed">
+        "<%= t('home.market.quote') %>"
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+
+<%# ═══════════════════════════════════════════════════════════ %>
+<%# 03 — MÉTIERS                                               %>
+<%# ═══════════════════════════════════════════════════════════ %>
+<section class="py-28 bg-white relative overflow-hidden">
+  <div class="container mx-auto px-6">
+
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-6">
+      <div>
+        <span class="text-[0.63rem] font-bold tracking-[0.25em] uppercase text-secondary/30 mb-4 block">03 — Les Débouchés</span>
+        <h2 class="font-editorial text-[3rem] lg:text-[4rem] font-bold text-secondary leading-[1.0]">
+          <%= t('home.metiers.title') %>
+        </h2>
+      </div>
+      <%= link_to careers_path, class: "btn-premium-primary shrink-0 self-end" do %>
+        <span>Voir les 37 métiers</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+        </svg>
+      <% end %>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <% @random_careers.each do |career| %>
+        <div class="group p-8 rounded-2xl border border-gray-100 hover:border-primary/30 hover:-translate-y-1.5 transition-all duration-400 hover:shadow-[0_16px_40px_rgba(231,200,115,0.12)] relative overflow-hidden bg-white">
+          <div class="absolute inset-0 bg-gradient-to-br from-primary/0 to-primary/0 group-hover:from-primary/[0.03] transition-all duration-500 rounded-2xl pointer-events-none"></div>
+
+          <div class="flex items-start gap-4 mb-5 relative z-10">
+            <div class="w-10 h-10 rounded-xl bg-secondary/5 group-hover:bg-secondary text-secondary group-hover:text-primary flex items-center justify-center transition-all duration-300 shrink-0">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+            </div>
+            <h3 class="font-black text-secondary text-sm uppercase tracking-wide leading-tight pt-1.5"><%= career.title %></h3>
+          </div>
+
+          <p class="text-gray-400 text-sm leading-relaxed line-clamp-3 mb-6 relative z-10"><%= career.description %></p>
+
+          <div class="pt-4 border-t border-gray-50 relative z-10">
+            <span class="text-[0.58rem] font-black text-gray-300 uppercase tracking-[0.2em] block mb-1">Secteur</span>
+            <span class="text-xs font-bold text-secondary/60"><%= career.sector %></span>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <p class="text-center text-gray-400 text-sm italic mt-10"><%= t('home.metiers.footer') %></p>
+  </div>
+</section>
+
+
+<%# ═══════════════════════════════════════════════════════════ %>
+<%# 04 — SOLUTION                                              %>
+<%# ═══════════════════════════════════════════════════════════ %>
+<section class="py-28 bg-[#0d2420] relative overflow-hidden">
+
+  <div class="absolute right-0 top-0 w-[500px] h-[500px] bg-primary/[0.04] rounded-full blur-[100px] pointer-events-none -mr-40 -mt-40"></div>
+
+  <div class="container mx-auto px-6 relative z-10">
+    <div class="grid lg:grid-cols-2 gap-20 items-center">
+
+      <%# Left: solution description %>
+      <div>
+        <span class="text-[0.63rem] font-bold tracking-[0.25em] uppercase text-primary/55 mb-4 block">04 — La Solution</span>
+        <span class="inline-block bg-primary text-secondary text-[0.62rem] font-black px-4 py-1.5 rounded-full mb-6 uppercase tracking-[0.18em]"><%= t('home.solution.badge') %></span>
+        <h2 class="font-editorial text-[3rem] lg:text-[4.5rem] font-bold text-white leading-[1.0] mb-6">
+          <%= t('home.solution.title') %>
+        </h2>
+        <p class="text-white/45 text-lg mb-10 leading-relaxed font-light"><%= t('home.solution.subtitle') %></p>
+
+        <div class="grid sm:grid-cols-2 gap-3.5 mb-10">
+          <% [
+            "Score de positionnement visible",
+            "Ton profil dominant",
+            "Ton potentiel inexploité",
+            "Trois trajectoires réalistes",
+            "Combinaison stratégique prioritaire",
+            "Plan d'action synthétique"
+          ].each do |item| %>
+            <div class="flex items-center gap-3">
+              <span class="w-5 h-5 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center shrink-0">
+                <span class="material-icons text-primary !text-xs">check</span>
+              </span>
+              <span class="text-white/55 text-sm"><%= item %></span>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="p-4 bg-white/[0.05] rounded-xl border border-white/[0.08] flex items-center gap-3">
+          <span class="material-icons text-primary !text-base">description</span>
+          <span class="text-primary text-sm font-medium"><%= t('home.solution.report') %></span>
+        </div>
+      </div>
+
+      <%# Right: realistic report preview %>
+      <div>
+        <div class="bg-white rounded-2xl shadow-[0_40px_100px_rgba(0,0,0,0.5)] overflow-hidden">
+
+          <%# Report header bar %>
+          <div class="bg-secondary px-7 py-5 flex justify-between items-center">
+            <div>
+              <div class="text-primary text-[0.58rem] font-bold tracking-[0.2em] uppercase">Insertrice · Rapport de diagnostic</div>
+              <div class="text-white/35 text-xs mt-0.5">Profil · Sciences Humaines</div>
+            </div>
+            <div class="text-right">
+              <div class="font-editorial text-5xl font-bold text-primary leading-none">72</div>
+              <div class="text-white/25 text-[0.52rem] uppercase tracking-wider">/100 Score global</div>
+            </div>
+          </div>
+
+          <%# Report body %>
+          <div class="p-7 space-y-5">
+
+            <%# Summary chips %>
+            <div class="grid grid-cols-3 gap-2.5">
+              <div class="bg-emerald-50 rounded-xl p-3 text-center">
+                <div class="text-[0.52rem] font-bold text-gray-400 uppercase tracking-wider mb-1">Profil</div>
+                <div class="text-[0.7rem] font-black text-secondary leading-tight">Stratège analytique</div>
+              </div>
+              <div class="bg-amber-50 rounded-xl p-3 text-center">
+                <div class="text-[0.52rem] font-bold text-gray-400 uppercase tracking-wider mb-1">Potentiel</div>
+                <div class="text-[0.7rem] font-black text-emerald-700">Élevé</div>
+              </div>
+              <div class="bg-orange-50 rounded-xl p-3 text-center">
+                <div class="text-[0.52rem] font-bold text-gray-400 uppercase tracking-wider mb-1">Visibilité</div>
+                <div class="text-[0.7rem] font-black text-orange-600">Modérée</div>
+              </div>
+            </div>
+
+            <%# Skill bars %>
+            <div class="space-y-2.5">
+              <div class="text-[0.58rem] font-black text-gray-400 uppercase tracking-wider mb-1">Compétences clés</div>
+              <% [
+                { label: "Analyse & Synthèse", pct: 88 },
+                { label: "Communication digitale", pct: 72 },
+                { label: "Outils data", pct: 55 },
+                { label: "Gestion de projet", pct: 64 }
+              ].each do |skill| %>
+                <div>
+                  <div class="flex justify-between text-[0.6rem] mb-1">
+                    <span class="text-gray-400 font-medium"><%= skill[:label] %></span>
+                    <span class="font-bold text-secondary"><%= skill[:pct] %>%</span>
+                  </div>
+                  <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-primary-400 to-primary rounded-full" style="width: <%= skill[:pct] %>%"></div>
+                  </div>
+                </div>
               <% end %>
-            </ul>
+            </div>
+
+            <%# Trajectories %>
+            <div class="bg-secondary rounded-xl p-5">
+              <div class="text-[0.58rem] font-black text-primary uppercase tracking-wider mb-3.5">Trajectoires recommandées</div>
+              <div class="space-y-2.5">
+                <% ["Chargé d'études junior", "Consultant data ONG", "Chargé de com. digitale"].each do |traj| %>
+                  <div class="flex items-center gap-2.5 text-white/60 text-xs">
+                    <span class="w-1.5 h-1.5 rounded-full bg-primary shrink-0"></span>
+                    <%= traj %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
 
           </div>
-          <p class="font-bold text-secondary pt-4 italic">
-            "<%= t('home.problem.quote') %>"
-          </p>
+        </div>
+      </div>
 
-        </div>
-      </div>
-      <div class="relative">
-        <div class="aspect-square overflow-hidden rounded-2xl border border-gray-200 bg-gray-100">
-          <%= image_tag "img-1.png", alt: "Jeune diplômée réfléchissant à ses prochaines étapes professionnelles", loading: "lazy", class: "h-full w-full object-cover" %>
-        </div>
-      </div>
     </div>
   </div>
 </section>
 
-<!-- Réalité du Marché Section -->
-<section id="market" class="relative scroll-mt-8 overflow-hidden bg-secondary py-16 text-white md:py-24">
-  <div class="container relative z-10 mx-auto px-4 sm:px-6">
-    <div class="mb-10 text-center md:mb-16">
-      <h2 class="mb-6 text-balance text-3xl font-bold leading-tight md:text-5xl"><%= t('home.market.title') %></h2>
-      <p class="mx-auto max-w-3xl text-pretty text-xl text-white/75"><%= t('home.market.subtitle') %></p>
 
-    </div>
-    
-    <div data-home-motion-target="group" class="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-      <% [
-        { title: t('home.market.features.analysis'), icon: "troubleshoot" },
-        { title: t('home.market.features.digital'), icon: "devices" },
-        { title: t('home.market.features.structured'), icon: "account_tree" },
-        { title: t('home.market.features.operational'), icon: "visibility" },
-        { title: t('home.market.features.tools'), icon: "terminal" },
-        { title: t('home.market.features.data'), icon: "bar_chart" }
-      ].each_with_index do |item, index| %>
+<%# ═══════════════════════════════════════════════════════════ %>
+<%# 05 — MÉTHODE                                               %>
+<%# ═══════════════════════════════════════════════════════════ %>
+<section class="py-28 bg-[#f7f3ec]">
+  <div class="container mx-auto px-6">
 
-        <div data-motion-item style="--motion-index: <%= index %>" class="rounded-2xl border border-white/15 bg-white/5 p-5 sm:p-8">
-          <span class="material-icons mb-4 text-3xl text-primary"><%= item[:icon] %></span>
-          <h3 class="text-xl font-semibold"><%= item[:title] %></h3>
-        </div>
-      <% end %>
-    </div>
-    
-  </div>
-</section>
-
-<!-- Métiers Section -->
-<section id="careers" class="relative scroll-mt-8 overflow-hidden bg-gray-50 py-16 md:py-24">
-  <div class="container relative z-10 mx-auto px-4 sm:px-6">
-    <div class="mb-10 text-center md:mb-16">
-      <h2 class="lp-section-title mb-4">
-        <%= t('home.metiers.title') %>
+    <div class="text-center mb-20">
+      <span class="text-[0.63rem] font-bold tracking-[0.25em] uppercase text-secondary/30 mb-4 block">05 — La Méthode</span>
+      <h2 class="font-editorial text-[3rem] lg:text-[4rem] font-bold text-secondary leading-[1.0]">
+        <%= t('home.how_it_works.title') %>
       </h2>
-      <p class="lp-section-copy mx-auto max-w-2xl">Explorez des carrières stratégiques adaptées à votre profil en sciences humaines, lettres et langues.</p>
+      <div class="w-14 h-[2px] bg-primary mx-auto mt-6"></div>
     </div>
 
-    <div data-home-motion-target="group" class="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-8 lg:grid-cols-3 lg:gap-10">
-      <% @random_careers.each_with_index do |career, index| %>
-        <%= render "shared/career_card", career: career, index: index, heading_tag: :h3 %>
+    <div class="grid md:grid-cols-3 gap-12 max-w-5xl mx-auto relative">
+      <%# Connecting line — desktop %>
+      <div class="hidden md:block absolute top-[2.9rem] left-[calc(1/6*100%+3rem)] right-[calc(1/6*100%+3rem)] h-px bg-primary/15"></div>
+
+      <% [
+        { step: "01", title: t('home.how_it_works.steps.step1'), desc: t('home.how_it_works.steps.step1_desc') },
+        { step: "02", title: t('home.how_it_works.steps.step2'), desc: t('home.how_it_works.steps.step2_desc') },
+        { step: "03", title: t('home.how_it_works.steps.step3'), desc: t('home.how_it_works.steps.step3_desc') }
+      ].each do |item| %>
+        <div class="text-center group relative">
+          <div class="w-24 h-24 rounded-full border-2 border-primary/20 bg-[#f7f3ec] flex items-center justify-center mx-auto mb-8 group-hover:bg-primary group-hover:border-primary transition-all duration-400 relative z-10">
+            <span class="font-editorial text-3xl font-bold text-secondary/35 group-hover:text-secondary transition-colors duration-300"><%= item[:step] %></span>
+          </div>
+          <h3 class="font-editorial text-2xl font-bold text-secondary mb-4 group-hover:text-primary transition-colors duration-300"><%= item[:title] %></h3>
+          <p class="text-gray-400 text-sm leading-relaxed max-w-xs mx-auto"><%= item[:desc] %></p>
+        </div>
       <% end %>
     </div>
-    
-    <div class="text-center mt-12 relative z-10">
-      <p class="text-gray-500 italic mb-6"><%= t('home.metiers.footer') %></p>
-      <%= link_to careers_path, class: "lp-action-primary min-h-12 w-full sm:w-auto" do %>
-        <span>Découvrir les 20 métiers</span>
-        <svg class="h-4 w-4 text-secondary-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-      <% end %>
-    </div>
+
   </div>
 </section>
 
-<!-- Solution Section -->
-<section id="solution" class="scroll-mt-8 bg-white py-16 md:py-24">
-  <div class="container mx-auto px-4 sm:px-6">
-    <div class="rounded-3xl bg-secondary p-6 text-white sm:p-12 lg:p-20">
-      <div class="max-w-4xl">
-        <div>
-          <span class="mb-6 inline-block rounded-lg bg-primary px-3 py-1.5 text-sm font-semibold text-secondary"><%= t('home.solution.badge') %></span>
-          <p class="text-xl text-gray-300 mb-10 leading-relaxed font-light"><%= t('home.solution.subtitle') %></p>
 
-          
-          <div data-home-motion-target="group" class="grid gap-6 sm:grid-cols-2">
-            <% [
-                "Ton profil dominant",
-                "Ton potentiel inexploité",
-                "Trois trajectoires réalistes",
-                "Combinaison stratégique prioritaire",
-                "Plan d’action synthétique"
-            ].each_with_index do |item, index| %>
-              <div data-motion-item style="--motion-index: <%= index %>" class="flex items-center space-x-3">
-                <div class="flex-shrink-0 w-6 h-6 bg-primary text-secondary rounded-full flex items-center justify-center">
-                  <span class="material-icons text-secondary !text-sm">check</span>
-                </div>
-                <span class="text-gray-200"><%= item %></span>
+<%# ═══════════════════════════════════════════════════════════ %>
+<%# 06 — EXEMPLE DE RESTITUTION                                %>
+<%# ═══════════════════════════════════════════════════════════ %>
+<section class="py-28 bg-white">
+  <div class="container mx-auto px-6">
+
+    <div class="text-center mb-16">
+      <span class="text-[0.63rem] font-bold tracking-[0.25em] uppercase text-secondary/30 mb-4 block">06 — Un Exemple Concret</span>
+      <h2 class="font-editorial text-[2.5rem] lg:text-[3.5rem] font-bold text-secondary leading-[1.0]">Exemple de Restitution</h2>
+      <p class="text-gray-400 text-sm mt-3">Aperçu du rapport final généré</p>
+    </div>
+
+    <div class="max-w-3xl mx-auto bg-white rounded-3xl shadow-[0_20px_80px_rgba(31,75,67,0.07)] border border-gray-100 overflow-hidden">
+
+      <%# Header %>
+      <div class="bg-secondary px-10 py-7 flex justify-between items-center">
+        <div>
+          <h2 class="text-sm font-black text-white uppercase tracking-tight">Rapport de Diagnostic · Insertrice</h2>
+          <p class="text-white/35 text-xs mt-0.5">Sciences Humaines · Lettres &amp; Langues</p>
+        </div>
+        <div class="text-right">
+          <div class="font-editorial leading-none">
+            <span class="text-5xl font-bold text-primary">72</span><span class="text-xl text-white/20">/100</span>
+          </div>
+          <div class="text-[0.52rem] font-bold text-white/25 uppercase tracking-wider mt-1">Score Global</div>
+        </div>
+      </div>
+
+      <div class="p-10 space-y-8">
+        <%# Summary row %>
+        <div class="flex flex-col sm:flex-row gap-5">
+          <div class="flex-1 p-5 bg-[#f7f3ec] rounded-2xl">
+            <div class="text-[0.58rem] font-black text-gray-400 uppercase tracking-widest mb-2">Profil dominant</div>
+            <div class="font-black text-secondary">Stratège analytique digital</div>
+          </div>
+          <div class="flex-1 p-5 bg-emerald-50 rounded-2xl">
+            <div class="text-[0.58rem] font-black text-gray-400 uppercase tracking-widest mb-2">Potentiel inexploité</div>
+            <div class="font-black text-emerald-700">Élevé</div>
+          </div>
+          <div class="flex-1 p-5 bg-amber-50 rounded-2xl">
+            <div class="text-[0.58rem] font-black text-gray-400 uppercase tracking-widest mb-2">Risque d'invisibilité</div>
+            <div class="font-black text-amber-700">Modéré</div>
+          </div>
+        </div>
+
+        <%# Trajectories grid %>
+        <div class="bg-secondary rounded-2xl p-8 text-white">
+          <div class="flex items-center gap-2 mb-6">
+            <span class="material-icons text-primary !text-lg">trending_up</span>
+            <h3 class="text-primary font-bold text-[0.7rem] uppercase tracking-[0.2em]">Trajectoires recommandées</h3>
+          </div>
+          <div class="grid sm:grid-cols-3 gap-5">
+            <% ["Chargé d'études junior", "Consultant data ONG", "Assistant transformation digitale"].each_with_index do |traj, i| %>
+              <div class="flex items-start gap-3">
+                <span class="font-editorial text-3xl font-bold text-primary/25 leading-none mt-0.5">0<%= i+1 %></span>
+                <span class="text-white/60 text-sm font-medium leading-snug"><%= traj %></span>
               </div>
             <% end %>
           </div>
-          
-          <div class="mt-12 p-6 bg-white/5 rounded-2xl border border-white/10">
-            <p class="text-primary font-semibold flex items-center">
-              <span class="material-icons mr-2">description</span>
-              <%= t('home.solution.report') %>
-
-            </p>
-          </div>
         </div>
-        
       </div>
+
     </div>
   </div>
 </section>
 
-<!-- How it Works -->
-<section id="process" class="scroll-mt-8 bg-white py-16 text-secondary md:py-24">
-  <div class="container mx-auto px-4 sm:px-6">
-    <div class="mb-10 text-center md:mb-16">
-      <h2 class="lp-section-title mb-4"><%= t('home.how_it_works.title') %></h2>
 
-    </div>
-    
-    <div data-home-motion-target="group" class="mx-auto grid max-w-5xl gap-10 md:grid-cols-3 md:gap-12">
-      <% [
-        { step: "1", title: t('home.how_it_works.steps.step1'), content: t('home.how_it_works.steps.step1_desc') },
-        { step: "2", title: t('home.how_it_works.steps.step2'), content: t('home.how_it_works.steps.step2_desc') },
-        { step: "3", title: t('home.how_it_works.steps.step3'), content: t('home.how_it_works.steps.step3_desc') }
-      ].each_with_index do |item, index| %>
+<%# ═══════════════════════════════════════════════════════════ %>
+<%# 07 — PUBLIC CIBLE                                          %>
+<%# ═══════════════════════════════════════════════════════════ %>
+<section class="py-28 bg-secondary text-white relative overflow-hidden">
 
-        <div data-motion-item style="--motion-index: <%= index %>" class="text-center">
-          <div class="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-xl border border-secondary-100 bg-secondary-50">
-            <span class="text-xl font-semibold text-secondary"><%= item[:step] %></span>
-          </div>
-          <h3 class="mb-4 text-2xl font-semibold"><%= item[:title] %></h3>
-          <p class="lp-section-copy"><%= item[:content] %></p>
-        </div>
-      <% end %>
-    </div>
-  </div>
-</section>
+  <div class="absolute inset-0 pointer-events-none opacity-[0.035]"
+    style="background-image: radial-gradient(circle at 65% 35%, #e7c873 1px, transparent 1px); background-size: 32px 32px;"></div>
 
-<!-- Exemple Restitution -->
-<section id="report" class="scroll-mt-8 bg-gray-50 py-16 md:py-24">
-  <div class="container mx-auto px-4 sm:px-6">
-    <div class="mx-auto max-w-3xl rounded-3xl border border-gray-200 bg-white p-6 shadow-sm sm:p-10 lg:p-16">
-      <div class="mb-8 flex flex-col gap-5 border-b border-gray-100 pb-6 sm:mb-12 sm:flex-row sm:items-start sm:justify-between sm:pb-8">
-        <div>
-          <h2 class="text-2xl font-semibold text-secondary">Exemple de restitution</h2>
-          <p class="text-sm text-gray-600">Aperçu du rapport final</p>
-        </div>
-        <div class="sm:text-right">
-          <div class="text-4xl font-black text-primary">72<span class="text-lg text-gray-300">/100</span></div>
-          <div class="text-sm font-semibold text-secondary-700">Score global</div>
-        </div>
-      </div>
-      
-      <div class="space-y-10">
-        <div class="flex flex-col sm:flex-row justify-between gap-6">
-          <div class="flex-1">
-            <h3 class="mb-2 text-sm font-semibold text-gray-500">Profil dominant</h3>
-            <div class="text-xl font-bold text-secondary">Stratège analytique digital</div>
-          </div>
-          <div class="flex-1">
-            <h3 class="mb-2 text-sm font-semibold text-gray-500">Potentiel inexploité</h3>
-            <div class="text-xl font-bold text-green-600">Élevé</div>
-          </div>
-          <div class="flex-1">
-            <h3 class="mb-2 text-sm font-semibold text-gray-500">Risque d’invisibilité</h3>
-            <div class="text-xl font-bold text-yellow-600">Modéré</div>
-          </div>
-        </div>
-        
-        <div class="rounded-2xl bg-secondary p-5 text-white sm:p-8">
-          <h3 class="text-primary font-bold mb-6 flex items-center text-lg">
-            <span class="material-icons mr-2">trending_up</span>
-            Trajectoires recommandées
-          </h3>
-          <ul class="space-y-4 font-light text-lg">
-            <li class="flex items-center">
-              <span class="w-1.5 h-1.5 bg-primary rounded-full mr-3"></span>
-              Chargé d’études junior
-            </li>
-            <li class="flex items-center">
-              <span class="w-1.5 h-1.5 bg-primary rounded-full mr-3"></span>
-              Consultant data ONG
-            </li>
-            <li class="flex items-center">
-              <span class="w-1.5 h-1.5 bg-primary rounded-full mr-3"></span>
-              Assistant transformation digitale
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+  <div class="container mx-auto px-6 relative z-10">
+    <div class="grid lg:grid-cols-2 gap-20 items-center">
 
-<!-- Public Cible Section -->
-<section id="public" class="scroll-mt-8 bg-white py-16 text-secondary md:py-24">
-  <div class="container mx-auto px-4 sm:px-6">
-    <div class="flex flex-col items-center gap-10 lg:flex-row lg:gap-16">
-      <div class="lg:w-1/2">
-        <h2 class="lp-section-title mb-4"><%= t('home.target.title') %></h2>
-
-        <p class="lp-section-copy mb-8 text-xl">
+      <div>
+        <span class="text-[0.63rem] font-bold tracking-[0.25em] uppercase text-primary/55 mb-4 block">07 — Pour Qui</span>
+        <h2 class="font-editorial text-[3rem] lg:text-[4.5rem] font-bold leading-[1.0] mb-6">
+          <%= t('home.target.title') %>
+        </h2>
+        <p class="text-white/45 text-xl mb-12 font-light leading-relaxed">
           <%= t('home.target.subtitle') %>
         </p>
 
@@ -241,94 +400,134 @@
             { icon: "trending_up", title: "Professionnels", desc: "Souhaitant évoluer vers le digital" },
             { icon: "history_edu", title: "Profils SHS", desc: "Lettres, sciences humaines, droit" }
           ].each do |item| %>
-            <div class="flex flex-col">
-              <span class="material-icons text-primary !text-4xl mb-4"><%= item[:icon] %></span>
-              <h4 class="font-bold text-xl mb-2"><%= item[:title] %></h4>
-              <p class="text-gray-600"><%= item[:desc] %></p>
+            <div class="flex items-start gap-4 group">
+              <span class="material-icons text-primary !text-2xl mt-0.5 group-hover:scale-110 transition-transform duration-300"><%= item[:icon] %></span>
+              <div>
+                <h4 class="font-bold text-white mb-1"><%= item[:title] %></h4>
+                <p class="text-white/35 text-sm"><%= item[:desc] %></p>
+              </div>
             </div>
           <% end %>
         </div>
       </div>
-      <div class="rounded-2xl border border-gray-200 bg-gray-50 p-2 lg:w-1/2">
-        <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=800&q=80" alt="Jeunes professionnels échangeant autour d'une table" loading="lazy" class="rounded-xl">
+
+      <div class="rounded-3xl overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.3)]">
+        <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=800&q=80"
+          alt="Notre audience"
+          class="w-full h-[500px] object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-1000">
       </div>
+
     </div>
   </div>
 </section>
 
-<!-- Tarification -->
-<section id="pricing" class="relative scroll-mt-8 overflow-hidden bg-secondary py-16 md:py-24">
-  <div class="container relative z-10 mx-auto px-4 sm:px-6">
-    <div class="mb-10 text-center md:mb-16">
-      <h2 class="mb-4 text-balance text-4xl font-bold leading-tight text-white"><%= t('home.pricing.title') %></h2>
 
-      <p class="text-sm font-semibold text-primary"><%= t('home.pricing.subtitle') %></p>
+<%# ═══════════════════════════════════════════════════════════ %>
+<%# 08 — TARIFICATION                                          %>
+<%# ═══════════════════════════════════════════════════════════ %>
+<section class="py-28 bg-[#f7f3ec] relative overflow-hidden">
+  <div class="container mx-auto px-6">
 
+    <div class="text-center mb-16">
+      <span class="text-[0.63rem] font-bold tracking-[0.25em] uppercase text-secondary/30 mb-4 block">08 — L'Investissement</span>
+      <h2 class="font-editorial text-[3rem] lg:text-[4rem] font-bold text-secondary leading-[1.0] italic mb-4">
+        <%= t('home.pricing.title') %>
+      </h2>
+      <p class="text-primary font-bold text-[0.63rem] tracking-[0.25em] uppercase"><%= t('home.pricing.subtitle') %></p>
     </div>
-    
-    <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-      <!-- Diagnostic Essentiel -->
-      <div class="relative rounded-2xl border border-gray-200 bg-white p-6 sm:p-10">
-        <h3 class="text-2xl font-bold text-secondary mb-2"><%= t('home.pricing.essential') %></h3>
 
-        <div class="text-4xl font-black text-secondary mb-6 flex items-baseline">
-          <%= Diagnostic.formatted_price.gsub(" F CFA", "") %> <span class="text-sm ml-1 font-bold text-gray-400">F CFA</span>
+    <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+
+      <%# Diagnostic Essentiel %>
+      <div class="bg-white rounded-3xl p-10 border border-gray-100 hover:border-primary/30 transition-all duration-300 hover:shadow-[0_20px_60px_rgba(231,200,115,0.12)] group">
+        <h3 class="font-editorial text-2xl font-bold text-secondary mb-2"><%= t('home.pricing.essential') %></h3>
+        <div class="flex items-baseline gap-1.5 mb-8 mt-4">
+          <span class="font-editorial text-5xl font-bold text-secondary leading-none"><%= Diagnostic.formatted_price.gsub(" F CFA", "") %></span>
+          <span class="text-sm font-bold text-gray-400">F CFA</span>
         </div>
-        <div class="h-px bg-gray-100 mb-8 w-full"></div>
-        <ul class="space-y-4 text-gray-600 mb-10">
-          <li class="flex items-center"><span class="material-icons text-green-500 mr-3 !text-lg">check_circle</span> Évaluation complète</li>
-
-          <li class="flex items-center"><span class="material-icons text-green-500 mr-3 !text-lg">check_circle</span> Rapport de score immédiat</li>
-          <li class="flex items-center"><span class="material-icons text-green-500 mr-3 !text-lg">check_circle</span> Profil dominant identifié</li>
-          <li class="flex items-center"><span class="material-icons text-green-500 mr-3 !text-lg">check_circle</span> 3 trajectoires conseillées</li>
+        <div class="h-px bg-gray-100 mb-8"></div>
+        <ul class="space-y-3.5 mb-10">
+          <% ["Évaluation complète", "Rapport de score immédiat", "Profil dominant identifié", "3 trajectoires conseillées"].each do |item| %>
+            <li class="flex items-center gap-3 text-gray-500 text-sm">
+              <span class="material-icons text-emerald-500 !text-[1rem]">check_circle</span>
+              <%= item %>
+            </li>
+          <% end %>
         </ul>
-        <%= link_to (user_signed_in? ? new_diagnostic_path : new_user_session_path(redirect_to: new_diagnostic_path)), class: "lp-action-secondary min-h-12 w-full" do %>
+        <%= link_to (user_signed_in? ? new_diagnostic_path : new_user_session_path(redirect_to: new_diagnostic_path)), class: "btn-premium-secondary w-full justify-center py-4 rounded-2xl" do %>
           <span><%= t('home.pricing.order') %></span>
-          <svg class="h-4 w-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+          </svg>
         <% end %>
       </div>
 
-      <!-- Roadmap Premium -->
-      <div class="relative rounded-2xl border border-white/25 bg-white/5 p-6 text-white sm:p-10">
-        <h3 class="text-2xl font-bold text-primary mb-2"><%= t('home.pricing.premium') %></h3>
-
-        <div class="text-4xl font-black mb-6 flex items-baseline">
-          Contactez-nous
-        </div>
-        <div class="h-px bg-white/10 mb-8 w-full"></div>
-        <ul class="space-y-4 text-gray-300 mb-10">
-          <li class="flex items-center"><span class="material-icons text-primary mr-3 !text-lg">auto_awesome</span> Tout du Diagnostic Essentiel</li>
-          <li class="flex items-center"><span class="material-icons text-primary mr-3 !text-lg">auto_awesome</span> Plan détaillé 6-12 mois</li>
-          <li class="flex items-center"><span class="material-icons text-primary mr-3 !text-lg">auto_awesome</span> Compétences à développer</li>
-          <li class="flex items-center"><span class="material-icons text-primary mr-3 !text-lg">auto_awesome</span> Outils digitaux à maîtriser</li>
-          <li class="flex items-center"><span class="material-icons text-primary mr-3 !text-lg">auto_awesome</span> Étapes concrètes de mise en œuvre</li>
+      <%# Roadmap Premium %>
+      <div class="bg-secondary rounded-3xl p-10 text-white relative overflow-hidden">
+        <div class="absolute top-6 right-6 bg-primary text-secondary text-[0.58rem] font-black px-3 py-1.5 rounded-full uppercase tracking-[0.18em]">Premium</div>
+        <h3 class="font-editorial text-2xl font-bold text-primary mb-2"><%= t('home.pricing.premium') %></h3>
+        <div class="font-editorial text-4xl font-bold text-white mb-8 mt-4">Sur devis</div>
+        <div class="h-px bg-white/10 mb-8"></div>
+        <ul class="space-y-3.5 mb-10">
+          <% [
+            "Tout du Diagnostic Essentiel",
+            "Plan détaillé 6-12 mois",
+            "Compétences à développer",
+            "Outils digitaux à maîtriser",
+            "Étapes concrètes de mise en œuvre"
+          ].each do |item| %>
+            <li class="flex items-center gap-3 text-white/55 text-sm">
+              <span class="material-icons text-primary !text-[1rem]">auto_awesome</span>
+              <%= item %>
+            </li>
+          <% end %>
         </ul>
-        <a href="mailto:contact@languesmetiers.com" class="lp-action-primary min-h-12 w-full">
+        <a href="mailto:contact@languesmetiers.com" class="btn-premium-primary w-full justify-center py-4 rounded-2xl">
           <span>Prendre RDV</span>
-          <svg class="h-4 w-4 text-secondary-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
         </a>
       </div>
+
     </div>
   </div>
 </section>
 
-<!-- Final CTA Section -->
-<section class="relative bg-white py-16 md:py-24">
-  <div class="container mx-auto px-4 text-center sm:px-6">
+
+<%# ═══════════════════════════════════════════════════════════ %>
+<%# 09 — CTA FINAL                                             %>
+<%# ═══════════════════════════════════════════════════════════ %>
+<section class="py-32 bg-[#0d2420] text-white relative overflow-hidden">
+
+  <div class="absolute inset-0 pointer-events-none opacity-[0.03]"
+    style="background-image: linear-gradient(#e7c873 1px, transparent 1px), linear-gradient(90deg, #e7c873 1px, transparent 1px); background-size: 80px 80px;"></div>
+  <div class="absolute left-0 top-0 h-full w-[2px] bg-gradient-to-b from-primary/80 via-primary/25 to-transparent"></div>
+
+  <div class="container mx-auto px-6 relative z-10 text-center">
     <div class="max-w-4xl mx-auto">
-      <h2 class="lp-section-title mb-4">
-        Une trajectoire professionnelle se structure. <br/>Elle ne s'improvise pas.
+      <span class="text-[0.63rem] font-bold tracking-[0.25em] uppercase text-primary/55 mb-8 block">Passez à l'action</span>
+
+      <h2 class="font-editorial text-[3.5rem] lg:text-[5.5rem] xl:text-[6.5rem] font-bold leading-[0.93] text-white mb-8">
+        Une trajectoire <em class="text-primary italic block">se structure.</em>
+        Elle ne s'improvise pas.
       </h2>
-      <p class="lp-section-copy mx-auto mb-8 max-w-2xl text-xl"><%= t('home.final.subtitle') %></p>
 
-      
-      <div class="flex flex-col sm:flex-row justify-center items-center gap-6">
-        <%= link_to (user_signed_in? ? new_diagnostic_path : new_user_session_path(redirect_to: new_diagnostic_path)), class: "lp-action-primary min-h-12 w-full px-6 py-4 text-base sm:w-auto sm:px-10 sm:text-lg" do %>
-          <span><%= t('home.final.cta') %></span>
+      <p class="text-white/35 text-xl mb-14 font-light max-w-2xl mx-auto leading-relaxed">
+        <%= t('home.final.subtitle') %>
+      </p>
 
-        <% end %>
+      <%= link_to (user_signed_in? ? new_diagnostic_path : new_user_session_path(redirect_to: new_diagnostic_path)), class: "btn-premium-primary py-5 px-14 text-base" do %>
+        <%= t('home.final.cta') %>
+      <% end %>
+
+      <div class="mt-10 flex items-center justify-center gap-6 text-white/18 text-[0.62rem] tracking-[0.2em] uppercase">
+        <span>Rapport instantané</span>
+        <span class="w-1 h-1 rounded-full bg-white/15"></span>
+        <span>30 minutes</span>
+        <span class="w-1 h-1 rounded-full bg-white/15"></span>
+        <span>100% personnalisé</span>
       </div>
-      
     </div>
   </div>
 </section>
