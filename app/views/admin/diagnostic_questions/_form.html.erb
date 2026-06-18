@@ -1,6 +1,7 @@
 <%# app/views/admin/diagnostic_questions/_form.html.erb %>
 <div class="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm max-w-2xl mx-auto">
-  <%= form_with model: [:admin, assessment, question], class: "space-y-6" do |f| %>
+  <%= form_with model: [:admin, assessment, question], class: "space-y-6",
+        data: { controller: "assessment-question-form" } do |f| %>
     <% if question.errors.any? %>
       <div class="bg-red-50 border border-red-200 rounded-xl p-4 text-red-700 text-sm">
         <ul class="list-disc pl-5">
@@ -14,7 +15,8 @@
     <div>
       <%= f.label :kind, "Type de question", class: "block text-sm font-semibold text-slate-700 mb-1" %>
       <%= f.select :kind, [["DISC (personnalité)", "disc"], ["Intérêt thématique", "interest"], ["Compétence", "competence"]],
-            {}, class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
+            {}, data: { assessment_question_form_target: "kind", action: "change->assessment-question-form#toggle" },
+            class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
     </div>
 
     <div>
@@ -22,27 +24,29 @@
       <%= f.text_area :text, rows: 2, class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
     </div>
 
-    <div>
-      <%= f.label :disc_type, "Type DISC (si type = disc)", class: "block text-sm font-semibold text-slate-700 mb-1" %>
-      <%= f.select :disc_type, [["D — Dominant", "D"], ["I — Influent", "I"], ["S — Stable", "S"], ["C — Consciencieux", "C"]],
+    <div data-assessment-question-form-target="discField">
+      <%= f.label :disc_type, "Type DISC", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+      <%= f.select :disc_type, Diagnostics::Vocabulary.disc_type_options,
             { include_blank: "— choisir —" }, class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
     </div>
 
-    <div>
-      <%= f.label :competence_slug, "Slug de compétence (si type = compétence)", class: "block text-sm font-semibold text-slate-700 mb-1" %>
-      <%= f.select :competence_slug,
-            %w[langues_etrangeres communication_ecrite communication_orale analyse_donnees gestion_projet numerique negociation creativite ecoute rigueur_scientifique culture_generale droit_politiques],
+    <div data-assessment-question-form-target="filiereField">
+      <%= f.label :filiere_slug, "Filière", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+      <%= f.select :filiere_slug, Diagnostics::Vocabulary.filiere_options,
             { include_blank: "— choisir —" }, class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
     </div>
 
-    <div>
-      <%= f.label :options_json, "Options JSON (pour les questions de type Intérêt)", class: "block text-sm font-semibold text-slate-700 mb-1" %>
-      <p class="text-xs text-slate-400 mb-1">Format : <code>[{"label":"Texte affiché","filiere_slug":"slug"}]</code></p>
-      <%= f.text_area :options_json,
-            value: question.options.present? ? question.options.to_json : "",
-            rows: 4,
-            placeholder: '[{"label":"Écrire, analyser des textes","filiere_slug":"lettres"}]',
-            class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm font-mono" %>
+    <div data-assessment-question-form-target="competenceField" class="space-y-4">
+      <div>
+        <%= f.label :competence_slug, "Compétence", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+        <%= f.select :competence_slug, Diagnostics::Vocabulary.competence_options,
+              { include_blank: "— choisir —" }, class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
+      </div>
+      <div>
+        <%= f.label :competence_label, "Label affiché", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+        <%= f.text_field :competence_label, placeholder: "Ex: Compétences numériques",
+              class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
+      </div>
     </div>
 
     <div>
