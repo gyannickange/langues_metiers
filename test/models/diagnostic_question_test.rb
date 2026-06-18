@@ -70,4 +70,18 @@ class DiagnosticQuestionTest < ActiveSupport::TestCase
     )
     assert_not q.valid?
   end
+
+  test "competence_label writes into the options array" do
+    q = DiagnosticQuestion.new
+    q.competence_label = "  Langues étrangères  "
+    assert_equal [{ "label" => "Langues étrangères" }], q.options
+    assert_equal "Langues étrangères", q.competence_label
+  end
+
+  test "blank competence_label clears the options array" do
+    q = DiagnosticQuestion.new(options: [{ "label" => "X" }])
+    q.competence_label = ""
+    assert_equal [], q.options
+    assert_nil q.competence_label
+  end
 end

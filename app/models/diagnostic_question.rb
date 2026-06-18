@@ -20,6 +20,14 @@ class DiagnosticQuestion < ApplicationRecord
     @options_json.nil? ? options.to_json : @options_json
   end
 
+  def competence_label
+    options.is_a?(Array) ? options.dig(0, "label") : nil
+  end
+
+  def competence_label=(value)
+    self.options = value.to_s.strip.present? ? [ { "label" => value.to_s.strip } ] : []
+  end
+
   private
 
   def parse_options_json
