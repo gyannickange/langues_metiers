@@ -10,8 +10,8 @@ class Diagnostics::PreScoringServiceTest < ActiveSupport::TestCase
 
     # 1 interest question → langues
     @iq = @assessment.diagnostic_questions.create!(
-      kind: :interest, text: "Vous aimez :",
-      options: [ { "label" => "Les langues", "filiere_slug" => "langues" } ],
+      kind: :interest, text: "Les langues m'attirent.",
+      filiere_slug: "langues",
       position: 1
     )
     # 1 disc question (D type)
@@ -24,7 +24,7 @@ class Diagnostics::PreScoringServiceTest < ActiveSupport::TestCase
     )
 
     # Seed answers
-    @diagnostic.diagnostic_answers.create!(diagnostic_question: @iq, dimension_slug: "langues", answer_value: "langues", points_awarded: 1)
+    @diagnostic.diagnostic_answers.create!(diagnostic_question: @iq, dimension_slug: "langues", answer_value: "4", points_awarded: 4)
     @diagnostic.diagnostic_answers.create!(diagnostic_question: @dq, dimension_slug: "D", answer_value: "4", points_awarded: 4)
     @diagnostic.diagnostic_answers.create!(diagnostic_question: @cq, dimension_slug: "langues_etrangeres", answer_value: "5", points_awarded: 5)
 
@@ -45,7 +45,23 @@ class Diagnostics::PreScoringServiceTest < ActiveSupport::TestCase
   test "stores filiere_scores in score_data" do
     Diagnostics::PreScoringService.call(@diagnostic)
     @diagnostic.reload
-    assert_equal 1, @diagnostic.score_data["filiere_scores"]["langues"]
+    assert_equal 4, @diagnostic.score_data["filiere_scores"]["langues"]
+  end
+
+  test "filiere_scores accumulates points_awarded across multiple interest answers" do
+    iq2 = @assessment.diagnostic_questions.create!(
+      kind: :interest, text: "La traduction m'attire.",
+      filiere_slug: "langues",
+      position: 100
+    )
+    @diagnostic.diagnostic_answers.create!(
+      diagnostic_question: iq2, dimension_slug: "langues",
+      answer_value: "3", points_awarded: 3
+    )
+
+    Diagnostics::PreScoringService.call(@diagnostic)
+    @diagnostic.reload
+    assert_equal 7, @diagnostic.score_data["filiere_scores"]["langues"]
   end
 
   test "stores competence_scores in score_data" do

@@ -36,7 +36,7 @@ module Diagnostics
           next if q.disc_type.nil?
           disc_scores[q.disc_type] += answer.points_awarded.to_i
         when "interest"
-          filiere_scores[answer.dimension_slug] += 1
+          filiere_scores[answer.dimension_slug] += answer.points_awarded.to_i
         when "competence"
           competence_scores[q.competence_slug] = answer.points_awarded.to_i
         end
