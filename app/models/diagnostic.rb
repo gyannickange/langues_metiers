@@ -26,8 +26,12 @@ class Diagnostic < ApplicationRecord
     Rails.env.production? ? 2000 : 0
   end
 
+  def self.formatted_amount
+    price.to_s.gsub(/(\d)(?=(\d{3})+(?!\d))/, '\\1 ')
+  end
+
   def self.formatted_price
-    "#{price.to_s.gsub(/(\d)(?=(\d{3})+(?!\d))/, '\\1 ')} F CFA"
+    "#{formatted_amount} F CFA"
   end
 
   def pdf_generated?

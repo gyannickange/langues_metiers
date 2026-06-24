@@ -2,7 +2,7 @@
 class Admin::TrajectoriesController < Admin::BaseController
   before_action :set_trajectory, only: [ :edit, :update, :destroy ]
 
-  def index   = (@trajectories = Trajectory.includes(:career).order("careers.title")) && render
+  def index   = (@pagy, @trajectories = pagy(Trajectory.includes(:career).order("careers.title"))) && render
   def new     = (@trajectory = Trajectory.new(career_id: params[:career_id]); @careers = Career.order(:title)) && render
   def edit    = (@careers = Career.order(:title)) && render
 
@@ -12,12 +12,12 @@ class Admin::TrajectoriesController < Admin::BaseController
   end
 
   def update
-    @trajectory.update(trajectory_params) ? redirect_to(admin_trajectories_path, notice: "Trajectoire mise à jour.") : ((@careers = Career.order(:title)) && render(:edit, status: :unprocessable_entity))
+    @trajectory.update(trajectory_params) ? redirect_to(admin_trajectories_path, notice: "Trajectoire mise à jour.", status: :see_other) : ((@careers = Career.order(:title)) && render(:edit, status: :unprocessable_entity))
   end
 
   def destroy
     @trajectory.destroy
-    redirect_to admin_trajectories_path, notice: "Trajectoire supprimée."
+    redirect_to admin_trajectories_path, notice: "Trajectoire supprimée.", status: :see_other
   end
 
   private

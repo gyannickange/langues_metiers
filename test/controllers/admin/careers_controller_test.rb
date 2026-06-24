@@ -44,4 +44,38 @@ class Admin::CareersControllerTest < ActionDispatch::IntegrationTest
     assert_equal "Faites X", @profil.first_action
     assert_equal [ "Leadership", "Communication" ], @profil.key_skills
   end
+
+  test "update redirects with see_other so Turbo does not replay the PATCH" do
+    patch admin_career_path(@metier), params: { career: { title: "Nouveau titre" } }
+
+    assert_response :see_other
+  end
+
+  test "destroy redirects with see_other so Turbo does not replay the DELETE" do
+    delete admin_career_path(@metier)
+
+    assert_response :see_other
+    assert_redirected_to admin_careers_path
+  end
+
+  test "index renders without missing translations" do
+    get admin_careers_path
+
+    assert_response :success
+    assert_no_match "translation missing", response.body
+  end
+
+  test "new renders without missing translations" do
+    get new_admin_career_path
+
+    assert_response :success
+    assert_no_match "translation missing", response.body
+  end
+
+  test "edit renders without missing translations" do
+    get edit_admin_career_path(@metier)
+
+    assert_response :success
+    assert_no_match "translation missing", response.body
+  end
 end

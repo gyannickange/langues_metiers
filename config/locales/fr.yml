@@ -6,6 +6,27 @@ fr:
   Careers: "Carrières"
   Save: "Enregistrer"
   Cancel: "Annuler"
+  Actions: "Actions"
+  Management: "Gestion"
+  Diagnostics: "Diagnostics"
+  Resources: "Ressources"
+  Learning Modules: "Modules de formation"
+  Mentorship: "Mentorat"
+  Settings: "Paramètres"
+  New Career: "Nouvelle Carrière"
+  Edit Career: "Modifier la Carrière"
+  Toutes les carrières: "Toutes les carrières"
+  Are you sure?: "Êtes-vous sûr ?"
+  No careers found: "Aucune carrière trouvée"
+  Try adjusting your search or filters to find what you're looking for.: "Essayez d'ajuster votre recherche ou vos filtres pour trouver ce que vous cherchez."
+  Career created: "Carrière créée"
+  Career updated: "Carrière mise à jour"
+  Career deleted: "Carrière supprimée"
+  actions:
+    previous: "Précédent"
+    next: "Suivant"
+  pagination:
+    showing: "Affichage de %{from} à %{to} sur %{total}"
   devise:
     sessions:
       signed_in: "Connexion réussie."
@@ -62,6 +83,8 @@ fr:
     deleted: "Carrière supprimée"
 
   admin:
+    shared:
+      confirm_delete: "Confirmer la suppression ?"
     dashboard:
       title: "Tableau de bord"
       welcome: "Bienvenue dans le tableau de bord"
@@ -129,8 +152,8 @@ fr:
     problem:
       title: "Pourquoi tant de diplômés peinent-ils à s'en sortir professionnellement ?"
       description:
+        - "Tu as un diplôme. Tu as des compétences. Mais tu n’as pas une stratégie de positionnement claire."
         - "De récentes études menées par l'Organisation Internationale du Travail montrent qu'en Afrique subsaharienne, 1 jeune sur 3 est soit au chômage, soit sous-employé, même avec un diplôme."
-        - "Tu as des compétences. Tu as un diplôme."
         - "Mais cela n’est pas suffisant pour te garantir un avenir professionnel s’il te manque une stratégie de positionnement claire."
       subtitle: "Résultats :"
       items:
@@ -149,6 +172,7 @@ fr:
         operational: "Vision opérationnelle"
         tools: "Maîtrise des outils numériques"
         data: "Lecture et utilisation de données"
+      quote: "Beaucoup de profils académiques possèdent ces bases, mais ne savent pas les transformer en opportunités concrètes."
     metiers:
       title: "Exemples de métiers accessibles après repositionnement"
       dimensions:
@@ -156,6 +180,7 @@ fr:
         digital: "Dimension Digitale"
         impact: "Impact Organisationnel"
       footer: "Ces orientations sont proposées en fonction du profil stratégique dominant identifié par ton diagnostic."
+      empty: "De nouveaux métiers seront bientôt disponibles ici."
     solution:
       badge: "La Solution"
       subtitle: "En quelques minutes seulement, change ta vision de l'avenir et obtiens une roadmap concrète pour ta carrière."

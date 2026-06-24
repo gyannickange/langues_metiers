@@ -2,7 +2,7 @@
 class Admin::MobileOperatorsController < Admin::BaseController
   before_action :set_operator, only: [ :edit, :update, :destroy ]
 
-  def index   = (@operators = MobileOperator.order(:country_code, :name)) && render
+  def index   = (@pagy, @operators = pagy(MobileOperator.order(:country_code, :name))) && render
   def new     = (@operator = MobileOperator.new) && render
   def edit    = render
 
@@ -12,12 +12,12 @@ class Admin::MobileOperatorsController < Admin::BaseController
   end
 
   def update
-    @operator.update(operator_params) ? redirect_to(admin_mobile_operators_path, notice: "Opérateur mis à jour.") : render(:edit, status: :unprocessable_entity)
+    @operator.update(operator_params) ? redirect_to(admin_mobile_operators_path, notice: "Opérateur mis à jour.", status: :see_other) : render(:edit, status: :unprocessable_entity)
   end
 
   def destroy
     @operator.destroy
-    redirect_to admin_mobile_operators_path, notice: "Opérateur supprimé."
+    redirect_to admin_mobile_operators_path, notice: "Opérateur supprimé.", status: :see_other
   end
 
   private

@@ -86,4 +86,32 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_select "section#careers article[data-career-card] h3", minimum: 1
     assert_select "section#careers article[data-career-card] h2", count: 0
   end
+
+  test "GET index renders logout buttons for signed in users" do
+    user = User.create!(
+      email: "signed-in@example.com",
+      password: "password123",
+      first_name: "Ada",
+      last_name: "Lovelace",
+      city: "Cotonou",
+      country: "Bénin",
+      diploma: "Licence",
+      employment_status: "employed"
+    )
+    sign_in user
+
+    get root_path
+
+    assert_response :success
+    assert_select "form[action='#{destroy_user_session_path}'][method='post']", minimum: 2 do
+      assert_select "input[name='_method'][value='delete']", minimum: 1
+      assert_select "button.lp-action-secondary", text: "Déconnexion"
+    end
+  end
+
+  private
+
+  def sign_in(user)
+    post user_session_path, params: { user: { email: user.email, password: "password123" } }
+  end
 end
