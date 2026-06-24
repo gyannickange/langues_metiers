@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_18_100000) do
+ActiveRecord::Schema[8.0].define(version: 2026_06_24_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -21,8 +21,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_18_100000) do
     t.uuid "record_id", null: false
     t.uuid "blob_id", null: false
     t.datetime "created_at", null: false
-    t.index [ "blob_id" ], name: "index_active_storage_attachments_on_blob_id"
-    t.index [ "record_type", "record_id", "name", "blob_id" ], name: "index_active_storage_attachments_uniqueness", unique: true
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
   create_table "active_storage_blobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -34,13 +34,13 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_18_100000) do
     t.bigint "byte_size", null: false
     t.string "checksum"
     t.datetime "created_at", null: false
-    t.index [ "key" ], name: "index_active_storage_blobs_on_key", unique: true
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
   create_table "active_storage_variant_records", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "blob_id", null: false
     t.string "variation_digest", null: false
-    t.index [ "blob_id", "variation_digest" ], name: "index_active_storage_variant_records_uniqueness", unique: true
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
   create_table "assessments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -69,7 +69,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_18_100000) do
     t.string "filiere_slug"
     t.jsonb "required_competences", default: [], null: false
     t.jsonb "affirmations", default: [], null: false
-    t.index [ "slug" ], name: "index_careers_on_slug", unique: true
+    t.index ["slug"], name: "index_careers_on_slug", unique: true
   end
 
   create_table "categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -82,9 +82,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_18_100000) do
   create_table "categories_skills", id: false, force: :cascade do |t|
     t.uuid "category_id", null: false
     t.uuid "skill_id", null: false
-    t.index [ "category_id", "skill_id" ], name: "index_categories_skills_on_category_id_and_skill_id", unique: true
-    t.index [ "category_id" ], name: "index_categories_skills_on_category_id"
-    t.index [ "skill_id" ], name: "index_categories_skills_on_skill_id"
+    t.index ["category_id", "skill_id"], name: "index_categories_skills_on_category_id_and_skill_id", unique: true
+    t.index ["category_id"], name: "index_categories_skills_on_category_id"
+    t.index ["skill_id"], name: "index_categories_skills_on_skill_id"
   end
 
   create_table "diagnostic_answers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -96,10 +96,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_18_100000) do
     t.datetime "updated_at", null: false
     t.uuid "diagnostic_question_id"
     t.string "dimension_slug"
-    t.index [ "diagnostic_id", "diagnostic_question_id" ], name: "idx_diag_answers_on_diag_and_diag_quest", unique: true, where: "(diagnostic_question_id IS NOT NULL)"
-    t.index [ "diagnostic_id" ], name: "index_diagnostic_answers_on_diagnostic_id"
-    t.index [ "diagnostic_question_id" ], name: "index_diagnostic_answers_on_diagnostic_question_id"
-    t.index [ "dimension_slug" ], name: "index_diagnostic_answers_on_dimension_slug"
+    t.index ["diagnostic_id", "diagnostic_question_id"], name: "idx_diag_answers_on_diag_and_diag_quest", unique: true, where: "(diagnostic_question_id IS NOT NULL)"
+    t.index ["diagnostic_id"], name: "index_diagnostic_answers_on_diagnostic_id"
+    t.index ["diagnostic_question_id"], name: "index_diagnostic_answers_on_diagnostic_question_id"
+    t.index ["dimension_slug"], name: "index_diagnostic_answers_on_dimension_slug"
   end
 
   create_table "diagnostic_questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -114,8 +114,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_18_100000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "filiere_slug"
-    t.index [ "assessment_id", "kind", "position" ], name: "idx_on_assessment_id_kind_position_16450dfe68"
-    t.index [ "assessment_id" ], name: "index_diagnostic_questions_on_assessment_id"
+    t.index ["assessment_id", "kind", "position"], name: "idx_on_assessment_id_kind_position_16450dfe68"
+    t.index ["assessment_id"], name: "index_diagnostic_questions_on_assessment_id"
   end
 
   create_table "diagnostics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -131,8 +131,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_18_100000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "assessment_id"
-    t.index [ "assessment_id" ], name: "index_diagnostics_on_assessment_id"
-    t.index [ "user_id" ], name: "index_diagnostics_on_user_id"
+    t.index ["assessment_id"], name: "index_diagnostics_on_assessment_id"
+    t.index ["user_id"], name: "index_diagnostics_on_user_id"
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -141,9 +141,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_18_100000) do
     t.string "sluggable_type", limit: 50
     t.string "scope"
     t.datetime "created_at"
-    t.index [ "slug", "sluggable_type", "scope" ], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
-    t.index [ "slug", "sluggable_type" ], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
-    t.index [ "sluggable_type", "sluggable_id" ], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
+    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
+    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
+    t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
   create_table "mobile_operators", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -154,8 +154,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_18_100000) do
     t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index [ "code", "country_code" ], name: "index_mobile_operators_on_code_and_country_code", unique: true
-    t.index [ "country_code" ], name: "index_mobile_operators_on_country_code"
+    t.index ["code", "country_code"], name: "index_mobile_operators_on_code_and_country_code", unique: true
+    t.index ["country_code"], name: "index_mobile_operators_on_country_code"
   end
 
   create_table "payments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -169,9 +169,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_18_100000) do
     t.datetime "webhook_confirmed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index [ "diagnostic_id" ], name: "index_payments_on_diagnostic_id"
-    t.index [ "provider_payment_id" ], name: "index_payments_on_provider_payment_id", unique: true, where: "(provider_payment_id IS NOT NULL)"
-    t.index [ "user_id" ], name: "index_payments_on_user_id"
+    t.index ["diagnostic_id"], name: "index_payments_on_diagnostic_id"
+    t.index ["provider_payment_id"], name: "index_payments_on_provider_payment_id", unique: true, where: "(provider_payment_id IS NOT NULL)"
+    t.index ["user_id"], name: "index_payments_on_user_id"
   end
 
   create_table "skills", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -179,6 +179,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_18_100000) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "slug"
+    t.integer "position"
+    t.index ["slug"], name: "index_skills_on_slug", unique: true
   end
 
   create_table "trajectories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -189,7 +192,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_18_100000) do
     t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index [ "career_id" ], name: "index_trajectories_on_career_id"
+    t.index ["career_id"], name: "index_trajectories_on_career_id"
   end
 
   create_table "user_skills", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -198,8 +201,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_18_100000) do
     t.integer "level"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index [ "skill_id" ], name: "index_user_skills_on_skill_id"
-    t.index [ "user_id" ], name: "index_user_skills_on_user_id"
+    t.index ["skill_id"], name: "index_user_skills_on_skill_id"
+    t.index ["user_id"], name: "index_user_skills_on_user_id"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -221,8 +224,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_18_100000) do
     t.string "country"
     t.string "diploma"
     t.string "employment_status"
-    t.index [ "email" ], name: "index_users_on_email", unique: true
-    t.index [ "reset_password_token" ], name: "index_users_on_reset_password_token", unique: true
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
