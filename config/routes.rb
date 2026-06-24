@@ -89,9 +89,6 @@ Rails.application.routes.draw do
         collection { patch :reorder }
       end
     end
-    resources :diagnostic_questions do
-      collection { patch :reorder }
-    end
     resources :mobile_operators
   end
 end

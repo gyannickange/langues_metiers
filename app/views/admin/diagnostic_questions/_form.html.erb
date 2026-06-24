@@ -60,7 +60,7 @@
     </div>
 
     <div class="pt-6 border-t border-slate-100 flex justify-end gap-4">
-      <%= link_to "Annuler", assessment ? admin_assessment_diagnostic_questions_path(assessment) : admin_diagnostic_questions_path,
+      <%= link_to "Annuler", admin_assessment_diagnostic_questions_path(assessment),
             class: "px-6 py-2.5 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-colors" %>
       <%= f.submit question.persisted? ? "Mettre à jour" : "Créer",
             class: "btn-primary hover:scale-[1.02] active:scale-95 transition-all shadow-md cursor-pointer" %>
