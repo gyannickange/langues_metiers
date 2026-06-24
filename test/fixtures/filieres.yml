@@ -1,0 +1,39 @@
+langues:
+  slug: langues
+  name: Langues
+  position: 1
+
+geo:
+  slug: geo
+  name: Géographie & territoires
+  position: 2
+
+socio:
+  slug: socio
+  name: Sociologie
+  position: 3
+
+lettres:
+  slug: lettres
+  name: Lettres
+  position: 4
+
+psycho:
+  slug: psycho
+  name: Psychologie
+  position: 5
+
+philo:
+  slug: philo
+  name: Philosophie
+  position: 6
+
+histoire:
+  slug: histoire
+  name: Histoire
+  position: 7
+
+edu:
+  slug: edu
+  name: Sciences de l'éducation
+  position: 8

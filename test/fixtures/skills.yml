@@ -1,0 +1,59 @@
+langues_etrangeres:
+  slug: langues_etrangeres
+  name: Langues étrangères
+  position: 1
+
+communication_ecrite:
+  slug: communication_ecrite
+  name: Communication écrite
+  position: 2
+
+communication_orale:
+  slug: communication_orale
+  name: Communication orale
+  position: 3
+
+analyse_donnees:
+  slug: analyse_donnees
+  name: Analyse de données
+  position: 4
+
+gestion_projet:
+  slug: gestion_projet
+  name: Gestion de projet
+  position: 5
+
+numerique:
+  slug: numerique
+  name: Compétences numériques
+  position: 6
+
+negociation:
+  slug: negociation
+  name: Négociation
+  position: 7
+
+creativite:
+  slug: creativite
+  name: Créativité
+  position: 8
+
+ecoute:
+  slug: ecoute
+  name: Écoute active
+  position: 9
+
+rigueur_scientifique:
+  slug: rigueur_scientifique
+  name: Rigueur et méthode
+  position: 10
+
+culture_generale:
+  slug: culture_generale
+  name: Culture générale
+  position: 11
+
+droit_politiques:
+  slug: droit_politiques
+  name: Droit et politiques publiques
+  position: 12

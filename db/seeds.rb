@@ -6,6 +6,42 @@ if User.where(email: "admin@admin.com").blank?
   User.create!(email: "admin@admin.com", password: "password", password_confirmation: "password", role: :admin)
 end
 
+# ===== FILIÈRES (8) =====
+filieres_data = [
+  { slug: "langues",  name: "Langues",                       position: 1 },
+  { slug: "geo",       name: "Géographie & territoires",       position: 2 },
+  { slug: "socio",     name: "Sociologie",                     position: 3 },
+  { slug: "lettres",   name: "Lettres",                        position: 4 },
+  { slug: "psycho",    name: "Psychologie",                    position: 5 },
+  { slug: "philo",     name: "Philosophie",                    position: 6 },
+  { slug: "histoire",  name: "Histoire",                       position: 7 },
+  { slug: "edu",       name: "Sciences de l'éducation",        position: 8 }
+]
+filieres_data.each do |attrs|
+  Filiere.find_or_create_by!(slug: attrs[:slug]) { |f| f.assign_attributes(attrs) }
+end
+puts "✓ #{Filiere.count} filières"
+
+# ===== COMPÉTENCES (12) =====
+competences_data = [
+  { slug: "langues_etrangeres",   name: "Langues étrangères",            position: 1 },
+  { slug: "communication_ecrite", name: "Communication écrite",          position: 2 },
+  { slug: "communication_orale",  name: "Communication orale",           position: 3 },
+  { slug: "analyse_donnees",      name: "Analyse de données",            position: 4 },
+  { slug: "gestion_projet",       name: "Gestion de projet",             position: 5 },
+  { slug: "numerique",            name: "Compétences numériques",        position: 6 },
+  { slug: "negociation",          name: "Négociation",                   position: 7 },
+  { slug: "creativite",           name: "Créativité",                    position: 8 },
+  { slug: "ecoute",               name: "Écoute active",                 position: 9 },
+  { slug: "rigueur_scientifique", name: "Rigueur et méthode",            position: 10 },
+  { slug: "culture_generale",     name: "Culture générale",              position: 11 },
+  { slug: "droit_politiques",     name: "Droit et politiques publiques", position: 12 }
+]
+competences_data.each do |attrs|
+  Skill.find_or_create_by!(slug: attrs[:slug]) { |s| s.assign_attributes(attrs) }
+end
+puts "✓ #{Skill.count} compétences"
+
 # ===== PROFILES (7) =====
 profiles_data = [
   {
@@ -268,8 +304,9 @@ competence_texts = {
   "droit_politiques"     => "Je comprends le cadre juridique, réglementaire et institutionnel de mon secteur."
 }
 
+competence_labels = Skill.pluck(:slug, :name).to_h
 competence_questions = competence_texts.each_with_index.map do |(slug, text), index|
-  { label: Diagnostics::Vocabulary::COMPETENCES.fetch(slug), text: text, competence_slug: slug, position: 18 + index }
+  { label: competence_labels.fetch(slug), text: text, competence_slug: slug, position: 18 + index }
 end
 
 competence_questions.each do |q|
