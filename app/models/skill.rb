@@ -4,4 +4,5 @@ class Skill < ApplicationRecord
   has_many :users, through: :user_skills
 
   validates :name, presence: true
+  validates :slug, presence: true, uniqueness: true
 end
