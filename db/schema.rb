@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_24_120000) do
+ActiveRecord::Schema[8.0].define(version: 2026_06_24_120001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -133,6 +133,15 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_24_120000) do
     t.uuid "assessment_id"
     t.index ["assessment_id"], name: "index_diagnostics_on_assessment_id"
     t.index ["user_id"], name: "index_diagnostics_on_user_id"
+  end
+
+  create_table "filieres", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "slug"
+    t.string "name"
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_filieres_on_slug", unique: true
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
