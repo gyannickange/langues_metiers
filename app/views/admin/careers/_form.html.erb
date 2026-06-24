@@ -90,7 +90,7 @@
       <div class="space-y-1">
         <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Compétences requises</span>
         <div class="grid grid-cols-2 gap-2">
-          <%= f.collection_check_boxes :required_competences, Diagnostics::Vocabulary::COMPETENCES.to_a, :first, :last do |b| %>
+          <%= f.collection_check_boxes :required_competences, Diagnostics::Vocabulary.competence_options, :last, :first do |b| %>
             <label class="flex items-center gap-2 text-sm font-medium cursor-pointer">
               <%= b.check_box(class: "rounded border-slate-300 text-[var(--color-primary)]") %>
               <%= b.text %>
