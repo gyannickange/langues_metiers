@@ -14,6 +14,8 @@
       icon: :award,
       items: [
         { label: "Nom de la compétence", value: @skill.name },
+        { label: "Slug", value: content_tag(:span, @skill.slug, class: "font-mono text-xs") },
+        { label: "Position", value: @skill.position },
         { label: "Description", value: content_tag(:div, @skill.description, class: "leading-relaxed text-slate-600") }
       ] %>
 

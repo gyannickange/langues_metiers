@@ -9,8 +9,9 @@
 
 <%= render "shared/table",
   columns: [
-    { header: "Nom",  cell: ->(s){ link_to s.name, admin_skill_path(s), class: "text-[var(--color-primary)] font-bold hover:underline" } },
-    { header: "Description", cell: ->(s){ content_tag(:span, truncate(s.description.to_s, length: 80), class: "text-slate-500") } }
+    { header: "Nom",      cell: ->(s){ link_to s.name, admin_skill_path(s), class: "text-[var(--color-primary)] font-bold hover:underline" } },
+    { header: "Slug",     cell: ->(s){ content_tag(:span, s.slug, class: "text-slate-500 font-mono text-xs") } },
+    { header: "Position", cell: ->(s){ content_tag(:span, s.position, class: "text-slate-500") } }
   ],
   rows: @skills,
   pagy: @pagy,

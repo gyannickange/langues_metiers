@@ -54,7 +54,7 @@ module Admin
 
       # Only allow a list of trusted parameters through.
       def skill_params
-        params.require(:skill).permit(:name, :description)
+        params.require(:skill).permit(:name, :description, :slug, :position)
       end
   end
 end
