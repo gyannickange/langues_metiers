@@ -5,7 +5,7 @@ class CreateDiagnosticQuestions < ActiveRecord::Migration[8.0]
       t.string  :kind,            null: false
       t.text    :text,            null: false
       t.string  :disc_type
-      t.string  :competence_slug
+      t.string  :skill_slug
       t.jsonb   :options,         default: []
       t.integer :position,        default: 1, null: false
       t.boolean :active,          default: true, null: false

@@ -15,6 +15,15 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_24_120001) do
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
 
+  create_table "academic_fields", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "slug"
+    t.string "name"
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_academic_fields_on_slug", unique: true
+  end
+
   create_table "active_storage_attachments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -66,8 +75,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_24_120001) do
     t.text "first_action"
     t.text "premium_pitch"
     t.jsonb "disc_types", default: [], null: false
-    t.string "filiere_slug"
-    t.jsonb "required_competences", default: [], null: false
+    t.string "academic_field_slug"
     t.jsonb "affirmations", default: [], null: false
     t.index ["slug"], name: "index_careers_on_slug", unique: true
   end
@@ -107,13 +115,13 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_24_120001) do
     t.string "kind", null: false
     t.text "text", null: false
     t.string "disc_type"
-    t.string "competence_slug"
+    t.string "skill_slug"
     t.jsonb "options", default: []
     t.integer "position", default: 1, null: false
     t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "filiere_slug"
+    t.string "academic_field_slug"
     t.index ["assessment_id", "kind", "position"], name: "idx_on_assessment_id_kind_position_16450dfe68"
     t.index ["assessment_id"], name: "index_diagnostic_questions_on_assessment_id"
   end
@@ -133,15 +141,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_24_120001) do
     t.uuid "assessment_id"
     t.index ["assessment_id"], name: "index_diagnostics_on_assessment_id"
     t.index ["user_id"], name: "index_diagnostics_on_user_id"
-  end
-
-  create_table "filieres", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "slug"
-    t.string "name"
-    t.integer "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["slug"], name: "index_filieres_on_slug", unique: true
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
