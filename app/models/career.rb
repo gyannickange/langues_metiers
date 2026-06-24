@@ -11,7 +11,7 @@ class Career < ApplicationRecord
   validates :slug, uniqueness: true, presence: true, if: :behavioral?
 
   validates :filiere_slug,
-            inclusion: { in: Diagnostics::Vocabulary.filiere_slugs, message: "n'est pas une filière valide" },
+            inclusion: { in: ->(_record) { Diagnostics::Vocabulary.filiere_slugs }, message: "n'est pas une filière valide" },
             allow_blank: true
   validate :diagnostic_arrays_within_vocabulary
 
