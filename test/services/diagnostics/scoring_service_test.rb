@@ -8,14 +8,14 @@ class Diagnostics::ScoringServiceTest < ActiveSupport::TestCase
     @assessment = Assessment.create!(title: "Final Score Test #{SecureRandom.hex(4)}", active: false)
     @diagnostic = Diagnostic.create!(user: @user, assessment: @assessment, status: :in_progress)
 
-    @c1 = Career.create!(title: "Métier 1 #{SecureRandom.hex(4)}", slug: "metier-1-#{SecureRandom.hex(4)}", status: :published, filiere_slug: "langues", disc_types: [ "C" ], required_competences: [])
-    @c2 = Career.create!(title: "Métier 2 #{SecureRandom.hex(4)}", slug: "metier-2-#{SecureRandom.hex(4)}", status: :published, filiere_slug: "socio",   disc_types: [ "I" ], required_competences: [], affirmations: %w[a b c d e f])
-    @c3 = Career.create!(title: "Métier 3 #{SecureRandom.hex(4)}", slug: "metier-3-#{SecureRandom.hex(4)}", status: :published, filiere_slug: "lettres", disc_types: [ "S" ], required_competences: [])
+    @c1 = Career.create!(title: "Métier 1 #{SecureRandom.hex(4)}", slug: "metier-1-#{SecureRandom.hex(4)}", status: :published, academic_field_slug: "langues", disc_types: [ "C" ], required_skills: [])
+    @c2 = Career.create!(title: "Métier 2 #{SecureRandom.hex(4)}", slug: "metier-2-#{SecureRandom.hex(4)}", status: :published, academic_field_slug: "socio",   disc_types: [ "I" ], required_skills: [], affirmations: %w[a b c d e f])
+    @c3 = Career.create!(title: "Métier 3 #{SecureRandom.hex(4)}", slug: "metier-3-#{SecureRandom.hex(4)}", status: :published, academic_field_slug: "lettres", disc_types: [ "S" ], required_skills: [])
 
     @diagnostic.update!(score_data: {
       "disc_scores"       => { "C" => 18 },
-      "filiere_scores"    => { "langues" => 3 },
-      "competence_scores" => {},
+      "academic_field_scores"    => { "langues" => 3 },
+      "skill_scores" => {},
       "top_career_ids"    => [
         { "id" => @c1.id, "score" => 20 },
         { "id" => @c2.id, "score" => 15 },

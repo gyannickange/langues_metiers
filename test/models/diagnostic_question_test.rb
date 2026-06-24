@@ -5,18 +5,18 @@ class DiagnosticQuestionTest < ActiveSupport::TestCase
     @assessment = Assessment.create!(title: "Test #{SecureRandom.hex(4)}", active: false)
   end
 
-  test "interest question valid with filiere_slug" do
+  test "interest question valid with academic_field_slug" do
     q = DiagnosticQuestion.new(
       assessment:   @assessment,
       kind:         :interest,
       text:         "Les langues m'attirent.",
-      filiere_slug: "langues",
+      academic_field_slug: "langues",
       position:     1
     )
     assert q.valid?, q.errors.full_messages.inspect
   end
 
-  test "interest question invalid without filiere_slug" do
+  test "interest question invalid without academic_field_slug" do
     q = DiagnosticQuestion.new(
       assessment: @assessment,
       kind:       :interest,
@@ -24,7 +24,7 @@ class DiagnosticQuestionTest < ActiveSupport::TestCase
       position:   1
     )
     assert_not q.valid?
-    assert_includes q.errors[:filiere_slug], "ne peut pas être vide"
+    assert_includes q.errors[:academic_field_slug], "ne peut pas être vide"
   end
 
   test "interest question does not require options" do
@@ -32,7 +32,7 @@ class DiagnosticQuestionTest < ActiveSupport::TestCase
       assessment:   @assessment,
       kind:         :interest,
       text:         "L'espace m'attire.",
-      filiere_slug: "geo",
+      academic_field_slug: "geo",
       position:     1
     )
     assert q.valid?, q.errors.full_messages.inspect
@@ -49,15 +49,15 @@ class DiagnosticQuestionTest < ActiveSupport::TestCase
     assert_includes q.errors[:disc_type], "ne peut pas être vide"
   end
 
-  test "competence question requires competence_slug" do
+  test "skill question requires skill_slug" do
     q = DiagnosticQuestion.new(
       assessment: @assessment,
-      kind:       :competence,
+      kind:       :skill,
       text:       "Je parle une langue.",
       position:   1
     )
     assert_not q.valid?
-    assert_includes q.errors[:competence_slug], "ne peut pas être vide"
+    assert_includes q.errors[:skill_slug], "ne peut pas être vide"
   end
 
   test "disc_type must be D I S or C" do
@@ -71,22 +71,22 @@ class DiagnosticQuestionTest < ActiveSupport::TestCase
     assert_not q.valid?
   end
 
-  test "competence_label writes into the options array" do
+  test "skill_label writes into the options array" do
     q = DiagnosticQuestion.new
-    q.competence_label = "  Langues étrangères  "
+    q.skill_label = "  Langues étrangères  "
     assert_equal [ { "label" => "Langues étrangères" } ], q.options
-    assert_equal "Langues étrangères", q.competence_label
+    assert_equal "Langues étrangères", q.skill_label
   end
 
-  test "blank competence_label clears the options array" do
+  test "blank skill_label clears the options array" do
     q = DiagnosticQuestion.new(options: [ { "label" => "X" } ])
-    q.competence_label = ""
+    q.skill_label = ""
     assert_equal [], q.options
-    assert_nil q.competence_label
+    assert_nil q.skill_label
   end
 
-  test "competence_label is nil when options is not an array of hashes" do
-    assert_nil DiagnosticQuestion.new(options: nil).competence_label
-    assert_nil DiagnosticQuestion.new(options: [ "foo" ]).competence_label
+  test "skill_label is nil when options is not an array of hashes" do
+    assert_nil DiagnosticQuestion.new(options: nil).skill_label
+    assert_nil DiagnosticQuestion.new(options: [ "foo" ]).skill_label
   end
 end

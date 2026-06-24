@@ -7,7 +7,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
       status: :published,
       sector: "Langues",
       kind: "profession",
-      filiere_slug: "langues"
+      academic_field_slug: "langues"
     )
   end
 

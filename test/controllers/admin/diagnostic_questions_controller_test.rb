@@ -7,21 +7,21 @@ class Admin::DiagnosticQuestionsControllerTest < ActionDispatch::IntegrationTest
     post user_session_path, params: { user: { email: @admin.email, password: "password123" } }
   end
 
-  test "create persists filiere_slug on an interest question" do
+  test "create persists academic_field_slug on an interest question" do
     assert_difference "DiagnosticQuestion.count", 1 do
       post admin_assessment_diagnostic_questions_path(@assessment), params: {
         diagnostic_question: {
           kind: "interest", text: "J'aime les langues", position: 1, active: true,
-          filiere_slug: "langues"
+          academic_field_slug: "langues"
         }
       }
     end
 
     assert_redirected_to admin_assessment_diagnostic_questions_path(@assessment)
-    assert_equal "langues", DiagnosticQuestion.order(:created_at).last.filiere_slug
+    assert_equal "langues", DiagnosticQuestion.order(:created_at).last.academic_field_slug
   end
 
-  test "interest question without filiere_slug is rejected" do
+  test "interest question without academic_field_slug is rejected" do
     assert_no_difference "DiagnosticQuestion.count" do
       post admin_assessment_diagnostic_questions_path(@assessment), params: {
         diagnostic_question: { kind: "interest", text: "Sans filière", position: 1, active: true }
@@ -30,11 +30,11 @@ class Admin::DiagnosticQuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_content
   end
 
-  test "competence question persists its label into options" do
+  test "skill question persists its label into options" do
     post admin_assessment_diagnostic_questions_path(@assessment), params: {
       diagnostic_question: {
-        kind: "competence", text: "Je maîtrise X", position: 2, active: true,
-        competence_slug: "numerique", competence_label: "Compétences numériques"
+        kind: "skill", text: "Je maîtrise X", position: 2, active: true,
+        skill_slug: "numerique", skill_label: "Compétences numériques"
       }
     }
 
@@ -43,7 +43,7 @@ class Admin::DiagnosticQuestionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "destroy redirects with see_other so Turbo does not replay the DELETE" do
-    question = @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, filiere_slug: "langues")
+    question = @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, academic_field_slug: "langues")
 
     delete admin_assessment_diagnostic_question_path(@assessment, question)
 
@@ -58,7 +58,7 @@ class Admin::DiagnosticQuestionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "index links edit and delete to the nested member routes" do
-    question = @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, filiere_slug: "langues")
+    question = @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, academic_field_slug: "langues")
 
     get admin_assessment_diagnostic_questions_path(@assessment)
 
@@ -67,8 +67,8 @@ class Admin::DiagnosticQuestionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "new pre-fills the next position for the requested kind" do
-    @assessment.diagnostic_questions.create!(kind: "interest", text: "Q1", position: 1, active: true, filiere_slug: "langues")
-    @assessment.diagnostic_questions.create!(kind: "interest", text: "Q2", position: 2, active: true, filiere_slug: "geo")
+    @assessment.diagnostic_questions.create!(kind: "interest", text: "Q1", position: 1, active: true, academic_field_slug: "langues")
+    @assessment.diagnostic_questions.create!(kind: "interest", text: "Q2", position: 2, active: true, academic_field_slug: "geo")
 
     get new_admin_assessment_diagnostic_question_path(@assessment, kind: "interest")
 
@@ -76,9 +76,9 @@ class Admin::DiagnosticQuestionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "new defaults position to 1 for a kind with no siblings, ignoring other kinds' positions" do
-    @assessment.diagnostic_questions.create!(kind: "interest", text: "Unrelated kind", position: 10, active: true, filiere_slug: "langues")
+    @assessment.diagnostic_questions.create!(kind: "interest", text: "Unrelated kind", position: 10, active: true, academic_field_slug: "langues")
 
-    get new_admin_assessment_diagnostic_question_path(@assessment, kind: "competence")
+    get new_admin_assessment_diagnostic_question_path(@assessment, kind: "skill")
 
     assert_select "input#diagnostic_question_position[value=?]", "1"
   end
@@ -90,8 +90,8 @@ class Admin::DiagnosticQuestionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "reorder persists new positions for same-kind questions" do
-    q1 = @assessment.diagnostic_questions.create!(kind: "interest", text: "Q1", position: 1, active: true, filiere_slug: "langues")
-    q2 = @assessment.diagnostic_questions.create!(kind: "interest", text: "Q2", position: 2, active: true, filiere_slug: "geo")
+    q1 = @assessment.diagnostic_questions.create!(kind: "interest", text: "Q1", position: 1, active: true, academic_field_slug: "langues")
+    q2 = @assessment.diagnostic_questions.create!(kind: "interest", text: "Q2", position: 2, active: true, academic_field_slug: "geo")
 
     patch reorder_admin_assessment_diagnostic_questions_path(@assessment, kind: "interest"),
           params: { ordered_ids: [ q2.id, q1.id ] }
@@ -102,9 +102,9 @@ class Admin::DiagnosticQuestionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "reorder rejects ids that don't match the assessment's questions for that kind" do
-    q1 = @assessment.diagnostic_questions.create!(kind: "interest", text: "Q1", position: 1, active: true, filiere_slug: "langues")
+    q1 = @assessment.diagnostic_questions.create!(kind: "interest", text: "Q1", position: 1, active: true, academic_field_slug: "langues")
     other_assessment = Assessment.create!(title: "Other #{SecureRandom.hex(4)}", active: false)
-    foreign = other_assessment.diagnostic_questions.create!(kind: "interest", text: "Foreign", position: 1, active: true, filiere_slug: "langues")
+    foreign = other_assessment.diagnostic_questions.create!(kind: "interest", text: "Foreign", position: 1, active: true, academic_field_slug: "langues")
 
     patch reorder_admin_assessment_diagnostic_questions_path(@assessment, kind: "interest"),
           params: { ordered_ids: [ q1.id, foreign.id ] }
@@ -114,7 +114,7 @@ class Admin::DiagnosticQuestionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "reorder requires a kind" do
-    q1 = @assessment.diagnostic_questions.create!(kind: "interest", text: "Q1", position: 1, active: true, filiere_slug: "langues")
+    q1 = @assessment.diagnostic_questions.create!(kind: "interest", text: "Q1", position: 1, active: true, academic_field_slug: "langues")
 
     patch reorder_admin_assessment_diagnostic_questions_path(@assessment), params: { ordered_ids: [ q1.id ] }
 
@@ -122,7 +122,7 @@ class Admin::DiagnosticQuestionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "index does not render a drag handle when viewing all kinds" do
-    @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, filiere_slug: "langues")
+    @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, academic_field_slug: "langues")
 
     get admin_assessment_diagnostic_questions_path(@assessment)
 
@@ -130,7 +130,7 @@ class Admin::DiagnosticQuestionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "index renders a drag handle when filtered to a specific kind" do
-    @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, filiere_slug: "langues")
+    @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, academic_field_slug: "langues")
 
     get admin_assessment_diagnostic_questions_path(@assessment, kind: "interest")
 

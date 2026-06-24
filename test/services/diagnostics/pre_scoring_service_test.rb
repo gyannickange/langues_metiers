@@ -2,6 +2,9 @@ require "test_helper"
 
 class Diagnostics::PreScoringServiceTest < ActiveSupport::TestCase
   def setup
+    AcademicField.find_or_create_by!(slug: "langues") { |field| field.name = "Langues"; field.position = 1 }
+    Skill.find_or_create_by!(slug: "langues_etrangeres") { |skill| skill.name = "Langues étrangères"; skill.position = 1 }
+
     @user       = User.create!(email: "score#{SecureRandom.hex(4)}@test.com", password: "password123",
                                 first_name: "Score", last_name: "Test", city: "Cotonou",
                                 country: "BJ", diploma: "Licence", employment_status: "Étudiant")
@@ -11,16 +14,16 @@ class Diagnostics::PreScoringServiceTest < ActiveSupport::TestCase
     # 1 interest question → langues
     @iq = @assessment.diagnostic_questions.create!(
       kind: :interest, text: "Les langues m'attirent.",
-      filiere_slug: "langues",
+      academic_field_slug: "langues",
       position: 1
     )
     # 1 disc question (D type)
     @dq = @assessment.diagnostic_questions.create!(
       kind: :disc, text: "Je décide vite.", disc_type: "D", position: 2
     )
-    # 1 competence question
+    # 1 skill question
     @cq = @assessment.diagnostic_questions.create!(
-      kind: :competence, text: "Je parle une langue.", competence_slug: "langues_etrangeres", position: 3
+      kind: :skill, text: "Je parle une langue.", skill_slug: "langues_etrangeres", position: 3
     )
 
     # Seed answers
@@ -31,8 +34,8 @@ class Diagnostics::PreScoringServiceTest < ActiveSupport::TestCase
     # A career that should score well
     hex = SecureRandom.hex(4)
     @career = Career.create!(
-      title: "Traducteur #{hex}", slug: "traducteur-#{hex}", status: :published, filiere_slug: "langues",
-      disc_types: [ "C", "D" ], required_competences: [ "langues_etrangeres" ]
+      title: "Traducteur #{hex}", slug: "traducteur-#{hex}", status: :published, academic_field_slug: "langues",
+      disc_types: [ "C", "D" ], required_skills: [ "langues_etrangeres" ]
     )
   end
 
@@ -42,16 +45,16 @@ class Diagnostics::PreScoringServiceTest < ActiveSupport::TestCase
     assert_equal 4, @diagnostic.score_data["disc_scores"]["D"]
   end
 
-  test "stores filiere_scores in score_data" do
+  test "stores academic_field_scores in score_data" do
     Diagnostics::PreScoringService.call(@diagnostic)
     @diagnostic.reload
-    assert_equal 4, @diagnostic.score_data["filiere_scores"]["langues"]
+    assert_equal 4, @diagnostic.score_data["academic_field_scores"]["langues"]
   end
 
-  test "filiere_scores accumulates points_awarded across multiple interest answers" do
+  test "academic_field_scores accumulates points_awarded across multiple interest answers" do
     iq2 = @assessment.diagnostic_questions.create!(
       kind: :interest, text: "La traduction m'attire.",
-      filiere_slug: "langues",
+      academic_field_slug: "langues",
       position: 100
     )
     @diagnostic.diagnostic_answers.create!(
@@ -61,13 +64,13 @@ class Diagnostics::PreScoringServiceTest < ActiveSupport::TestCase
 
     Diagnostics::PreScoringService.call(@diagnostic)
     @diagnostic.reload
-    assert_equal 7, @diagnostic.score_data["filiere_scores"]["langues"]
+    assert_equal 7, @diagnostic.score_data["academic_field_scores"]["langues"]
   end
 
-  test "stores competence_scores in score_data" do
+  test "stores skill_scores in score_data" do
     Diagnostics::PreScoringService.call(@diagnostic)
     @diagnostic.reload
-    assert_equal 5, @diagnostic.score_data["competence_scores"]["langues_etrangeres"]
+    assert_equal 5, @diagnostic.score_data["skill_scores"]["langues_etrangeres"]
   end
 
   test "stores top_career_ids in score_data" do

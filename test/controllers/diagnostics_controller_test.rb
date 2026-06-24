@@ -24,7 +24,7 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
   test "GET interest renders Likert questions for in_progress diagnostic" do
     sign_in @user
     @assessment.diagnostic_questions.create!(
-      kind: :interest, text: "Les langues m'attirent.", filiere_slug: "langues", position: 1
+      kind: :interest, text: "Les langues m'attirent.", academic_field_slug: "langues", position: 1
     )
     d = Diagnostic.create!(user: @user, status: :in_progress, assessment: @assessment)
     get interest_diagnostic_path(d)
@@ -38,7 +38,7 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
   test "GET interest renders Likert scale labels" do
     sign_in @user
     @assessment.diagnostic_questions.create!(
-      kind: :interest, text: "L'espace m'attire.", filiere_slug: "geo", position: 1
+      kind: :interest, text: "L'espace m'attire.", academic_field_slug: "geo", position: 1
     )
     d = Diagnostic.create!(user: @user, status: :in_progress, assessment: @assessment)
     get interest_diagnostic_path(d)
@@ -50,7 +50,7 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
   test "GET disc renders for diagnostic with interest answers" do
     sign_in @user
     q = @assessment.diagnostic_questions.create!(
-      kind: :interest, text: "Q?", filiere_slug: "langues", position: 1
+      kind: :interest, text: "Q?", academic_field_slug: "langues", position: 1
     )
     @assessment.diagnostic_questions.create!(
       kind: :disc, text: "Je prends des initiatives.", disc_type: "D", position: 2
@@ -115,7 +115,7 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "h2", text: /Analyste/
     assert_select "[data-controller='pdf-status']", count: 0
-    assert_select "p", text: /Aucune compétence clé n'est encore renseignée/
+    assert_select "p", text: /No key skill has been added/
     assert_select "p", text: /Aucun axe de développement n'est encore renseigné/
     assert_not_includes response.body, "Analyse Stratégique"
     assert_not_includes response.body, "Stratège de projet"
@@ -157,7 +157,7 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
   test "POST submit_interest rejects missing answers" do
     sign_in @user
     @assessment.diagnostic_questions.create!(
-      kind: :interest, text: "Q?", filiere_slug: "langues", position: 1
+      kind: :interest, text: "Q?", academic_field_slug: "langues", position: 1
     )
     d = Diagnostic.create!(user: @user, status: :in_progress, assessment: @assessment)
 
@@ -168,10 +168,10 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to interest_diagnostic_path(d)
   end
 
-  test "POST submit_interest saves answer with filiere_slug from question and Likert value" do
+  test "POST submit_interest saves answer with academic_field_slug from question and Likert value" do
     sign_in @user
     q = @assessment.diagnostic_questions.create!(
-      kind: :interest, text: "Q?", filiere_slug: "lettres", position: 1
+      kind: :interest, text: "Q?", academic_field_slug: "lettres", position: 1
     )
     d = Diagnostic.create!(user: @user, status: :in_progress, assessment: @assessment)
 
@@ -189,7 +189,7 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
   test "POST submit_interest rejects out-of-range Likert value" do
     sign_in @user
     q = @assessment.diagnostic_questions.create!(
-      kind: :interest, text: "Q?", filiere_slug: "langues", position: 1
+      kind: :interest, text: "Q?", academic_field_slug: "langues", position: 1
     )
     d = Diagnostic.create!(user: @user, status: :in_progress, assessment: @assessment)
 
@@ -200,10 +200,10 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to interest_diagnostic_path(d)
   end
 
-  test "POST create_from_interest creates diagnostic and saves answers with filiere_slug" do
+  test "POST create_from_interest creates diagnostic and saves answers with academic_field_slug" do
     sign_in @user
     q = @assessment.diagnostic_questions.create!(
-      kind: :interest, text: "Q?", filiere_slug: "geo", position: 1
+      kind: :interest, text: "Q?", academic_field_slug: "geo", position: 1
     )
 
     assert_difference [ "Diagnostic.count", "DiagnosticAnswer.count" ], 1 do
@@ -220,7 +220,7 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
   test "POST create_from_interest rejects out-of-range Likert value" do
     sign_in @user
     @assessment.diagnostic_questions.create!(
-      kind: :interest, text: "Q?", filiere_slug: "langues", position: 1
+      kind: :interest, text: "Q?", academic_field_slug: "langues", position: 1
     )
 
     assert_no_difference [ "Diagnostic.count", "DiagnosticAnswer.count" ] do
@@ -242,16 +242,16 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to disc_diagnostic_path(d)
   end
 
-  test "POST submit_competences rejects missing answers before pre-scoring" do
+  test "POST submit_skills rejects missing answers before pre-scoring" do
     sign_in @user
-    @assessment.diagnostic_questions.create!(kind: :competence, text: "Q?", competence_slug: "analyse_donnees", position: 1)
+    @assessment.diagnostic_questions.create!(kind: :skill, text: "Q?", skill_slug: "analyse_donnees", position: 1)
     d = Diagnostic.create!(user: @user, status: :in_progress, assessment: @assessment)
 
     assert_no_difference "DiagnosticAnswer.count" do
-      post submit_competences_diagnostic_path(d), params: { answers: {} }
+      post submit_skills_diagnostic_path(d), params: { answers: {} }
     end
 
-    assert_redirected_to competences_diagnostic_path(d)
+    assert_redirected_to skills_diagnostic_path(d)
     assert_equal({}, d.reload.score_data)
   end
 
@@ -261,7 +261,7 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
 
     get validation_diagnostic_path(d)
 
-    assert_redirected_to competences_diagnostic_path(d)
+    assert_redirected_to skills_diagnostic_path(d)
   end
 
   private
