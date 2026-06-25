@@ -1,0 +1,32 @@
+<% content_for :page_title, "Academic field details" %>
+
+<%= render "shared/page_header",
+    title: "Academic field",
+    subtitle: "View academic field reference details",
+    action_text: "Edit",
+    action_url: edit_admin_academic_field_path(@academic_field),
+    action_icon: "edit-3",
+    action_type: :primary %>
+
+<div class="space-y-8 max-w-2xl">
+  <%= render "shared/show_card",
+      title: @academic_field.name,
+      icon: "git-branch",
+      items: [
+        { label: "Academic field name", value: @academic_field.name },
+        { label: "Slug", value: content_tag(:span, @academic_field.slug, class: "font-mono text-xs") },
+        { label: "Position", value: @academic_field.position }
+      ] %>
+
+  <div class="flex items-center gap-4">
+    <%= link_to admin_academic_fields_path, class: "inline-flex items-center px-4 py-2 bg-slate-100 text-slate-700 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-slate-200 transition-colors" do %>
+      <%= lucide_icon "arrow-left", class: "w-4 h-4 mr-2" %>
+      Back to list
+    <% end %>
+
+    <%= button_to admin_academic_field_path(@academic_field), method: :delete, data: { turbo_confirm: "Confirmer la suppression ?" }, class: "inline-flex items-center px-4 py-2 bg-red-50 text-red-600 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-red-100 transition-colors border-0 cursor-pointer" do %>
+      <%= lucide_icon "trash-2", class: "w-4 h-4 mr-2" %>
+      Delete
+    <% end %>
+  </div>
+</div>

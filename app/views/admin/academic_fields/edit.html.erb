@@ -1,0 +1,10 @@
+<% content_for :page_title, "Mettre à jour la filière académique" %>
+
+<%= render "shared/page_header",
+    title: "Mettre à jour la filière académique",
+    subtitle: "Mettre à jour les informations de la filière académique",
+    action_text: "Retour aux filières académiques",
+    action_url: admin_academic_fields_path,
+    action_icon: "arrow-left" %>
+
+<%= render "form", academic_field: @academic_field %>

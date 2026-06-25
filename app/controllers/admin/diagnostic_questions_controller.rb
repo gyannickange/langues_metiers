@@ -75,7 +75,7 @@ class Admin::DiagnosticQuestionsController < Admin::BaseController
 
   def question_params
     params.require(:diagnostic_question).permit(
-      :kind, :text, :disc_type, :competence_slug, :competence_label, :filiere_slug, :position, :active
+      :kind, :text, :disc_type, :skill_slug, :skill_label, :academic_field_slug, :position, :active
     )
   end
 end

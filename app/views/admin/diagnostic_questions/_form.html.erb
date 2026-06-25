@@ -14,7 +14,7 @@
 
     <div>
       <%= f.label :kind, "Type de question", class: "block text-sm font-semibold text-slate-700 mb-1" %>
-      <%= f.select :kind, [["DISC (personnalité)", "disc"], ["Intérêt thématique", "interest"], ["Compétence", "competence"]],
+      <%= f.select :kind, [["DISC (personnalité)", "disc"], ["Intérêt thématique", "interest"], ["Skill", "skill"]],
             {}, data: { assessment_question_form_target: "kind", action: "change->assessment-question-form#toggle" },
             class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
     </div>
@@ -30,21 +30,21 @@
             { include_blank: "— choisir —" }, class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
     </div>
 
-    <div data-assessment-question-form-target="filiereField">
-      <%= f.label :filiere_slug, "Filière", class: "block text-sm font-semibold text-slate-700 mb-1" %>
-      <%= f.select :filiere_slug, Diagnostics::Vocabulary.filiere_options,
+    <div data-assessment-question-form-target="academicField">
+      <%= f.label :academic_field_slug, "Academic field", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+      <%= f.select :academic_field_slug, Diagnostics::Vocabulary.academic_field_options,
             { include_blank: "— choisir —" }, class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
     </div>
 
-    <div data-assessment-question-form-target="competenceField" class="space-y-4">
+    <div data-assessment-question-form-target="skillField" class="space-y-4">
       <div>
-        <%= f.label :competence_slug, "Compétence", class: "block text-sm font-semibold text-slate-700 mb-1" %>
-        <%= f.select :competence_slug, Diagnostics::Vocabulary.competence_options,
+        <%= f.label :skill_slug, "Skill", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+        <%= f.select :skill_slug, Diagnostics::Vocabulary.skill_options,
               { include_blank: "— choisir —" }, class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
       </div>
       <div>
-        <%= f.label :competence_label, "Label affiché", class: "block text-sm font-semibold text-slate-700 mb-1" %>
-        <%= f.text_field :competence_label, placeholder: "Ex: Compétences numériques",
+        <%= f.label :skill_label, "Label affiché", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+        <%= f.text_field :skill_label, placeholder: "Ex: Skills numériques",
               class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
       </div>
     </div>

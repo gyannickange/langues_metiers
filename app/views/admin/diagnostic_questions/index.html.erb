@@ -8,13 +8,13 @@
 
 <%= render "shared/page_header",
     title: "Questions : #{@assessment.title}",
-    subtitle: "Gérer les questions DISC, intérêt thématique et compétences",
+    subtitle: "Gérer les questions DISC, intérêt thématique et skills",
     action_text: "Nouvelle Question",
     action_url: new_admin_assessment_diagnostic_question_path(@assessment, kind: (@kind_filter == "all" ? nil : @kind_filter)),
     action_icon: "plus" %>
 
 <div class="mb-6 flex gap-2">
-  <% [["all", "Toutes"], ["interest", "Intérêt"], ["disc", "DISC"], ["competence", "Compétence"]].each do |kind, label| %>
+  <% [["all", "Toutes"], ["interest", "Intérêt"], ["disc", "DISC"], ["skill", "Skill"]].each do |kind, label| %>
     <%= link_to label,
           admin_assessment_diagnostic_questions_path(@assessment, kind: kind),
           class: "px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all #{@kind_filter == kind ? "bg-[var(--color-primary)] text-white" : "bg-slate-100 text-slate-500 hover:bg-slate-200"}" %>
@@ -47,14 +47,14 @@
             </td>
           <% end %>
           <td class="px-4 py-3">
-            <% badge_colors = { "disc" => "bg-violet-100 text-violet-700", "interest" => "bg-amber-100 text-amber-700", "competence" => "bg-emerald-100 text-emerald-700" } %>
+            <% badge_colors = { "disc" => "bg-violet-100 text-violet-700", "interest" => "bg-amber-100 text-amber-700", "skill" => "bg-emerald-100 text-emerald-700" } %>
             <span class="px-2 py-1 rounded-lg text-xs font-bold <%= badge_colors[q.kind] %>">
               <%= q.kind %><%= " · #{q.disc_type}" if q.disc_type.present? %>
             </span>
           </td>
           <td class="px-4 py-3 text-slate-700 max-w-xs truncate"><%= q.text %></td>
           <td class="px-4 py-3 text-slate-400 text-xs">
-            <%= q.disc_type || q.competence_slug || (q.options.any? ? "#{q.options.length} options" : "—") %>
+            <%= q.disc_type || q.skill_slug || (q.options.any? ? "#{q.options.length} options" : "—") %>
           </td>
           <td class="px-4 py-3 text-slate-400"><%= q.position %></td>
           <td class="px-4 py-3 flex gap-2 justify-end">

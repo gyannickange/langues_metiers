@@ -55,8 +55,8 @@ module Admin
       params.require(:career).permit(
         :title, :slug, :description, :status, :kind,
         :first_action, :premium_pitch, :key_skills_text,
-        :filiere_slug, :affirmations_text,
-        key_skills: [], disc_types: [], required_competences: []
+        :academic_field_slug, :affirmations_text,
+        key_skills: [], disc_types: [], required_skills: []
       )
     end
   end
