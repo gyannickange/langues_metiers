@@ -9,13 +9,13 @@ module Diagnostics
 
     module_function
 
-    def filiere_slugs    = Filiere.order(:position).pluck(:slug)
-    def competence_slugs = Skill.order(:position).pluck(:slug)
+    def academic_field_slugs    = AcademicField.order(:position).pluck(:slug)
+    def skill_slugs = Skill.order(:position).pluck(:slug)
     def disc_type_slugs  = DISC_TYPES.keys
 
     # [label, slug] pairs, ready for Rails select / collection helpers.
-    def filiere_options    = Filiere.order(:position).pluck(:name, :slug)
-    def competence_options = Skill.order(:position).pluck(:name, :slug)
+    def academic_field_options    = AcademicField.order(:position).pluck(:name, :slug)
+    def skill_options = Skill.order(:position).pluck(:name, :slug)
     def disc_type_options  = DISC_TYPES.map { |slug, label| [ label, slug ] }
   end
 end

@@ -4,7 +4,7 @@ class DiagnosticQuestion < ApplicationRecord
   belongs_to :assessment
   has_many :diagnostic_answers, dependent: :nullify
 
-  enum :kind, { disc: "disc", interest: "interest", competence: "competence" }
+  enum :kind, { disc: "disc", interest: "interest", skill: "skill" }
 
   validates :text,     presence: true
   validates :kind,     presence: true
@@ -20,14 +20,14 @@ class DiagnosticQuestion < ApplicationRecord
     @options_json.nil? ? options.to_json : @options_json
   end
 
-  def competence_label
+  def skill_label
     return nil unless options.is_a?(Array)
 
     first = options.first
     first.is_a?(Hash) ? first["label"] : nil
   end
 
-  def competence_label=(value)
+  def skill_label=(value)
     self.options = value.to_s.strip.present? ? [ { "label" => value.to_s.strip } ] : []
   end
 
@@ -46,9 +46,9 @@ class DiagnosticQuestion < ApplicationRecord
     when "disc"
       errors.add(:disc_type, "ne peut pas être vide") if disc_type.blank?
     when "interest"
-      errors.add(:filiere_slug, "ne peut pas être vide") if filiere_slug.blank?
-    when "competence"
-      errors.add(:competence_slug, "ne peut pas être vide") if competence_slug.blank?
+      errors.add(:academic_field_slug, "ne peut pas être vide") if academic_field_slug.blank?
+    when "skill"
+      errors.add(:skill_slug, "ne peut pas être vide") if skill_slug.blank?
     end
   end
 end

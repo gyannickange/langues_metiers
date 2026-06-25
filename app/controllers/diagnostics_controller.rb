@@ -3,7 +3,7 @@ class DiagnosticsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_diagnostic, only: [
     :show, :interest, :submit_interest, :disc, :submit_disc,
-    :competences, :submit_competences, :validation, :submit_validation,
+    :skills, :submit_skills, :validation, :submit_validation,
     :pay, :process_payment, :results, :pdf_status, :download_pdf
   ]
   before_action :require_paid!, only: [ :results, :pdf_status, :download_pdf ]
@@ -45,7 +45,7 @@ class DiagnosticsController < ApplicationController
       answers.each do |question, value|
         @diagnostic.diagnostic_answers.create!(
           diagnostic_question: question,
-          dimension_slug:      question.filiere_slug,
+          dimension_slug:      question.academic_field_slug,
           answer_value:        value.to_s,
           points_awarded:      value
         )
@@ -67,20 +67,20 @@ class DiagnosticsController < ApplicationController
     @questions = active_assessment.diagnostic_questions.disc.active.ordered
   end
 
-  def competences
-    @questions = active_assessment.diagnostic_questions.competence.active.ordered
+  def skills
+    @questions = active_assessment.diagnostic_questions.skill.active.ordered
   end
 
   def validation
     top_ids = top_career_ids
     if top_ids.empty?
-      redirect_to competences_diagnostic_path(@diagnostic), alert: "Veuillez compléter les étapes précédentes."
+      redirect_to skills_diagnostic_path(@diagnostic), alert: "Veuillez compléter les étapes précédentes."
       return
     end
 
     @top_careers = Career.where(id: top_ids).index_by(&:id).values_at(*top_ids).compact
     if @top_careers.size < 2
-      redirect_to competences_diagnostic_path(@diagnostic), alert: "Veuillez compléter les étapes précédentes."
+      redirect_to skills_diagnostic_path(@diagnostic), alert: "Veuillez compléter les étapes précédentes."
       nil
     end
   end
@@ -97,7 +97,7 @@ class DiagnosticsController < ApplicationController
       answers.each do |question, value|
         answer = @diagnostic.diagnostic_answers.find_or_initialize_by(diagnostic_question: question)
         answer.assign_attributes(
-          dimension_slug: question.filiere_slug,
+          dimension_slug: question.academic_field_slug,
           answer_value:   value.to_s,
           points_awarded: value
         )
@@ -126,22 +126,22 @@ class DiagnosticsController < ApplicationController
         answer.save!
       end
     end
-    redirect_to competences_diagnostic_path(@diagnostic)
+    redirect_to skills_diagnostic_path(@diagnostic)
   end
 
-  def submit_competences
-    questions = active_assessment.diagnostic_questions.competence.active.ordered
+  def submit_skills
+    questions = active_assessment.diagnostic_questions.skill.active.ordered
     answers = valid_answers_for(questions) do |_question, value|
       numeric_value = Integer(value, exception: false)
       numeric_value if (1..5).include?(numeric_value)
     end
-    return redirect_incomplete_answers(:competences) unless answers
+    return redirect_incomplete_answers(:skills) unless answers
 
     ActiveRecord::Base.transaction do
       answers.each do |question, value|
         answer = @diagnostic.diagnostic_answers.find_or_initialize_by(diagnostic_question: question)
         answer.assign_attributes(
-          dimension_slug: question.competence_slug,
+          dimension_slug: question.skill_slug,
           answer_value:   value.to_s,
           points_awarded: value
         )
@@ -158,7 +158,7 @@ class DiagnosticsController < ApplicationController
     Diagnostics::ScoringService.call(@diagnostic, affirmation_counts)
     redirect_to pay_diagnostic_path(@diagnostic)
   rescue Diagnostics::ScoringService::InsufficientCareersError
-    redirect_to competences_diagnostic_path(@diagnostic), alert: "Impossible de finaliser le diagnostic. Veuillez vérifier vos réponses."
+    redirect_to skills_diagnostic_path(@diagnostic), alert: "Impossible de finaliser le diagnostic. Veuillez vérifier vos réponses."
   end
 
   def pay
@@ -244,10 +244,10 @@ class DiagnosticsController < ApplicationController
       .distinct
       .pluck("diagnostic_questions.kind")
 
-    if answered_kinds.include?("competence")
+    if answered_kinds.include?("skill")
       validation_diagnostic_path(diagnostic)
     elsif answered_kinds.include?("disc")
-      competences_diagnostic_path(diagnostic)
+      skills_diagnostic_path(diagnostic)
     elsif answered_kinds.include?("interest")
       disc_diagnostic_path(diagnostic)
     else

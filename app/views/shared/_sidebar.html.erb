@@ -24,15 +24,20 @@
       <span class="ml-3"><%= t("Skills") %></span>
     <% end %>
 
+    <%= link_to admin_academic_fields_path, class: nav_link_class(admin_academic_fields_path) do %>
+      <%= lucide_icon "git-branch", class: "w-5 h-5" %>
+      <span class="ml-3"><%= t("Academic Fields") %></span>
+    <% end %>
+
     <%= link_to admin_assessments_path, class: nav_link_class(admin_assessments_path) do %>
       <%= lucide_icon "file-question", class: "w-5 h-5" %>
-      <span class="ml-3">Évaluations</span>
+      <span class="ml-3"><%= t("Assessments") %></span>
     <% end %>
 
 
     <%= link_to admin_trajectories_path, class: nav_link_class(admin_trajectories_path) do %>
       <%= lucide_icon "trending-up", class: "w-5 h-5" %>
-      <span class="ml-3">Trajectoires</span>
+      <span class="ml-3"><%= t("Trajectories") %></span>
     <% end %>
 
     <%= link_to admin_careers_path, class: nav_link_class(admin_careers_path) do %>

@@ -1,8 +1,8 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Shows the per-kind fields (disc_type / filiere_slug / competence) based on `kind`.
+// Shows the per-kind fields (disc_type / academic_field_slug / skill) based on `kind`.
 export default class extends Controller {
-  static targets = ["kind", "discField", "filiereField", "competenceField"]
+  static targets = ["kind", "discField", "academicField", "skillField"]
 
   connect() {
     this.toggle()
@@ -11,7 +11,7 @@ export default class extends Controller {
   toggle() {
     const kind = this.kindTarget.value
     this.discFieldTarget.hidden = kind !== "disc"
-    this.filiereFieldTarget.hidden = kind !== "interest"
-    this.competenceFieldTarget.hidden = kind !== "competence"
+    this.academicFieldTarget.hidden = kind !== "interest"
+    this.skillFieldTarget.hidden = kind !== "skill"
   }
 }

@@ -48,8 +48,8 @@ Rails.application.routes.draw do
       post :submit_interest
       get  :disc
       post :submit_disc
-      get  :competences
-      post :submit_competences
+      get  :skills
+      post :submit_skills
       get  :validation
       post :submit_validation
       get  :pay
@@ -80,6 +80,7 @@ Rails.application.routes.draw do
     resources :careers
     resources :user_skills, only: [ :create, :destroy ]
     resources :skills
+    resources :academic_fields
 
     resources :diagnostics,      only: [ :index, :show ]
     resources :trajectories

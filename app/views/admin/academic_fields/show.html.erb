@@ -1,8 +1,8 @@
-<% content_for :page_title, "Academic field details" %>
+<% content_for :page_title, "Filière académique details" %>
 
 <%= render "shared/page_header",
-    title: "Academic field",
-    subtitle: "View academic field reference details",
+    title: "Filière académique",
+    subtitle: "View Filière académique reference details",
     action_text: "Edit",
     action_url: edit_admin_academic_field_path(@academic_field),
     action_icon: "edit-3",
@@ -13,7 +13,7 @@
       title: @academic_field.name,
       icon: "git-branch",
       items: [
-        { label: "Academic field name", value: @academic_field.name },
+        { label: "Filière académique name", value: @academic_field.name },
         { label: "Slug", value: content_tag(:span, @academic_field.slug, class: "font-mono text-xs") },
         { label: "Position", value: @academic_field.position }
       ] %>
