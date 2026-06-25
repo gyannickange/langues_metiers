@@ -2,6 +2,7 @@ en:
   hello: "Hello"
   Dashboard: "Dashboard"
   Users: "Users"
+  Academic Fields: "Academic Fields"
   auth:
     login: "Log in"
     register: "Register"

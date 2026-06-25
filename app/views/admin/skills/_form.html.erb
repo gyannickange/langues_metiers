@@ -39,8 +39,8 @@
     </div>
 
     <div class="pt-4 flex items-center gap-4">
-      <%= form.submit class: "bg-[var(--color-primary)] text-white px-8 py-3 rounded-xl font-bold text-sm uppercase tracking-widest hover:opacity-90 transition-all shadow-sm transform hover:translate-y-[-1px] cursor-pointer" %>
-      <%= link_to t("Cancel"), admin_skills_path, class: "text-slate-400 text-xs font-bold uppercase tracking-widest hover:text-slate-600 transition-colors" %>
+      <%= form.submit t("Save"), class: "bg-[var(--color-primary)] text-white px-8 py-3 rounded-xl font-bold text-sm tracking-widest hover:opacity-90 transition-all shadow-sm transform hover:translate-y-[-1px] cursor-pointer" %>
+      <%= link_to t("Cancel"), admin_skills_path, class: "text-slate-400 text-xs font-bold tracking-widest hover:text-slate-600 transition-colors" %>
     </div>
   <% end %>
 </div>
