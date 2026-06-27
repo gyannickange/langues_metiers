@@ -21,22 +21,13 @@ export default class extends Controller {
     this.sortable.destroy()
   }
 
-  onEnd(event) {
+  onEnd() {
     if (!this.urlValue) return;
 
-    const itemId = event.item.dataset.id;
-    const newPosition = event.newIndex + 1; // Sortable uses 0-based index, we want 1-based (or just pass array)
-
-    // Alternatively, send the whole array of ordered IDs
     const orderedIds = Array.from(this.element.children).map(child => child.dataset.id);
 
     const data = new FormData();
-    data.append("ordered_ids[]", orderedIds.join(',')); // Send as comma separated array
-
-    // Iterate through orderedIds and append them
-    orderedIds.forEach(id => {
-      data.append("ordered_ids[]", id);
-    });
+    orderedIds.forEach(id => data.append("ordered_ids[]", id));
 
     fetch(this.urlValue, {
       method: "PATCH",

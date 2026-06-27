@@ -17,6 +17,9 @@
       <%= link_to "CLE", cle_path, class: "transition-colors duration-150 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-700 focus-visible:ring-offset-4" %>
       <%= link_to t("home.navigation.about"), about_path, class: "transition-colors duration-150 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-700 focus-visible:ring-offset-4" %>
       <%= link_to t("home.navigation.contact"), contact_path, class: "transition-colors duration-150 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-700 focus-visible:ring-offset-4" %>
+      <% if user_signed_in? %>
+        <%= button_to "Déconnexion", destroy_user_session_path, method: :delete, form_class: "inline", class: "lp-action-secondary min-h-11 !px-4 !py-2 text-sm" %>
+      <% end %>
     </nav>
 
     <button data-mobile-menu-target="button" data-action="click->mobile-menu#toggle keydown.esc@window->mobile-menu#close" type="button" aria-controls="mobile-menu" aria-expanded="false" class="flex min-h-11 min-w-11 items-center justify-center rounded-lg text-gray-600 hover:text-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary lg:hidden">
@@ -35,6 +38,9 @@
       <%= link_to "CLE", cle_path, class: "flex min-h-11 items-center rounded-lg px-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-primary", data: { action: "click->mobile-menu#close" } %>
       <%= link_to t("home.navigation.about"), about_path, class: "flex min-h-11 items-center rounded-lg px-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-primary", data: { action: "click->mobile-menu#close" } %>
       <%= link_to t("home.navigation.contact"), contact_path, class: "flex min-h-11 items-center rounded-lg px-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-primary", data: { action: "click->mobile-menu#close" } %>
+      <% if user_signed_in? %>
+        <%= button_to "Déconnexion", destroy_user_session_path, method: :delete, form_class: "w-full pt-2", class: "lp-action-secondary min-h-11 w-full !px-4 !py-3 text-sm" %>
+      <% end %>
     </nav>
   </div>
 </header>

@@ -1,6 +1,11 @@
 require "test_helper"
 
 class CareerTest < ActiveSupport::TestCase
+  setup do
+    AcademicField.find_or_create_by!(slug: "langues") { |field| field.name = "Langues"; field.position = 1 }
+    Skill.find_or_create_by!(slug: "numerique") { |skill| skill.name = "Compétences numériques"; skill.position = 6 }
+  end
+
   test "valid factory" do
     assert Career.new(title: "Analyste & Veille", slug: "analyste-veille", status: :published, kind: :behavioral).valid?
   end
@@ -32,8 +37,8 @@ class CareerTest < ActiveSupport::TestCase
     assert_respond_to Career.new, :trajectories
   end
 
-  test "diagnostic scope returns only careers with filiere_slug" do
-    c1 = Career.create!(title: "Métier A", filiere_slug: "langues", status: :published, kind: :profession)
+  test "diagnostic scope returns only careers with academic_field_slug" do
+    c1 = Career.create!(title: "Métier A", academic_field_slug: "langues", status: :published, kind: :profession)
     c2 = Career.create!(title: "Métier B", status: :published, kind: :profession)
     assert_includes Career.diagnostic, c1
     assert_not_includes Career.diagnostic, c2
@@ -44,9 +49,9 @@ class CareerTest < ActiveSupport::TestCase
     assert_equal [], c.disc_types
   end
 
-  test "required_competences defaults to empty array" do
+  test "required_skills defaults to empty array" do
     c = Career.create!(title: "Test Career #{SecureRandom.hex(4)}", status: :published, kind: :profession)
-    assert_equal [], c.required_competences
+    assert_equal [], c.required_skills
   end
 
   test "affirmations defaults to empty array" do
@@ -69,10 +74,10 @@ class CareerTest < ActiveSupport::TestCase
 
   test "normalizes array fields by removing blank entries" do
     c = Career.new(title: "X", slug: "x-#{SecureRandom.hex(4)}", kind: :profession,
-                   disc_types: [ "D", "", nil ], required_competences: [ "numerique", "" ])
+                   disc_types: [ "D", "", nil ], required_skills: [ "numerique", "" ])
     c.valid?
     assert_equal [ "D" ], c.disc_types
-    assert_equal [ "numerique" ], c.required_competences
+    assert_equal [ "numerique" ], c.required_skills
   end
 
   test "rejects disc_types outside the DISC vocabulary" do
@@ -81,20 +86,20 @@ class CareerTest < ActiveSupport::TestCase
     assert_includes c.errors[:disc_types].join, "Z"
   end
 
-  test "rejects required_competences outside the vocabulary" do
-    c = Career.new(title: "X", slug: "x-#{SecureRandom.hex(4)}", kind: :profession, required_competences: [ "bogus" ])
+  test "rejects required_skills outside the vocabulary" do
+    c = Career.new(title: "X", slug: "x-#{SecureRandom.hex(4)}", kind: :profession, required_skills: [ "bogus" ])
     assert_not c.valid?
-    assert_includes c.errors[:required_competences].join, "bogus"
+    assert_includes c.errors[:required_skills].join, "bogus"
   end
 
-  test "rejects filiere_slug outside the vocabulary" do
-    c = Career.new(title: "X", slug: "x-#{SecureRandom.hex(4)}", kind: :profession, filiere_slug: "nope")
+  test "rejects academic_field_slug outside the vocabulary" do
+    c = Career.new(title: "X", slug: "x-#{SecureRandom.hex(4)}", kind: :profession, academic_field_slug: "nope")
     assert_not c.valid?
-    assert_not_empty c.errors[:filiere_slug]
+    assert_not_empty c.errors[:academic_field_slug]
   end
 
-  test "behavioral profile is valid with no filiere_slug" do
-    c = Career.new(title: "X", slug: "x-#{SecureRandom.hex(4)}", kind: :behavioral, filiere_slug: nil)
+  test "behavioral profile is valid with no academic_field_slug" do
+    c = Career.new(title: "X", slug: "x-#{SecureRandom.hex(4)}", kind: :behavioral, academic_field_slug: nil)
     assert c.valid?, c.errors.full_messages.to_sentence
   end
 end

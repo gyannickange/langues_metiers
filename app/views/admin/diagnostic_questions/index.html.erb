@@ -1,25 +1,32 @@
 <%# app/views/admin/diagnostic_questions/index.html.erb %>
 <% content_for :page_title, "Questions du Diagnostic" %>
 
+<%= link_to edit_admin_assessment_path(@assessment), class: "inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-slate-600 transition-colors mb-4" do %>
+  <%= lucide_icon "arrow-left", class: "w-4 h-4" %>
+  Retour à l'évaluation
+<% end %>
+
 <%= render "shared/page_header",
-    title: @assessment ? "Questions : #{@assessment.title}" : "Questions du Diagnostic",
-    subtitle: "Gérer les questions DISC, intérêt thématique et compétences",
+    title: "Questions : #{@assessment.title}",
+    subtitle: "Gérer les questions DISC, intérêt thématique et skills",
     action_text: "Nouvelle Question",
-    action_url: @assessment ? new_admin_assessment_diagnostic_question_path(@assessment) : new_admin_diagnostic_question_path,
+    action_url: new_admin_assessment_diagnostic_question_path(@assessment, kind: (@kind_filter == "all" ? nil : @kind_filter)),
     action_icon: "plus" %>
 
 <div class="mb-6 flex gap-2">
-  <% [["all", "Toutes"], ["interest", "Intérêt"], ["disc", "DISC"], ["competence", "Compétence"]].each do |kind, label| %>
+  <% [["all", "Toutes"], ["interest", "Intérêt"], ["disc", "DISC"], ["skill", "Skill"]].each do |kind, label| %>
     <%= link_to label,
-          @assessment ? admin_assessment_diagnostic_questions_path(@assessment, kind: kind) : admin_diagnostic_questions_path(kind: kind),
+          admin_assessment_diagnostic_questions_path(@assessment, kind: kind),
           class: "px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all #{@kind_filter == kind ? "bg-[var(--color-primary)] text-white" : "bg-slate-100 text-slate-500 hover:bg-slate-200"}" %>
   <% end %>
 </div>
 
+<% sortable_enabled = @kind_filter != "all" %>
 <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
   <table class="w-full text-sm">
     <thead class="bg-slate-50 border-b border-slate-200">
       <tr>
+        <% if sortable_enabled %><th class="px-4 py-3 w-8"></th><% end %>
         <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-widest text-slate-400">Type</th>
         <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-widest text-slate-400">Question</th>
         <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-widest text-slate-400">Métadonnée</th>
@@ -27,23 +34,32 @@
         <th class="px-4 py-3"></th>
       </tr>
     </thead>
-    <tbody class="divide-y divide-slate-100">
+    <tbody class="divide-y divide-slate-100"
+        <% if sortable_enabled %>
+          data-controller="sortable"
+          data-sortable-url-value="<%= reorder_admin_assessment_diagnostic_questions_path(@assessment, kind: @kind_filter) %>"
+        <% end %>>
       <% @questions.each do |q| %>
-        <tr class="hover:bg-slate-50">
+        <tr class="hover:bg-slate-50" data-id="<%= q.id %>">
+          <% if sortable_enabled %>
+            <td class="px-4 py-3 text-slate-300 cursor-grab" data-sortable-handle>
+              <%= lucide_icon "grip-vertical", class: "w-4 h-4" %>
+            </td>
+          <% end %>
           <td class="px-4 py-3">
-            <% badge_colors = { "disc" => "bg-violet-100 text-violet-700", "interest" => "bg-amber-100 text-amber-700", "competence" => "bg-emerald-100 text-emerald-700" } %>
+            <% badge_colors = { "disc" => "bg-violet-100 text-violet-700", "interest" => "bg-amber-100 text-amber-700", "skill" => "bg-emerald-100 text-emerald-700" } %>
             <span class="px-2 py-1 rounded-lg text-xs font-bold <%= badge_colors[q.kind] %>">
               <%= q.kind %><%= " · #{q.disc_type}" if q.disc_type.present? %>
             </span>
           </td>
           <td class="px-4 py-3 text-slate-700 max-w-xs truncate"><%= q.text %></td>
           <td class="px-4 py-3 text-slate-400 text-xs">
-            <%= q.disc_type || q.competence_slug || (q.options.any? ? "#{q.options.length} options" : "—") %>
+            <%= q.disc_type || q.skill_slug || (q.options.any? ? "#{q.options.length} options" : "—") %>
           </td>
           <td class="px-4 py-3 text-slate-400"><%= q.position %></td>
           <td class="px-4 py-3 flex gap-2 justify-end">
-            <%= link_to "Modifier", edit_admin_diagnostic_question_path(q), class: "text-xs text-[var(--color-primary)] hover:underline" %>
-            <%= button_to "Supprimer", admin_diagnostic_question_path(q), method: :delete,
+            <%= link_to "Modifier", edit_admin_assessment_diagnostic_question_path(@assessment, q), class: "text-xs text-[var(--color-primary)] hover:underline" %>
+            <%= button_to "Supprimer", admin_assessment_diagnostic_question_path(@assessment, q), method: :delete,
                   data: { turbo_confirm: "Supprimer cette question ?" },
                   class: "text-xs text-red-500 hover:underline bg-transparent border-0 cursor-pointer" %>
           </td>

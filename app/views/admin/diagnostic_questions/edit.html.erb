@@ -4,7 +4,7 @@
 <%= render "shared/page_header",
     title: "Modifier la Question",
     action_text: "Retour",
-    action_url: @assessment ? admin_assessment_diagnostic_questions_path(@assessment) : admin_diagnostic_questions_path,
+    action_url: admin_assessment_diagnostic_questions_path(@assessment),
     action_icon: "arrow-left" %>
 
 <%= render "form", question: @question, assessment: @assessment %>

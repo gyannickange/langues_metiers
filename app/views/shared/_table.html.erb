@@ -25,12 +25,12 @@
   <!-- Table Header (Desktop only) -->
   <div class="hidden md:grid gap-4 px-8 py-4 bg-slate-50/50 rounded-2xl border border-slate-100/50" style="<%= grid_style %>">
     <% columns.each_with_index do |col, col_index| %>
-      <div class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] <%= "md:pl-2" if col_index == 0 %>">
+      <div class="text-[10px] font-black text-slate-400 tracking-[0.2em] <%= "md:pl-2" if col_index == 0 %>">
         <%= col[:header] %>
       </div>
     <% end %>
     <% if has_actions %>
-      <div class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right md:pr-2">
+      <div class="text-[10px] font-black text-slate-400 tracking-[0.2em] text-right md:pr-2">
         <%= t("Actions") %>
       </div>
     <% end %>

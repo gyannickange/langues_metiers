@@ -46,7 +46,7 @@
       <p class="text-[10px] font-black uppercase tracking-widest text-[var(--color-primary)]">Champs profil comportemental</p>
 
       <div class="space-y-1">
-        <%= f.label :key_skills_text, "Compétences clés (une par ligne)", class: "text-[10px] font-black uppercase tracking-widest text-slate-400" %>
+        <%= f.label :key_skills_text, "Key skills (one per line)", class: "text-[10px] font-black uppercase tracking-widest text-slate-400" %>
         <%= f.text_area :key_skills_text, rows: 4,
               class: "w-full bg-slate-50 border-0 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all" %>
       </div>
@@ -69,8 +69,8 @@
       <p class="text-[10px] font-black uppercase tracking-widest text-[var(--color-primary)]">Champs métier (diagnostic)</p>
 
       <div class="space-y-1">
-        <%= f.label :filiere_slug, "Filière", class: "text-[10px] font-black uppercase tracking-widest text-slate-400" %>
-        <%= f.select :filiere_slug, Diagnostics::Vocabulary.filiere_options,
+        <%= f.label :academic_field_slug, "Academic field", class: "text-[10px] font-black uppercase tracking-widest text-slate-400" %>
+        <%= f.select :academic_field_slug, Diagnostics::Vocabulary.academic_field_options,
               { include_blank: "— choisir —" },
               class: "w-full bg-slate-50 border-0 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all cursor-pointer" %>
       </div>
@@ -88,9 +88,9 @@
       </div>
 
       <div class="space-y-1">
-        <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Compétences requises</span>
+        <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Required skills</span>
         <div class="grid grid-cols-2 gap-2">
-          <%= f.collection_check_boxes :required_competences, Diagnostics::Vocabulary::COMPETENCES.to_a, :first, :last do |b| %>
+          <%= f.collection_check_boxes :required_skills, Diagnostics::Vocabulary.skill_options, :last, :first do |b| %>
             <label class="flex items-center gap-2 text-sm font-medium cursor-pointer">
               <%= b.check_box(class: "rounded border-slate-300 text-[var(--color-primary)]") %>
               <%= b.text %>
@@ -107,8 +107,8 @@
     </div>
 
     <div class="pt-4 flex items-center gap-4">
-      <%= f.submit t("Save"), class: "bg-[var(--color-primary)] text-white px-8 py-3 rounded-xl font-bold text-sm uppercase tracking-widest hover:opacity-90 transition-all shadow-sm transform hover:translate-y-[-1px]" %>
-      <%= link_to t("Cancel"), admin_careers_path, class: "text-slate-400 text-xs font-bold uppercase tracking-widest hover:text-slate-600 transition-colors" %>
+      <%= f.submit t("Save"), class: "bg-[var(--color-primary)] text-white px-8 py-3 rounded-xl font-bold text-sm tracking-widest hover:opacity-90 transition-all shadow-sm transform hover:translate-y-[-1px]" %>
+      <%= link_to t("Cancel"), admin_careers_path, class: "text-slate-400 text-xs font-bold tracking-widest hover:text-slate-600 transition-colors" %>
     </div>
   <% end %>
 </div>

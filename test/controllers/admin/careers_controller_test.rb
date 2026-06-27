@@ -11,25 +11,25 @@ class Admin::CareersControllerTest < ActionDispatch::IntegrationTest
 
   test "update persists the four diagnostic fields on a profession career" do
     patch admin_career_path(@metier), params: { career: {
-      filiere_slug: "langues",
+      academic_field_slug: "langues",
       disc_types: [ "C", "S" ],
-      required_competences: [ "langues_etrangeres", "communication_ecrite" ],
+      required_skills: [ "langues_etrangeres", "communication_ecrite" ],
       affirmations_text: "Affirmation une\nAffirmation deux"
     } }
 
     assert_redirected_to admin_careers_path
     @metier.reload
-    assert_equal "langues", @metier.filiere_slug
+    assert_equal "langues", @metier.academic_field_slug
     assert_equal [ "C", "S" ], @metier.disc_types
-    assert_equal [ "langues_etrangeres", "communication_ecrite" ], @metier.required_competences
+    assert_equal [ "langues_etrangeres", "communication_ecrite" ], @metier.required_skills
     assert_equal [ "Affirmation une", "Affirmation deux" ], @metier.affirmations
   end
 
-  test "update with invalid filiere re-renders with an error" do
-    patch admin_career_path(@metier), params: { career: { filiere_slug: "bogus" } }
+  test "update with invalid academic_field re-renders with an error" do
+    patch admin_career_path(@metier), params: { career: { academic_field_slug: "bogus" } }
 
     assert_response :unprocessable_entity
-    assert_select "li", text: /filière/
+    assert_select "li", text: /academic field/
   end
 
   test "update persists behavioral profile fields" do
@@ -43,5 +43,39 @@ class Admin::CareersControllerTest < ActionDispatch::IntegrationTest
     @profil.reload
     assert_equal "Faites X", @profil.first_action
     assert_equal [ "Leadership", "Communication" ], @profil.key_skills
+  end
+
+  test "update redirects with see_other so Turbo does not replay the PATCH" do
+    patch admin_career_path(@metier), params: { career: { title: "Nouveau titre" } }
+
+    assert_response :see_other
+  end
+
+  test "destroy redirects with see_other so Turbo does not replay the DELETE" do
+    delete admin_career_path(@metier)
+
+    assert_response :see_other
+    assert_redirected_to admin_careers_path
+  end
+
+  test "index renders without missing translations" do
+    get admin_careers_path
+
+    assert_response :success
+    assert_no_match "translation missing", response.body
+  end
+
+  test "new renders without missing translations" do
+    get new_admin_career_path
+
+    assert_response :success
+    assert_no_match "translation missing", response.body
+  end
+
+  test "edit renders without missing translations" do
+    get edit_admin_career_path(@metier)
+
+    assert_response :success
+    assert_no_match "translation missing", response.body
   end
 end

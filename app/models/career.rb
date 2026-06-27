@@ -2,7 +2,7 @@ class Career < ApplicationRecord
   enum :status, { draft: 0, published: 1, archived: 2 }, default: :published
   enum :kind, { behavioral: "behavioral", profession: "profession" }, default: "behavioral"
 
-  scope :diagnostic, -> { where.not(filiere_slug: nil) }
+  scope :diagnostic, -> { where.not(academic_field_slug: nil) }
 
   has_many :trajectories, dependent: :destroy
 
@@ -10,8 +10,8 @@ class Career < ApplicationRecord
   validates :status, presence: true
   validates :slug, uniqueness: true, presence: true, if: :behavioral?
 
-  validates :filiere_slug,
-            inclusion: { in: Diagnostics::Vocabulary.filiere_slugs, message: "n'est pas une filière valide" },
+  validates :academic_field_slug,
+            inclusion: { in: ->(_record) { Diagnostics::Vocabulary.academic_field_slugs }, message: "is not a valid academic field" },
             allow_blank: true
   validate :diagnostic_arrays_within_vocabulary
 
@@ -50,7 +50,7 @@ class Career < ApplicationRecord
 
   def normalize_diagnostic_arrays
     self.disc_types           = Array(disc_types).map(&:to_s).reject(&:blank?)
-    self.required_competences = Array(required_competences).map(&:to_s).reject(&:blank?)
+    self.required_skills = Array(required_skills).map(&:to_s).reject(&:blank?)
   end
 
   def diagnostic_arrays_within_vocabulary
@@ -59,9 +59,9 @@ class Career < ApplicationRecord
       errors.add(:disc_types, "contient des valeurs invalides : #{invalid_disc.join(', ')}")
     end
 
-    invalid_comp = required_competences - Diagnostics::Vocabulary.competence_slugs
-    if invalid_comp.any?
-      errors.add(:required_competences, "contient des valeurs invalides : #{invalid_comp.join(', ')}")
+    invalid_skills = required_skills - Diagnostics::Vocabulary.skill_slugs
+    if invalid_skills.any?
+      errors.add(:required_skills, "contient des valeurs invalides : #{invalid_skills.join(', ')}")
     end
   end
 end

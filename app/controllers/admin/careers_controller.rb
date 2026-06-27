@@ -34,7 +34,7 @@ module Admin
 
     def update
       if @career.update(career_params)
-        redirect_to admin_careers_path, notice: t("Career updated")
+        redirect_to admin_careers_path, notice: t("Career updated"), status: :see_other
       else
         render :edit, status: :unprocessable_entity
       end
@@ -42,7 +42,7 @@ module Admin
 
     def destroy
       @career.destroy
-      redirect_to admin_careers_path, notice: t("Career deleted")
+      redirect_to admin_careers_path, notice: t("Career deleted"), status: :see_other
     end
 
     private
@@ -55,8 +55,8 @@ module Admin
       params.require(:career).permit(
         :title, :slug, :description, :status, :kind,
         :first_action, :premium_pitch, :key_skills_text,
-        :filiere_slug, :affirmations_text,
-        key_skills: [], disc_types: [], required_competences: []
+        :academic_field_slug, :affirmations_text,
+        key_skills: [], disc_types: [], required_skills: []
       )
     end
   end

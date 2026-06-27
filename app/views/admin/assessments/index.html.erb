@@ -11,7 +11,14 @@
   columns: [
     { header: "Titre", cell: ->(a){ content_tag(:div, a.title, class: "font-bold text-slate-800") } },
     { header: "Description", cell: ->(a){ content_tag(:div, a.description&.truncate(60), class: "text-slate-500 text-sm") } },
-    { header: "Questions", cell: ->(a){ content_tag(:span, a.diagnostic_questions.count, class: "font-mono font-bold text-xs bg-slate-100 px-2 py-0.5 rounded text-slate-600") } },
+    { header: "Questions", cell: ->(a){
+      capture do %>
+        <%= link_to admin_assessment_diagnostic_questions_path(a), class: "inline-flex items-center gap-1 font-mono font-bold text-xs bg-slate-100 hover:bg-slate-200 px-2 py-0.5 rounded text-slate-600 transition-colors" do %>
+          <%= a.diagnostic_questions.count %>
+          <%= lucide_icon "arrow-right", class: "w-3 h-3" %>
+        <% end %>
+      <% end
+    } },
     { header: "Statut", cell: ->(a){ render "shared/badge", label: (a.active? ? "Actif" : "Inactif"), color: (a.active? ? :green : :gray) } }
   ],
   rows: @assessments,
@@ -24,7 +31,7 @@
         <% end %>
       <% end %>
       
-<%= link_to edit_admin_assessment_path(a), class: "mr-2 p-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors" do %>
+      <%= link_to edit_admin_assessment_path(a), class: "mr-2 p-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors" do %>
         <%= lucide_icon "edit-3", class: "w-4 h-4" %>
       <% end %>
       

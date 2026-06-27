@@ -12,17 +12,17 @@ class Admin::AssessmentsController < Admin::BaseController
   end
 
   def update
-    @assessment.update(assessment_params) ? redirect_to(admin_assessments_path, notice: "Évaluation mise à jour.") : render(:edit, status: :unprocessable_entity)
+    @assessment.update(assessment_params) ? redirect_to(admin_assessments_path, notice: "Évaluation mise à jour.", status: :see_other) : render(:edit, status: :unprocessable_entity)
   end
 
   def destroy
     @assessment.destroy
-    redirect_to admin_assessments_path, notice: "Évaluation supprimée."
+    redirect_to admin_assessments_path, notice: "Évaluation supprimée.", status: :see_other
   end
 
   def activate
     @assessment.update!(active: true)
-    redirect_to admin_assessments_path, notice: "L'évaluation est maintenant active."
+    redirect_to admin_assessments_path, notice: "L'évaluation est maintenant active.", status: :see_other
   end
 
   private

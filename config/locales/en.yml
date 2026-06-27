@@ -2,6 +2,7 @@ en:
   hello: "Hello"
   Dashboard: "Dashboard"
   Users: "Users"
+  Academic Fields: "Academic Fields"
   auth:
     login: "Log in"
     register: "Register"
@@ -67,9 +68,9 @@ en:
         digital: "Digital Dimension"
         impact: "Organizational Impact"
       footer: "These orientations are proposed based on the dominant strategic profile identified by your diagnostic."
+      empty: "New career paths will be available here soon."
     solution:
       badge: "The Solution"
-      title: "Strategic Repositioning Diagnostic"
       subtitle: "In just 20 minutes, change your vision of the future and get a concrete roadmap for your career."
       report: "Restitution in the form of a personalized report."
     how_it_works:

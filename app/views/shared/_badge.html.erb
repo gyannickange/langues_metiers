@@ -13,7 +13,7 @@
   gray: "bg-slate-50 text-slate-500 border-slate-100",
   slate: "bg-slate-50 text-slate-500 border-slate-100"
 } %>
-<span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.15em] border transition-all duration-300 shadow-sm <%= badge_classes[color.to_sym] || badge_classes[:slate] %>">
+<span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black tracking-[0.15em] border transition-all duration-300 shadow-sm <%= badge_classes[color.to_sym] || badge_classes[:slate] %>">
   <span class="w-1.5 h-1.5 rounded-full mr-2 <%= "bg-emerald-500" if color.to_sym == :green || color.to_sym == :published %><%= "bg-amber-500" if color.to_sym == :gold || color.to_sym == :draft %><%= "bg-slate-400" if color.to_sym == :gray || color.to_sym == :archived %>"></span>
   <%= label %>
 </span>

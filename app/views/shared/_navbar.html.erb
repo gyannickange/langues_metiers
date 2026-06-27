@@ -16,6 +16,9 @@
         <%= link_to "Nouveau Diagnostic", (user_signed_in? ? new_diagnostic_path : new_user_session_path(redirect_to: new_diagnostic_path)), class: "hover:text-primary transition-colors duration-300" %>
         <%= link_to "Les Métiers", careers_path, class: "hover:text-primary transition-colors duration-300" %>
         <%= link_to "CLE", cle_path, class: "hover:text-primary transition-colors duration-300" %>
+        <% if user_signed_in? %>
+          <%= button_to "Déconnexion", destroy_user_session_path, method: :delete, form_class: "inline", class: "lp-action-secondary min-h-11 !px-4 !py-2 text-sm" %>
+        <% end %>
         
         <!-- Premium Header Button -->
         <% if false %>
@@ -44,6 +47,9 @@
       <%= link_to "Nouveau Diagnostic", (user_signed_in? ? new_diagnostic_path : new_user_session_path(redirect_to: new_diagnostic_path)), class: "hover:text-primary transition-colors duration-300" %>
       <%= link_to "Les Métiers", careers_path, class: "hover:text-primary transition-colors duration-300" %>
       <%= link_to "CLE", cle_path, class: "hover:text-primary transition-colors duration-300" %>
+      <% if user_signed_in? %>
+        <%= button_to "Déconnexion", destroy_user_session_path, method: :delete, form_class: "w-full", class: "lp-action-secondary min-h-11 w-full !px-4 !py-3 text-sm" %>
+      <% end %>
       
       <div class="pt-6 mt-4 border-t border-gray-100">
         <% if false %>

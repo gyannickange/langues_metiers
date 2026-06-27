@@ -24,8 +24,8 @@ module Diagnostics
 
     def calculate_scores
       disc_scores       = Hash.new(0)
-      filiere_scores    = Hash.new(0)
-      competence_scores = {}
+      academic_field_scores    = Hash.new(0)
+      skill_scores = {}
 
       @diagnostic.diagnostic_answers.includes(:diagnostic_question).each do |answer|
         q = answer.diagnostic_question
@@ -36,28 +36,28 @@ module Diagnostics
           next if q.disc_type.nil?
           disc_scores[q.disc_type] += answer.points_awarded.to_i
         when "interest"
-          filiere_scores[answer.dimension_slug] += answer.points_awarded.to_i
-        when "competence"
-          competence_scores[q.competence_slug] = answer.points_awarded.to_i
+          academic_field_scores[answer.dimension_slug] += answer.points_awarded.to_i
+        when "skill"
+          skill_scores[q.skill_slug] = answer.points_awarded.to_i
         end
       end
 
-      { "disc_scores" => disc_scores, "filiere_scores" => filiere_scores, "competence_scores" => competence_scores }
+      { "disc_scores" => disc_scores, "academic_field_scores" => academic_field_scores, "skill_scores" => skill_scores }
     end
 
     def rank_careers(scores)
       disc_scores       = scores["disc_scores"]
-      filiere_scores    = scores["filiere_scores"]
-      competence_scores = scores["competence_scores"]
+      academic_field_scores    = scores["academic_field_scores"]
+      skill_scores = scores["skill_scores"]
 
       dominant_disc    = disc_scores.sort_by { |_, v| -v }.first(2).map(&:first)
-      dominant_filiere = filiere_scores.max_by { |_, v| v }&.first
+      dominant_academic_field = academic_field_scores.max_by { |_, v| v }&.first
 
       Career.diagnostic.published.map do |career|
         disc_match    = career.disc_types.count { |t| dominant_disc.include?(t) } * 3
-        filiere_match = dominant_filiere && career.filiere_slug == dominant_filiere ? 5 : 0
-        comp_match    = (career.required_competences || []).sum { |c| competence_scores[c].to_i }
-        [ career, disc_match + filiere_match + comp_match ]
+        academic_field_match = dominant_academic_field && career.academic_field_slug == dominant_academic_field ? 5 : 0
+        comp_match    = (career.required_skills || []).sum { |c| skill_scores[c].to_i }
+        [ career, disc_match + academic_field_match + comp_match ]
       end.sort_by { |_, s| -s }
     end
   end
