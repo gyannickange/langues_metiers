@@ -1,9 +1,9 @@
 <% content_for :title, "Finalisez votre inscription" %>
 
 <% label_classes = "mb-2 block text-sm font-semibold text-secondary" %>
-<% control_classes = "block min-h-11 w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-base text-gray-900 placeholder:text-gray-500 shadow-sm transition-colors focus:border-secondary focus:outline-none focus:ring-2 focus:ring-secondary/25 sm:text-sm" %>
+<% control_classes = "block min-h-11 w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-base text-gray-900 placeholder:text-gray-500 shadow-sm transition-colors focus:border-secondary focus:outline-none focus:ring-2 focus:ring-secondary-600 focus:ring-offset-1 sm:text-sm" %>
 
-<main class="flex min-h-screen items-center justify-center bg-[#F8F9FA] px-4 py-8 font-sans selection:bg-primary-500 selection:text-secondary sm:px-6 sm:py-10 lg:px-8">
+<main class="flex min-h-screen items-center justify-center bg-sidebar px-4 py-8 font-sans selection:bg-primary-500 selection:text-secondary sm:px-6 sm:py-10 lg:px-8">
   <div class="w-full max-w-2xl">
     <div class="mb-6 flex justify-center">
       <%= link_to root_path, class: "rounded-lg text-3xl font-extrabold tracking-tight text-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-4", aria: { label: "Accueil Insertrice" } do %>
@@ -38,36 +38,54 @@
         <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div>
             <%= f.label :first_name, "Prénom", class: label_classes %>
-            <%= f.text_field :first_name, required: true, aria: { invalid: current_user.errors[:first_name].any? }, class: control_classes, placeholder: "Ex: Aminata" %>
+            <%= f.text_field :first_name, required: true, aria: { invalid: current_user.errors[:first_name].any?, describedby: ("first-name-error" if current_user.errors[:first_name].any?) }, class: control_classes, placeholder: "Ex: Aminata" %>
+            <% if current_user.errors[:first_name].any? %>
+              <p id="first-name-error" class="mt-1.5 text-sm text-red-700"><%= current_user.errors[:first_name].to_sentence %></p>
+            <% end %>
           </div>
 
           <div>
             <%= f.label :last_name, "Nom", class: label_classes %>
-            <%= f.text_field :last_name, required: true, aria: { invalid: current_user.errors[:last_name].any? }, class: control_classes, placeholder: "Ex: Diallo" %>
+            <%= f.text_field :last_name, required: true, aria: { invalid: current_user.errors[:last_name].any?, describedby: ("last-name-error" if current_user.errors[:last_name].any?) }, class: control_classes, placeholder: "Ex: Diallo" %>
+            <% if current_user.errors[:last_name].any? %>
+              <p id="last-name-error" class="mt-1.5 text-sm text-red-700"><%= current_user.errors[:last_name].to_sentence %></p>
+            <% end %>
           </div>
 
           <div>
             <%= f.label :country, "Pays", class: label_classes %>
-            <%= f.text_field :country, required: true, aria: { invalid: current_user.errors[:country].any? }, class: control_classes, placeholder: "Ex: Côte d'Ivoire" %>
+            <%= f.text_field :country, required: true, aria: { invalid: current_user.errors[:country].any?, describedby: ("country-error" if current_user.errors[:country].any?) }, class: control_classes, placeholder: "Ex: Côte d'Ivoire" %>
+            <% if current_user.errors[:country].any? %>
+              <p id="country-error" class="mt-1.5 text-sm text-red-700"><%= current_user.errors[:country].to_sentence %></p>
+            <% end %>
           </div>
 
           <div>
             <%= f.label :city, "Ville", class: label_classes %>
-            <%= f.text_field :city, required: true, aria: { invalid: current_user.errors[:city].any? }, class: control_classes, placeholder: "Ex: Abidjan" %>
+            <%= f.text_field :city, required: true, aria: { invalid: current_user.errors[:city].any?, describedby: ("city-error" if current_user.errors[:city].any?) }, class: control_classes, placeholder: "Ex: Abidjan" %>
+            <% if current_user.errors[:city].any? %>
+              <p id="city-error" class="mt-1.5 text-sm text-red-700"><%= current_user.errors[:city].to_sentence %></p>
+            <% end %>
           </div>
 
           <div class="sm:col-span-2">
             <%= f.label :diploma, "Diplôme principal", class: label_classes %>
-            <%= f.select :diploma, ["Baccalauréat", "Licence", "Master", "Doctorat", "Autres diplômes", "Autodidacte"], { prompt: "Sélectionnez votre plus haut niveau d'étude" }, { required: true, aria: { invalid: current_user.errors[:diploma].any? }, class: control_classes } %>
+            <%= f.select :diploma, ["Baccalauréat", "Licence", "Master", "Doctorat", "Autres diplômes", "Autodidacte"], { prompt: "Sélectionnez votre plus haut niveau d'étude" }, { required: true, aria: { invalid: current_user.errors[:diploma].any?, describedby: ("diploma-error" if current_user.errors[:diploma].any?) }, class: control_classes } %>
+            <% if current_user.errors[:diploma].any? %>
+              <p id="diploma-error" class="mt-1.5 text-sm text-red-700"><%= current_user.errors[:diploma].to_sentence %></p>
+            <% end %>
           </div>
 
           <div class="sm:col-span-2">
             <%= f.label :employment_status, "Situation actuelle", class: label_classes %>
-            <%= f.select :employment_status, ["Étudiant(e)", "En recherche d'emploi", "En emploi", "Freelance / Indépendant(e)", "Entrepreneur(e)"], { prompt: "Sélectionnez votre situation" }, { required: true, aria: { invalid: current_user.errors[:employment_status].any? }, class: control_classes } %>
+            <%= f.select :employment_status, ["Étudiant(e)", "En recherche d'emploi", "En emploi", "Freelance / Indépendant(e)", "Entrepreneur(e)"], { prompt: "Sélectionnez votre situation" }, { required: true, aria: { invalid: current_user.errors[:employment_status].any?, describedby: ("employment-status-error" if current_user.errors[:employment_status].any?) }, class: control_classes } %>
+            <% if current_user.errors[:employment_status].any? %>
+              <p id="employment-status-error" class="mt-1.5 text-sm text-red-700"><%= current_user.errors[:employment_status].to_sentence %></p>
+            <% end %>
           </div>
         </div>
 
-        <button type="submit" class="flex min-h-11 w-full items-center justify-center rounded-xl bg-primary px-5 py-3 font-bold text-secondary shadow-sm transition-colors hover:bg-primary-500 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2">
+        <button type="submit" class="flex min-h-11 w-full items-center justify-center rounded-xl bg-primary px-5 py-3 font-bold text-secondary shadow-sm transition-colors hover:bg-primary-600 active:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2">
           <span>Enregistrer et continuer</span>
           <svg class="ml-3 h-5 w-5" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0-7 7m7-7H3"></path>

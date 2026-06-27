@@ -24,7 +24,9 @@ class OnboardingControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "shows an accessible error summary when onboarding values are blank" do
+  test "shows an accessible error summary when the user update fails" do
+    # Onboarding fields have no model validations; an invalid email exercises the
+    # controller's existing failure render without changing production behavior.
     @user.update_column(:email, "")
 
     patch onboarding_path,
@@ -41,7 +43,8 @@ class OnboardingControllerTest < ActionDispatch::IntegrationTest
       headers: @default_headers
 
     assert_response :unprocessable_entity
-    assert_select "[role='alert']" do
+    assert_select "[role='alert'][aria-labelledby='onboarding-errors-heading']" do
+      assert_select "#onboarding-errors-heading", count: 1
       assert_select "li", minimum: 1
     end
   end
