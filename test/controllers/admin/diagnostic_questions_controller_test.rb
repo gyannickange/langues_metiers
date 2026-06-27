@@ -136,4 +136,132 @@ class Admin::DiagnosticQuestionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_select "[data-sortable-handle]", count: 1
   end
+
+  test "index renders each row with a stable turbo dom id" do
+    question = @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, academic_field_slug: "langues")
+
+    get admin_assessment_diagnostic_questions_path(@assessment)
+
+    assert_select "tr##{dom_id(question)}"
+  end
+
+  test "update via turbo stream replaces the row with the new text" do
+    question = @assessment.diagnostic_questions.create!(kind: "interest", text: "Texte original", position: 1, active: true, academic_field_slug: "langues")
+
+    patch admin_assessment_diagnostic_question_path(@assessment, question),
+          params: { diagnostic_question: { text: "Texte corrigé" } },
+          headers: { "X-Inline-Edit" => "true" }
+
+    assert_equal "text/vnd.turbo-stream.html", response.media_type
+    assert_select "turbo-stream[action=replace][target=?]", dom_id(question)
+    assert_match "Texte corrigé", response.body
+    assert_equal "Texte corrigé", question.reload.text
+  end
+
+  test "update via turbo stream replaces the row with the new position" do
+    question = @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, academic_field_slug: "langues")
+
+    patch admin_assessment_diagnostic_question_path(@assessment, question),
+          params: { diagnostic_question: { position: 5 } },
+          headers: { "X-Inline-Edit" => "true" }
+
+    assert_equal "text/vnd.turbo-stream.html", response.media_type
+    assert_equal 5, question.reload.position
+  end
+
+  test "update via turbo stream toggles active" do
+    question = @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, academic_field_slug: "langues")
+
+    patch admin_assessment_diagnostic_question_path(@assessment, question),
+          params: { diagnostic_question: { active: "0" } },
+          headers: { "X-Inline-Edit" => "true" }
+
+    assert_equal "text/vnd.turbo-stream.html", response.media_type
+    assert_equal false, question.reload.active
+  end
+
+  test "update via turbo stream with blank text re-renders the row with an inline error" do
+    question = @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, academic_field_slug: "langues")
+
+    patch admin_assessment_diagnostic_question_path(@assessment, question),
+          params: { diagnostic_question: { text: "" } },
+          headers: { "X-Inline-Edit" => "true" }
+
+    assert_response :unprocessable_content
+    assert_equal "text/vnd.turbo-stream.html", response.media_type
+    assert_equal "Une question", question.reload.text
+  end
+
+  test "update via turbo stream carries the current kind filter to keep the drag handle column consistent" do
+    question = @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, academic_field_slug: "langues")
+
+    patch admin_assessment_diagnostic_question_path(@assessment, question),
+          params: { diagnostic_question: { text: "Texte corrigé" }, kind: "interest" },
+          headers: { "X-Inline-Edit" => "true" }
+
+    assert_select "[data-sortable-handle]", count: 1
+  end
+
+  test "index wires the question text cell to inline editing" do
+    question = @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, academic_field_slug: "langues")
+
+    get admin_assessment_diagnostic_questions_path(@assessment)
+
+    assert_select "td[data-controller=?][data-inline-edit-param-value=?] textarea[hidden]", "inline-edit", "text"
+  end
+
+  test "update via turbo stream with blank text keeps the text field visible with the error" do
+    question = @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, academic_field_slug: "langues")
+
+    patch admin_assessment_diagnostic_question_path(@assessment, question),
+          params: { diagnostic_question: { text: "" } },
+          headers: { "X-Inline-Edit" => "true" }
+
+    assert_select "td[data-inline-edit-param-value=?] textarea:not([hidden])", "text"
+    assert_select "td[data-inline-edit-param-value=?] span[hidden]", "text"
+    assert_match "doit être rempli(e)", response.body
+  end
+
+  test "index wires the position cell to inline editing" do
+    question = @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, academic_field_slug: "langues")
+
+    get admin_assessment_diagnostic_questions_path(@assessment)
+
+    assert_select "td[data-controller=?][data-inline-edit-param-value=?] input[type=number][hidden]", "inline-edit", "position"
+  end
+
+  test "update via turbo stream with invalid position keeps the position field visible with the error" do
+    question = @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, academic_field_slug: "langues")
+
+    patch admin_assessment_diagnostic_question_path(@assessment, question),
+          params: { diagnostic_question: { position: 0 } },
+          headers: { "X-Inline-Edit" => "true" }
+
+    assert_select "td[data-inline-edit-param-value=?] input:not([hidden])", "position"
+    assert_match "doit être supérieur à 0", response.body
+  end
+
+  test "index shows an active checkbox reflecting each question's state" do
+    active_q = @assessment.diagnostic_questions.create!(kind: "interest", text: "Active", position: 1, active: true, academic_field_slug: "langues")
+    inactive_q = @assessment.diagnostic_questions.create!(kind: "interest", text: "Inactive", position: 2, active: false, academic_field_slug: "langues")
+
+    get admin_assessment_diagnostic_questions_path(@assessment)
+
+    assert_select "tr##{dom_id(active_q)} input[type=checkbox][checked]"
+    assert_select "tr##{dom_id(inactive_q)} input[type=checkbox]:not([checked])"
+  end
+
+  test "update without the inline-edit header still redirects, even with Turbo's automatic turbo-stream Accept header" do
+    question = @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, academic_field_slug: "langues")
+
+    # This mimics exactly what Turbo Drive sends for ANY non-GET form submission by default
+    # (see turbo.js's requestAcceptsTurboStreamResponse: `!request.isSafe || hasAttribute(...)`),
+    # including the plain, unmodified <form> on the full edit page. No X-Inline-Edit header.
+    patch admin_assessment_diagnostic_question_path(@assessment, question),
+          params: { diagnostic_question: { kind: "interest", text: "Texte corrigé", position: 1, active: true, academic_field_slug: "langues" } },
+          headers: { "Accept" => "text/vnd.turbo-stream.html, text/html, application/xhtml+xml" }
+
+    assert_response :see_other
+    assert_redirected_to admin_assessment_diagnostic_questions_path(@assessment)
+  end
 end

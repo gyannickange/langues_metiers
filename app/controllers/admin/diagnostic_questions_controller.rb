@@ -27,8 +27,19 @@ class Admin::DiagnosticQuestionsController < Admin::BaseController
   end
 
   def update
+    @kind_filter = params[:kind].presence || "all"
+    sortable_enabled = @kind_filter != "all"
+    row_locals = { q: @question, assessment: @assessment, sortable_enabled: sortable_enabled, kind_filter: @kind_filter }
+
     if @question.update(question_params)
-      redirect_to redirect_path, notice: "Question mise à jour.", status: :see_other
+      if inline_edit_request?
+        render turbo_stream: turbo_stream.replace(@question, partial: "question_row", locals: row_locals)
+      else
+        redirect_to redirect_path, notice: "Question mise à jour.", status: :see_other
+      end
+    elsif inline_edit_request?
+      render turbo_stream: turbo_stream.replace(@question, partial: "question_row", locals: row_locals.merge(inline_errors: @question.errors)),
+             status: :unprocessable_content
     else
       render :edit, status: :unprocessable_content
     end
@@ -77,5 +88,9 @@ class Admin::DiagnosticQuestionsController < Admin::BaseController
     params.require(:diagnostic_question).permit(
       :kind, :text, :disc_type, :skill_slug, :skill_label, :academic_field_slug, :position, :active
     )
+  end
+
+  def inline_edit_request?
+    request.headers["X-Inline-Edit"].present?
   end
 end
