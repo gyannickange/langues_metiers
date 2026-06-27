@@ -115,7 +115,7 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "h2", text: /Analyste/
     assert_select "[data-controller='pdf-status']", count: 0
-    assert_select "p", text: /No key skill has been added/
+    assert_select "p", text: /Aucune compétence clé n'est encore renseignée/
     assert_select "p", text: /Aucun axe de développement n'est encore renseigné/
     assert_not_includes response.body, "Analyse Stratégique"
     assert_not_includes response.body, "Stratège de projet"

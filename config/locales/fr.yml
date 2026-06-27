@@ -5,6 +5,8 @@ fr:
   Academic Fields: "Filières académiques"
   Skills: "Compétences"
   Careers: "Carrières"
+  Assessments: "Évaluations"
+  Trajectories: "Trajectoires"
   Save: "Enregistrer"
   Cancel: "Annuler"
   Actions: "Actions"
@@ -173,7 +175,6 @@ fr:
         operational: "Vision opérationnelle"
         tools: "Maîtrise des outils numériques"
         data: "Lecture et utilisation de données"
-      quote: "Beaucoup de profils académiques possèdent ces bases, mais ne savent pas les transformer en opportunités concrètes."
     metiers:
       title: "Exemples de métiers accessibles après repositionnement"
       dimensions:

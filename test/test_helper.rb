@@ -5,6 +5,11 @@ require "webmock/minitest"
 require "minitest/mock"
 require "ostruct"
 
+class ActiveSupport::TestCase
+  # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
+  fixtures :all
+end
+
 # Provide a modern User-Agent so allow_browser versions: :modern doesn't block requests
 class ActionDispatch::IntegrationTest
   setup do

@@ -48,7 +48,7 @@ class Admin::AcademicFieldsControllerTest < ActionDispatch::IntegrationTest
     get admin_academic_fields_path
 
     assert_response :success
-    assert_select "nav a[href='#{admin_academic_fields_path}']", text: /Academic fields/
+    assert_select "nav a[href='#{admin_academic_fields_path}']", text: /Filières académiques/
     assert_select "nav a[href='#{admin_academic_fields_path}'].bg-\\[var\\(--color-primary\\)\\]\\/10"
   end
 
@@ -56,7 +56,7 @@ class Admin::AcademicFieldsControllerTest < ActionDispatch::IntegrationTest
     get admin_root_path
 
     assert_response :success
-    assert_select "nav a[href='#{admin_academic_fields_path}']", text: /Academic fields/
+    assert_select "nav a[href='#{admin_academic_fields_path}']", text: /Filières académiques/
     assert_select "nav a[href='#{admin_academic_fields_path}'].bg-\\[var\\(--color-primary\\)\\]\\/10", count: 0
   end
 end

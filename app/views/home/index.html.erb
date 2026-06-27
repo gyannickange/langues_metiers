@@ -5,7 +5,7 @@
 <%# ═══════════════════════════════════════════════════════════ %>
 <%# 01 — PROBLÈME                                              %>
 <%# ═══════════════════════════════════════════════════════════ %>
-<section class="py-28 bg-[#f7f3ec] relative overflow-hidden">
+<section class="py-16 md:py-24 bg-[#f7f3ec] relative overflow-hidden">
 
   <div class="container mx-auto px-6 relative z-10">
     <div data-home-motion-target="group" class="grid md:grid-cols-2 gap-12 md:gap-16 lg:gap-20 items-center">
@@ -42,7 +42,7 @@
 
       <div data-motion-item style="--motion-index: 1" class="relative">
         <div class="aspect-[4/5] rounded-3xl overflow-hidden shadow-[0_30px_80px_rgba(31,75,67,0.12)]">
-          <%= image_tag "img-1.webp", class: "w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000" %>
+          <%= image_tag "img-1.webp", alt: "Jeune diplômé réfléchissant à son positionnement professionnel", class: "w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000" %>
         </div>
         <div class="absolute -bottom-5 -left-5 w-24 h-24 rounded-full border-2 border-primary/20 bg-[#f7f3ec]"></div>
         <div class="absolute -top-4 -right-4 w-10 h-10 rounded-full bg-primary/12"></div>
@@ -56,7 +56,7 @@
 <%# ═══════════════════════════════════════════════════════════ %>
 <%# 02 — MARCHÉ                                                %>
 <%# ═══════════════════════════════════════════════════════════ %>
-<section id="market" class="py-28 bg-secondary text-white relative overflow-hidden">
+<section id="market" class="py-16 md:py-24 bg-secondary text-white relative overflow-hidden">
 
   <div class="absolute inset-0 pointer-events-none opacity-[0.03]"
     style="background-image: radial-gradient(circle, #e7c873 1px, transparent 1px); background-size: 40px 40px;"></div>
@@ -83,12 +83,6 @@
         </div>
       <% end %>
     </div>
-
-    <div class="mt-16 pt-16 border-t border-white/[0.08] max-w-2xl">
-      <blockquote class="text-xl sm:text-2xl italic text-white/60 leading-relaxed">
-        "<%= t('home.market.quote') %>"
-      </blockquote>
-    </div>
   </div>
 </section>
 
@@ -96,7 +90,7 @@
 <%# ═══════════════════════════════════════════════════════════ %>
 <%# 03 — MÉTIERS                                               %>
 <%# ═══════════════════════════════════════════════════════════ %>
-<section id="careers" class="py-28 bg-white relative overflow-hidden">
+<section id="careers" class="py-16 md:py-24 bg-white relative overflow-hidden">
   <div class="container mx-auto px-6">
 
     <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-6">
@@ -113,7 +107,7 @@
 
     <div data-home-motion-target="group" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
       <% @random_careers.each_with_index do |career, index| %>
-        <%= render "shared/career_card", career: career, index: index, heading_tag: :h2 %>
+        <%= render "shared/career_card", career: career, index: index, heading_tag: :h3 %>
       <% end %>
     </div>
 
@@ -129,7 +123,7 @@
 <%# ═══════════════════════════════════════════════════════════ %>
 <%# 04 — SOLUTION                                              %>
 <%# ═══════════════════════════════════════════════════════════ %>
-<section class="py-28 bg-[#0d2420] relative overflow-hidden">
+<section class="py-16 md:py-24 bg-[#0d2420] relative overflow-hidden">
 
   <div class="absolute right-0 top-0 w-[420px] h-[420px] bg-primary/3 rounded-full blur-[120px] pointer-events-none -mr-40 -mt-40"></div>
 
@@ -245,7 +239,7 @@
 <%# ═══════════════════════════════════════════════════════════ %>
 <%# 05 — MÉTHODE                                               %>
 <%# ═══════════════════════════════════════════════════════════ %>
-<section id="process" class="py-28 bg-[#f7f3ec]">
+<section id="process" class="py-16 md:py-24 bg-[#f7f3ec]">
   <div class="container mx-auto px-6">
 
     <div class="text-center mb-20">
@@ -281,7 +275,7 @@
 <%# ═══════════════════════════════════════════════════════════ %>
 <%# 06 — EXEMPLE DE RESTITUTION                                %>
 <%# ═══════════════════════════════════════════════════════════ %>
-<section id="report" class="py-28 bg-white">
+<section id="report" class="py-16 md:py-24 bg-white">
   <div class="container mx-auto px-6">
 
     <div class="text-center mb-16">
@@ -349,7 +343,7 @@
 <%# ═══════════════════════════════════════════════════════════ %>
 <%# 07 — PUBLIC CIBLE                                          %>
 <%# ═══════════════════════════════════════════════════════════ %>
-<section id="public" class="py-28 bg-secondary text-white relative overflow-hidden">
+<section id="public" class="py-16 md:py-24 bg-secondary text-white relative overflow-hidden">
 
   <div class="absolute inset-0 pointer-events-none opacity-[0.035]"
     style="background-image: radial-gradient(circle at 65% 35%, #e7c873 1px, transparent 1px); background-size: 32px 32px;"></div>
@@ -398,7 +392,7 @@
 <%# ═══════════════════════════════════════════════════════════ %>
 <%# 08 — TARIFICATION                                          %>
 <%# ═══════════════════════════════════════════════════════════ %>
-<section id="pricing" class="py-28 bg-[#f7f3ec] relative overflow-hidden">
+<section id="pricing" class="py-16 md:py-24 bg-[#f7f3ec] relative overflow-hidden">
   <div class="container mx-auto px-6">
 
     <div class="text-center mb-16">
@@ -426,7 +420,7 @@
             </li>
           <% end %>
         </ul>
-        <%= link_to (user_signed_in? ? new_diagnostic_path : new_user_session_path(redirect_to: new_diagnostic_path)), class: "lp-action-secondary w-full justify-center" do %>
+        <%= link_to (user_signed_in? ? new_diagnostic_path : new_user_session_path(redirect_to: new_diagnostic_path)), class: "lp-action-secondary w-full sm:w-auto justify-center" do %>
           <span><%= t('home.pricing.order') %></span>
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -454,7 +448,7 @@
             </li>
           <% end %>
         </ul>
-        <a href="mailto:contact@languesmetiers.com" class="lp-action-primary w-full justify-center">
+        <a href="mailto:contact@languesmetiers.com" class="lp-action-primary w-full sm:w-auto justify-center">
           <span>Prendre RDV</span>
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
