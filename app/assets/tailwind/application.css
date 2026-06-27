@@ -386,7 +386,7 @@
 }
 
 .btn-premium-primary {
-  @apply inline-flex items-center space-x-3 px-8 py-4 bg-primary-500 text-secondary-900 rounded-full font-black text-xs md:text-sm uppercase tracking-[0.2em] transform transition-all duration-300 hover:scale-105 hover:bg-white hover:shadow-[0_15px_40px_rgba(231,200,115,0.3)];
+  @apply inline-flex items-center space-x-3 px-8 py-4 bg-primary-500 text-secondary-900 rounded-full font-black text-xs md:text-sm tracking-[0.2em] transform transition-all duration-300 hover:scale-105 hover:bg-white hover:shadow-[0_15px_40px_rgba(231,200,115,0.3)];
 }
 
 .lp-action-primary {
