@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <title><%= content_for(:title) || "Erreur" %> · Insertrice</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <link rel="icon" href="/icon.png" type="image/png">
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+  <body class="font-sans antialiased">
+    <main class="relative min-h-screen overflow-hidden bg-secondary text-white flex items-center justify-center px-6 py-16">
+      <%= render "shared/animated_decorations" %>
+
+      <div class="relative z-10 w-full max-w-lg text-center">
+        <div class="mb-10 animate-fade-in-up" style="animation-delay: 0ms;">
+          <%= link_to root_path, class: "inline-flex items-center" do %>
+            <span class="text-3xl font-extrabold tracking-tight text-white">
+              Insertrice<span class="text-primary">.</span>
+            </span>
+          <% end %>
+        </div>
+
+        <div class="relative rounded-4xl border border-white/10 bg-white/6 backdrop-blur-xl px-8 py-12 shadow-2xl animate-fade-in-up" style="animation-delay: 120ms;">
+          <span class="pointer-events-none absolute inset-x-0 top-2 select-none text-[7rem] font-black leading-none text-white/6 md:text-[9rem]">
+            <%= @status %>
+          </span>
+
+          <div class="relative">
+            <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary text-secondary-900 shadow-[0_15px_40px_rgba(231,200,115,0.35)]">
+              <%= lucide_icon @icon, class: "w-8 h-8" %>
+            </div>
+
+            <p class="mb-2 text-xs font-black uppercase tracking-[0.3em] text-primary"><%= @status %></p>
+            <h1 class="mb-3 text-balance text-2xl font-bold tracking-tight md:text-3xl"><%= @title %></h1>
+            <p class="mx-auto max-w-sm text-pretty text-sm leading-relaxed text-white/70"><%= @description %></p>
+
+            <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <%= link_to t("errors.go_home"), root_path, class: "lp-action-primary w-full sm:w-auto" %>
+              <%= link_to t("errors.contact_us"), "mailto:contact@languesmetiers.com", class: "text-sm font-semibold text-white/70 underline-offset-4 hover:text-white hover:underline" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

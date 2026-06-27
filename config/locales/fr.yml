@@ -63,6 +63,23 @@ fr:
     description: "Découvrez votre parcours professionnel idéal en combinant compétences linguistiques et expertise métier. Programmes personnalisés, bourses et accompagnement pour une carrière réussie."
     keywords: "Insertrice, carrière multilingue, formation professionnelle, bourses d'études, compétences linguistiques, développement professionnel, roadmaps personnalisés"
 
+  errors:
+    go_home: "Retour à l'accueil"
+    contact_us: "Nous contacter"
+    http_status:
+      "400":
+        title: "Requête invalide"
+        description: "La requête n'a pas pu être traitée. Vérifiez l'adresse et réessayez."
+      "404":
+        title: "Page introuvable"
+        description: "Cette page n'existe pas ou a été déplacée."
+      "422":
+        title: "Action refusée"
+        description: "Le changement demandé a été rejeté. Réessayez ou retournez à l'accueil."
+      "500":
+        title: "Erreur serveur"
+        description: "Une erreur inattendue est survenue. Nous avons été notifiés."
+
   users:
     registrations:
       new: "Créer un compte"

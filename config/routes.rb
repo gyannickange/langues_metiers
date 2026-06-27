@@ -92,4 +92,8 @@ Rails.application.routes.draw do
     end
     resources :mobile_operators
   end
+
+  %w[400 404 422 500].each do |status|
+    match "/#{status}", to: "errors#show", via: :all, defaults: { status: status }
+  end
 end

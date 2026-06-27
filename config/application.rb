@@ -43,6 +43,10 @@ module LanguesMetiers
     config.i18n.available_locales = [ :fr ]
     config.i18n.default_locale = :fr
 
+    # Render branded error pages (app/views/errors) instead of the static
+    # public/*.html files whenever Rails itself is up to handle the request.
+    config.exceptions_app = self.routes
+
 
 
 
