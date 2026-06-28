@@ -79,4 +79,36 @@ class Diagnostics::ScoringServiceTest < ActiveSupport::TestCase
     assert @diagnostic.in_progress?
     assert_nil @diagnostic.completed_at
   end
+
+  test "persists affirmation_breakdown with checked affirmation text and bonus" do
+    # checkbox values are the index into the career's affirmations array, e.g. "0" => "a", "2" => "c"
+    affirmations = { @c2.id.to_s => %w[0 2] }
+    Diagnostics::ScoringService.call(@diagnostic, affirmations)
+    @diagnostic.reload
+
+    breakdown = @diagnostic.score_data["affirmation_breakdown"][@c2.id.to_s]
+    assert_equal %w[a c], breakdown["checked_affirmations"]
+    assert_equal 2, breakdown["bonus"]
+    assert_equal 6, breakdown["max_bonus"]
+  end
+
+  test "affirmation_breakdown bonus stays capped at the career's affirmation count" do
+    affirmations = { @c2.id.to_s => %w[0 1 2 3 4 5 0 1] }
+    Diagnostics::ScoringService.call(@diagnostic, affirmations)
+    @diagnostic.reload
+
+    breakdown = @diagnostic.score_data["affirmation_breakdown"][@c2.id.to_s]
+    assert_equal 6, breakdown["bonus"]
+    assert_equal 6, breakdown["max_bonus"]
+  end
+
+  test "affirmation_breakdown records zero bonus for a career with no checked affirmations" do
+    Diagnostics::ScoringService.call(@diagnostic, {})
+    @diagnostic.reload
+
+    breakdown = @diagnostic.score_data["affirmation_breakdown"][@c1.id.to_s]
+    assert_equal [], breakdown["checked_affirmations"]
+    assert_equal 0, breakdown["bonus"]
+    assert_equal 0, breakdown["max_bonus"]
+  end
 end

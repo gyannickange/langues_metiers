@@ -51,9 +51,15 @@
             <h3 class="text-xl font-bold text-slate-800">Détail des Réponses</h3>
             <p class="text-slate-400 text-xs font-medium tracking-widest mt-1">Réponses du diagnostic</p>
           </div>
+          <% if @attribution.available? %>
+            <div class="text-xs font-bold text-slate-500 tracking-wide">
+              <%= @attribution.recap_line %>
+            </div>
+          <% end %>
         </div>
 
-        <% if @answers.any? %>
+        <% affirmation_rows = @attribution.affirmation_rows %>
+        <% if @answers.any? || affirmation_rows.any? %>
           <div class="space-y-4">
             <% @answers.each_with_index do |answer, idx| %>
               <div class="p-6 rounded-2xl bg-white border border-slate-100 hover:border-[var(--color-primary)]/20 hover:shadow-premium-sm transition-all group">
@@ -72,6 +78,31 @@
                          <%= selected_option ? "#{answer.answer_value}: #{selected_option['text']}" : answer.answer_value %>
                        </span>
                     </div>
+                    <% badges = @attribution.badges_for(answer) %>
+                    <% if badges.any? %>
+                      <div class="flex flex-wrap items-center gap-2 mt-3">
+                        <% badges.each do |badge| %>
+                          <span class="px-2.5 py-1 bg-indigo-50 text-indigo-700 text-[10px] font-black rounded-lg border border-indigo-100 tracking-wide">
+                            <%= badge[:label] %> · +<%= badge[:points] %> pts
+                          </span>
+                        <% end %>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+
+            <% affirmation_rows.each_with_index do |row, idx| %>
+              <div class="p-6 rounded-2xl bg-white border border-slate-100 hover:border-[var(--color-primary)]/20 hover:shadow-premium-sm transition-all group">
+                <div class="flex gap-4">
+                  <div class="flex-shrink-0 w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-[10px] font-black text-slate-400 border border-slate-100">
+                    <%= @answers.size + idx + 1 %>
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-slate-800 font-bold leading-relaxed mb-3">
+                      Affirmation validée pour <%= row[:label] %> : « <%= row[:text] %> »
+                    </p>
                   </div>
                 </div>
               </div>

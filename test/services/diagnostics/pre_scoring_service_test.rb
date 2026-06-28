@@ -85,4 +85,35 @@ class Diagnostics::PreScoringServiceTest < ActiveSupport::TestCase
     @diagnostic.reload
     assert @diagnostic.in_progress?
   end
+
+  test "stores dominant_disc_types and dominant_academic_field in score_data" do
+    Diagnostics::PreScoringService.call(@diagnostic)
+    @diagnostic.reload
+    assert_equal [ "D" ], @diagnostic.score_data["dominant_disc_types"]
+    assert_equal "langues", @diagnostic.score_data["dominant_academic_field"]
+  end
+
+  test "stores per-career match breakdown in top_career_ids" do
+    Diagnostics::PreScoringService.call(@diagnostic)
+    @diagnostic.reload
+    entry = @diagnostic.score_data["top_career_ids"].find { |h| h["id"] == @career.id }
+    assert_equal 3, entry["disc_match"]
+    assert_equal 5, entry["academic_field_match"]
+    assert_equal 5, entry["comp_match"]
+    assert_equal [ "D" ], entry["matched_disc_types"]
+    assert_equal({ "langues_etrangeres" => 5 }, entry["matched_skills"])
+  end
+
+  test "matched_skills omits required skills the user never answered" do
+    hex = SecureRandom.hex(4)
+    unanswered_skill_career = Career.create!(
+      title: "Guide #{hex}", slug: "guide-#{hex}", status: :published, academic_field_slug: "langues",
+      disc_types: [], required_skills: [ "langues_etrangeres", "numerique" ]
+    )
+
+    Diagnostics::PreScoringService.call(@diagnostic)
+    @diagnostic.reload
+    entry = @diagnostic.score_data["top_career_ids"].find { |h| h["id"] == unanswered_skill_career.id }
+    assert_equal({ "langues_etrangeres" => 5 }, entry["matched_skills"])
+  end
 end

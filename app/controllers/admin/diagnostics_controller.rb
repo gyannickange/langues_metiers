@@ -16,5 +16,6 @@ class Admin::DiagnosticsController < Admin::BaseController
     @answers = @diagnostic.diagnostic_answers
                           .joins(:diagnostic_question)
                           .order("diagnostic_questions.position")
+    @attribution = Diagnostics::AnswerAttributionPresenter.new(@diagnostic)
   end
 end

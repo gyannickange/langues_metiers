@@ -20,7 +20,7 @@
 
       <div class="md:col-span-2">
         <%= f.label :text, "Texte de la question / affirmation", class: "block text-xs font-bold text-slate-500 mb-1" %>
-        <%= f.text_area :text, rows: 2, class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
+        <%= f.text_area :text, rows: 2, class: "w-full border rounded-xl px-3 py-2 text-sm #{edit_errors&.key?(:text) ? "border-destructive" : "border-slate-200"}" %>
         <% if edit_errors&.key?(:text) %>
           <p class="text-red-500 text-xs mt-1"><%= edit_errors[:text].first %></p>
         <% end %>
@@ -29,7 +29,7 @@
       <div data-assessment-question-form-target="discField">
         <%= f.label :disc_type, "Type DISC", class: "block text-xs font-bold text-slate-500 mb-1" %>
         <%= f.select :disc_type, Diagnostics::Vocabulary.disc_type_options,
-              { include_blank: "— choisir —" }, class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
+              { include_blank: "— choisir —" }, class: "w-full border rounded-xl px-3 py-2 text-sm #{edit_errors&.key?(:disc_type) ? "border-destructive" : "border-slate-200"}" %>
         <% if edit_errors&.key?(:disc_type) %>
           <p class="text-red-500 text-xs mt-1"><%= edit_errors[:disc_type].first %></p>
         <% end %>
@@ -38,7 +38,7 @@
       <div data-assessment-question-form-target="academicField">
         <%= f.label :academic_field_slug, "Academic field", class: "block text-xs font-bold text-slate-500 mb-1" %>
         <%= f.select :academic_field_slug, Diagnostics::Vocabulary.academic_field_options,
-              { include_blank: "— choisir —" }, class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
+              { include_blank: "— choisir —" }, class: "w-full border rounded-xl px-3 py-2 text-sm #{edit_errors&.key?(:academic_field_slug) ? "border-destructive" : "border-slate-200"}" %>
         <% if edit_errors&.key?(:academic_field_slug) %>
           <p class="text-red-500 text-xs mt-1"><%= edit_errors[:academic_field_slug].first %></p>
         <% end %>
@@ -48,7 +48,7 @@
         <div>
           <%= f.label :skill_slug, "Skill", class: "block text-xs font-bold text-slate-500 mb-1" %>
           <%= f.select :skill_slug, Diagnostics::Vocabulary.skill_options,
-                { include_blank: "— choisir —" }, class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
+                { include_blank: "— choisir —" }, class: "w-full border rounded-xl px-3 py-2 text-sm #{edit_errors&.key?(:skill_slug) ? "border-destructive" : "border-slate-200"}" %>
           <% if edit_errors&.key?(:skill_slug) %>
             <p class="text-red-500 text-xs mt-1"><%= edit_errors[:skill_slug].first %></p>
           <% end %>

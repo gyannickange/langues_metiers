@@ -1,7 +1,7 @@
 <%# app/views/admin/diagnostic_questions/index.html.erb %>
 <% content_for :page_title, "Questions du Diagnostic" %>
 
-<%= link_to edit_admin_assessment_path(@assessment), class: "inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-slate-600 transition-colors mb-4" do %>
+<%= link_to edit_admin_assessment_path(@assessment), class: "inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-slate-600 transition-colors mb-4" do %>
   <%= lucide_icon "arrow-left", class: "w-4 h-4" %>
   Retour à l'évaluation
 <% end %>
@@ -35,17 +35,17 @@
     </button>
   </div>
 
-  <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+  <div class="bg-white rounded-2xl border border-slate-200 overflow-x-auto">
     <table class="w-full text-sm">
       <thead class="bg-slate-50 border-b border-slate-200">
         <tr>
-          <% if @kind_filter != "all" %><th class="px-4 py-3 w-8"></th><% end %>
-          <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-widest text-slate-400">Type</th>
-          <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-widest text-slate-400">Question</th>
-          <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-widest text-slate-400">Métadonnée</th>
-          <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-widest text-slate-400">Pos.</th>
-          <th class="px-4 py-3 text-center text-xs font-bold uppercase tracking-widest text-slate-400">Active</th>
-          <th class="px-4 py-3"></th>
+          <% if @kind_filter != "all" %><th scope="col" class="px-4 py-3 w-8"></th><% end %>
+          <th scope="col" class="px-4 py-3 text-left text-xs font-bold uppercase tracking-widest text-slate-500">Type</th>
+          <th scope="col" class="px-4 py-3 text-left text-xs font-bold uppercase tracking-widest text-slate-500">Question</th>
+          <th scope="col" class="px-4 py-3 text-left text-xs font-bold uppercase tracking-widest text-slate-500">Métadonnée</th>
+          <th scope="col" class="px-4 py-3 text-left text-xs font-bold uppercase tracking-widest text-slate-500">Pos.</th>
+          <th scope="col" class="px-4 py-3 text-center text-xs font-bold uppercase tracking-widest text-slate-500">Active</th>
+          <th scope="col" class="px-4 py-3"></th>
         </tr>
       </thead>
       <%= render "questions_table_body", assessment: @assessment, questions: @questions, kind_filter: @kind_filter %>

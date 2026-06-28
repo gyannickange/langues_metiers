@@ -362,7 +362,7 @@ class Admin::DiagnosticQuestionsControllerTest < ActionDispatch::IntegrationTest
           headers: { "X-Inline-Edit" => "true" }
 
     assert_select "td[data-inline-edit-param-value=?] textarea:not([hidden])", "text"
-    assert_select "td[data-inline-edit-param-value=?] span[hidden]", "text"
+    assert_select "td[data-inline-edit-param-value=?] button[hidden]", "text"
     assert_match "doit être rempli(e)", response.body
   end
 
