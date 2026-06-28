@@ -30,20 +30,8 @@
   <td class="px-4 py-3 text-slate-400 text-xs">
     <%= q.disc_type || q.skill_slug || (q.options.any? ? "#{q.options.length} options" : "—") %>
   </td>
-  <% position_invalid = inline_errors&.key?(:position) %>
-  <td class="px-4 py-3 text-slate-400" data-controller="inline-edit"
-      data-inline-edit-url-value="<%= admin_assessment_diagnostic_question_path(assessment, q) %>"
-      data-inline-edit-param-value="position"
-      data-inline-edit-kind-filter-value="<%= kind_filter %>">
-    <span data-inline-edit-target="display" data-action="click->inline-edit#edit"
-          class="cursor-pointer" <%= "hidden" if position_invalid %>><%= q.position %></span>
-    <input type="number" min="1" data-inline-edit-target="field"
-           data-action="blur->inline-edit#save keydown.enter->inline-edit#save keydown.esc->inline-edit#cancel"
-           class="w-16 border border-slate-200 rounded-lg px-2 py-1 text-sm"
-           value="<%= q.position %>" <%= "hidden" unless position_invalid %>>
-    <% if position_invalid %>
-      <p class="text-red-500 text-xs mt-1"><%= inline_errors[:position].first %></p>
-    <% end %>
+  <td class="px-4 py-3 text-slate-400">
+    <%= q.position %>
   </td>
   <td class="px-4 py-3 text-center" data-controller="inline-edit"
       data-inline-edit-url-value="<%= admin_assessment_diagnostic_question_path(assessment, q) %>"
@@ -54,9 +42,13 @@
            <%= "checked" if q.active %>>
   </td>
   <td class="px-4 py-3 flex gap-2 justify-end">
-    <%= link_to "Modifier", edit_admin_assessment_diagnostic_question_path(assessment, q), class: "text-xs text-[var(--color-primary)] hover:underline" %>
+    <button type="button" data-action="click->row-toggle#openEdit"
+            data-row-toggle-display-id-param="<%= dom_id(q) %>"
+            data-row-toggle-edit-id-param="<%= dom_id(q) %>_edit"
+            class="text-xs text-[var(--color-primary)] hover:underline bg-transparent border-0 cursor-pointer">Modifier</button>
     <%= button_to "Supprimer", admin_assessment_diagnostic_question_path(assessment, q), method: :delete,
           data: { turbo_confirm: "Supprimer cette question ?" },
           class: "text-xs text-red-500 hover:underline bg-transparent border-0 cursor-pointer" %>
   </td>
 </tr>
+<%= render "question_form_row", question: q, assessment: assessment, kind_filter: kind_filter, mode: :edit %>

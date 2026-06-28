@@ -1,47 +1,61 @@
 # app/controllers/admin/diagnostic_questions_controller.rb
 class Admin::DiagnosticQuestionsController < Admin::BaseController
   before_action :set_assessment
-  before_action :set_question, only: [ :edit, :update, :destroy ]
+  before_action :set_question, only: [ :update, :destroy ]
 
   def index
     @kind_filter = params[:kind].presence || "all"
-    questions = @assessment.diagnostic_questions
-    questions = questions.where(kind: @kind_filter) unless @kind_filter == "all"
-    @questions = questions.ordered
+    @questions = load_questions
   end
-
-  def new
-    kind = params[:kind].presence || "interest"
-    @question = @assessment.diagnostic_questions.build(kind: kind, position: next_position_for(kind))
-  end
-
-  def edit; end
 
   def create
+    @kind_filter = params[:kind].presence || "all"
     @question = @assessment.diagnostic_questions.build(question_params)
+    @question.position = next_position_for(@question.kind)
+
     if @question.save
-      redirect_to redirect_path, notice: "Question créée."
+      if inline_edit_request?
+        render turbo_stream: turbo_stream.replace("questions_tbody", partial: "questions_table_body",
+          locals: { assessment: @assessment, questions: load_questions, kind_filter: @kind_filter })
+      else
+        redirect_to redirect_path, notice: "Question créée."
+      end
+    elsif inline_edit_request?
+      render turbo_stream: turbo_stream.replace(helpers.dom_id(@question), partial: "question_form_row",
+        locals: { question: @question, assessment: @assessment, kind_filter: @kind_filter, mode: :create,
+                  edit_errors: @question.errors, hidden: false, new_row: true }),
+        status: :unprocessable_content
     else
-      render :new, status: :unprocessable_content
+      head :unprocessable_content
     end
   end
 
   def update
     @kind_filter = params[:kind].presence || "all"
+    full_row_edit = question_params.key?(:kind)
     sortable_enabled = @kind_filter != "all"
-    row_locals = { q: @question, assessment: @assessment, sortable_enabled: sortable_enabled, kind_filter: @kind_filter }
 
     if @question.update(question_params)
-      if inline_edit_request?
-        render turbo_stream: turbo_stream.replace(@question, partial: "question_row", locals: row_locals)
+      if inline_edit_request? && full_row_edit
+        render turbo_stream: turbo_stream.replace("questions_tbody", partial: "questions_table_body",
+          locals: { assessment: @assessment, questions: load_questions, kind_filter: @kind_filter })
+      elsif inline_edit_request?
+        render turbo_stream: turbo_stream.replace(@question, partial: "question_row",
+          locals: { q: @question, assessment: @assessment, kind_filter: @kind_filter, sortable_enabled: sortable_enabled })
       else
         redirect_to redirect_path, notice: "Question mise à jour.", status: :see_other
       end
+    elsif inline_edit_request? && full_row_edit
+      render turbo_stream: turbo_stream.replace("#{helpers.dom_id(@question)}_edit", partial: "question_form_row",
+        locals: { question: @question, assessment: @assessment, kind_filter: @kind_filter, mode: :edit,
+                  edit_errors: @question.errors, hidden: false }),
+        status: :unprocessable_content
     elsif inline_edit_request?
-      render turbo_stream: turbo_stream.replace(@question, partial: "question_row", locals: row_locals.merge(inline_errors: @question.errors)),
-             status: :unprocessable_content
+      render turbo_stream: turbo_stream.replace(@question, partial: "question_row",
+        locals: { q: @question, assessment: @assessment, kind_filter: @kind_filter, sortable_enabled: sortable_enabled, inline_errors: @question.errors }),
+        status: :unprocessable_content
     else
-      render :edit, status: :unprocessable_content
+      head :unprocessable_content
     end
   end
 
@@ -76,6 +90,14 @@ class Admin::DiagnosticQuestionsController < Admin::BaseController
     @question = @assessment.diagnostic_questions.find(params[:id])
   end
 
+  def load_questions
+    if @kind_filter == "all"
+      @assessment.diagnostic_questions.order(Arel.sql("array_position(ARRAY['interest','disc','skill'], kind)"), :position)
+    else
+      @assessment.diagnostic_questions.where(kind: @kind_filter).ordered
+    end
+  end
+
   def redirect_path
     admin_assessment_diagnostic_questions_path(@assessment)
   end
@@ -84,9 +106,11 @@ class Admin::DiagnosticQuestionsController < Admin::BaseController
     @assessment.diagnostic_questions.where(kind: kind).maximum(:position).to_i + 1
   end
 
+  # :position is intentionally omitted — it's drag-only, assigned by `create`
+  # (next_position_for) or the `reorder` action, never by direct params.
   def question_params
     params.require(:diagnostic_question).permit(
-      :kind, :text, :disc_type, :skill_slug, :skill_label, :academic_field_slug, :position, :active
+      :kind, :text, :disc_type, :skill_slug, :skill_label, :academic_field_slug, :active
     )
   end
 

@@ -24,7 +24,12 @@ export default class extends Controller {
   onEnd() {
     if (!this.urlValue) return;
 
-    const orderedIds = Array.from(this.element.children).map(child => child.dataset.id);
+    // The tbody also contains non-draggable siblings (each row's hidden edit-form
+    // row, the hidden new-question row) that carry no data-id — exclude them so
+    // the server doesn't receive a corrupted, mismatched id list.
+    const orderedIds = Array.from(this.element.children)
+      .filter(child => child.dataset.id)
+      .map(child => child.dataset.id);
 
     const data = new FormData();
     orderedIds.forEach(id => data.append("ordered_ids[]", id));

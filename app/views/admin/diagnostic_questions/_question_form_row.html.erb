@@ -1,0 +1,83 @@
+<%# app/views/admin/diagnostic_questions/_question_form_row.html.erb %>
+<%# locals: question, assessment, kind_filter, mode (:create or :edit), edit_errors (default nil), hidden (default true), new_row (default false) %>
+<% edit_errors ||= nil %>
+<% hidden = local_assigns.fetch(:hidden, true) %>
+<% new_row ||= false %>
+<% sortable_enabled = kind_filter != "all" %>
+<% colspan = sortable_enabled ? 7 : 6 %>
+<% row_id = mode == :create ? dom_id(question) : "#{dom_id(question)}_edit" %>
+<% row_attrs = { id: row_id, class: "bg-slate-50/70", hidden: hidden } %>
+<% row_attrs[:data] = { row_toggle_target: "newRow" } if new_row %>
+<%= tag.tr(**row_attrs) do %>
+  <td colspan="<%= colspan %>" class="px-4 py-4">
+    <%= form_with model: [:admin, assessment, question], data: { controller: "assessment-question-form" }, class: "grid grid-cols-1 md:grid-cols-2 gap-4" do |f| %>
+      <div>
+        <%= f.label :kind, "Type de question", class: "block text-xs font-bold text-slate-500 mb-1" %>
+        <%= f.select :kind, [["DISC (personnalité)", "disc"], ["Intérêt thématique", "interest"], ["Skill", "skill"]],
+              {}, data: { assessment_question_form_target: "kind", action: "change->assessment-question-form#toggle" },
+              class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
+      </div>
+
+      <div class="md:col-span-2">
+        <%= f.label :text, "Texte de la question / affirmation", class: "block text-xs font-bold text-slate-500 mb-1" %>
+        <%= f.text_area :text, rows: 2, class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
+        <% if edit_errors&.key?(:text) %>
+          <p class="text-red-500 text-xs mt-1"><%= edit_errors[:text].first %></p>
+        <% end %>
+      </div>
+
+      <div data-assessment-question-form-target="discField">
+        <%= f.label :disc_type, "Type DISC", class: "block text-xs font-bold text-slate-500 mb-1" %>
+        <%= f.select :disc_type, Diagnostics::Vocabulary.disc_type_options,
+              { include_blank: "— choisir —" }, class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
+        <% if edit_errors&.key?(:disc_type) %>
+          <p class="text-red-500 text-xs mt-1"><%= edit_errors[:disc_type].first %></p>
+        <% end %>
+      </div>
+
+      <div data-assessment-question-form-target="academicField">
+        <%= f.label :academic_field_slug, "Academic field", class: "block text-xs font-bold text-slate-500 mb-1" %>
+        <%= f.select :academic_field_slug, Diagnostics::Vocabulary.academic_field_options,
+              { include_blank: "— choisir —" }, class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
+        <% if edit_errors&.key?(:academic_field_slug) %>
+          <p class="text-red-500 text-xs mt-1"><%= edit_errors[:academic_field_slug].first %></p>
+        <% end %>
+      </div>
+
+      <div data-assessment-question-form-target="skillField" class="space-y-3 md:col-span-2 md:grid md:grid-cols-2 md:gap-4 md:space-y-0">
+        <div>
+          <%= f.label :skill_slug, "Skill", class: "block text-xs font-bold text-slate-500 mb-1" %>
+          <%= f.select :skill_slug, Diagnostics::Vocabulary.skill_options,
+                { include_blank: "— choisir —" }, class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
+          <% if edit_errors&.key?(:skill_slug) %>
+            <p class="text-red-500 text-xs mt-1"><%= edit_errors[:skill_slug].first %></p>
+          <% end %>
+        </div>
+        <div>
+          <%= f.label :skill_label, "Label affiché", class: "block text-xs font-bold text-slate-500 mb-1" %>
+          <%= f.text_field :skill_label, placeholder: "Ex: Skills numériques",
+                class: "w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" %>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <%= f.check_box :active, class: "rounded border-slate-300 text-primary focus:ring-primary w-4 h-4 cursor-pointer" %>
+        <%= f.label :active, "Active", class: "text-xs font-bold text-slate-500 cursor-pointer" %>
+      </div>
+
+      <div class="md:col-span-2 flex justify-end gap-3 pt-2">
+        <button type="button"
+                data-action="click->row-toggle#<%= mode == :create ? "cancelNew" : "cancelEdit" %>"
+                <% if mode == :edit %>
+                  data-row-toggle-display-id-param="<%= dom_id(question) %>"
+                  data-row-toggle-edit-id-param="<%= dom_id(question) %>_edit"
+                <% end %>
+                class="px-4 py-2 rounded-xl font-bold text-xs text-slate-500 hover:bg-slate-100 transition-colors">
+          Annuler
+        </button>
+        <%= f.submit mode == :create ? "Créer" : "Enregistrer",
+              class: "px-4 py-2 rounded-xl font-bold text-xs bg-slate-900 text-white hover:shadow-lg transition-all cursor-pointer" %>
+      </div>
+    <% end %>
+  </td>
+<% end %>

@@ -86,7 +86,7 @@ Rails.application.routes.draw do
     resources :trajectories
     resources :assessments do
       member { patch :activate }
-      resources :diagnostic_questions do
+      resources :diagnostic_questions, only: [ :index, :create, :update, :destroy ] do
         collection { patch :reorder }
       end
     end
