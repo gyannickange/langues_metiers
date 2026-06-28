@@ -30,4 +30,6 @@
       Supprimer
     <% end %>
   </div>
+
+  <%= render "shared/version_history", versions: @skill.versions.reverse_chronological %>
 </div>

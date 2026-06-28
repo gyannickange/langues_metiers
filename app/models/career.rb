@@ -1,4 +1,6 @@
 class Career < ApplicationRecord
+  has_paper_trail
+
   enum :status, { draft: 0, published: 1, archived: 2 }, default: :published
   enum :kind, { behavioral: "behavioral", profession: "profession" }, default: "behavioral"
 

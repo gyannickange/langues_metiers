@@ -29,4 +29,6 @@
       Delete
     <% end %>
   </div>
+
+  <%= render "shared/version_history", versions: @academic_field.versions.reverse_chronological %>
 </div>

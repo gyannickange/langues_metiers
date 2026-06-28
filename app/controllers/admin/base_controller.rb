@@ -10,6 +10,7 @@ module Admin
     before_action :authenticate_user!
     before_action :require_admin!
     before_action :enforce_admin_session_timeout
+    before_action { PaperTrail.request.whodunnit = current_user&.id }
 
     private
 
