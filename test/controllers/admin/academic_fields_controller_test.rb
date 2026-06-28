@@ -59,4 +59,13 @@ class Admin::AcademicFieldsControllerTest < ActionDispatch::IntegrationTest
     assert_select "nav a[href='#{admin_academic_fields_path}']", text: /Filières académiques/
     assert_select "nav a[href='#{admin_academic_fields_path}'].bg-\\[var\\(--color-primary\\)\\]\\/10", count: 0
   end
+
+  test "show renders version history after an update" do
+    @academic_field.update!(name: "Langues étrangères")
+
+    get admin_academic_field_path(@academic_field)
+
+    assert_select "h3", text: "Historique des modifications"
+    assert_select "*", text: /Modification/
+  end
 end

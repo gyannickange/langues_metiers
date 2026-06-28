@@ -102,4 +102,13 @@ class CareerTest < ActiveSupport::TestCase
     c = Career.new(title: "X", slug: "x-#{SecureRandom.hex(4)}", kind: :behavioral, academic_field_slug: nil)
     assert c.valid?, c.errors.full_messages.to_sentence
   end
+
+  test "versions on update" do
+    career = Career.create!(title: "Traducteur", slug: "traducteur-#{SecureRandom.hex(4)}",
+                             status: :published, kind: :profession, academic_field_slug: "langues")
+
+    assert_difference -> { career.versions.count }, 1 do
+      career.update!(title: "Traducteur juridique")
+    end
+  end
 end

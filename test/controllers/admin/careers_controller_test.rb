@@ -78,4 +78,10 @@ class Admin::CareersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_no_match "translation missing", response.body
   end
+
+  test "update records the signed-in admin as whodunnit" do
+    patch admin_career_path(@metier), params: { career: { title: "Titre modifié" } }
+
+    assert_equal @admin.id.to_s, @metier.versions.last.whodunnit
+  end
 end

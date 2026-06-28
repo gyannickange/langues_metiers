@@ -89,4 +89,13 @@ class DiagnosticQuestionTest < ActiveSupport::TestCase
     assert_nil DiagnosticQuestion.new(options: nil).skill_label
     assert_nil DiagnosticQuestion.new(options: [ "foo" ]).skill_label
   end
+
+  test "versions on update" do
+    question = @assessment.diagnostic_questions.create!(kind: "disc", text: "Je décide vite.",
+                                                          disc_type: "D", position: 1)
+
+    assert_difference -> { question.versions.count }, 1 do
+      question.update!(text: "Je décide vite et bien.")
+    end
+  end
 end

@@ -15,4 +15,12 @@ class SkillTest < ActiveSupport::TestCase
     assert_not duplicate.valid?
     assert_includes duplicate.errors[:slug], "est déjà utilisé(e)"
   end
+
+  test "versions on update" do
+    skill = Skill.create!(name: "Numérique", slug: "skill-#{SecureRandom.hex(4)}")
+
+    assert_difference -> { skill.versions.count }, 1 do
+      skill.update!(name: "Compétences numériques")
+    end
+  end
 end

@@ -22,4 +22,12 @@ class AcademicFieldTest < ActiveSupport::TestCase
     assert_not duplicate.valid?
     assert_includes duplicate.errors[:slug], "est déjà utilisé(e)"
   end
+
+  test "versions on update" do
+    field = AcademicField.create!(slug: "field-#{SecureRandom.hex(4)}", name: "Langues")
+
+    assert_difference -> { field.versions.count }, 1 do
+      field.update!(name: "Langues étrangères")
+    end
+  end
 end

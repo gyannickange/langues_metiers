@@ -28,4 +28,12 @@ class TrajectoryTest < ActiveSupport::TestCase
   test "belongs_to career" do
     assert_respond_to Trajectory.new, :career
   end
+
+  test "versions on update" do
+    trajectory = Trajectory.create!(career: @career, axe_1: "Initial")
+
+    assert_difference -> { trajectory.versions.count }, 1 do
+      trajectory.update!(axe_1: "Mis à jour")
+    end
+  end
 end
