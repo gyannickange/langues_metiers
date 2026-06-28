@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_28_184714) do
+ActiveRecord::Schema[8.0].define(version: 2026_06_28_191354) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -78,6 +78,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_28_184714) do
     t.string "academic_field_slug"
     t.jsonb "affirmations", default: [], null: false
     t.index ["slug"], name: "index_careers_on_slug", unique: true
+    t.index ["status"], name: "index_careers_on_status"
   end
 
   create_table "categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -140,6 +141,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_28_184714) do
     t.datetime "updated_at", null: false
     t.uuid "assessment_id"
     t.index ["assessment_id"], name: "index_diagnostics_on_assessment_id"
+    t.index ["status"], name: "index_diagnostics_on_status"
     t.index ["user_id"], name: "index_diagnostics_on_user_id"
   end
 

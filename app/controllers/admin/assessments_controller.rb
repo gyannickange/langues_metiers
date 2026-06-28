@@ -2,7 +2,7 @@
 class Admin::AssessmentsController < Admin::BaseController
   before_action :set_assessment, only: [ :edit, :update, :destroy, :activate ]
 
-  def index   = (@pagy, @assessments = pagy(Assessment.order(created_at: :desc))) && render
+  def index   = (@pagy, @assessments = pagy(Assessment.includes(:diagnostic_questions).order(created_at: :desc))) && render
   def new     = (@assessment = Assessment.new) && render
   def edit    = render
 

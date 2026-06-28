@@ -67,14 +67,14 @@ class Admin::DiagnosticQuestionsController < Admin::BaseController
   def reorder
     kind = params[:kind].presence
     ids  = Array(params[:ordered_ids]).reject(&:blank?)
-    scope = @assessment.diagnostic_questions.where(kind: kind)
+    return head :unprocessable_content if kind.blank?
 
-    if kind.blank? || ids.sort != scope.pluck(:id).map(&:to_s).sort
-      return head :unprocessable_content
-    end
+    questions_by_id = @assessment.diagnostic_questions.where(kind: kind).index_by { |q| q.id.to_s }
+
+    return head :unprocessable_content if ids.sort != questions_by_id.keys.sort
 
     ActiveRecord::Base.transaction do
-      ids.each_with_index { |id, index| scope.find(id).update!(position: index + 1) }
+      ids.each_with_index { |id, index| questions_by_id[id].update!(position: index + 1) }
     end
 
     head :no_content
