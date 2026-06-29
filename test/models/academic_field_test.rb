@@ -1,11 +1,26 @@
 require "test_helper"
 
 class AcademicFieldTest < ActiveSupport::TestCase
-  test "requires a slug" do
-    academic_field = AcademicField.new(name: "Test")
+  test "auto-generates a slug from name" do
+    academic_field = AcademicField.create!(name: "Langues étrangères")
 
-    assert_not academic_field.valid?
-    assert_includes academic_field.errors[:slug], "doit être rempli(e)"
+    assert_equal "langues_etrangeres", academic_field.slug
+  end
+
+  test "does not regenerate the slug when the name changes later" do
+    academic_field = AcademicField.create!(name: "Test")
+
+    academic_field.update!(name: "Renamed")
+
+    assert_equal "test", academic_field.slug
+  end
+
+  test "appends a numeric suffix when the generated slug collides" do
+    AcademicField.create!(name: "Doublon")
+
+    second = AcademicField.create!(name: "Doublon")
+
+    assert_equal "doublon_2", second.slug
   end
 
   test "requires a name" do
@@ -13,6 +28,13 @@ class AcademicFieldTest < ActiveSupport::TestCase
 
     assert_not academic_field.valid?
     assert_includes academic_field.errors[:name], "doit être rempli(e)"
+  end
+
+  test "requires a slug when name is blank" do
+    academic_field = AcademicField.new
+
+    assert_not academic_field.valid?
+    assert_includes academic_field.errors[:slug], "doit être rempli(e)"
   end
 
   test "requires a unique slug" do

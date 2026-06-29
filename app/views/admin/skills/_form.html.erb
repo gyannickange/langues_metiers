@@ -16,7 +16,12 @@
 
     <%= render partial: "shared/form_field", locals: { form: form, field: :name, type: "text", placeholder: "Ex: Communication Interculturelle" } %>
 
-    <%= render partial: "shared/form_field", locals: { form: form, field: :slug, type: "text", placeholder: "Ex: communication_interculturelle" } %>
+    <% if skill.persisted? %>
+      <div class="space-y-1">
+        <span class="text-[10px] font-black text-slate-400">Slug</span>
+        <p class="mt-1 text-sm font-mono text-slate-600"><%= skill.slug %></p>
+      </div>
+    <% end %>
 
     <%= render partial: "shared/form_field", locals: { form: form, field: :position, label: "Position (ordre d'affichage)", type: "number", min: 1 } %>
 

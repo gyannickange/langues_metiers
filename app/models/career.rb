@@ -1,6 +1,9 @@
 class Career < ApplicationRecord
   has_paper_trail
 
+  include Sluggable
+  slug_source :title
+
   enum :status, { draft: 0, published: 1, archived: 2 }, default: :published
 
   scope :diagnostic, -> { where.not(academic_field_slug: nil) }

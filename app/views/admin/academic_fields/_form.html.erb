@@ -16,7 +16,12 @@
 
     <%= render partial: "shared/form_field", locals: { form: form, field: :name, label: "Nom du domaine académique", type: "text" } %>
 
-    <%= render partial: "shared/form_field", locals: { form: form, field: :slug, type: "text", placeholder: "Ex: langues" } %>
+    <% if academic_field.persisted? %>
+      <div class="space-y-1">
+        <span class="text-[10px] font-black text-slate-400">Slug</span>
+        <p class="mt-1 text-sm font-mono text-slate-600"><%= academic_field.slug %></p>
+      </div>
+    <% end %>
 
     <div class="pt-4 flex items-center gap-4">
       <%= form.submit t("Save"), class: "bg-[var(--color-primary)] text-white px-8 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all shadow-sm transform hover:translate-y-[-1px] cursor-pointer" %>

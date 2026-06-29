@@ -16,6 +16,13 @@
 
     <%= render partial: "shared/form_field", locals: { form: f, field: :title, label: "Titre", type: "text", placeholder: "Ex: Traducteur / Interprète" } %>
 
+    <% if career.persisted? %>
+      <div class="space-y-1">
+        <span class="text-[10px] font-black text-slate-400">Slug</span>
+        <p class="mt-1 text-sm font-mono text-slate-600"><%= career.slug %></p>
+      </div>
+    <% end %>
+
     <%= render partial: "shared/form_field", locals: { form: f, field: :description, label: "Description", type: "text_area", rows: 6, placeholder: "Décrivez les missions et responsabilités..." } %>
 
     <%= render partial: "shared/form_field", locals: { form: f, field: :status, label: "Statut", type: "select",

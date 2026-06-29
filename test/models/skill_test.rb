@@ -1,8 +1,36 @@
 require "test_helper"
 
 class SkillTest < ActiveSupport::TestCase
-  test "requires a slug" do
-    skill = Skill.new(name: "Test")
+  test "auto-generates a slug from name" do
+    skill = Skill.create!(name: "Communication Interculturelle")
+
+    assert_equal "communication_interculturelle", skill.slug
+  end
+
+  test "does not overwrite an explicitly provided slug" do
+    skill = Skill.create!(name: "Test", slug: "custom-slug")
+
+    assert_equal "custom-slug", skill.slug
+  end
+
+  test "does not regenerate the slug when the name changes later" do
+    skill = Skill.create!(name: "Test")
+
+    skill.update!(name: "Renamed")
+
+    assert_equal "test", skill.slug
+  end
+
+  test "appends a numeric suffix when the generated slug collides" do
+    Skill.create!(name: "Doublon")
+
+    second = Skill.create!(name: "Doublon")
+
+    assert_equal "doublon_2", second.slug
+  end
+
+  test "requires a slug when name is blank" do
+    skill = Skill.new
 
     assert_not skill.valid?
     assert_includes skill.errors[:slug], "doit être rempli(e)"

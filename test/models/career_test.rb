@@ -20,6 +20,36 @@ class CareerTest < ActiveSupport::TestCase
     assert_respond_to Career.new, :trajectories
   end
 
+  test "auto-generates a slug from title" do
+    career = Career.create!(title: "Traducteur / Interprète", status: :published)
+
+    assert_equal "traducteur_interprete", career.slug
+  end
+
+  test "does not regenerate the slug when the title changes later" do
+    career = Career.create!(title: "Test", status: :published)
+
+    career.update!(title: "Renamed")
+
+    assert_equal "test", career.slug
+  end
+
+  test "appends a numeric suffix when the generated slug collides" do
+    Career.create!(title: "Doublon", status: :published)
+
+    second = Career.create!(title: "Doublon", status: :published)
+
+    assert_equal "doublon_2", second.slug
+  end
+
+  test "requires a unique slug" do
+    Career.create!(title: "Premier", slug: "test-slug", status: :published)
+    duplicate = Career.new(title: "Second", slug: "test-slug", status: :published)
+
+    assert_not duplicate.valid?
+    assert_includes duplicate.errors[:slug], "est déjà utilisé(e)"
+  end
+
   test "diagnostic scope returns only careers with academic_field_slug" do
     c1 = Career.create!(title: "Métier A", academic_field_slug: "langues", status: :published)
     c2 = Career.create!(title: "Métier B", status: :published)
