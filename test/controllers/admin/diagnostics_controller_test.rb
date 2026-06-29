@@ -10,9 +10,9 @@ class Admin::DiagnosticsControllerTest < ActionDispatch::IntegrationTest
 
     @disc_question = @assessment.diagnostic_questions.create!(kind: :disc, text: "Je décide vite.", disc_type: "D", position: 1)
 
-    @primary   = Career.create!(title: "Traducteur #{SecureRandom.hex(4)}", slug: "traducteur-#{SecureRandom.hex(4)}",
+    @primary   = Career.create!(title: "Traducteur #{SecureRandom.hex(4)}",
                                  status: :published, academic_field_slug: "langues", disc_types: [ "D" ], required_skills: [], affirmations: %w[a b])
-    @secondary = Career.create!(title: "Interprète #{SecureRandom.hex(4)}", slug: "interprete-#{SecureRandom.hex(4)}",
+    @secondary = Career.create!(title: "Interprète #{SecureRandom.hex(4)}",
                                  status: :published, academic_field_slug: "geo", disc_types: [ "I" ], required_skills: [])
 
     @diagnostic = Diagnostic.create!(user: @user, assessment: @assessment, status: :completed,

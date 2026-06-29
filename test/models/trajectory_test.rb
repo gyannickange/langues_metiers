@@ -2,7 +2,7 @@ require "test_helper"
 
 class TrajectoryTest < ActiveSupport::TestCase
   def setup
-    @career = Career.create!(title: "Analyste", slug: "analyste-#{SecureRandom.hex(4)}", status: :published, kind: :behavioral)
+    @career = Career.create!(title: "Analyste", status: :published)
   end
 
   test "valid with a career" do

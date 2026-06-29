@@ -34,7 +34,7 @@ class Diagnostics::PreScoringServiceTest < ActiveSupport::TestCase
     # A career that should score well
     hex = SecureRandom.hex(4)
     @career = Career.create!(
-      title: "Traducteur #{hex}", slug: "traducteur-#{hex}", status: :published, academic_field_slug: "langues",
+      title: "Traducteur #{hex}", status: :published, academic_field_slug: "langues",
       disc_types: [ "C", "D" ], required_skills: [ "langues_etrangeres" ]
     )
   end
@@ -107,7 +107,7 @@ class Diagnostics::PreScoringServiceTest < ActiveSupport::TestCase
   test "matched_skills omits required skills the user never answered" do
     hex = SecureRandom.hex(4)
     unanswered_skill_career = Career.create!(
-      title: "Guide #{hex}", slug: "guide-#{hex}", status: :published, academic_field_slug: "langues",
+      title: "Guide #{hex}", status: :published, academic_field_slug: "langues",
       disc_types: [], required_skills: [ "langues_etrangeres", "numerique" ]
     )
 

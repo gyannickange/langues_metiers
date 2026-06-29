@@ -71,9 +71,7 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     careers = 2.times.map do |index|
       Career.create!(
         title: "Métier #{index}",
-        slug: "validation-#{index}-#{SecureRandom.hex(3)}",
         status: :published,
-        kind: :behavioral,
         affirmations: [ "Cette affirmation me décrit." ]
       )
     end
@@ -101,7 +99,7 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
 
   test "GET results renders honest empty states for sparse diagnostic data" do
     sign_in @user
-    career = Career.create!(title: "Analyste", slug: "analyste-#{SecureRandom.hex(3)}", status: :published, kind: :behavioral)
+    career = Career.create!(title: "Analyste", status: :published)
     d = Diagnostic.create!(
       user: @user,
       status: :completed,
@@ -133,7 +131,7 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
 
   test "GET results remains available and queues a retry when PDF generation fails" do
     sign_in @user
-    career = Career.create!(title: "Analyste", slug: "retry-#{SecureRandom.hex(3)}", status: :published, kind: :behavioral)
+    career = Career.create!(title: "Analyste", status: :published)
     d = Diagnostic.create!(user: @user, status: :completed, assessment: @assessment, primary_career: career)
 
     Diagnostics::GeneratePdfService.stub(:call, ->(_diagnostic) { raise Prawn::Errors::CannotFit }) do

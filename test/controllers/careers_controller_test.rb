@@ -7,15 +7,13 @@ class CareersControllerTest < ActionDispatch::IntegrationTest
       title: "Analyste des usages",
       description: "Transforme des observations qualitatives en recommandations concrètes.",
       sector: "Études et conseil",
-      status: :published,
-      kind: :profession
+      status: :published
     )
     @career_b = Career.create!(
       title: "Chargé de communication",
       description: "Conçoit des messages clairs pour différents publics.",
       sector: "Communication",
-      status: :published,
-      kind: :profession
+      status: :published
     )
   end
 

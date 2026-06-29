@@ -16,10 +16,10 @@ class Diagnostics::AnswerAttributionPresenterTest < ActiveSupport::TestCase
     @interest_answer = @diagnostic.diagnostic_answers.create!(diagnostic_question: @interest_question, dimension_slug: "langues", answer_value: "4", points_awarded: 4)
     @skill_answer    = @diagnostic.diagnostic_answers.create!(diagnostic_question: @skill_question, dimension_slug: "langues_etrangeres", answer_value: "5", points_awarded: 5)
 
-    @primary   = Career.create!(title: "Traducteur #{SecureRandom.hex(4)}", slug: "traducteur-#{SecureRandom.hex(4)}", status: :published,
+    @primary   = Career.create!(title: "Traducteur #{SecureRandom.hex(4)}", status: :published,
                                  academic_field_slug: "langues", disc_types: [ "D" ], required_skills: [ "langues_etrangeres" ],
                                  affirmations: %w[a b c])
-    @secondary = Career.create!(title: "Interprète #{SecureRandom.hex(4)}", slug: "interprete-#{SecureRandom.hex(4)}", status: :published,
+    @secondary = Career.create!(title: "Interprète #{SecureRandom.hex(4)}", status: :published,
                                  academic_field_slug: "geo", disc_types: [ "I" ], required_skills: [])
 
     @diagnostic.update!(

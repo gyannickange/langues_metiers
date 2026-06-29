@@ -6,7 +6,6 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
       title: "Traducteur",
       status: :published,
       sector: "Langues",
-      kind: "profession",
       academic_field_slug: "langues"
     )
   end
@@ -60,7 +59,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_select "section#public"
     assert_select "footer#contact"
     assert_select "img[alt]:not([alt=''])", minimum: 3
-    assert_select "footer", text: /#{Date.current.year} Insertrice/
+    assert_select "footer", text: /#{Date.current.year} Insertrix/
     assert_select "footer input[type='email']", count: 0
     assert_select "footer button", text: "S'abonner", count: 0
     assert_not_includes response.body, "75001 Paris"
