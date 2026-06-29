@@ -44,6 +44,9 @@
             data-row-toggle-display-id-param="<%= dom_id(q) %>"
             data-row-toggle-edit-id-param="<%= dom_id(q) %>_edit"
             class="text-xs text-[var(--color-primary)] hover:underline bg-transparent border-0 cursor-pointer">Modifier</button>
+    <%= link_to "Historique", history_admin_assessment_diagnostic_question_path(assessment, q),
+          data: { turbo_frame: "question_history" },
+          class: "text-xs text-slate-400 hover:underline" %>
     <%= button_to "Supprimer", admin_assessment_diagnostic_question_path(assessment, q), method: :delete,
           data: { turbo_confirm: "Supprimer cette question ?" },
           class: "text-xs text-red-500 hover:underline bg-transparent border-0 cursor-pointer" %>

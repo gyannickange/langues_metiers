@@ -15,7 +15,7 @@
     <% end %>
 
     <div class="space-y-1">
-      <%= f.label :career_id, "Profil ou métier associé", class: "text-[10px] font-black uppercase tracking-widest text-slate-400" %>
+      <%= f.label :career_id, "Profil ou métier associé", class: "text-[10px] font-black uppercase text-slate-400" %>
       <% career_groups = @careers.group_by { |c| c.behavioral? ? "Profils" : "Métiers" }
                                   .transform_values { |careers| careers.map { |c| [c.title, c.id] } } %>
       <%= f.select :career_id,
@@ -25,19 +25,19 @@
     </div>
 
     <div class="space-y-1">
-      <%= f.label :axe_1, "Axe 1 — Institutionnel / ONG", class: "text-[10px] font-black uppercase tracking-widest text-slate-400" %>
+      <%= f.label :axe_1, "Axe 1 — Institutionnel / ONG", class: "text-[10px] font-black uppercase text-slate-400" %>
       <%= f.text_area :axe_1, rows: 3, placeholder: "Entrez le contenu de l'axe 1...",
             class: "w-full bg-slate-50 border-0 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all" %>
     </div>
 
     <div class="space-y-1">
-      <%= f.label :axe_2, "Axe 2 — Secteur privé / hybride", class: "text-[10px] font-black uppercase tracking-widest text-slate-400" %>
+      <%= f.label :axe_2, "Axe 2 — Secteur privé / hybride", class: "text-[10px] font-black uppercase text-slate-400" %>
       <%= f.text_area :axe_2, rows: 3, placeholder: "Entrez le contenu de l'axe 2...",
             class: "w-full bg-slate-50 border-0 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all" %>
     </div>
 
     <div class="space-y-1">
-      <%= f.label :axe_3, "Axe 3 — Spécialisation long terme", class: "text-[10px] font-black uppercase tracking-widest text-slate-400" %>
+      <%= f.label :axe_3, "Axe 3 — Spécialisation long terme", class: "text-[10px] font-black uppercase text-slate-400" %>
       <%= f.text_area :axe_3, rows: 3, placeholder: "Entrez le contenu de l'axe 3...",
             class: "w-full bg-slate-50 border-0 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all" %>
     </div>
@@ -48,8 +48,8 @@
     </div>
 
     <div class="pt-4 flex items-center gap-4">
-      <%= f.submit "Enregistrer", class: "bg-[var(--color-primary)] text-white px-8 py-3 rounded-xl font-bold text-sm uppercase tracking-widest hover:opacity-90 transition-all shadow-sm transform hover:translate-y-[-1px]" %>
-      <%= link_to "Annuler", admin_trajectories_path, class: "text-slate-400 text-xs font-bold uppercase tracking-widest hover:text-slate-600 transition-colors" %>
+      <%= f.submit "Enregistrer", class: "bg-[var(--color-primary)] text-white px-8 py-3 rounded-xl font-bold text-sm uppercase hover:opacity-90 transition-all shadow-sm transform hover:translate-y-[-1px]" %>
+      <%= link_to "Annuler", admin_trajectories_path, class: "text-slate-400 text-xs font-bold uppercase hover:text-slate-600 transition-colors" %>
     </div>
   <% end %>
 </div>

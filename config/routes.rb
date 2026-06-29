@@ -88,6 +88,7 @@ Rails.application.routes.draw do
       member { patch :activate }
       resources :diagnostic_questions, only: [ :index, :create, :update, :destroy ] do
         collection { patch :reorder }
+        member { get :history }
       end
     end
     resources :mobile_operators

@@ -2,4 +2,8 @@
 <div class="px-6 py-6">
   <h1 class="text-xl font-bold mb-6">Modifier la Trajectoire</h1>
   <%= render "form", trajectory: @trajectory %>
+
+  <div class="mt-8">
+    <%= render "shared/version_history", versions: @trajectory.versions.reverse_chronological %>
+  </div>
 </div>

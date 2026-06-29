@@ -1,7 +1,7 @@
 # app/controllers/admin/diagnostic_questions_controller.rb
 class Admin::DiagnosticQuestionsController < Admin::BaseController
   before_action :set_assessment
-  before_action :set_question, only: [ :update, :destroy ]
+  before_action :set_question, only: [ :update, :destroy, :history ]
 
   def index
     @kind_filter = params[:kind].presence || "all"
@@ -62,6 +62,10 @@ class Admin::DiagnosticQuestionsController < Admin::BaseController
   def destroy
     @question.destroy
     redirect_to redirect_path, notice: "Question supprimée.", status: :see_other
+  end
+
+  def history
+    render partial: "history_frame", locals: { question: @question }
   end
 
   def reorder

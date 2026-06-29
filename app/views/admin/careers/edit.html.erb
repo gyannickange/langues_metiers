@@ -4,4 +4,7 @@
   <%= render "form", career: @career %>
 </div>
 
+<div class="mt-8">
+  <%= render "shared/version_history", versions: @career.versions.reverse_chronological %>
+</div>
 

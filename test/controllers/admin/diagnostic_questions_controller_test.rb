@@ -398,4 +398,25 @@ class Admin::DiagnosticQuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :see_other
     assert_redirected_to admin_assessment_diagnostic_questions_path(@assessment)
   end
+
+  test "history renders the question's version history inside the shared turbo frame" do
+    question = @assessment.diagnostic_questions.create!(kind: "skill", text: "Une question",
+                                                          position: 1, active: true, skill_slug: "numerique")
+    question.update!(text: "Une question modifiée")
+
+    get history_admin_assessment_diagnostic_question_path(@assessment, question)
+
+    assert_response :success
+    assert_select "turbo-frame#question_history h3", text: "Historique des modifications"
+    assert_select "*", text: /Modification/
+  end
+
+  test "history scopes to the assessment and 404s for a foreign question" do
+    other = Assessment.create!(title: "Other #{SecureRandom.hex(4)}", active: false)
+    foreign = other.diagnostic_questions.create!(kind: "interest", text: "X", position: 1, active: true, academic_field_slug: "langues")
+
+    get history_admin_assessment_diagnostic_question_path(@assessment, foreign)
+
+    assert_response :not_found
+  end
 end

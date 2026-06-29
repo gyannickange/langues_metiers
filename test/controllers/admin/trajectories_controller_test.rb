@@ -41,4 +41,13 @@ class Admin::TrajectoriesControllerTest < ActionDispatch::IntegrationTest
     assert_select "nav[aria-label='Pagination']"
     assert_no_match "translation missing", response.body
   end
+
+  test "edit renders version history after an update" do
+    trajectory = Trajectory.create!(career: @metier, axe_1: "Initial")
+    trajectory.update!(axe_1: "Mis à jour")
+
+    get edit_admin_trajectory_path(trajectory)
+
+    assert_select "h3", text: "Historique des modifications"
+  end
 end

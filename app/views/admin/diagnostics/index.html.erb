@@ -14,7 +14,7 @@
        data-tab-activation-inactive-class="text-slate-400 hover:text-slate-600">
     <% ['all', 'completed', 'in_progress', 'paid', 'pending_payment'].each do |status| %>
       <%= link_to admin_diagnostics_path(status: status), 
-                  class: "px-4 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all duration-300 #{@status_filter == status ? "bg-white text-[var(--color-primary)] shadow-sm border border-slate-100" : "text-slate-400 hover:text-slate-600"}",
+                  class: "px-4 py-2 rounded-xl text-[10px] font-black transition-all duration-300 #{@status_filter == status ? "bg-white text-[var(--color-primary)] shadow-sm border border-slate-100" : "text-slate-400 hover:text-slate-600"}",
                   data: { turbo_frame: "diagnostics_table", turbo_action: "advance", tab_activation_target: "tab", action: "click->tab-activation#activate" } do %>
         <%= status == 'all' ? "TOUS" : t("activerecord.attributes.diagnostic.statuses.#{status}", default: status).humanize.upcase %>
       <% end %>

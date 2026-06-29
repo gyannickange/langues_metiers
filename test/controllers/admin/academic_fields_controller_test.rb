@@ -23,7 +23,7 @@ class Admin::AcademicFieldsControllerTest < ActionDispatch::IntegrationTest
 
   test "create persists a new academic_field" do
     assert_difference "AcademicField.count", 1 do
-      post admin_academic_fields_path, params: { academic_field: { slug: "new-academic-field", name: "New academic field", position: 9 } }
+      post admin_academic_fields_path, params: { academic_field: { slug: "new-academic-field", name: "New academic field" } }
     end
 
     assert_redirected_to admin_academic_field_path(AcademicField.find_by!(slug: "new-academic-field"))

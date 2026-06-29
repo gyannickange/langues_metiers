@@ -1,0 +1,3 @@
+<%= turbo_frame_tag "question_history" do %>
+  <%= render "shared/version_history", versions: question.versions.reverse_chronological %>
+<% end %>

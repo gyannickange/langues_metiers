@@ -30,4 +30,18 @@ class AcademicFieldTest < ActiveSupport::TestCase
       field.update!(name: "Langues étrangères")
     end
   end
+
+  test "auto-assigns position to one past the current max when not provided" do
+    previous_max = AcademicField.maximum(:position)
+
+    field = AcademicField.create!(slug: "field-#{SecureRandom.hex(4)}", name: "Nouvelle filière")
+
+    assert_equal previous_max + 1, field.position
+  end
+
+  test "keeps an explicitly provided position" do
+    field = AcademicField.create!(slug: "field-#{SecureRandom.hex(4)}", name: "Nouvelle filière", position: 42)
+
+    assert_equal 42, field.position
+  end
 end

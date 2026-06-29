@@ -84,4 +84,12 @@ class Admin::CareersControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal @admin.id.to_s, @metier.versions.last.whodunnit
   end
+
+  test "edit renders version history after an update" do
+    @metier.update!(title: "Titre modifié")
+
+    get edit_admin_career_path(@metier)
+
+    assert_select "h3", text: "Historique des modifications"
+  end
 end

@@ -9,3 +9,7 @@
 
 <%= render "form", assessment: @assessment %>
 
+<div class="mt-8">
+  <%= render "shared/version_history", versions: @assessment.versions.reverse_chronological %>
+</div>
+
