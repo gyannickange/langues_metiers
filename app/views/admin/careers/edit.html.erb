@@ -1,5 +1,12 @@
 <% content_for :page_title, t("Edit Career") %>
 
+<%= render "shared/page_header", 
+    title: "Modifier : #{@career.title}",
+    subtitle: "Mettre à jour les informations du profil",
+    action_text: "Retour aux profils",
+    action_url: admin_careers_path,
+    action_icon: "arrow-left" %>
+
 <div class="bg-white rounded shadow p-4">
   <%= render "form", career: @career %>
 </div>

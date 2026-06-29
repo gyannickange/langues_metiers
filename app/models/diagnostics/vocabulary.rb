@@ -17,5 +17,6 @@ module Diagnostics
     def academic_field_options    = AcademicField.order(:position).pluck(:name, :slug)
     def skill_options = Skill.order(:position).pluck(:name, :slug)
     def disc_type_options  = DISC_TYPES.map { |slug, label| [ label, slug ] }
+    def skill_labels_by_slug = Skill.pluck(:slug, :name).to_h
   end
 end

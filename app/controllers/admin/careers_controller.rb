@@ -10,7 +10,7 @@ module Admin
 
       if @query.present?
         search_query = "%#{@query}%"
-        @careers = @careers.where("title ILIKE :q OR description ILIKE :q OR slug ILIKE :q", q: search_query)
+        @careers = @careers.where("title ILIKE :q OR description ILIKE :q", q: search_query)
       end
 
       @careers = @careers.where(status: @status) if @status.present?
@@ -53,10 +53,10 @@ module Admin
 
     def career_params
       params.require(:career).permit(
-        :title, :slug, :description, :status, :kind,
-        :first_action, :premium_pitch, :key_skills_text,
+        :title, :description, :status,
+        :first_action, :premium_pitch,
         :academic_field_slug, :affirmations_text,
-        key_skills: [], disc_types: [], required_skills: []
+        disc_types: [], required_skills: []
       )
     end
   end

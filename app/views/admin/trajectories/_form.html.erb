@@ -14,38 +14,16 @@
       </div>
     <% end %>
 
-    <div class="space-y-1">
-      <%= f.label :career_id, "Profil ou métier associé", class: "text-[10px] font-black uppercase text-slate-400" %>
-      <% career_groups = @careers.group_by { |c| c.behavioral? ? "Profils" : "Métiers" }
-                                  .transform_values { |careers| careers.map { |c| [c.title, c.id] } } %>
-      <%= f.select :career_id,
-            grouped_options_for_select(career_groups, trajectory.career_id),
-            { prompt: "Choisir un profil ou métier..." },
-            class: "w-full bg-slate-50 border-0 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all" %>
-    </div>
+    <%= render partial: "shared/form_field", locals: { form: f, field: :career_id, label: "Métier associé", type: "select",
+          options: @careers.map { |c| [c.title, c.id] }, prompt: "Choisir un métier..." } %>
 
-    <div class="space-y-1">
-      <%= f.label :axe_1, "Axe 1 — Institutionnel / ONG", class: "text-[10px] font-black uppercase text-slate-400" %>
-      <%= f.text_area :axe_1, rows: 3, placeholder: "Entrez le contenu de l'axe 1...",
-            class: "w-full bg-slate-50 border-0 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all" %>
-    </div>
+    <%= render partial: "shared/form_field", locals: { form: f, field: :axe_1, label: "Axe 1 — Institutionnel / ONG", type: "text_area", rows: 3, placeholder: "Entrez le contenu de l'axe 1..." } %>
 
-    <div class="space-y-1">
-      <%= f.label :axe_2, "Axe 2 — Secteur privé / hybride", class: "text-[10px] font-black uppercase text-slate-400" %>
-      <%= f.text_area :axe_2, rows: 3, placeholder: "Entrez le contenu de l'axe 2...",
-            class: "w-full bg-slate-50 border-0 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all" %>
-    </div>
+    <%= render partial: "shared/form_field", locals: { form: f, field: :axe_2, label: "Axe 2 — Secteur privé / hybride", type: "text_area", rows: 3, placeholder: "Entrez le contenu de l'axe 2..." } %>
 
-    <div class="space-y-1">
-      <%= f.label :axe_3, "Axe 3 — Spécialisation long terme", class: "text-[10px] font-black uppercase text-slate-400" %>
-      <%= f.text_area :axe_3, rows: 3, placeholder: "Entrez le contenu de l'axe 3...",
-            class: "w-full bg-slate-50 border-0 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all" %>
-    </div>
+    <%= render partial: "shared/form_field", locals: { form: f, field: :axe_3, label: "Axe 3 — Spécialisation long terme", type: "text_area", rows: 3, placeholder: "Entrez le contenu de l'axe 3..." } %>
 
-    <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-xl">
-      <%= f.check_box :active, class: "w-5 h-5 rounded-lg border-slate-300 text-[var(--color-primary)] focus:ring-[var(--color-primary)]/20 cursor-pointer" %>
-      <%= f.label :active, "Trajectoire Active", class: "text-sm font-bold text-slate-700 cursor-pointer" %>
-    </div>
+    <%= render partial: "shared/form_field", locals: { form: f, field: :active, label: "Trajectoire Active", type: "checkbox" } %>
 
     <div class="pt-4 flex items-center gap-4">
       <%= f.submit "Enregistrer", class: "bg-[var(--color-primary)] text-white px-8 py-3 rounded-xl font-bold text-sm uppercase hover:opacity-90 transition-all shadow-sm transform hover:translate-y-[-1px]" %>

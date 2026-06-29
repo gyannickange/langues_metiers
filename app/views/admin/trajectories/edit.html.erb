@@ -1,9 +1,17 @@
 <%# app/views/admin/trajectories/edit.html.erb %>
-<div class="px-6 py-6">
-  <h1 class="text-xl font-bold mb-6">Modifier la Trajectoire</h1>
-  <%= render "form", trajectory: @trajectory %>
+<% content_for :page_title, t("Edit Trajectory") %>
 
-  <div class="mt-8">
-    <%= render "shared/version_history", versions: @trajectory.versions.reverse_chronological %>
-  </div>
+<%= render "shared/page_header", 
+    title: "Modifier : #{@trajectory.career.title}",
+    subtitle: "Mettre à jour les informations de la trajectoire",
+    action_text: "Retour aux trajectoires",
+    action_url: admin_trajectories_path,
+    action_icon: "arrow-left" %>
+
+<div class="bg-white rounded shadow p-4">
+  <%= render "form", trajectory: @trajectory %>
+</div>
+
+<div class="mt-8">
+  <%= render "shared/version_history", versions: @trajectory.versions.reverse_chronological %>
 </div>
