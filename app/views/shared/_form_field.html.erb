@@ -12,38 +12,39 @@
     data         - forwarded to the underlying field helper (Stimulus targets/actions)
     collection, value_method, text_method, layout ("inline" default | "grid") - checkbox_collection
 %>
-<% base_input_classes = "w-full bg-slate-50 border-0 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all" %>
+<% base_input_classes = "mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gabon-blue focus:border-gabon-blue sm:text-sm" %>
 <% input_classes = [ base_input_classes, local_assigns[:extra_classes] ].compact.join(" ") %>
-<% label_classes = "text-[10px] font-black uppercase tracking-widest text-slate-400" %>
+<% label_classes = "text-[10px] font-black text-slate-400" %>
+<% field_label = local_assigns[:label] || field.to_s.humanize %>
 <div class="space-y-1">
-  <% case type
+  <% case local_assigns[:type]
      when "text_area" %>
-    <%= form.label field, label || field.to_s.humanize, class: label_classes %>
-    <%= form.text_area field, class: input_classes, rows: rows || 3, placeholder: local_assigns[:placeholder], data: local_assigns[:data] %>
+    <%= form.label field, field_label, class: label_classes %>
+    <%= form.text_area field, class: input_classes, rows: local_assigns[:rows] || 3, placeholder: local_assigns[:placeholder], data: local_assigns[:data] %>
   <% when "select" %>
-    <%= form.label field, label || field.to_s.humanize, class: label_classes %>
+    <%= form.label field, field_label, class: label_classes %>
     <% select_options = {} %>
     <% select_options[:prompt] = local_assigns[:prompt] if local_assigns[:prompt] %>
     <% select_options[:include_blank] = local_assigns[:include_blank] if local_assigns[:include_blank] %>
-    <%= form.select field, options || [], select_options, { class: "#{input_classes} cursor-pointer", data: local_assigns[:data] } %>
+    <%= form.select field, local_assigns[:options] || [], select_options, { class: "#{input_classes} cursor-pointer", data: local_assigns[:data] } %>
   <% when "date" %>
-    <%= form.label field, label || field.to_s.humanize, class: label_classes %>
+    <%= form.label field, field_label, class: label_classes %>
     <%= form.date_field field, class: input_classes, data: local_assigns[:data] %>
   <% when "datetime" %>
-    <%= form.label field, label || field.to_s.humanize, class: label_classes %>
+    <%= form.label field, field_label, class: label_classes %>
     <%= form.datetime_local_field field, class: input_classes, data: local_assigns[:data] %>
   <% when "number" %>
-    <%= form.label field, label || field.to_s.humanize, class: label_classes %>
+    <%= form.label field, field_label, class: label_classes %>
     <%= form.number_field field, class: input_classes, placeholder: local_assigns[:placeholder], min: local_assigns[:min], data: local_assigns[:data] %>
   <% when "checkbox" %>
     <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-xl">
       <%= form.check_box field, class: "w-5 h-5 rounded-lg border-slate-300 text-[var(--color-primary)] focus:ring-[var(--color-primary)]/20 cursor-pointer", data: local_assigns[:data] %>
-      <%= form.label field, label || field.to_s.humanize, class: "text-sm font-bold text-slate-700 cursor-pointer" %>
+      <%= form.label field, field_label, class: "text-sm font-bold text-slate-700 cursor-pointer" %>
     </div>
   <% when "radio" %>
-    <%= form.label field, label || field.to_s.humanize, class: label_classes %>
+    <%= form.label field, field_label, class: label_classes %>
     <div class="flex flex-wrap gap-4">
-      <% (options || []).each do |opt_label, opt_value| %>
+      <% (local_assigns[:options] || []).each do |opt_label, opt_value| %>
         <label class="flex items-center gap-2 text-sm font-medium cursor-pointer">
           <%= form.radio_button field, opt_value, class: "rounded-full border-slate-300 text-[var(--color-primary)] focus:ring-[var(--color-primary)]/20" %>
           <%= opt_label %>
@@ -51,9 +52,9 @@
       <% end %>
     </div>
   <% when "checkbox_collection" %>
-    <%= form.label field, label || field.to_s.humanize, class: label_classes %>
+    <%= form.label field, field_label, class: label_classes %>
     <div class="<%= local_assigns[:layout] == "grid" ? "grid grid-cols-2 gap-2" : "flex flex-wrap gap-4" %>">
-      <%= form.collection_check_boxes field, collection, value_method, text_method do |b| %>
+      <%= form.collection_check_boxes field, local_assigns[:collection], local_assigns[:value_method], local_assigns[:text_method] do |b| %>
         <label class="flex items-center gap-2 text-sm font-medium cursor-pointer">
           <%= b.check_box(class: "rounded border-slate-300 text-[var(--color-primary)]") %>
           <%= b.text %>
@@ -61,8 +62,8 @@
       <% end %>
     </div>
   <% else %>
-    <%= form.label field, label || field.to_s.humanize, class: label_classes %>
-    <%= form.text_field field, class: input_classes, type: type || "text", placeholder: local_assigns[:placeholder], data: local_assigns[:data] %>
+    <%= form.label field, field_label, class: label_classes %>
+    <%= form.text_field field, class: input_classes, type: local_assigns[:type] || "text", placeholder: local_assigns[:placeholder], data: local_assigns[:data] %>
   <% end %>
   <% if form.object&.errors&.[](field)&.any? %>
     <p class="mt-1 text-sm text-red-600"><%= form.object&.errors&.[](field)&.first %></p>
