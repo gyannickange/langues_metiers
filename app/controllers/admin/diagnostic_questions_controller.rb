@@ -6,6 +6,8 @@ class Admin::DiagnosticQuestionsController < Admin::BaseController
   def index
     @kind_filter = params[:kind].presence || "all"
     @questions = load_questions
+    scoped_questions = @kind_filter == "all" ? @assessment.diagnostic_questions : @assessment.diagnostic_questions.where(kind: @kind_filter)
+    @all_versions = PaperTrail::Version.where(item_type: "DiagnosticQuestion", item_id: scoped_questions.pluck(:id)).order(created_at: :desc)
   end
 
   def create
