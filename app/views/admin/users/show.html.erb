@@ -1,0 +1,146 @@
+<% content_for :page_title, "Utilisateur" %>
+
+<%= render "shared/page_header",
+    title: [@user.first_name, @user.last_name].select(&:present?).join(" ").presence || @user.email,
+    subtitle: @user.email,
+    action_text: nil,
+    action_url: nil %>
+
+<div class="space-y-6 max-w-4xl">
+
+  <%# Role — inline edit form %>
+  <div class="glass-card rounded-2xl p-6 shadow-premium animate-premium-in">
+    <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+      <div class="p-2 bg-[var(--color-primary)]/10 text-[var(--color-primary)] rounded-lg">
+        <%= lucide_icon "shield", class: "h-5 w-5" %>
+      </div>
+      <h3 class="text-lg font-display text-slate-800">Rôle</h3>
+    </div>
+
+    <%= form_with model: [:admin, @user], method: :patch, class: "flex items-end gap-4" do |f| %>
+      <div class="flex-1">
+        <%= render partial: "shared/form_field", locals: {
+          form: f,
+          field: :role,
+          label: "Rôle",
+          type: "select",
+          options: User.roles.keys.map { |k| [k.humanize, k] }
+        } %>
+      </div>
+      <%= f.submit "Enregistrer", class: "mb-1 px-5 py-2 bg-[var(--color-primary)] text-white rounded-xl text-xs font-bold hover:opacity-90 transition-all cursor-pointer" %>
+    <% end %>
+  </div>
+
+  <%# Profile — read-only %>
+  <%= render "shared/show_card",
+      title: "Profil",
+      icon: :user,
+      items: [
+        { label: "Prénom",              value: @user.first_name.presence || "—" },
+        { label: "Nom",                 value: @user.last_name.presence  || "—" },
+        { label: "Ville",               value: @user.city.presence       || "—" },
+        { label: "Pays",                value: @user.country.presence    || "—" },
+        { label: "Diplôme",             value: @user.diploma.presence    || "—" },
+        { label: "Situation",           value: @user.employment_status.presence || "—" },
+        { label: "Inscrit le",          value: l(@user.created_at, format: :short) },
+        { label: "Onboarding",          value: render("shared/badge",
+            label: @user.onboarded? ? "Complet" : "Incomplet",
+            color: @user.onboarded? ? :green : :gray) }
+      ] %>
+
+  <%# Skills %>
+  <div class="glass-card rounded-2xl p-6 shadow-premium animate-premium-in">
+    <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+      <div class="p-2 bg-[var(--color-primary)]/10 text-[var(--color-primary)] rounded-lg">
+        <%= lucide_icon "award", class: "h-5 w-5" %>
+      </div>
+      <h3 class="text-lg font-display text-slate-800">Compétences</h3>
+    </div>
+    <% if @user.skills.any? %>
+      <div class="flex flex-wrap gap-2">
+        <% @user.skills.each do |skill| %>
+          <%= render "shared/badge", label: skill.name, color: :blue %>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-sm text-slate-400">Aucune compétence enregistrée.</p>
+    <% end %>
+  </div>
+
+  <%# Diagnostics %>
+  <div class="glass-card rounded-2xl p-6 shadow-premium animate-premium-in">
+    <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+      <div class="p-2 bg-[var(--color-primary)]/10 text-[var(--color-primary)] rounded-lg">
+        <%= lucide_icon "activity", class: "h-5 w-5" %>
+      </div>
+      <h3 class="text-lg font-display text-slate-800">Diagnostics</h3>
+    </div>
+    <% if @user.diagnostics.any? %>
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="text-left text-[10px] font-black uppercase text-slate-400 border-b border-slate-100">
+            <th class="pb-2">Date</th>
+            <th class="pb-2">Statut</th>
+            <th class="pb-2">Complété le</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-50">
+          <% @user.diagnostics.order(created_at: :desc).each do |diagnostic| %>
+            <tr class="text-slate-700">
+              <td class="py-3"><%= l(diagnostic.created_at, format: :short) %></td>
+              <td class="py-3"><%= diagnostic.status.humanize %></td>
+              <td class="py-3"><%= diagnostic.completed_at ? l(diagnostic.completed_at, format: :short) : "—" %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p class="text-sm text-slate-400">Aucun diagnostic.</p>
+    <% end %>
+  </div>
+
+  <%# Payments %>
+  <div class="glass-card rounded-2xl p-6 shadow-premium animate-premium-in">
+    <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+      <div class="p-2 bg-[var(--color-primary)]/10 text-[var(--color-primary)] rounded-lg">
+        <%= lucide_icon "credit-card", class: "h-5 w-5" %>
+      </div>
+      <h3 class="text-lg font-display text-slate-800">Paiements</h3>
+    </div>
+    <% if @user.payments.any? %>
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="text-left text-[10px] font-black uppercase text-slate-400 border-b border-slate-100">
+            <th class="pb-2">Date</th>
+            <th class="pb-2">Montant</th>
+            <th class="pb-2">Statut</th>
+            <th class="pb-2">Fournisseur</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-50">
+          <% @user.payments.order(created_at: :desc).each do |payment| %>
+            <tr class="text-slate-700">
+              <td class="py-3"><%= l(payment.created_at, format: :short) %></td>
+              <td class="py-3"><%= payment.amount_cents / 100 %> <%= payment.currency %></td>
+              <td class="py-3"><%= payment.status.humanize %></td>
+              <td class="py-3"><%= payment.provider.humanize %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p class="text-sm text-slate-400">Aucun paiement.</p>
+    <% end %>
+  </div>
+
+  <%# Role change history %>
+  <%= render "shared/version_history", versions: @user.versions.reverse_chronological %>
+
+  <div>
+    <%= link_to admin_users_path, class: "inline-flex items-center px-4 py-2 bg-slate-100 text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-200 transition-colors" do %>
+      <%= lucide_icon "arrow-left", class: "w-4 h-4 mr-2" %>
+      Retour à la liste
+    <% end %>
+  </div>
+
+</div>
