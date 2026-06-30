@@ -34,8 +34,8 @@
     <%= render partial: "shared/form_field", locals: { form: f, field: :disc_types, label: "Types DISC", type: "checkbox_collection",
           collection: Diagnostics::Vocabulary::DISC_TYPES.to_a, value_method: :first, text_method: :last, layout: "inline" } %>
 
-    <%= render partial: "shared/form_field", locals: { form: f, field: :required_skills, label: "Compétences requises", type: "checkbox_collection",
-          collection: Diagnostics::Vocabulary.skill_options, value_method: :last, text_method: :first, layout: "grid" } %>
+    <%= render partial: "shared/form_field", locals: { form: f, field: :required_skills, label: "Compétences requises", type: "select",
+          options: Diagnostics::Vocabulary.skill_options, multiple: true } %>
 
     <%= render partial: "shared/form_field", locals: { form: f, field: :affirmations_text, label: "Affirmations (une par ligne)", type: "text_area", rows: 6, placeholder: "Une affirmation par ligne..." } %>
 

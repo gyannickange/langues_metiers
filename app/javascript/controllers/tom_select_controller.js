@@ -3,7 +3,8 @@ import "tom-select"
 
 export default class extends Controller {
   connect() {
-    this.tomSelect = new window.TomSelect(this.element, { plugins: ["clear_button"] })
+    const plugins = this.element.multiple ? ["remove_button"] : ["clear_button"]
+    this.tomSelect = new window.TomSelect(this.element, { plugins })
   }
 
   disconnect() {

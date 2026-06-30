@@ -28,7 +28,7 @@
     <% select_options[:include_blank] = local_assigns[:include_blank] if local_assigns[:include_blank] %>
     <% select_data = (local_assigns[:data] || {}).dup %>
     <% select_data[:controller] = [ select_data[:controller], "tom-select" ].compact.join(" ") %>
-    <%= form.select field, local_assigns[:options] || [], select_options, { class: "#{input_classes} cursor-pointer", data: select_data } %>
+    <%= form.select field, local_assigns[:options] || [], select_options, { class: "#{input_classes} cursor-pointer", multiple: local_assigns[:multiple], data: select_data } %>
   <% when "date" %>
     <%= form.label field, field_label, class: label_classes %>
     <%= form.date_field field, class: input_classes, data: local_assigns[:data] %>

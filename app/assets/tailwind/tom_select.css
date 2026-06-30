@@ -6,6 +6,15 @@
  * adjusts colors/borders/radius to match the app's existing input look.
  */
 
+/* Tom Select copies classes from the original <select> to .ts-wrapper,
+   which causes double border/padding. Reset those here. */
+.ts-wrapper {
+  border: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
 .ts-control {
   border: 1px solid #cbd5e1; /* slate-300 */
   border-radius: 0.375rem; /* rounded-md */
