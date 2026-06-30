@@ -21,7 +21,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_not_includes response.body, "Beaucoup de profils académiques possèdent ces bases"
     assert_not_includes response.body, "Diagnostic de Repositionnement Stratégique"
     assert_not_includes response.body, "Score de positionnement visible"
-    assert_includes response.body, "Voir les 1 métiers"
+    assert_includes response.body, "Voir plus"
   end
 
   test "GET index renders mobile-friendly navigation and layouts" do
