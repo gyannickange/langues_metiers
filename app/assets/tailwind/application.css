@@ -449,3 +449,30 @@
     transform: none;
   }
 }
+
+@media (min-width: 1520px) {
+  .container {
+    max-width: 1440px;
+  }
+
+  .lp-section-title {
+    font-size: 3.75rem; /* text-6xl */
+    line-height: 1;
+  }
+
+  [data-home-motion-target="hero"] h1 {
+    font-size: 3.75rem;
+    line-height: 1.1;
+  }
+
+  #market h2,
+  #public h2 {
+    font-size: 3.75rem;
+    line-height: 1.1;
+  }
+
+  #cta h2 {
+    font-size: 4.5rem; /* text-7xl */
+    line-height: 1;
+  }
+}
