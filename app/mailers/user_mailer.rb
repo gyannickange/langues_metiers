@@ -8,6 +8,6 @@ class UserMailer < ApplicationMailer
     @user = params[:user]
     @otp_code = @user.otp_code
 
-    mail(to: @user.email, subject: "Ton code de connexion Insertrice")
+    mail(to: @user.email, subject: "Ton code de connexion Insertrix")
   end
 end

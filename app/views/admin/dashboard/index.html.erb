@@ -11,7 +11,7 @@
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
   <%= render "shared/stat_card",
       title: "Diagnostics",
-      count: Diagnostic.count,
+      count: @diagnostics_count,
       description: "Analyses complétées",
       percentage: 82,
       url: admin_diagnostics_path,
@@ -20,7 +20,7 @@
 
   <%= render "shared/stat_card",
       title: t("Users"),
-      count: User.count,
+      count: @users_count,
       description: t("admin.dashboard.users.description"),
       icon: :users,
       url: admin_users_path,
@@ -29,7 +29,7 @@
 
   <%= render "shared/stat_card",
       title: t("Skills"),
-      count: Skill.count,
+      count: @skills_count,
       description: t("admin.dashboard.skills.description"),
       icon: :puzzle,
       url: admin_skills_path,
@@ -38,7 +38,7 @@
 
   <%= render "shared/stat_card",
       title: t("Careers"),
-      count: Career.count,
+      count: @careers_count,
       description: t("admin.dashboard.careers.description"),
       icon: :compass,
       url: admin_careers_path,
@@ -55,7 +55,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <%= render "shared/quick_action_card",
           title: t("admin.dashboard.quick_actions.manage_users"),
-          count: User.count,
+          count: @users_count,
           count_label: t("Users"),
           icon: :users,
           url: admin_users_path,
@@ -63,7 +63,7 @@
 
       <%= render "shared/quick_action_card",
           title: t("admin.dashboard.quick_actions.manage_skills"),
-          count: Skill.count,
+          count: @skills_count,
           count_label: t("Skills"),
           icon: :puzzle,
           url: admin_skills_path,
@@ -71,7 +71,7 @@
 
       <%= render "shared/quick_action_card",
           title: t("admin.dashboard.quick_actions.manage_careers"),
-          count: Career.count,
+          count: @careers_count,
           count_label: t("Careers"),
           icon: :compass,
           url: admin_careers_path,

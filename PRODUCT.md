@@ -6,13 +6,13 @@ product
 
 ## Users
 
-Insertrice primarily serves students and young graduates in Benin who need practical guidance when choosing a career direction. They may have limited access to professional orientation services and need recommendations that feel understandable, credible, and locally relevant.
+Insertrix primarily serves students and young graduates in Benin who need practical guidance when choosing a career direction. They may have limited access to professional orientation services and need recommendations that feel understandable, credible, and locally relevant.
 
 The product is designed to expand later to young people across francophone Africa. Its structure must accommodate additional guidance, learning, and career-development features without losing clarity.
 
 ## Product Purpose
 
-Insertrice helps users understand their interests, DISC profile, and competencies, then translates those signals into realistic career recommendations and actionable next steps.
+Insertrix helps users understand their interests, DISC profile, and competencies, then translates those signals into realistic career recommendations and actionable next steps.
 
 Success means a user finishes the diagnostic with greater confidence, understands why the recommended careers fit, and knows what to do next. The product must make a consequential decision feel guided rather than intimidating.
 

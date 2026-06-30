@@ -1,6 +1,5 @@
 <div class="glass-card rounded-2xl p-8 shadow-premium animate-premium-in max-w-2xl">
-  <%= form_with model: [:admin, career], class: "space-y-6",
-        data: { controller: "career-form" } do |f| %>
+  <%= form_with model: [:admin, career], class: "space-y-6" do |f| %>
     <% if career.errors.any? %>
       <div class="bg-red-50 border border-red-100 p-4 rounded-xl text-sm text-red-700 mb-6 animate-shake">
         <div class="font-bold flex items-center gap-2 mb-1">
@@ -15,100 +14,38 @@
       </div>
     <% end %>
 
-    <div class="space-y-1">
-      <%= f.label :title, class: "text-[10px] font-black uppercase tracking-widest text-slate-400" %>
-      <%= f.text_field :title, placeholder: "Ex: Traducteur / Interprète",
-            class: "w-full bg-slate-50 border-0 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all" %>
-    </div>
+    <%= render partial: "shared/form_field", locals: { form: f, field: :title, label: "Titre", type: "text", placeholder: "Ex: Traducteur / Interprète" } %>
 
-    <div class="space-y-1">
-      <%= f.label :kind, "Type", class: "text-[10px] font-black uppercase tracking-widest text-slate-400" %>
-      <%= f.select :kind,
-            [["Profil comportemental", "behavioral"], ["Métier (diagnostic)", "profession"]], {},
-            data: { career_form_target: "kind", action: "change->career-form#toggle" },
-            class: "w-full bg-slate-50 border-0 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all cursor-pointer" %>
-    </div>
-
-    <div class="space-y-1">
-      <%= f.label :description, class: "text-[10px] font-black uppercase tracking-widest text-slate-400" %>
-      <%= f.text_area :description, rows: 6, placeholder: "Décrivez les missions et responsabilités...",
-            class: "w-full bg-slate-50 border-0 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all" %>
-    </div>
-
-    <div class="space-y-1">
-      <%= f.label :status, class: "text-[10px] font-black uppercase tracking-widest text-slate-400" %>
-      <%= f.select :status, Career.statuses.keys.map { |k| [k.humanize, k] }, {},
-            class: "w-full bg-slate-50 border-0 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all cursor-pointer" %>
-    </div>
-
-    <%# ---- Behavioral profile fields ---- %>
-    <div data-career-form-target="behavioralFields" class="space-y-6 border-t border-slate-100 pt-6">
-      <p class="text-[10px] font-black uppercase tracking-widest text-[var(--color-primary)]">Champs profil comportemental</p>
-
+    <% if career.persisted? %>
       <div class="space-y-1">
-        <%= f.label :key_skills_text, "Key skills (one per line)", class: "text-[10px] font-black uppercase tracking-widest text-slate-400" %>
-        <%= f.text_area :key_skills_text, rows: 4,
-              class: "w-full bg-slate-50 border-0 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all" %>
+        <span class="text-[10px] font-black text-slate-400">Slug</span>
+        <p class="mt-1 text-sm font-mono text-slate-600"><%= career.slug %></p>
       </div>
+    <% end %>
 
-      <div class="space-y-1">
-        <%= f.label :first_action, "Première action", class: "text-[10px] font-black uppercase tracking-widest text-slate-400" %>
-        <%= f.text_area :first_action, rows: 3,
-              class: "w-full bg-slate-50 border-0 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all" %>
-      </div>
+    <%= render partial: "shared/form_field", locals: { form: f, field: :description, label: "Description", type: "text_area", rows: 6, placeholder: "Décrivez les missions et responsabilités..." } %>
 
-      <div class="space-y-1">
-        <%= f.label :premium_pitch, "Pitch premium", class: "text-[10px] font-black uppercase tracking-widest text-slate-400" %>
-        <%= f.text_area :premium_pitch, rows: 3,
-              class: "w-full bg-slate-50 border-0 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all" %>
-      </div>
-    </div>
+    <%= render partial: "shared/form_field", locals: { form: f, field: :status, label: "Statut", type: "select",
+          options: Career.statuses.keys.map { |k| [k.humanize, k] } } %>
 
-    <%# ---- Métier (diagnostic) fields ---- %>
-    <div data-career-form-target="professionFields" class="space-y-6 border-t border-slate-100 pt-6">
-      <p class="text-[10px] font-black uppercase tracking-widest text-[var(--color-primary)]">Champs métier (diagnostic)</p>
+    <%= render partial: "shared/form_field", locals: { form: f, field: :academic_field_slug, label: "Filières académiques", type: "select",
+          options: Diagnostics::Vocabulary.academic_field_options, include_blank: "— choisir —" } %>
 
-      <div class="space-y-1">
-        <%= f.label :academic_field_slug, "Academic field", class: "text-[10px] font-black uppercase tracking-widest text-slate-400" %>
-        <%= f.select :academic_field_slug, Diagnostics::Vocabulary.academic_field_options,
-              { include_blank: "— choisir —" },
-              class: "w-full bg-slate-50 border-0 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all cursor-pointer" %>
-      </div>
+    <%= render partial: "shared/form_field", locals: { form: f, field: :disc_types, label: "Types DISC", type: "checkbox_collection",
+          collection: Diagnostics::Vocabulary::DISC_TYPES.to_a, value_method: :first, text_method: :last, layout: "inline" } %>
 
-      <div class="space-y-1">
-        <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Types DISC</span>
-        <div class="flex flex-wrap gap-3">
-          <%= f.collection_check_boxes :disc_types, Diagnostics::Vocabulary::DISC_TYPES.to_a, :first, :last do |b| %>
-            <label class="flex items-center gap-2 text-sm font-medium cursor-pointer">
-              <%= b.check_box(class: "rounded border-slate-300 text-[var(--color-primary)]") %>
-              <%= b.text %>
-            </label>
-          <% end %>
-        </div>
-      </div>
+    <%= render partial: "shared/form_field", locals: { form: f, field: :required_skills, label: "Compétences requises", type: "checkbox_collection",
+          collection: Diagnostics::Vocabulary.skill_options, value_method: :last, text_method: :first, layout: "grid" } %>
 
-      <div class="space-y-1">
-        <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Required skills</span>
-        <div class="grid grid-cols-2 gap-2">
-          <%= f.collection_check_boxes :required_skills, Diagnostics::Vocabulary.skill_options, :last, :first do |b| %>
-            <label class="flex items-center gap-2 text-sm font-medium cursor-pointer">
-              <%= b.check_box(class: "rounded border-slate-300 text-[var(--color-primary)]") %>
-              <%= b.text %>
-            </label>
-          <% end %>
-        </div>
-      </div>
+    <%= render partial: "shared/form_field", locals: { form: f, field: :affirmations_text, label: "Affirmations (une par ligne)", type: "text_area", rows: 6, placeholder: "Une affirmation par ligne..." } %>
 
-      <div class="space-y-1">
-        <%= f.label :affirmations_text, "Affirmations (une par ligne)", class: "text-[10px] font-black uppercase tracking-widest text-slate-400" %>
-        <%= f.text_area :affirmations_text, rows: 6, placeholder: "Une affirmation par ligne...",
-              class: "w-full bg-slate-50 border-0 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all" %>
-      </div>
-    </div>
+    <%= render partial: "shared/form_field", locals: { form: f, field: :first_action, label: "Première action", type: "text_area", rows: 3 } %>
+
+    <%= render partial: "shared/form_field", locals: { form: f, field: :premium_pitch, label: "Pitch premium", type: "text_area", rows: 3 } %>
 
     <div class="pt-4 flex items-center gap-4">
-      <%= f.submit t("Save"), class: "bg-[var(--color-primary)] text-white px-8 py-3 rounded-xl font-bold text-sm tracking-widest hover:opacity-90 transition-all shadow-sm transform hover:translate-y-[-1px]" %>
-      <%= link_to t("Cancel"), admin_careers_path, class: "text-slate-400 text-xs font-bold tracking-widest hover:text-slate-600 transition-colors" %>
+      <%= f.submit t("Save"), class: "bg-[var(--color-primary)] text-white px-8 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all shadow-sm transform hover:translate-y-[-1px]" %>
+      <%= link_to t("Cancel"), admin_careers_path, class: "text-slate-400 text-xs font-bold hover:text-slate-600 transition-colors" %>
     </div>
   <% end %>
 </div>

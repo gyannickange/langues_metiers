@@ -10,12 +10,15 @@ module Diagnostics
     end
 
     def call
-      scores      = calculate_scores
-      top_careers = rank_careers(scores).first(3)
+      scores = calculate_scores
+      dominant_disc_types, dominant_academic_field = dominant_categories(scores)
+      ranked = rank_careers(scores, dominant_disc_types, dominant_academic_field)
 
       @diagnostic.update!(
         score_data: scores.merge(
-          "top_career_ids" => top_careers.map { |career, score| { "id" => career.id, "score" => score } }
+          "dominant_disc_types"     => dominant_disc_types,
+          "dominant_academic_field" => dominant_academic_field,
+          "top_career_ids"          => ranked.first(3).map { |entry| serialize_entry(entry) }
         )
       )
     end
@@ -45,20 +48,47 @@ module Diagnostics
       { "disc_scores" => disc_scores, "academic_field_scores" => academic_field_scores, "skill_scores" => skill_scores }
     end
 
-    def rank_careers(scores)
-      disc_scores       = scores["disc_scores"]
-      academic_field_scores    = scores["academic_field_scores"]
+    def dominant_categories(scores)
+      dominant_disc    = scores["disc_scores"].sort_by { |_, v| -v }.first(2).map(&:first)
+      dominant_academic_field = scores["academic_field_scores"].max_by { |_, v| v }&.first
+
+      [ dominant_disc, dominant_academic_field ]
+    end
+
+    def rank_careers(scores, dominant_disc_types, dominant_academic_field)
       skill_scores = scores["skill_scores"]
 
-      dominant_disc    = disc_scores.sort_by { |_, v| -v }.first(2).map(&:first)
-      dominant_academic_field = academic_field_scores.max_by { |_, v| v }&.first
-
       Career.diagnostic.published.map do |career|
-        disc_match    = career.disc_types.count { |t| dominant_disc.include?(t) } * 3
+        matched_disc_types = career.disc_types & dominant_disc_types
+        disc_match    = matched_disc_types.size * 3
         academic_field_match = dominant_academic_field && career.academic_field_slug == dominant_academic_field ? 5 : 0
-        comp_match    = (career.required_skills || []).sum { |c| skill_scores[c].to_i }
-        [ career, disc_match + academic_field_match + comp_match ]
-      end.sort_by { |_, s| -s }
+        matched_skills = (career.required_skills || []).each_with_object({}) do |slug, memo|
+          memo[slug] = skill_scores[slug].to_i if skill_scores.key?(slug)
+        end
+        comp_match = matched_skills.values.sum
+
+        {
+          career:                career,
+          score:                 disc_match + academic_field_match + comp_match,
+          disc_match:            disc_match,
+          academic_field_match:  academic_field_match,
+          comp_match:            comp_match,
+          matched_disc_types:    matched_disc_types,
+          matched_skills:        matched_skills
+        }
+      end.sort_by { |entry| -entry[:score] }
+    end
+
+    def serialize_entry(entry)
+      {
+        "id"                   => entry[:career].id,
+        "score"                => entry[:score],
+        "disc_match"           => entry[:disc_match],
+        "academic_field_match" => entry[:academic_field_match],
+        "comp_match"           => entry[:comp_match],
+        "matched_disc_types"   => entry[:matched_disc_types],
+        "matched_skills"       => entry[:matched_skills]
+      }
     end
   end
 end

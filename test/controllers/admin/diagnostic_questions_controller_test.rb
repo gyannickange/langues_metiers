@@ -7,11 +7,68 @@ class Admin::DiagnosticQuestionsControllerTest < ActionDispatch::IntegrationTest
     post user_session_path, params: { user: { email: @admin.email, password: "password123" } }
   end
 
+  test "index shows an empty state when a filter matches no questions" do
+    get admin_assessment_diagnostic_questions_path(@assessment, kind: "skill")
+
+    assert_select "h3", text: "Aucune question"
+  end
+
+  test "index does not show the empty state when questions exist for the filter" do
+    @assessment.diagnostic_questions.create!(kind: "skill", text: "Une question", position: 1, active: true, skill_slug: "numerique")
+
+    get admin_assessment_diagnostic_questions_path(@assessment, kind: "skill")
+
+    assert_select "h3", text: "Aucune question", count: 0
+  end
+
+  test "index highlights the active filter tab using the diagnostics-page pill style" do
+    get admin_assessment_diagnostic_questions_path(@assessment, kind: "disc")
+
+    disc_tab = css_select("a").find { |node| node.text.strip == "DISC" }
+    assert_includes disc_tab["class"], "bg-white"
+
+    interest_tab = css_select("a").find { |node| node.text.strip == "Intérêt" }
+    assert_includes interest_tab["class"], "text-slate-400"
+  end
+
+  test "index groups questions by kind then position when viewing all kinds" do
+    skill_q   = @assessment.diagnostic_questions.create!(kind: "skill", text: "Q-skill", position: 1, active: true, skill_slug: "numerique")
+    disc_q    = @assessment.diagnostic_questions.create!(kind: "disc", text: "Q-disc", position: 1, active: true, disc_type: "D")
+    interest_q = @assessment.diagnostic_questions.create!(kind: "interest", text: "Q-interest", position: 1, active: true, academic_field_slug: "langues")
+
+    get admin_assessment_diagnostic_questions_path(@assessment)
+
+    body = response.body
+    assert_operator body.index(interest_q.text), :<, body.index(disc_q.text)
+    assert_operator body.index(disc_q.text), :<, body.index(skill_q.text)
+  end
+
+  test "create auto-assigns the next position for the kind, ignoring any client-supplied value" do
+    @assessment.diagnostic_questions.create!(kind: "interest", text: "Q1", position: 1, active: true, academic_field_slug: "langues")
+
+    post admin_assessment_diagnostic_questions_path(@assessment), params: {
+      diagnostic_question: { kind: "interest", text: "Q2", active: true, academic_field_slug: "geo", position: 999 }
+    }
+
+    assert_redirected_to admin_assessment_diagnostic_questions_path(@assessment)
+    assert_equal 2, DiagnosticQuestion.order(:created_at).last.position
+  end
+
+  test "update ignores a client-supplied position value" do
+    question = @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 3, active: true, academic_field_slug: "langues")
+
+    patch admin_assessment_diagnostic_question_path(@assessment, question),
+          params: { diagnostic_question: { position: 999 } },
+          headers: { "X-Inline-Edit" => "true" }
+
+    assert_equal 3, question.reload.position
+  end
+
   test "create persists academic_field_slug on an interest question" do
     assert_difference "DiagnosticQuestion.count", 1 do
       post admin_assessment_diagnostic_questions_path(@assessment), params: {
         diagnostic_question: {
-          kind: "interest", text: "J'aime les langues", position: 1, active: true,
+          kind: "interest", text: "J'aime les langues", active: true,
           academic_field_slug: "langues"
         }
       }
@@ -24,7 +81,7 @@ class Admin::DiagnosticQuestionsControllerTest < ActionDispatch::IntegrationTest
   test "interest question without academic_field_slug is rejected" do
     assert_no_difference "DiagnosticQuestion.count" do
       post admin_assessment_diagnostic_questions_path(@assessment), params: {
-        diagnostic_question: { kind: "interest", text: "Sans filière", position: 1, active: true }
+        diagnostic_question: { kind: "interest", text: "Sans filière", active: true }
       }
     end
     assert_response :unprocessable_content
@@ -33,7 +90,7 @@ class Admin::DiagnosticQuestionsControllerTest < ActionDispatch::IntegrationTest
   test "skill question persists its label into options" do
     post admin_assessment_diagnostic_questions_path(@assessment), params: {
       diagnostic_question: {
-        kind: "skill", text: "Je maîtrise X", position: 2, active: true,
+        kind: "skill", text: "Je maîtrise X", active: true,
         skill_slug: "numerique", skill_label: "Compétences numériques"
       }
     }
@@ -57,36 +114,101 @@ class Admin::DiagnosticQuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", edit_admin_assessment_path(@assessment)
   end
 
-  test "index links edit and delete to the nested member routes" do
+  test "index renders a Modifier toggle and a Supprimer form for each question" do
     question = @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, academic_field_slug: "langues")
 
     get admin_assessment_diagnostic_questions_path(@assessment)
 
-    assert_select "a[href=?]", edit_admin_assessment_diagnostic_question_path(@assessment, question)
+    assert_select "button[data-action=?]", "click->row-toggle#openEdit"
     assert_select "form[action=?]", admin_assessment_diagnostic_question_path(@assessment, question)
   end
 
-  test "new pre-fills the next position for the requested kind" do
-    @assessment.diagnostic_questions.create!(kind: "interest", text: "Q1", position: 1, active: true, academic_field_slug: "langues")
-    @assessment.diagnostic_questions.create!(kind: "interest", text: "Q2", position: 2, active: true, academic_field_slug: "geo")
+  test "each question's edit-form row is hidden by default" do
+    question = @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, academic_field_slug: "langues")
 
-    get new_admin_assessment_diagnostic_question_path(@assessment, kind: "interest")
+    get admin_assessment_diagnostic_questions_path(@assessment)
 
-    assert_select "input#diagnostic_question_position[value=?]", "3"
+    assert_select "tr##{dom_id(question)}_edit[hidden]"
   end
 
-  test "new defaults position to 1 for a kind with no siblings, ignoring other kinds' positions" do
-    @assessment.diagnostic_questions.create!(kind: "interest", text: "Unrelated kind", position: 10, active: true, academic_field_slug: "langues")
+  test "update via inline full-row edit with a kind change replaces the whole table body" do
+    question = @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, academic_field_slug: "langues")
 
-    get new_admin_assessment_diagnostic_question_path(@assessment, kind: "skill")
+    patch admin_assessment_diagnostic_question_path(@assessment, question),
+          params: { diagnostic_question: { kind: "disc", text: "Une question", active: true, disc_type: "D" } },
+          headers: { "X-Inline-Edit" => "true" }
 
-    assert_select "input#diagnostic_question_position[value=?]", "1"
+    assert_equal "text/vnd.turbo-stream.html", response.media_type
+    assert_select "turbo-stream[action=replace][target=?]", "questions_tbody"
+    assert_equal "disc", question.reload.kind
   end
 
-  test "new question button on the index links with the active kind filter" do
+  test "update via inline full-row edit with invalid data re-renders just the edit-form row" do
+    question = @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, academic_field_slug: "langues")
+
+    patch admin_assessment_diagnostic_question_path(@assessment, question),
+          params: { diagnostic_question: { kind: "interest", text: "", active: true, academic_field_slug: "langues" } },
+          headers: { "X-Inline-Edit" => "true" }
+
+    assert_response :unprocessable_content
+    assert_select "turbo-stream[action=replace][target=?]", "#{dom_id(question)}_edit"
+    assert_equal "Une question", question.reload.text
+  end
+
+  test "update via inline full-row edit ignores any client-supplied position" do
+    question = @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 2, active: true, academic_field_slug: "langues")
+
+    patch admin_assessment_diagnostic_question_path(@assessment, question),
+          params: { diagnostic_question: { kind: "interest", text: "Une question", active: true, academic_field_slug: "langues", position: 999 } },
+          headers: { "X-Inline-Edit" => "true" }
+
+    assert_equal 2, question.reload.position
+  end
+
+  test "the new-question row is hidden by default and the trigger button can open it" do
+    get admin_assessment_diagnostic_questions_path(@assessment)
+
+    assert_select "tr[hidden][data-row-toggle-target=?]", "newRow"
+    assert_select "button[data-action=?]", "click->row-toggle#openNew"
+  end
+
+  test "the new-question row defaults its kind to the active filter tab" do
     get admin_assessment_diagnostic_questions_path(@assessment, kind: "disc")
 
-    assert_select "a[href=?]", new_admin_assessment_diagnostic_question_path(@assessment, kind: "disc")
+    assert_select "tr[data-row-toggle-target=?] select[name=?] option[selected][value=?]",
+                  "newRow", "diagnostic_question[kind]", "disc"
+  end
+
+  test "the new-question row defaults its kind to interest when viewing all kinds" do
+    get admin_assessment_diagnostic_questions_path(@assessment)
+
+    assert_select "tr[data-row-toggle-target=?] select[name=?] option[selected][value=?]",
+                  "newRow", "diagnostic_question[kind]", "interest"
+  end
+
+  test "create via inline row replaces the whole table body" do
+    assert_difference "DiagnosticQuestion.count", 1 do
+      post admin_assessment_diagnostic_questions_path(@assessment),
+           params: { diagnostic_question: { kind: "interest", text: "Nouvelle question", active: true, academic_field_slug: "langues" } },
+           headers: { "X-Inline-Edit" => "true" }
+    end
+
+    assert_equal "text/vnd.turbo-stream.html", response.media_type
+    assert_select "turbo-stream[action=replace][target=?]", "questions_tbody"
+    assert_match "Nouvelle question", response.body
+    assert_equal 1, DiagnosticQuestion.order(:created_at).last.position
+  end
+
+  test "create via inline row with invalid data re-renders just the new row with errors" do
+    assert_no_difference "DiagnosticQuestion.count" do
+      post admin_assessment_diagnostic_questions_path(@assessment),
+           params: { diagnostic_question: { kind: "interest", text: "Sans filière", active: true } },
+           headers: { "X-Inline-Edit" => "true" }
+    end
+
+    assert_response :unprocessable_content
+    assert_select "turbo-stream[action=replace][target=?]", "new_diagnostic_question"
+    assert_match "ne peut pas être vide", response.body
   end
 
   test "reorder persists new positions for same-kind questions" do
@@ -119,6 +241,39 @@ class Admin::DiagnosticQuestionsControllerTest < ActionDispatch::IntegrationTest
     patch reorder_admin_assessment_diagnostic_questions_path(@assessment), params: { ordered_ids: [ q1.id ] }
 
     assert_response :unprocessable_content
+  end
+
+  test "reorder succeeds when ordered_ids only include the actual question rows (the JS contract the sortable controller must honor)" do
+    q1 = @assessment.diagnostic_questions.create!(kind: "interest", text: "Q1", position: 1, active: true, academic_field_slug: "langues")
+    q2 = @assessment.diagnostic_questions.create!(kind: "interest", text: "Q2", position: 2, active: true, academic_field_slug: "geo")
+
+    get admin_assessment_diagnostic_questions_path(@assessment, kind: "interest")
+    doc = Nokogiri::HTML5(response.body)
+    tbody_children = doc.at_css("#questions_tbody").element_children
+    # The tbody now also contains each question's hidden edit-form row and the hidden
+    # new-question row as siblings — none of those carry data-id. Confirm that's really
+    # the case (otherwise this test would pass for the wrong reason).
+    assert_equal 5, tbody_children.size, "expected 2 questions + 2 paired edit rows + 1 new-row"
+    ordered_ids = tbody_children.filter_map { |el| el["data-id"] }
+    assert_equal [ q1.id, q2.id ], ordered_ids
+
+    patch reorder_admin_assessment_diagnostic_questions_path(@assessment, kind: "interest"),
+          params: { ordered_ids: ordered_ids.reverse }
+
+    assert_response :no_content
+    assert_equal 1, q2.reload.position
+    assert_equal 2, q1.reload.position
+  end
+
+  test "the Modifier button and its paired edit-form row carry id-based params, not sibling-based pairing" do
+    question = @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, academic_field_slug: "langues")
+
+    get admin_assessment_diagnostic_questions_path(@assessment)
+
+    assert_select "button[data-action=?][data-row-toggle-display-id-param=?][data-row-toggle-edit-id-param=?]",
+                  "click->row-toggle#openEdit", dom_id(question), "#{dom_id(question)}_edit"
+    assert_select "tr##{dom_id(question)}_edit button[data-action=?][data-row-toggle-display-id-param=?][data-row-toggle-edit-id-param=?]",
+                  "click->row-toggle#cancelEdit", dom_id(question), "#{dom_id(question)}_edit"
   end
 
   test "index does not render a drag handle when viewing all kinds" do
@@ -156,17 +311,6 @@ class Admin::DiagnosticQuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_select "turbo-stream[action=replace][target=?]", dom_id(question)
     assert_match "Texte corrigé", response.body
     assert_equal "Texte corrigé", question.reload.text
-  end
-
-  test "update via turbo stream replaces the row with the new position" do
-    question = @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, academic_field_slug: "langues")
-
-    patch admin_assessment_diagnostic_question_path(@assessment, question),
-          params: { diagnostic_question: { position: 5 } },
-          headers: { "X-Inline-Edit" => "true" }
-
-    assert_equal "text/vnd.turbo-stream.html", response.media_type
-    assert_equal 5, question.reload.position
   end
 
   test "update via turbo stream toggles active" do
@@ -218,27 +362,17 @@ class Admin::DiagnosticQuestionsControllerTest < ActionDispatch::IntegrationTest
           headers: { "X-Inline-Edit" => "true" }
 
     assert_select "td[data-inline-edit-param-value=?] textarea:not([hidden])", "text"
-    assert_select "td[data-inline-edit-param-value=?] span[hidden]", "text"
+    assert_select "td[data-inline-edit-param-value=?] button[hidden]", "text"
     assert_match "doit être rempli(e)", response.body
   end
 
-  test "index wires the position cell to inline editing" do
+  test "index shows position as plain, non-editable text" do
     question = @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, academic_field_slug: "langues")
 
     get admin_assessment_diagnostic_questions_path(@assessment)
 
-    assert_select "td[data-controller=?][data-inline-edit-param-value=?] input[type=number][hidden]", "inline-edit", "position"
-  end
-
-  test "update via turbo stream with invalid position keeps the position field visible with the error" do
-    question = @assessment.diagnostic_questions.create!(kind: "interest", text: "Une question", position: 1, active: true, academic_field_slug: "langues")
-
-    patch admin_assessment_diagnostic_question_path(@assessment, question),
-          params: { diagnostic_question: { position: 0 } },
-          headers: { "X-Inline-Edit" => "true" }
-
-    assert_select "td[data-inline-edit-param-value=?] input:not([hidden])", "position"
-    assert_match "doit être supérieur à 0", response.body
+    assert_select "tr##{dom_id(question)} td[data-inline-edit-param-value=?]", "position", count: 0
+    assert_select "tr##{dom_id(question)}", text: /1/
   end
 
   test "index shows an active checkbox reflecting each question's state" do
@@ -263,5 +397,26 @@ class Admin::DiagnosticQuestionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :see_other
     assert_redirected_to admin_assessment_diagnostic_questions_path(@assessment)
+  end
+
+  test "history renders the question's version history inside the shared turbo frame" do
+    question = @assessment.diagnostic_questions.create!(kind: "skill", text: "Une question",
+                                                          position: 1, active: true, skill_slug: "numerique")
+    question.update!(text: "Une question modifiée")
+
+    get history_admin_assessment_diagnostic_question_path(@assessment, question)
+
+    assert_response :success
+    assert_select "turbo-frame#question_history h3", text: "Historique des modifications"
+    assert_select "*", text: /Modification/
+  end
+
+  test "history scopes to the assessment and 404s for a foreign question" do
+    other = Assessment.create!(title: "Other #{SecureRandom.hex(4)}", active: false)
+    foreign = other.diagnostic_questions.create!(kind: "interest", text: "X", position: 1, active: true, academic_field_slug: "langues")
+
+    get history_admin_assessment_diagnostic_question_path(@assessment, foreign)
+
+    assert_response :not_found
   end
 end

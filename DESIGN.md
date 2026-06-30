@@ -1,5 +1,5 @@
 ---
-name: Insertrice
+name: Insertrix
 description: An encouraging and credible career-guidance product for students and young graduates.
 colors:
   guidance-gold: "#e7c873"
@@ -74,13 +74,13 @@ components:
     padding: "2rem"
 ---
 
-# Design System: Insertrice
+# Design System: Insertrix
 
 ## 1. Overview
 
 **Creative North Star: "The Career Compass"**
 
-Insertrice should feel like a calm, capable guide beside the user during an important decision. The product uses confident green for structure and trust, restrained gold for progress and primary actions, and clear white surfaces that keep attention on the current task.
+Insertrix should feel like a calm, capable guide beside the user during an important decision. The product uses confident green for structure and trust, restrained gold for progress and primary actions, and clear white surfaces that keep attention on the current task.
 
 The system is product-first: familiar controls, visible progress, and consistent states matter more than spectacle. Warmth comes from supportive language and considered feedback, not childish gamification or excessive decoration.
 
@@ -137,7 +137,7 @@ The palette pairs grounded professional green with optimistic gold, using mint o
 
 ## 4. Elevation
 
-Insertrice uses a hybrid of borders, tonal surfaces, and restrained ambient shadows. Product controls remain mostly flat at rest; stronger shadows are reserved for floating navigation, important result panels, and hover feedback.
+Insertrix uses a hybrid of borders, tonal surfaces, and restrained ambient shadows. Product controls remain mostly flat at rest; stronger shadows are reserved for floating navigation, important result panels, and hover feedback.
 
 ### Shadow Vocabulary
 - **Resting Surface** (`0 1px 3px 0 rgba(0,0,0,0.10)`): Standard cards and controls.

@@ -46,7 +46,7 @@ module Admin
     end
 
     def academic_field_params
-      params.require(:academic_field).permit(:slug, :name, :position)
+      params.require(:academic_field).permit(:name)
     end
   end
 end

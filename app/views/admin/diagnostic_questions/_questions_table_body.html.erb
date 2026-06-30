@@ -1,0 +1,25 @@
+<%# app/views/admin/diagnostic_questions/_questions_table_body.html.erb %>
+<%# locals: assessment, questions, kind_filter %>
+<% sortable_enabled = kind_filter != "all" %>
+<% colspan = sortable_enabled ? 7 : 6 %>
+<tbody id="questions_tbody" class="divide-y divide-slate-100"
+    <% if sortable_enabled %>
+      data-controller="sortable"
+      data-sortable-url-value="<%= reorder_admin_assessment_diagnostic_questions_path(assessment, kind: kind_filter) %>"
+    <% end %>>
+  <% if questions.empty? %>
+    <tr>
+      <td colspan="<%= colspan %>" class="p-0">
+        <%= render "shared/empty_state",
+              icon: "list-checks",
+              title: "Aucune question",
+              description: kind_filter == "all" ? "Aucune question pour cette évaluation." : "Aucune question de ce type pour cette évaluation." %>
+      </td>
+    </tr>
+  <% end %>
+  <%= render partial: "question_row", collection: questions, as: :q,
+        locals: { assessment: assessment, sortable_enabled: sortable_enabled, kind_filter: kind_filter } %>
+  <%= render "question_form_row",
+        question: assessment.diagnostic_questions.build(kind: (kind_filter == "all" ? "interest" : kind_filter)),
+        assessment: assessment, kind_filter: kind_filter, mode: :create, new_row: true %>
+</tbody>

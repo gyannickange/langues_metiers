@@ -44,6 +44,8 @@ gem "thruster", require: false
 # Authentication, Authorization, Background jobs, I18n
 gem "devise"
 gem "pundit"
+gem "rack-attack"
+gem "paper_trail"
 gem "sidekiq"
 gem "redis", "~> 5.0"
 gem "rails-i18n"

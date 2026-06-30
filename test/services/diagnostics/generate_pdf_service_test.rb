@@ -5,10 +5,10 @@ class Diagnostics::GeneratePdfServiceTest < ActiveSupport::TestCase
   def setup
     @user    = User.create!(email: "pdf#{SecureRandom.hex(4)}@test.com", password: "password123", first_name: "Test", last_name: "User", city: "Test City", country: "CI", diploma: "Master", employment_status: "En emploi")
     @profile = Career.create!(
-      title: "Analyste & Veille", slug: "analyste-#{SecureRandom.hex(3)}",
-      status: :published, kind: :behavioral,
+      title: "Analyste & Veille",
+      status: :published,
       description: "Expert en analyse stratégique.",
-      key_skills: [ "Analyse", "Rédaction" ],
+      required_skills: [ "analyse_donnees", "communication_ecrite" ],
       first_action: "Réalisez une analyse sectorielle.",
       premium_pitch: "Découvrez le Roadmap Premium."
     )
@@ -16,11 +16,11 @@ class Diagnostics::GeneratePdfServiceTest < ActiveSupport::TestCase
       axe_1: "ONG / Institution", axe_2: "Secteur privé", axe_3: "Expert long terme",
       active: true
     )
-    @complementary = Career.create!(title: "Coordinateur", slug: "coordo-#{SecureRandom.hex(3)}", status: :published, kind: :behavioral)
+    @complementary = Career.create!(title: "Coordinateur", status: :published)
     @diagnostic = Diagnostic.create!(
       user: @user, status: :completed,
       primary_career: @profile, complementary_career: @complementary,
-      score_data: { @profile.slug => 8, @complementary.slug => 5 }
+      score_data: { @profile.id => 8, @complementary.id => 5 }
     )
   end
 
@@ -44,9 +44,7 @@ class Diagnostics::GeneratePdfServiceTest < ActiveSupport::TestCase
       status: :completed,
       primary_career: Career.create!(
         title: "Métier avec un titre très long #{'international ' * 12}",
-        slug: "sparse-#{SecureRandom.hex(3)}",
-        status: :published,
-        kind: :behavioral
+        status: :published
       ),
       score_data: nil
     )

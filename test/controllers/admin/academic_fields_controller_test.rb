@@ -21,12 +21,12 @@ class Admin::AcademicFieldsControllerTest < ActionDispatch::IntegrationTest
     assert_no_match "translation missing", response.body
   end
 
-  test "create persists a new academic_field" do
+  test "create persists a new academic_field with an auto-generated slug" do
     assert_difference "AcademicField.count", 1 do
-      post admin_academic_fields_path, params: { academic_field: { slug: "new-academic-field", name: "New academic field", position: 9 } }
+      post admin_academic_fields_path, params: { academic_field: { name: "New academic field" } }
     end
 
-    assert_redirected_to admin_academic_field_path(AcademicField.find_by!(slug: "new-academic-field"))
+    assert_redirected_to admin_academic_field_path(AcademicField.find_by!(slug: "new_academic_field"))
   end
 
   test "update persists changes" do
@@ -58,5 +58,14 @@ class Admin::AcademicFieldsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "nav a[href='#{admin_academic_fields_path}']", text: /Filières académiques/
     assert_select "nav a[href='#{admin_academic_fields_path}'].bg-\\[var\\(--color-primary\\)\\]\\/10", count: 0
+  end
+
+  test "show renders version history after an update" do
+    @academic_field.update!(name: "Langues étrangères")
+
+    get admin_academic_field_path(@academic_field)
+
+    assert_select "h3", text: "Historique des modifications"
+    assert_select "*", text: /Modification/
   end
 end

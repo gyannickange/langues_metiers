@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "./assessment.css";
 @import "./results.css";
+@import "./tom_select_base.css";
+@import "./tom_select.css";
 
 :root {
   --background: #ffffff;

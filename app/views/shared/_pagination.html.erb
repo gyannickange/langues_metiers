@@ -6,20 +6,20 @@
     <div class="flex flex-1 justify-between sm:hidden">
       <% if pagy.prev %>
         <% query_params = request.query_parameters.merge(page: pagy.prev) %>
-        <%= link_to t("actions.previous"), "#{request.path}?#{query_params.to_query}", class: "relative inline-flex items-center rounded-xl bg-white px-4 py-2 text-xs font-bold tracking-widest text-slate-700 shadow-sm transition-all hover:bg-slate-50" %>
+        <%= link_to t("actions.previous"), "#{request.path}?#{query_params.to_query}", class: "relative inline-flex items-center rounded-xl bg-white px-4 py-2 text-xs font-bold text-slate-700 shadow-sm transition-all hover:bg-slate-50" %>
       <% else %>
-        <span class="relative inline-flex items-center rounded-xl bg-slate-50 px-4 py-2 text-xs font-bold tracking-widest text-slate-400 cursor-not-allowed"><%= t("actions.previous") %></span>
+        <span class="relative inline-flex items-center rounded-xl bg-slate-50 px-4 py-2 text-xs font-bold text-slate-400 cursor-not-allowed"><%= t("actions.previous") %></span>
       <% end %>
       <% if pagy.next %>
         <% query_params = request.query_parameters.merge(page: pagy.next) %>
-        <%= link_to t("actions.next"), "#{request.path}?#{query_params.to_query}", class: "relative ml-3 inline-flex items-center rounded-xl bg-white px-4 py-2 text-xs font-bold tracking-widest text-slate-700 shadow-sm transition-all hover:bg-slate-50" %>
+        <%= link_to t("actions.next"), "#{request.path}?#{query_params.to_query}", class: "relative ml-3 inline-flex items-center rounded-xl bg-white px-4 py-2 text-xs font-bold text-slate-700 shadow-sm transition-all hover:bg-slate-50" %>
       <% else %>
-        <span class="relative ml-3 inline-flex items-center rounded-xl bg-slate-50 px-4 py-2 text-xs font-bold tracking-widest text-slate-400 cursor-not-allowed"><%= t("actions.next") %></span>
+        <span class="relative ml-3 inline-flex items-center rounded-xl bg-slate-50 px-4 py-2 text-xs font-bold text-slate-400 cursor-not-allowed"><%= t("actions.next") %></span>
       <% end %>
     </div>
     <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
       <div>
-        <p class="text-[10px] text-slate-500 font-black tracking-widest">
+        <p class="text-[10px] text-slate-500 font-black">
           <%= t("pagination.showing", from: pagy.from, to: pagy.to, total: pagy.count) %>
         </p>
       </div>

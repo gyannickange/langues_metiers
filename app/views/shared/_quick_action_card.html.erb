@@ -27,7 +27,7 @@
     <div class="flex-1 min-w-0">
       <div class="font-bold text-slate-800 truncate font-display tracking-wider text-sm"><%= title %></div>
       <% if defined?(count) && count.present? %>
-        <div class="text-[10px] text-slate-500 font-black tracking-widest mt-0.5">
+        <div class="text-[10px] text-slate-500 font-black mt-0.5">
           <%= count %> <%= (defined?(count_label) ? count_label : "items").downcase %>
         </div>
       <% end %>

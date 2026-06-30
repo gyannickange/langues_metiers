@@ -44,4 +44,20 @@ class UserTest < ActiveSupport::TestCase
     assert_nil user.first_name
     assert_nil user.last_name
   end
+
+  test "versions when role changes" do
+    user = User.create!(email: "user#{SecureRandom.hex(4)}@test.com", password: "password123")
+
+    assert_difference -> { user.versions.count }, 1 do
+      user.update!(role: :admin)
+    end
+  end
+
+  test "does not version unrelated attribute changes" do
+    user = User.create!(email: "user#{SecureRandom.hex(4)}@test.com", password: "password123")
+
+    assert_no_difference -> { user.versions.count } do
+      user.update!(first_name: "Updated")
+    end
+  end
 end

@@ -1,4 +1,6 @@
 class DiagnosticQuestion < ApplicationRecord
+  has_paper_trail
+
   attr_writer :options_json
 
   belongs_to :assessment

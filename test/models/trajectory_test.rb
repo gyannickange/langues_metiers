@@ -2,7 +2,7 @@ require "test_helper"
 
 class TrajectoryTest < ActiveSupport::TestCase
   def setup
-    @career = Career.create!(title: "Analyste", slug: "analyste-#{SecureRandom.hex(4)}", status: :published, kind: :behavioral)
+    @career = Career.create!(title: "Analyste", status: :published)
   end
 
   test "valid with a career" do
@@ -27,5 +27,13 @@ class TrajectoryTest < ActiveSupport::TestCase
 
   test "belongs_to career" do
     assert_respond_to Trajectory.new, :career
+  end
+
+  test "versions on update" do
+    trajectory = Trajectory.create!(career: @career, axe_1: "Initial")
+
+    assert_difference -> { trajectory.versions.count }, 1 do
+      trajectory.update!(axe_1: "Mis à jour")
+    end
   end
 end

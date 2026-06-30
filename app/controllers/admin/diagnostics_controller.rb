@@ -14,7 +14,9 @@ class Admin::DiagnosticsController < Admin::BaseController
                                       { diagnostic_answers: :diagnostic_question }, :payment).find(params[:id])
     @assessment = @diagnostic.assessment || Assessment.find_by(active: true)
     @answers = @diagnostic.diagnostic_answers
-                          .joins(:diagnostic_question)
+                          .includes(:diagnostic_question)
+                          .references(:diagnostic_question)
                           .order("diagnostic_questions.position")
+    @attribution = Diagnostics::AnswerAttributionPresenter.new(@diagnostic)
   end
 end

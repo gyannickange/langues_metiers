@@ -1,7 +1,7 @@
 <%# app/views/admin/diagnostic_questions/index.html.erb %>
 <% content_for :page_title, "Questions du Diagnostic" %>
 
-<%= link_to edit_admin_assessment_path(@assessment), class: "inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-slate-600 transition-colors mb-4" do %>
+<%= link_to edit_admin_assessment_path(@assessment), class: "inline-flex items-center gap-2 text-xs font-bold uppercase text-slate-500 hover:text-slate-600 transition-colors mb-4" do %>
   <%= lucide_icon "arrow-left", class: "w-4 h-4" %>
   Retour à l'évaluation
 <% end %>
@@ -9,39 +9,50 @@
 <%= render "shared/page_header",
     title: "Questions : #{@assessment.title}",
     subtitle: "Gérer les questions DISC, intérêt thématique et skills",
-    action_text: "Nouvelle Question",
-    action_url: new_admin_assessment_diagnostic_question_path(@assessment, kind: (@kind_filter == "all" ? nil : @kind_filter)),
-    action_icon: "plus" %>
+    action_text: nil,
+    action_url: nil %>
 
-<div class="mb-6 flex gap-2">
-  <% [["all", "Toutes"], ["interest", "Intérêt"], ["disc", "DISC"], ["skill", "Skill"]].each do |kind, label| %>
-    <%= link_to label,
-          admin_assessment_diagnostic_questions_path(@assessment, kind: kind),
-          class: "px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all #{@kind_filter == kind ? "bg-[var(--color-primary)] text-white" : "bg-slate-100 text-slate-500 hover:bg-slate-200"}" %>
-  <% end %>
-</div>
+<div data-controller="row-toggle">
+  <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
+    <div class="flex flex-wrap items-center gap-1 bg-slate-100/50 p-1.5 rounded-2xl border border-slate-100 w-fit"
+         data-controller="tab-activation"
+         data-tab-activation-active-class="bg-white text-[var(--color-primary)] shadow-sm border border-slate-100"
+         data-tab-activation-inactive-class="text-slate-400 hover:text-slate-600">
+      <% [["all", "Toutes"], ["interest", "Intérêt"], ["disc", "DISC"], ["skill", "Skill"]].each do |kind, label| %>
+        <%= link_to label,
+              admin_assessment_diagnostic_questions_path(@assessment, kind: kind),
+              class: "px-4 py-2 rounded-xl text-[10px] font-black transition-all duration-300 #{@kind_filter == kind ? "bg-white text-[var(--color-primary)] shadow-sm border border-slate-100" : "text-slate-400 hover:text-slate-600"}",
+              data: { tab_activation_target: "tab", action: "click->tab-activation#activate" } %>
+      <% end %>
+    </div>
 
-<% sortable_enabled = @kind_filter != "all" %>
-<div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
-  <table class="w-full text-sm">
-    <thead class="bg-slate-50 border-b border-slate-200">
-      <tr>
-        <% if sortable_enabled %><th class="px-4 py-3 w-8"></th><% end %>
-        <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-widest text-slate-400">Type</th>
-        <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-widest text-slate-400">Question</th>
-        <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-widest text-slate-400">Métadonnée</th>
-        <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-widest text-slate-400">Pos.</th>
-        <th class="px-4 py-3 text-center text-xs font-bold uppercase tracking-widest text-slate-400">Active</th>
-        <th class="px-4 py-3"></th>
-      </tr>
-    </thead>
-    <tbody class="divide-y divide-slate-100"
-        <% if sortable_enabled %>
-          data-controller="sortable"
-          data-sortable-url-value="<%= reorder_admin_assessment_diagnostic_questions_path(@assessment, kind: @kind_filter) %>"
-        <% end %>>
-      <%= render partial: "question_row", collection: @questions, as: :q,
-            locals: { assessment: @assessment, sortable_enabled: sortable_enabled, kind_filter: @kind_filter } %>
-    </tbody>
-  </table>
+    <button type="button" data-action="click->row-toggle#openNew"
+            class="inline-flex items-center justify-center bg-slate-900 text-white px-6 py-3.5 rounded-2xl transition-all duration-300 hover:shadow-xl hover:shadow-slate-200 hover:-translate-y-0.5 font-bold text-xs group">
+      <div class="w-5 h-5 rounded-lg bg-white/10 flex items-center justify-center mr-3 group-hover:bg-white/20 transition-colors">
+        <%= lucide_icon "plus", class: "w-3 h-3 text-white" %>
+      </div>
+      Nouvelle Question
+    </button>
+  </div>
+
+  <div class="bg-white rounded-2xl border border-slate-200 overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead class="bg-slate-50 border-b border-slate-200">
+        <tr>
+          <% if @kind_filter != "all" %><th scope="col" class="px-4 py-3 w-8"></th><% end %>
+          <th scope="col" class="px-4 py-3 text-left text-xs font-bold uppercase text-slate-500">Type</th>
+          <th scope="col" class="px-4 py-3 text-left text-xs font-bold uppercase text-slate-500">Question</th>
+          <th scope="col" class="px-4 py-3 text-left text-xs font-bold uppercase text-slate-500">Métadonnée</th>
+          <th scope="col" class="px-4 py-3 text-left text-xs font-bold uppercase text-slate-500">Pos.</th>
+          <th scope="col" class="px-4 py-3 text-center text-xs font-bold uppercase text-slate-500">Active</th>
+          <th scope="col" class="px-4 py-3"></th>
+        </tr>
+      </thead>
+      <%= render "questions_table_body", assessment: @assessment, questions: @questions, kind_filter: @kind_filter %>
+    </table>
+  </div>
+
+  <div class="mt-8">
+    <%= turbo_frame_tag "question_history" %>
+  </div>
 </div>

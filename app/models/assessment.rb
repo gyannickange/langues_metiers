@@ -1,4 +1,6 @@
 class Assessment < ApplicationRecord
+  has_paper_trail
+
   has_many :diagnostic_questions, -> { order(:position) }, dependent: :destroy
   has_many :diagnostics, dependent: :nullify
 

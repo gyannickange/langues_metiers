@@ -10,7 +10,7 @@
 
   <% if defined?(clear_url) && clear_url.present? %>
     <%= link_to clear_url, 
-                class: "flex items-center gap-2 px-8 py-3 bg-slate-900 text-white rounded-full text-xs font-black tracking-widest hover:bg-slate-800 hover:shadow-lg transition-all duration-300",
+                class: "flex items-center gap-2 px-8 py-3 bg-slate-900 text-white rounded-full text-xs font-black hover:bg-slate-800 hover:shadow-lg transition-all duration-300",
                 data: { turbo_frame: "careers", turbo_action: "advance" } do %>
       <%= lucide_icon "rotate-ccw", class: "w-4 h-4" %>
       <%= t("Clear all filters") %>

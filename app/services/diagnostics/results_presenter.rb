@@ -33,7 +33,8 @@ module Diagnostics
     end
 
     def key_skills
-      Array(primary&.key_skills).filter_map { |skill| skill.to_s.presence }.uniq
+      labels = Diagnostics::Vocabulary.skill_labels_by_slug
+      Array(primary&.required_skills).filter_map { |slug| labels[slug] }.uniq
     end
 
     def development_axes

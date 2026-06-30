@@ -4,12 +4,10 @@ class Admin::CareersControllerTest < ActionDispatch::IntegrationTest
   setup do
     @admin = User.create!(email: "admin#{SecureRandom.hex(4)}@test.com", password: "password123", role: :admin)
     post user_session_path, params: { user: { email: @admin.email, password: "password123" } }
-    @metier = Career.create!(title: "Métier #{SecureRandom.hex(4)}", status: :published, kind: :profession)
-    @profil = Career.create!(title: "Profil #{SecureRandom.hex(4)}", slug: "profil-#{SecureRandom.hex(4)}",
-                             status: :published, kind: :behavioral)
+    @metier = Career.create!(title: "Métier #{SecureRandom.hex(4)}", status: :published)
   end
 
-  test "update persists the four diagnostic fields on a profession career" do
+  test "update persists the four diagnostic fields on a career" do
     patch admin_career_path(@metier), params: { career: {
       academic_field_slug: "langues",
       disc_types: [ "C", "S" ],
@@ -32,17 +30,16 @@ class Admin::CareersControllerTest < ActionDispatch::IntegrationTest
     assert_select "li", text: /academic field/
   end
 
-  test "update persists behavioral profile fields" do
-    patch admin_career_path(@profil), params: { career: {
+  test "update persists first_action and premium_pitch" do
+    patch admin_career_path(@metier), params: { career: {
       first_action: "Faites X",
-      premium_pitch: "Le premium fait Y",
-      key_skills_text: "Leadership\nCommunication"
+      premium_pitch: "Le premium fait Y"
     } }
 
     assert_redirected_to admin_careers_path
-    @profil.reload
-    assert_equal "Faites X", @profil.first_action
-    assert_equal [ "Leadership", "Communication" ], @profil.key_skills
+    @metier.reload
+    assert_equal "Faites X", @metier.first_action
+    assert_equal "Le premium fait Y", @metier.premium_pitch
   end
 
   test "update redirects with see_other so Turbo does not replay the PATCH" do
@@ -77,5 +74,19 @@ class Admin::CareersControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_no_match "translation missing", response.body
+  end
+
+  test "update records the signed-in admin as whodunnit" do
+    patch admin_career_path(@metier), params: { career: { title: "Titre modifié" } }
+
+    assert_equal @admin.id.to_s, @metier.versions.last.whodunnit
+  end
+
+  test "edit renders version history after an update" do
+    @metier.update!(title: "Titre modifié")
+
+    get edit_admin_career_path(@metier)
+
+    assert_select "h3", text: "Historique des modifications"
   end
 end

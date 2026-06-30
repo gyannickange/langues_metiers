@@ -1,0 +1,38 @@
+/*
+ * Thin override layer on top of the vendored tom_select_base.css.
+ * That base file supplies Tom Select's structure and behavior (flex layout,
+ * the search input's sizing, the clear button's positioning/visibility,
+ * accessibility hiding of the original <select>, etc.) — this file only
+ * adjusts colors/borders/radius to match the app's existing input look.
+ */
+
+.ts-control {
+  border: 1px solid #cbd5e1; /* slate-300 */
+  border-radius: 0.375rem; /* rounded-md */
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); /* shadow-sm */
+  background-color: #fff;
+}
+
+.ts-dropdown,
+.ts-control,
+.ts-control input {
+  color: #0f172a; /* slate-900 */
+  font-size: 0.875rem; /* sm:text-sm */
+}
+
+.ts-wrapper.focus .ts-control {
+  border-color: var(--color-ring);
+  box-shadow: 0 0 0 2px var(--color-ring);
+}
+
+.ts-dropdown {
+  border: 1px solid #cbd5e1;
+  border-radius: 0.375rem;
+  background-color: #fff;
+}
+
+.ts-dropdown .option.active,
+.ts-dropdown .option:hover {
+  background-color: var(--color-ring);
+  color: #fff;
+}

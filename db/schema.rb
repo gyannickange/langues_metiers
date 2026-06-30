@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_24_120001) do
+ActiveRecord::Schema[8.0].define(version: 2026_06_29_082136) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -69,15 +69,14 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_24_120001) do
     t.jsonb "required_skills", default: []
     t.text "recommended_path"
     t.string "sector"
-    t.string "slug"
-    t.string "kind", default: "behavioral"
-    t.jsonb "key_skills", default: []
     t.text "first_action"
     t.text "premium_pitch"
     t.jsonb "disc_types", default: [], null: false
     t.string "academic_field_slug"
     t.jsonb "affirmations", default: [], null: false
+    t.string "slug"
     t.index ["slug"], name: "index_careers_on_slug", unique: true
+    t.index ["status"], name: "index_careers_on_status"
   end
 
   create_table "categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -140,6 +139,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_24_120001) do
     t.datetime "updated_at", null: false
     t.uuid "assessment_id"
     t.index ["assessment_id"], name: "index_diagnostics_on_assessment_id"
+    t.index ["status"], name: "index_diagnostics_on_status"
     t.index ["user_id"], name: "index_diagnostics_on_user_id"
   end
 
@@ -234,6 +234,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_24_120001) do
     t.string "employment_status"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "versions", force: :cascade do |t|
+    t.string "whodunnit"
+    t.datetime "created_at"
+    t.uuid "item_id", null: false
+    t.string "item_type", null: false
+    t.string "event", null: false
+    t.text "object"
+    t.text "object_changes"
+    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

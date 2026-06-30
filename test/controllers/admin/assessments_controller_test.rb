@@ -19,4 +19,12 @@ class Admin::AssessmentsControllerTest < ActionDispatch::IntegrationTest
     assert_response :see_other
     assert_redirected_to admin_assessments_path
   end
+
+  test "edit renders version history after an update" do
+    @assessment.update!(title: "Titre modifié")
+
+    get edit_admin_assessment_path(@assessment)
+
+    assert_select "h3", text: "Historique des modifications"
+  end
 end

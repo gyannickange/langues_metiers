@@ -13,4 +13,12 @@ class Admin::SkillsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_no_match "translation missing", response.body
   end
+
+  test "show renders version history after an update" do
+    @skill.update!(name: "Compétences numériques")
+
+    get admin_skill_path(@skill)
+
+    assert_select "h3", text: "Historique des modifications"
+  end
 end
