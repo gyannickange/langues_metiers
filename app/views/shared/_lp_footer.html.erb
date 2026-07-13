@@ -74,9 +74,9 @@
           <p>&copy; <%= Date.current.year %> Insertrix. Tous droits réservés.</p>
         </div>
         <div class="flex flex-col items-center gap-x-6 gap-y-1 sm:flex-row sm:flex-wrap sm:justify-center">
-          <span class="flex min-h-11 items-center text-gray-400">Politique de confidentialité</span>
-          <span class="flex min-h-11 items-center text-gray-400">Conditions d'utilisation</span>
-          <span class="flex min-h-11 items-center text-gray-400">Cookies</span>
+          <%= link_to "Politique de confidentialité", privacy_path, class: "flex min-h-11 items-center text-gray-300 underline-offset-4 transition-colors hover:text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-primary" %>
+          <%= link_to "Conditions générales", terms_path, class: "flex min-h-11 items-center text-gray-300 underline-offset-4 transition-colors hover:text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-primary" %>
+          <%= link_to "Cookies", "#{privacy_path}#cookies", class: "flex min-h-11 items-center text-gray-300 underline-offset-4 transition-colors hover:text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-primary" %>
         </div>
       </div>
     </div>
