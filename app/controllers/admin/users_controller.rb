@@ -10,7 +10,16 @@ module Admin
     end
 
     def update
-      if @user.update(user_params)
+      requested_role = role_param
+
+      unless User.roles.key?(requested_role)
+        @user.errors.add(:role, :inclusion)
+        return render :show, status: :unprocessable_content
+      end
+
+      @user.role = requested_role
+
+      if @user.save
         redirect_to admin_user_path(@user), notice: "Rôle mis à jour."
       else
         render :show, status: :unprocessable_content
@@ -23,8 +32,8 @@ module Admin
       @user = User.includes(:skills, :diagnostics, :payments).find(params[:id])
     end
 
-    def user_params
-      params.require(:user).permit(:role)
+    def role_param
+      params.require(:user).fetch(:role).to_s
     end
   end
 end
