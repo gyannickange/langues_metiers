@@ -1,0 +1,162 @@
+<% content_for :title, "Politique de confidentialité · Insertrix" %>
+<% content_for :description, "Comment Insertrix collecte, utilise, conserve et protège les données personnelles de ses utilisateurs." %>
+<% content_for :header do %>
+  <%= render "legal/header" %>
+<% end %>
+
+<main class="bg-[#fafafa] text-secondary-900">
+  <div class="container mx-auto px-6 py-12 md:py-16">
+    <div class="mx-auto max-w-3xl">
+      <div class="mb-10 border-b border-secondary-900/10 pb-8">
+        <p class="mb-3 text-sm font-bold text-primary-700">Protection de tes données</p>
+        <h1 class="text-balance text-4xl font-extrabold tracking-tight text-secondary md:text-5xl">Politique de confidentialité</h1>
+        <p class="mt-5 max-w-2xl text-lg leading-relaxed text-secondary-800">
+          Cette politique explique simplement quelles données Insertrix utilise, pourquoi elles sont nécessaires et comment tu peux garder le contrôle.
+        </p>
+        <p class="mt-4 text-sm text-secondary-600">Dernière mise à jour : 13 juillet 2026</p>
+      </div>
+
+      <div class="mb-10">
+        <%= render "legal/notice" %>
+      </div>
+
+      <nav class="mb-12 rounded-2xl border border-secondary-900/10 bg-white p-6" aria-label="Sommaire de la politique de confidentialité">
+        <h2 class="text-lg font-bold text-secondary">Sommaire</h2>
+        <ol class="mt-4 grid gap-x-8 gap-y-2 text-sm sm:grid-cols-2">
+          <% [
+            ["Responsable du traitement", "responsable"],
+            ["Données collectées", "collecte"],
+            ["Finalités et fondements", "finalites"],
+            ["Destinataires", "destinataires"],
+            ["Transferts internationaux", "transferts"],
+            ["Durées de conservation", "conservation"],
+            ["Cookies", "cookies"],
+            ["Sécurité", "securite"],
+            ["Tes droits", "droits"],
+            ["Mineurs", "mineurs"],
+            ["Mises à jour", "mises-a-jour"],
+            ["Nous contacter", "contact-donnees"],
+          ].each_with_index do |(label, anchor), index| %>
+            <li><a class="inline-flex min-h-9 items-center text-secondary-700 underline decoration-secondary-300 underline-offset-4 transition-colors hover:text-primary-800 focus:outline-none focus:ring-2 focus:ring-primary" href="#<%= anchor %>"><%= index + 1 %>. <%= label %></a></li>
+          <% end %>
+        </ol>
+      </nav>
+
+      <article class="space-y-10 text-base leading-7 text-secondary-800">
+        <section id="responsable" class="scroll-mt-24">
+          <h2 class="text-2xl font-bold text-secondary">1. Responsable du traitement</h2>
+          <p class="mt-4">Insertrix, établi à Cotonou au Bénin, détermine les finalités et les moyens des traitements décrits dans cette politique. Tu peux nous contacter à <a class="font-bold text-secondary underline decoration-primary-600 underline-offset-4" href="mailto:contact@languesmetiers.com">contact@languesmetiers.com</a>.</p>
+          <p class="mt-3">Ces traitements sont encadrés notamment par le livre cinquième de la loi n° 2017-20 du 20 avril 2018 portant Code du numérique en République du Bénin, telle que modifiée.</p>
+          <p class="mt-3">Avant la mise en production définitive, Insertrix doit accomplir les formalités préalables requises auprès de l'APDP ou inscrire les traitements dans le registre prévu à cet effet. La référence de la formalité devra être ajoutée ici dès son obtention.</p>
+        </section>
+
+        <section id="collecte" class="scroll-mt-24">
+          <h2 class="text-2xl font-bold text-secondary">2. Données que nous collectons</h2>
+          <div class="mt-4 space-y-4">
+            <div>
+              <h3 class="font-bold text-secondary">Compte et identité</h3>
+              <p>Adresse e-mail, nom, prénom et, en cas de connexion avec Google, identifiant du fournisseur. Les codes de connexion temporaires sont également traités pendant leur courte période de validité.</p>
+            </div>
+            <div>
+              <h3 class="font-bold text-secondary">Profil d'orientation</h3>
+              <p>Ville, pays, diplôme, situation professionnelle, compétences déclarées, réponses aux questionnaires, dimensions de profil, scores, métiers recommandés et rapport PDF généré.</p>
+            </div>
+            <div>
+              <h3 class="font-bold text-secondary">Paiement</h3>
+              <p>Montant, devise, moyen de paiement choisi, état et référence de transaction. Pour le mobile money, le numéro de téléphone et l'opérateur sont transmis au prestataire afin d'initier la transaction. Les informations complètes de carte sont saisies directement auprès de Stripe et ne sont pas stockées par Insertrix.</p>
+            </div>
+            <div>
+              <h3 class="font-bold text-secondary">Données techniques</h3>
+              <p>Adresse IP, informations de navigateur, journaux de sécurité, dates de connexion, cookies de session et, lorsqu'elle est disponible, indication de pays utilisée pour proposer des moyens de paiement adaptés.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="finalites" class="scroll-mt-24">
+          <h2 class="text-2xl font-bold text-secondary">3. Pourquoi nous utilisons ces données</h2>
+          <div class="mt-5 overflow-x-auto rounded-2xl border border-secondary-900/10 bg-white">
+            <table class="w-full min-w-[38rem] text-left text-sm">
+              <thead class="border-b border-secondary-900/10 bg-secondary-50 text-secondary">
+                <tr><th class="px-5 py-4 font-bold">Finalité</th><th class="px-5 py-4 font-bold">Fondement</th></tr>
+              </thead>
+              <tbody class="divide-y divide-secondary-900/10">
+                <tr><td class="px-5 py-4">Créer et sécuriser ton compte</td><td class="px-5 py-4">Exécution du service demandé</td></tr>
+                <tr><td class="px-5 py-4">Réaliser le diagnostic et produire les recommandations</td><td class="px-5 py-4">Exécution du contrat et consentement lorsque requis</td></tr>
+                <tr><td class="px-5 py-4">Traiter le paiement et prévenir la fraude</td><td class="px-5 py-4">Exécution du contrat, obligations légales et intérêt légitime de sécurité</td></tr>
+                <tr><td class="px-5 py-4">Envoyer les codes de connexion et rappels de diagnostic</td><td class="px-5 py-4">Exécution du service et intérêt légitime à permettre sa continuité</td></tr>
+                <tr><td class="px-5 py-4">Assurer la sécurité, corriger les erreurs et défendre nos droits</td><td class="px-5 py-4">Intérêt légitime et obligations légales</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mt-4">Insertrix ne vend pas tes données personnelles et ne les utilise pas pour de la prospection commerciale sans base légale appropriée.</p>
+        </section>
+
+        <section id="destinataires" class="scroll-mt-24">
+          <h2 class="text-2xl font-bold text-secondary">4. Destinataires et prestataires</h2>
+          <p class="mt-4">L'accès est limité aux personnes habilitées chez Insertrix et aux prestataires nécessaires au fonctionnement du service : hébergement et stockage, envoi d'e-mails, authentification Google, paiement par Stripe, paiement mobile via pawaPay et opérateurs correspondants, ainsi que maintenance technique.</p>
+          <p class="mt-3">Chaque prestataire ne reçoit que les données nécessaires à sa mission et agit selon son rôle, ses propres obligations légales et les engagements contractuels applicables. Nous pouvons aussi communiquer des informations lorsqu'une autorité compétente l'exige légalement ou pour protéger les droits et la sécurité des utilisateurs.</p>
+        </section>
+
+        <section id="transferts" class="scroll-mt-24">
+          <h2 class="text-2xl font-bold text-secondary">5. Transferts hors du Bénin</h2>
+          <p class="mt-4">Certains prestataires peuvent traiter ou héberger des données en dehors du Bénin. Dans ce cas, Insertrix doit vérifier que le transfert respecte les exigences du Code du numérique béninois et qu'il bénéficie de garanties appropriées en matière de confidentialité et de sécurité.</p>
+        </section>
+
+        <section id="conservation" class="scroll-mt-24">
+          <h2 class="text-2xl font-bold text-secondary">6. Durées de conservation</h2>
+          <p class="mt-4">Nous conservons les données uniquement pendant la durée nécessaire à leur finalité :</p>
+          <ul class="mt-3 list-disc space-y-2 pl-6 marker:text-primary-700">
+            <li>les données du compte, du profil et des diagnostics pendant la durée d'activité du compte, puis pendant une période limitée nécessaire à la gestion des demandes et litiges ;</li>
+            <li>les données de transaction pendant la durée exigée par les obligations comptables, fiscales et de lutte contre la fraude ;</li>
+            <li>les codes temporaires jusqu'à leur expiration ou leur utilisation ;</li>
+            <li>les journaux techniques pendant une durée proportionnée aux besoins de sécurité.</li>
+          </ul>
+          <p class="mt-3">À l'expiration des délais applicables, les données sont supprimées ou anonymisées. Les durées chiffrées doivent être formalisées dans le registre interne des traitements et la politique de conservation d'Insertrix.</p>
+        </section>
+
+        <section id="cookies" class="scroll-mt-24">
+          <h2 class="text-2xl font-bold text-secondary">7. Cookies</h2>
+          <p class="mt-4">Insertrix utilise des cookies strictement nécessaires pour maintenir la session, sécuriser les formulaires et mémoriser certaines préférences techniques, notamment le pays lorsqu'il sert à adapter les moyens de paiement. Ces cookies sont indispensables au fonctionnement demandé.</p>
+          <p class="mt-3">Si des outils de mesure d'audience, de publicité ou d'autres cookies non essentiels sont ajoutés, ils devront être présentés dans un outil de consentement permettant de les accepter ou de les refuser avant leur dépôt.</p>
+        </section>
+
+        <section id="securite" class="scroll-mt-24">
+          <h2 class="text-2xl font-bold text-secondary">8. Sécurité</h2>
+          <p class="mt-4">Nous mettons en œuvre des mesures techniques et organisationnelles adaptées aux risques : connexion chiffrée en production, contrôle des accès, protection des sessions et des formulaires, limitation des tentatives abusives, sauvegardes et restriction des données accessibles aux administrateurs.</p>
+          <p class="mt-3">Aucun système n'offre une sécurité absolue. En cas d'incident susceptible d'affecter tes droits, nous prendrons les mesures requises et informerons les personnes ou autorités concernées lorsque la loi l'impose.</p>
+        </section>
+
+        <section id="droits" class="scroll-mt-24">
+          <h2 class="text-2xl font-bold text-secondary">9. Tes droits</h2>
+          <p class="mt-4">Selon la législation applicable, tu peux demander l'accès à tes données, leur rectification, leur mise à jour, leur portabilité, leur verrouillage ou leur suppression. Tu peux également t'opposer à certains traitements, retirer un consentement pour l'avenir et demander des informations sur l'utilisation de tes données.</p>
+          <p class="mt-3">Pour exercer un droit, écris à <a class="font-bold text-secondary underline decoration-primary-600 underline-offset-4" href="mailto:contact@languesmetiers.com">contact@languesmetiers.com</a> en précisant ta demande et l'adresse e-mail du compte. Nous pouvons demander un justificatif proportionné si cela est nécessaire pour vérifier ton identité.</p>
+          <p class="mt-3">Tu peux également saisir l'<a class="font-bold text-secondary underline decoration-primary-600 underline-offset-4" href="https://apdp.bj" target="_blank" rel="noopener noreferrer">Autorité de Protection des Données à caractère Personnel du Bénin (APDP)<span class="sr-only"> (nouvel onglet)</span></a> si tu estimes que tes droits ne sont pas respectés.</p>
+        </section>
+
+        <section id="mineurs" class="scroll-mt-24">
+          <h2 class="text-2xl font-bold text-secondary">10. Mineurs</h2>
+          <p class="mt-4">Insertrix peut être utile à des élèves et étudiants. Lorsqu'un utilisateur est mineur, la création du compte, le traitement des réponses et tout paiement doivent être autorisés ou accompagnés par son représentant légal lorsque la loi l'exige. Nous invitons les mineurs à ne jamais communiquer de données sensibles qui ne sont pas demandées.</p>
+        </section>
+
+        <section id="mises-a-jour" class="scroll-mt-24">
+          <h2 class="text-2xl font-bold text-secondary">11. Mise à jour de cette politique</h2>
+          <p class="mt-4">Cette politique peut évoluer avec le service, les prestataires ou le cadre légal. La date de dernière mise à jour est indiquée en haut de page. Nous signalerons les changements importants par un moyen adapté.</p>
+        </section>
+
+        <section id="contact-donnees" class="scroll-mt-24">
+          <h2 class="text-2xl font-bold text-secondary">12. Nous contacter</h2>
+          <p class="mt-4">Pour toute question sur cette politique ou sur tes données personnelles :</p>
+          <address class="mt-3 not-italic">
+            <strong class="text-secondary">Insertrix</strong><br>
+            Cotonou, République du Bénin<br>
+            <a class="font-bold text-secondary underline decoration-primary-600 underline-offset-4" href="mailto:contact@languesmetiers.com">contact@languesmetiers.com</a>
+          </address>
+        </section>
+      </article>
+
+      <div class="mt-14 border-t border-secondary-900/10 pt-8 text-sm text-secondary-700">
+        Consulte aussi nos <%= link_to "Conditions générales", terms_path, class: "font-bold text-secondary underline decoration-primary-600 underline-offset-4" %>.
+      </div>
+    </div>
+  </div>
+</main>
