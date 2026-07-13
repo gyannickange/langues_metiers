@@ -38,7 +38,8 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body<%= ' data-controller="home-motion"'.html_safe if (controller_name == "home" && action_name == "index") || (controller_name == "careers" && action_name == "index") %>>
+  <% compact_public_page = (controller_name == "home" && action_name == "index") || (controller_name == "careers" && action_name == "index") %>
+  <body class="<%= "public-content-shell" if compact_public_page %>"<%= ' data-controller="home-motion"'.html_safe if compact_public_page %>>
     <%= render "shared/flash" %>
     <%= yield :header %>    
     <%= yield %>
