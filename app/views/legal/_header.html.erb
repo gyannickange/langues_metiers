@@ -1,0 +1,13 @@
+<header class="border-b border-secondary-900/10 bg-white">
+  <div class="container mx-auto flex min-h-20 items-center justify-between gap-6 px-6 py-4">
+    <%= link_to root_path, class: "rounded-lg text-2xl font-extrabold tracking-tight text-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-4", aria: { label: "Retour à l'accueil Insertrix" } do %>
+      Insertrix<span class="text-primary">.</span>
+    <% end %>
+
+    <%= link_to root_path, class: "inline-flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-bold text-secondary transition-colors hover:bg-secondary-50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" do %>
+      <span class="material-icons !text-lg" aria-hidden="true">arrow_back</span>
+      <span class="hidden sm:inline">Retour à l'accueil</span>
+      <span class="sm:hidden">Accueil</span>
+    <% end %>
+  </div>
+</header>

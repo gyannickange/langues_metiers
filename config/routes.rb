@@ -22,6 +22,8 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "home#index"
   get "cle", to: "home#cle"
+  get "conditions-generales", to: "legal#terms", as: :terms
+  get "politique-confidentialite", to: "legal#privacy", as: :privacy
 
   require "sidekiq/web"
   authenticate :user, ->(u) { u.admin? } do

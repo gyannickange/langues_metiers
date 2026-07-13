@@ -1,0 +1,121 @@
+<% content_for :title, "Conditions générales · Insertrix" %>
+<% content_for :description, "Les conditions générales qui encadrent l'accès et l'utilisation des services Insertrix." %>
+<% content_for :header do %>
+  <%= render "legal/header" %>
+<% end %>
+
+<main class="bg-[#fafafa] text-secondary-900">
+  <div class="container mx-auto px-6 py-12 md:py-16">
+    <div class="mx-auto max-w-3xl">
+      <div class="mb-10 border-b border-secondary-900/10 pb-8">
+        <p class="mb-3 text-sm font-bold text-primary-700">Informations contractuelles</p>
+        <h1 class="text-balance text-4xl font-extrabold tracking-tight text-secondary md:text-5xl">Conditions générales</h1>
+        <p class="mt-5 max-w-2xl text-lg leading-relaxed text-secondary-800">
+          Ces conditions définissent les règles applicables lorsque tu consultes Insertrix, crées un compte ou utilises un diagnostic d'orientation.
+        </p>
+        <p class="mt-4 text-sm text-secondary-600">Dernière mise à jour : 13 juillet 2026</p>
+      </div>
+
+      <div class="mb-10">
+        <%= render "legal/notice" %>
+      </div>
+
+      <nav class="mb-12 rounded-2xl border border-secondary-900/10 bg-white p-6" aria-label="Sommaire des conditions générales">
+        <h2 class="text-lg font-bold text-secondary">Sommaire</h2>
+        <ol class="mt-4 grid gap-x-8 gap-y-2 text-sm sm:grid-cols-2">
+          <% [
+            ["Objet et acceptation", "acceptation"],
+            ["Éditeur et contact", "editeur"],
+            ["Compte utilisateur", "compte"],
+            ["Services d'orientation", "services"],
+            ["Prix et paiement", "paiement"],
+            ["Utilisation autorisée", "utilisation"],
+            ["Propriété intellectuelle", "propriete"],
+            ["Responsabilité", "responsabilite"],
+            ["Données personnelles", "donnees"],
+            ["Suspension et résiliation", "resiliation"],
+            ["Modification des conditions", "modification"],
+            ["Droit applicable", "droit"],
+          ].each_with_index do |(label, anchor), index| %>
+            <li><a class="inline-flex min-h-9 items-center text-secondary-700 underline decoration-secondary-300 underline-offset-4 transition-colors hover:text-primary-800 focus:outline-none focus:ring-2 focus:ring-primary" href="#<%= anchor %>"><%= index + 1 %>. <%= label %></a></li>
+          <% end %>
+        </ol>
+      </nav>
+
+      <article class="legal-prose space-y-10 text-base leading-7 text-secondary-800">
+        <section id="acceptation" class="scroll-mt-24">
+          <h2 class="text-2xl font-bold text-secondary">1. Objet et acceptation</h2>
+          <p class="mt-4">Les présentes conditions générales encadrent l'accès au site Insertrix et l'utilisation de ses services, notamment la création d'un compte, les évaluations d'intérêts, de profil et de compétences, les recommandations de métiers et la génération d'un rapport.</p>
+          <p class="mt-3">En utilisant Insertrix, tu reconnais avoir lu et accepté ces conditions. Si tu n'es pas d'accord avec elles, tu ne dois pas utiliser les services concernés. Toute personne mineure doit obtenir l'autorisation de son représentant légal avant de créer un compte ou d'effectuer un paiement.</p>
+        </section>
+
+        <section id="editeur" class="scroll-mt-24">
+          <h2 class="text-2xl font-bold text-secondary">2. Éditeur et contact</h2>
+          <p class="mt-4">Insertrix est un service d'orientation professionnelle établi à Cotonou, République du Bénin. Pour toute question relative au service ou aux présentes conditions, tu peux écrire à <a class="font-bold text-secondary underline decoration-primary-600 underline-offset-4" href="mailto:contact@languesmetiers.com">contact@languesmetiers.com</a>.</p>
+          <p class="mt-3">Les mentions d'immatriculation, la forme juridique et l'adresse complète de l'entité exploitante devront être ajoutées ici avant la mise en production définitive du document.</p>
+        </section>
+
+        <section id="compte" class="scroll-mt-24">
+          <h2 class="text-2xl font-bold text-secondary">3. Compte utilisateur</h2>
+          <p class="mt-4">L'accès à certaines fonctionnalités nécessite un compte, créé au moyen d'une adresse e-mail et d'un code temporaire ou par l'intermédiaire de Google. Tu t'engages à fournir des informations exactes et à les tenir à jour.</p>
+          <p class="mt-3">Tu es responsable de la confidentialité de tes accès et des actions effectuées depuis ton compte. Informe-nous rapidement si tu soupçonnes un accès non autorisé. Un compte est personnel et ne doit pas être cédé à un tiers.</p>
+        </section>
+
+        <section id="services" class="scroll-mt-24">
+          <h2 class="text-2xl font-bold text-secondary">4. Services d'orientation</h2>
+          <p class="mt-4">Insertrix analyse les réponses que tu fournis afin de proposer un profil, des pistes de métiers et des actions possibles. Ces résultats constituent une aide à la réflexion : ils ne remplacent ni un accompagnement personnalisé par un professionnel qualifié, ni un avis médical, psychologique, académique, juridique ou financier.</p>
+          <p class="mt-3">Les recommandations reposent sur les informations disponibles et sur des méthodes d'évaluation susceptibles d'évoluer. Elles ne garantissent pas une admission, un emploi, un niveau de revenu ou un résultat professionnel déterminé. Tu restes libre et responsable de tes décisions.</p>
+        </section>
+
+        <section id="paiement" class="scroll-mt-24">
+          <h2 class="text-2xl font-bold text-secondary">5. Prix et paiement</h2>
+          <p class="mt-4">Le prix applicable est affiché en francs CFA (XOF) avant la confirmation de la commande. Les paiements peuvent être traités par Stripe pour la carte bancaire ou par pawaPay et l'opérateur concerné pour le mobile money. Insertrix ne conserve pas les données complètes de ta carte bancaire.</p>
+          <p class="mt-3">La commande est confirmée lorsque le prestataire de paiement valide la transaction. En cas d'échec, de double débit ou d'anomalie, contacte-nous en indiquant l'adresse e-mail du compte et la référence de paiement, sans transmettre de code secret ni de données bancaires complètes.</p>
+          <p class="mt-3">Les demandes d'annulation ou de remboursement sont examinées selon l'état d'exécution du service et les règles impératives applicables. Aucun remboursement ne peut être exclu lorsqu'il est imposé par la loi.</p>
+        </section>
+
+        <section id="utilisation" class="scroll-mt-24">
+          <h2 class="text-2xl font-bold text-secondary">6. Utilisation autorisée</h2>
+          <p class="mt-4">Tu t'engages à utiliser Insertrix de manière licite et loyale. Il est notamment interdit de contourner les mesures de sécurité, perturber le service, accéder aux données d'autrui, automatiser des requêtes excessives, introduire un code malveillant, usurper une identité ou exploiter le contenu à des fins frauduleuses.</p>
+        </section>
+
+        <section id="propriete" class="scroll-mt-24">
+          <h2 class="text-2xl font-bold text-secondary">7. Propriété intellectuelle</h2>
+          <p class="mt-4">Les marques, textes, questionnaires, méthodes, interfaces, illustrations, bases de données, rapports types et logiciels accessibles sur Insertrix sont protégés par les droits applicables. Leur accès ne transfère aucun droit de propriété.</p>
+          <p class="mt-3">Tu peux utiliser ton rapport pour tes besoins personnels d'orientation. Toute reproduction, extraction, adaptation, revente ou diffusion substantielle d'un contenu Insertrix nécessite une autorisation écrite préalable, sauf exception prévue par la loi.</p>
+        </section>
+
+        <section id="responsabilite" class="scroll-mt-24">
+          <h2 class="text-2xl font-bold text-secondary">8. Disponibilité et responsabilité</h2>
+          <p class="mt-4">Nous faisons des efforts raisonnables pour assurer la disponibilité, la sécurité et l'exactitude du service. Des interruptions peuvent toutefois survenir pour maintenance, incident technique, mise à jour ou événement indépendant de notre volonté.</p>
+          <p class="mt-3">Dans les limites autorisées par la loi, Insertrix n'est pas responsable des décisions prises uniquement sur la base d'une recommandation automatisée, des dommages indirects, ni des services fournis par des tiers. Rien dans ces conditions ne limite une responsabilité qui ne peut légalement être exclue.</p>
+        </section>
+
+        <section id="donnees" class="scroll-mt-24">
+          <h2 class="text-2xl font-bold text-secondary">9. Données personnelles</h2>
+          <p class="mt-4">Le traitement de tes données est décrit dans notre <%= link_to "Politique de confidentialité", privacy_path, class: "font-bold text-secondary underline decoration-primary-600 underline-offset-4" %>. Elle précise les données collectées, les finalités, les destinataires, les durées de conservation et les moyens d'exercer tes droits.</p>
+        </section>
+
+        <section id="resiliation" class="scroll-mt-24">
+          <h2 class="text-2xl font-bold text-secondary">10. Suspension et résiliation</h2>
+          <p class="mt-4">Tu peux demander la fermeture de ton compte en nous écrivant. Nous pouvons suspendre ou fermer un compte en cas de fraude, de risque de sécurité, de violation grave ou répétée des présentes conditions, ou lorsqu'une obligation légale l'exige. Sauf urgence ou interdiction légale, nous nous efforcerons de t'en informer.</p>
+        </section>
+
+        <section id="modification" class="scroll-mt-24">
+          <h2 class="text-2xl font-bold text-secondary">11. Modification des conditions</h2>
+          <p class="mt-4">Nous pouvons mettre à jour ces conditions pour tenir compte de l'évolution du service, des prestataires ou du droit applicable. La date de mise à jour figure en haut de cette page. En cas de changement important, une information adaptée sera présentée avant son entrée en vigueur.</p>
+        </section>
+
+        <section id="droit" class="scroll-mt-24">
+          <h2 class="text-2xl font-bold text-secondary">12. Droit applicable et règlement des différends</h2>
+          <p class="mt-4">Les présentes conditions sont régies par le droit de la République du Bénin, sous réserve des règles impératives éventuellement applicables à l'utilisateur. En cas de difficulté, contacte-nous d'abord afin de rechercher une solution amiable.</p>
+          <p class="mt-3">À défaut d'accord amiable, le différend relève des juridictions compétentes conformément aux règles de procédure applicables. Cette clause ne prive pas un consommateur d'un droit ou d'une voie de recours obligatoire.</p>
+        </section>
+      </article>
+
+      <div class="mt-14 border-t border-secondary-900/10 pt-8 text-sm text-secondary-700">
+        Une question ? <a class="font-bold text-secondary underline decoration-primary-600 underline-offset-4" href="mailto:contact@languesmetiers.com">Écris-nous à contact@languesmetiers.com</a>.
+      </div>
+    </div>
+  </div>
+</main>

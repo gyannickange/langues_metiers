@@ -37,4 +37,11 @@ class Admin::UsersControllerTest < ActionDispatch::IntegrationTest
     patch admin_user_path(@user), params: { user: { role: "admin", email: "hacked@evil.com" } }
     assert_equal original_email, @user.reload.email
   end
+
+  test "update rejects an invalid role" do
+    patch admin_user_path(@user), params: { user: { role: "super_admin" } }
+
+    assert_response :unprocessable_content
+    assert_equal "user", @user.reload.role
+  end
 end
