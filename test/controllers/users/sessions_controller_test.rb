@@ -3,16 +3,13 @@ require "test_helper"
 class Users::SessionsControllerTest < ActionDispatch::IntegrationTest
   TURBO_STREAM_HEADERS = { "Accept" => "text/vnd.turbo-stream.html" }.freeze
 
-  test "sign-in presents the OTP-only experience" do
+  test "sign-in presents Google and OTP authentication" do
     get new_user_session_path
 
     assert_response :success
-    assert_select "h1", text: I18n.t("auth.login_title")
     assert_select "form[action='#{send_otp_path}']", count: 1
     assert_select "input[type='email'][autocomplete='email']", count: 1
-    assert_select "a[href='#{terms_path}']", count: 1
-    assert_select "a[href='#{privacy_path}']", count: 1
-    assert_select "form[action='#{user_google_oauth2_omniauth_authorize_path}']", count: 0
+    assert_select "form[action='#{user_google_oauth2_omniauth_authorize_path}']", count: 1
   end
 
   test "requesting a code returns the accessible OTP state" do

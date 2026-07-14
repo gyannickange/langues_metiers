@@ -38,12 +38,20 @@ class User < ApplicationRecord
   end
 
   def self.from_omniauth(auth)
-    where(provider: auth.provider, uid: auth.uid).first_or_create! do |user|
-      user.email = auth.info.email
+    existing_identity = find_by(provider: auth.provider, uid: auth.uid)
+    return existing_identity if existing_identity
+
+    user = find_or_initialize_by(email: auth.info.email.to_s.downcase.strip)
+
+    if user.new_record?
       user.first_name = auth.info.first_name
       user.last_name = auth.info.last_name
-      # If the model has a required password for standard devise registration:
       user.password = Devise.friendly_token[0, 20]
     end
+
+    user.provider = auth.provider
+    user.uid = auth.uid
+    user.save!
+    user
   end
 end
