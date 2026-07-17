@@ -19,12 +19,30 @@
       </h1>
       <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
         <%= t('diagnostics.new.price_info') %>
-        <span class="block mt-2 font-bold text-primary italic text-2xl">
-          <%= Diagnostic.formatted_price %>
+        <span class="mt-3 flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1" aria-label="Prix promotionnel : 2 000 francs CFA, maintenant gratuit">
+          <span class="text-lg font-bold text-gray-500 line-through decoration-2" aria-hidden="true"><%= Diagnostic.formatted_standard_price %></span>
+          <span class="font-bold text-primary text-3xl" aria-hidden="true"><%= Diagnostic.formatted_price %></span>
+          <span class="basis-full text-sm font-bold text-emerald-700"><%= t('diagnostics.new.test_offer') %></span>
         </span>
       </p>
     </div>
 
+    <% if Diagnostic.price.zero? %>
+      <div class="max-w-xl mx-auto bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-200 text-center">
+        <span class="material-icons text-4xl text-emerald-600 mb-3" aria-hidden="true">redeem</span>
+        <h2 class="text-2xl font-bold text-secondary mb-3"><%= t('diagnostics.new.free_title') %></h2>
+        <p class="text-gray-600 mb-6"><%= t('diagnostics.new.free_description') %></p>
+        <%= form_with url: process_payment_diagnostic_path(@diagnostic) do |f| %>
+          <%= f.hidden_field :payment_method, value: "stripe" %>
+          <button type="submit" class="diagnostic-action w-full min-h-12 bg-primary text-secondary-900 rounded-xl px-6 py-4 font-bold hover:bg-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 transition-colors">
+            <span class="relative z-10 flex items-center justify-center font-bold text-lg">
+              <%= t('diagnostics.new.free_submit') %>
+              <span class="material-icons ml-2" aria-hidden="true">arrow_forward</span>
+            </span>
+          </button>
+        <% end %>
+      </div>
+    <% else %>
     <div class="grid md:grid-cols-2 gap-8 items-stretch">
       <!-- Pawapay mobile money -->
       <div class="flex flex-col">
@@ -111,6 +129,7 @@
         </div>
       </div>
     </div>
+    <% end %>
     
     <div class="mt-12 text-center">
       <p class="text-gray-600 text-sm">

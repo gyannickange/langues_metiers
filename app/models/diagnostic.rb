@@ -1,4 +1,7 @@
 class Diagnostic < ApplicationRecord
+  STANDARD_PRICE = 2_000
+  TEST_PRICE = 0
+
   belongs_to :user
   belongs_to :assessment, optional: true
 
@@ -23,15 +26,23 @@ class Diagnostic < ApplicationRecord
   after_commit :schedule_abandonment_reminders, on: [ :create, :update ], if: -> { saved_change_to_status? && in_progress? }
 
   def self.price
-    Rails.env.production? ? 2000 : 0
+    TEST_PRICE
   end
 
-  def self.formatted_amount
-    price.to_s.gsub(/(\d)(?=(\d{3})+(?!\d))/, '\\1 ')
+  def self.standard_price
+    STANDARD_PRICE
+  end
+
+  def self.formatted_amount(amount = price)
+    amount.to_s.gsub(/(\d)(?=(\d{3})+(?!\d))/, '\\1 ')
   end
 
   def self.formatted_price
     "#{formatted_amount} F CFA"
+  end
+
+  def self.formatted_standard_price
+    "#{formatted_amount(standard_price)} F CFA"
   end
 
   def pdf_generated?

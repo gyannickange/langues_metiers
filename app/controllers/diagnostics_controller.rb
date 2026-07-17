@@ -169,8 +169,7 @@ class DiagnosticsController < ApplicationController
   def process_payment
     @diagnostic.update!(payment_provider: payment_provider_param)
 
-    if !Rails.env.production?
-      # Simulation de paiement en local (0 XOF)
+    if Diagnostic.price.zero?
       @diagnostic.update!(status: :paid)
       @diagnostic.create_payment!(
         user: @diagnostic.user,
@@ -178,7 +177,7 @@ class DiagnosticsController < ApplicationController
         provider_payment_id: "dev_payment_#{SecureRandom.hex(4)}",
         status: :confirmed
       )
-      redirect_to results_diagnostic_path(@diagnostic), notice: "Paiement simulé avec succès (0 XOF)"
+      redirect_to results_diagnostic_path(@diagnostic), notice: "Votre diagnostic gratuit est maintenant disponible."
       return
     end
 

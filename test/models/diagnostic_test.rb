@@ -34,4 +34,11 @@ class DiagnosticTest < ActiveSupport::TestCase
     d = Diagnostic.new(user: @user)
     assert d.valid?   # primary_career is optional
   end
+
+  test "is free during the testing phase while preserving the standard price" do
+    assert_equal 0, Diagnostic.price
+    assert_equal 2_000, Diagnostic.standard_price
+    assert_equal "0 F CFA", Diagnostic.formatted_price
+    assert_equal "2 000 F CFA", Diagnostic.formatted_standard_price
+  end
 end

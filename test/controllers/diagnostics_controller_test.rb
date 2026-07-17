@@ -97,6 +97,33 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to pay_diagnostic_path(d)
   end
 
+  test "GET pay shows the free testing offer without payment methods" do
+    sign_in @user
+    d = Diagnostic.create!(user: @user, status: :pending_payment, assessment: @assessment)
+
+    get pay_diagnostic_path(d)
+
+    assert_response :success
+    assert_includes response.body, "2 000 F CFA"
+    assert_includes response.body, "0 F CFA"
+    assert_select "button", text: /Accéder gratuitement à mes résultats/
+    assert_select "h2", text: /Payer par carte bancaire/, count: 0
+    assert_select "h2", text: /Payer par Mobile Money/, count: 0
+  end
+
+  test "POST process_payment unlocks a free diagnostic without an external payment" do
+    sign_in @user
+    d = Diagnostic.create!(user: @user, status: :pending_payment, assessment: @assessment)
+
+    assert_difference "Payment.count", 1 do
+      post process_payment_diagnostic_path(d)
+    end
+
+    assert_redirected_to results_diagnostic_path(d)
+    assert d.reload.paid?
+    assert d.payment.confirmed?
+  end
+
   test "GET results renders honest empty states for sparse diagnostic data" do
     sign_in @user
     career = Career.create!(title: "Analyste", status: :published)

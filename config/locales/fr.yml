@@ -259,6 +259,10 @@ fr:
     new:
       title: "Diagnostic de Repositionnement Stratégique"
       price_info: "Accès immédiat + rapport PDF personnalisé"
+      test_offer: "Gratuit pendant la phase de test"
+      free_title: "Votre diagnostic est offert"
+      free_description: "Profitez gratuitement du diagnostic complet et de votre rapport personnalisé pendant notre phase de test."
+      free_submit: "Accéder gratuitement à mes résultats"
       stripe_title: "Payer par carte bancaire"
       stripe_submit: "Payer par carte — %{price}"
       momo_title: "Payer par Mobile Money"

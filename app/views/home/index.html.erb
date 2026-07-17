@@ -407,9 +407,11 @@
       <%# Diagnostic Essentiel %>
       <div data-motion-item style="--motion-index: 0" class="bg-white rounded-3xl p-10 border border-gray-100 hover:border-primary/30 transition-all duration-300 hover:shadow-[0_20px_60px_rgba(231,200,115,0.12)] group">
         <h3 class="text-2xl font-bold text-secondary mb-2"><%= t('home.pricing.essential') %></h3>
-        <div class="flex items-baseline gap-1.5 mb-8 mt-4">
-          <span class="text-5xl font-bold text-secondary leading-none"><%= Diagnostic.formatted_amount %></span>
-          <span class="text-sm font-bold text-gray-400">F CFA</span>
+        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-8 mt-4" aria-label="Prix promotionnel : 2 000 francs CFA, maintenant gratuit">
+          <span class="text-xl font-bold text-gray-500 line-through decoration-2" aria-hidden="true"><%= Diagnostic.formatted_standard_price %></span>
+          <span class="text-5xl font-bold text-secondary leading-none" aria-hidden="true"><%= Diagnostic.formatted_amount %></span>
+          <span class="text-sm font-bold text-gray-500" aria-hidden="true">F CFA</span>
+          <span class="basis-full text-sm font-bold text-emerald-700">Gratuit pendant la phase de test</span>
         </div>
         <div class="h-px bg-gray-100 mb-8"></div>
         <ul class="space-y-3.5 mb-10">

@@ -129,6 +129,10 @@ en:
     new:
       title: "Strategic Repositioning Diagnostic"
       price_info: "%Immediate access + personalized PDF report"
+      test_offer: "Free during the testing phase"
+      free_title: "Your diagnostic is free"
+      free_description: "Get the complete diagnostic and your personalized report free of charge during our testing phase."
+      free_submit: "Access my results for free"
       stripe_title: "Pay by credit card"
       stripe_submit: "Pay by card — %{price}"
       momo_title: "Pay by Mobile Money"
