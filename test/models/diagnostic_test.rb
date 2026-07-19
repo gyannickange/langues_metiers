@@ -41,4 +41,15 @@ class DiagnosticTest < ActiveSupport::TestCase
     assert_equal "0 F CFA", Diagnostic.formatted_price
     assert_equal "2 000 F CFA", Diagnostic.formatted_standard_price
   end
+
+  test "a reminder queue failure does not prevent an in-progress diagnostic from being created" do
+    DiagnosticReminderJob.stub(:set, ->(**) { raise ActiveJob::EnqueueError, "queue unavailable" }) do
+      diagnostic = assert_nothing_raised do
+        Diagnostic.create!(user: @user, status: :in_progress)
+      end
+
+      assert diagnostic.persisted?
+      assert diagnostic.in_progress?
+    end
+  end
 end

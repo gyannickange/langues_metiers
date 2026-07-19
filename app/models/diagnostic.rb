@@ -55,5 +55,10 @@ class Diagnostic < ApplicationRecord
     DiagnosticReminderJob.set(wait: 30.minutes).perform_later(id, "30m")
     DiagnosticReminderJob.set(wait: 1.hour).perform_later(id, "1h")
     DiagnosticReminderJob.set(wait: 1.day).perform_later(id, "1d")
+  rescue StandardError => error
+    Rails.logger.error(
+      "Unable to schedule abandonment reminders for diagnostic #{id}: " \
+      "#{error.class}: #{error.message}"
+    )
   end
 end
