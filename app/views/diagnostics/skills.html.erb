@@ -2,14 +2,13 @@
 <div class="max-w-2xl mx-auto px-4 py-8">
   <div class="mb-8">
     <p class="text-xs font-bold uppercase text-[var(--color-primary)] mb-2">Étape 3 sur 4</p>
-    <h1 class="text-2xl font-bold text-slate-800">Your skills</h1>
-    <p class="text-slate-500 mt-1">Évaluez honnêtement votre niveau sur chaque skill.</p>
+    <h1 class="text-2xl font-bold text-slate-800">Vos compétences</h1>
+    <p class="text-slate-500 mt-1">Évaluez honnêtement votre niveau sur chaque compétence.</p>
   </div>
 
   <%= form_with url: submit_skills_diagnostic_path(@diagnostic), method: :post, data: { turbo: false } do |f| %>
     <div class="space-y-4">
       <% @questions.each_with_index do |question, i| %>
-        <h2 class="font-semibold text-slate-800"><%= question.options.dig(0, "label") %></h2>
         <%= render "likert_question", question: question, index: i, current_value: nil %>
       <% end %>
     </div>
