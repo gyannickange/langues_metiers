@@ -62,4 +62,13 @@ class Admin::DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     assert_select ".bg-indigo-50", text: /Métier 1 · \+3 pts/
     assert_select "p", text: /Affirmation validée pour Métier 1 : « a »/
   end
+
+  test "show renders a confirmed payment" do
+    Payment.create!(user: @user, diagnostic: @diagnostic, provider: :stripe, status: :confirmed)
+
+    get admin_diagnostic_path(@diagnostic)
+
+    assert_response :success
+    assert_select ".bg-emerald-50", text: "confirmed"
+  end
 end
