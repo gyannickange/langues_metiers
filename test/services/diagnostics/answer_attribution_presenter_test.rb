@@ -91,4 +91,74 @@ class Diagnostics::AnswerAttributionPresenterTest < ActiveSupport::TestCase
     assert_nil presenter.recap_line
     assert_empty presenter.affirmation_rows
   end
+
+  test "overview_cards includes the 3rd-ranked candidate as a non-retained attribution" do
+    third = Career.create!(title: "Guide touristique #{SecureRandom.hex(4)}", status: :published,
+                            academic_field_slug: "histoire", disc_types: [ "S" ], required_skills: [])
+    @diagnostic.score_data["top_career_ids"] << {
+      "id" => third.id, "score" => 6,
+      "disc_match" => 0, "academic_field_match" => 0, "comp_match" => 6,
+      "matched_disc_types" => [], "matched_skills" => { "guidage" => 6 }
+    }
+    @diagnostic.save!
+    presenter = Diagnostics::AnswerAttributionPresenter.new(@diagnostic)
+
+    labels = presenter.overview_cards.map { |c| c[:label] }
+    assert_equal [ "Métier 1", "Métier 2", "Non retenu" ], labels
+
+    third_card = presenter.overview_cards.last
+    assert_equal third, third_card[:career]
+    assert_equal 6, third_card[:total]
+    assert_equal false, third_card[:has_affirmation_data]
+  end
+
+  test "overview_cards omits the 3rd candidate when only 2 candidates exist" do
+    presenter = Diagnostics::AnswerAttributionPresenter.new(@diagnostic)
+
+    assert_equal [ "Métier 1", "Métier 2" ], presenter.overview_cards.map { |c| c[:label] }
+  end
+
+  test "overview_cards omits the 3rd candidate when it lacks breakdown data" do
+    third = Career.create!(title: "Guide touristique #{SecureRandom.hex(4)}", status: :published,
+                            academic_field_slug: "histoire", disc_types: [], required_skills: [])
+    @diagnostic.score_data["top_career_ids"] << { "id" => third.id, "score" => 6 }
+    @diagnostic.save!
+    presenter = Diagnostics::AnswerAttributionPresenter.new(@diagnostic)
+
+    assert_equal [ "Métier 1", "Métier 2" ], presenter.overview_cards.map { |c| c[:label] }
+  end
+
+  test "category_breakdown reports DISC max as the number of dominant DISC types times 3" do
+    presenter = Diagnostics::AnswerAttributionPresenter.new(@diagnostic)
+    primary_card = presenter.overview_cards.first
+
+    disc_row = primary_card[:categories].find { |c| c[:label] == "DISC" }
+    assert_equal({ label: "DISC", points: 3, max: 3 }, disc_row)
+  end
+
+  test "category_breakdown reports Intérêts with a fixed max of 5" do
+    presenter = Diagnostics::AnswerAttributionPresenter.new(@diagnostic)
+    primary_card = presenter.overview_cards.first
+
+    interest_row = primary_card[:categories].find { |c| c[:label] == "Intérêts" }
+    assert_equal({ label: "Intérêts", points: 5, max: 5 }, interest_row)
+  end
+
+  test "category_breakdown reports Compétences with no max" do
+    presenter = Diagnostics::AnswerAttributionPresenter.new(@diagnostic)
+    primary_card = presenter.overview_cards.first
+
+    skill_row = primary_card[:categories].find { |c| c[:label] == "Compétences" }
+    assert_equal({ label: "Compétences", points: 5, max: nil }, skill_row)
+  end
+
+  test "category_breakdown includes the affirmation bonus row only when affirmation data exists" do
+    presenter = Diagnostics::AnswerAttributionPresenter.new(@diagnostic)
+    primary_card, secondary_card = presenter.overview_cards
+
+    assert primary_card[:categories].any? { |c| c[:label] == "Bonus affirmations" }
+    assert_equal({ label: "Bonus affirmations", points: 2, max: 3 },
+                 primary_card[:categories].find { |c| c[:label] == "Bonus affirmations" })
+    assert_not secondary_card[:categories].any? { |c| c[:label] == "Bonus affirmations" }
+  end
 end
