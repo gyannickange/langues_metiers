@@ -5,7 +5,7 @@ module Admin
     include Pagy::Backend
     include Pundit::Authorization
 
-    ADMIN_SESSION_TIMEOUT = 30.minutes
+    ADMIN_SESSION_TIMEOUT = 30.days
 
     before_action :authenticate_user!
     before_action :require_admin!
