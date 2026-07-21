@@ -42,71 +42,88 @@
         ] %>
   </div>
 
+  <%= render "admin/diagnostics/score_overview", attribution: @attribution %>
+
   <!-- Bottom Side: Answers -->
   <div>
     <div class="glass-card rounded-[2rem] shadow-premium min-h-[600px]">
       <div class="animate-premium-in">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 pb-6 border-b border-slate-100">
-          <div>
-            <h3 class="text-xl font-bold text-slate-800">Détail des Réponses</h3>
-            <p class="text-slate-400 text-xs font-medium mt-1">Réponses du diagnostic</p>
-          </div>
-          <% if @attribution.available? %>
-            <div class="text-xs font-bold text-slate-500 tracking-wide">
-              <%= @attribution.recap_line %>
-            </div>
-          <% end %>
+        <div class="mb-8 pb-6 border-b border-slate-100">
+          <h3 class="text-xl font-bold text-slate-800">Détail des Réponses</h3>
+          <p class="text-slate-400 text-xs font-medium mt-1">Réponses du diagnostic</p>
         </div>
 
         <% affirmation_rows = @attribution.affirmation_rows %>
         <% if @answers.any? || affirmation_rows.any? %>
-          <div class="space-y-4">
-            <% @answers.each_with_index do |answer, idx| %>
-              <div class="p-6 rounded-2xl bg-white border border-slate-100 hover:border-[var(--color-primary)]/20 hover:shadow-premium-sm transition-all group">
-                <div class="flex gap-4">
-                  <div class="flex-shrink-0 w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-[10px] font-black text-slate-400 border border-slate-100">
-                    <%= idx + 1 %>
-                  </div>
-                  <div class="flex-1">
-                    <p class="text-slate-800 font-bold leading-relaxed mb-3">
-                      <%= answer.diagnostic_question.text %>
-                    </p>
-                    <div class="flex flex-col items-start gap-2 mt-4">
-                       <span class="text-[10px] font-black text-slate-300">Réponse :</span>
-                       <span class="px-3 py-1 bg-green-50 text-green-700 text-xs font-bold rounded-lg border border-green-100">
-                         <% selected_option = answer.diagnostic_question.options&.find { |o| o["value"] == answer.answer_value } %>
-                         <%= selected_option ? "#{answer.answer_value}: #{selected_option['text']}" : answer.answer_value %>
-                       </span>
-                    </div>
-                    <% badges = @attribution.badges_for(answer) %>
-                    <% if badges.any? %>
-                      <div class="flex flex-wrap items-center gap-2 mt-3">
-                        <% badges.each do |badge| %>
-                          <span class="px-2.5 py-1 bg-indigo-50 text-indigo-700 text-[10px] font-black rounded-lg border border-indigo-100 tracking-wide">
-                            <%= badge[:label] %> · +<%= badge[:points] %> pts
-                          </span>
-                        <% end %>
-                      </div>
-                    <% end %>
-                  </div>
-                </div>
-              </div>
-            <% end %>
+          <div data-controller="answer-filter"
+               data-answer-filter-active-class="bg-white text-[var(--color-primary)] shadow-sm border border-slate-100"
+               data-answer-filter-inactive-class="text-slate-400 hover:text-slate-600">
+            <div class="flex flex-wrap items-center gap-1 bg-slate-100/50 p-1.5 rounded-2xl border border-slate-100 mb-6">
+              <% [["all", "TOUT"], ["disc", "DISC"], ["interest", "INTÉRÊTS"], ["skill", "COMPÉTENCES"], ["scored", "A COMPTÉ DANS LE SCORE"]].each_with_index do |(value, text), i| %>
+                <button type="button"
+                        class="px-4 py-2 rounded-xl text-[10px] font-black transition-all duration-300 <%= i.zero? ? "bg-white text-[var(--color-primary)] shadow-sm border border-slate-100" : "text-slate-400 hover:text-slate-600" %>"
+                        data-answer-filter-target="button"
+                        data-action="click->answer-filter#filter"
+                        data-answer-filter-filter-param="<%= value %>">
+                  <%= text %>
+                </button>
+              <% end %>
+            </div>
 
-            <% affirmation_rows.each_with_index do |row, idx| %>
-              <div class="p-6 rounded-2xl bg-white border border-slate-100 hover:border-[var(--color-primary)]/20 hover:shadow-premium-sm transition-all group">
-                <div class="flex gap-4">
-                  <div class="flex-shrink-0 w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-[10px] font-black text-slate-400 border border-slate-100">
-                    <%= @answers.size + idx + 1 %>
-                  </div>
-                  <div class="flex-1">
-                    <p class="text-slate-800 font-bold leading-relaxed mb-3">
-                      Affirmation validée pour <%= row[:label] %> : « <%= row[:text] %> »
-                    </p>
+            <div class="space-y-4">
+              <% @answers.each_with_index do |answer, idx| %>
+                <% badges = @attribution.badges_for(answer) %>
+                <div class="p-6 rounded-2xl bg-white border border-slate-100 hover:border-[var(--color-primary)]/20 hover:shadow-premium-sm transition-all group"
+                     data-answer-filter-target="row"
+                     data-category="<%= answer.diagnostic_question.kind %>"
+                     data-scored="<%= badges.any? %>">
+                  <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-[10px] font-black text-slate-400 border border-slate-100">
+                      <%= idx + 1 %>
+                    </div>
+                    <div class="flex-1">
+                      <p class="text-slate-800 font-bold leading-relaxed mb-3">
+                        <%= answer.diagnostic_question.text %>
+                      </p>
+                      <div class="flex flex-col items-start gap-2 mt-4">
+                         <span class="text-[10px] font-black text-slate-300">Réponse :</span>
+                         <span class="px-3 py-1 bg-green-50 text-green-700 text-xs font-bold rounded-lg border border-green-100">
+                           <% selected_option = answer.diagnostic_question.options&.find { |o| o["value"] == answer.answer_value } %>
+                           <%= selected_option ? "#{answer.answer_value}: #{selected_option['text']}" : answer.answer_value %>
+                         </span>
+                      </div>
+                      <% if badges.any? %>
+                        <div class="flex flex-wrap items-center gap-2 mt-3">
+                          <% badges.each do |badge| %>
+                            <span class="px-2.5 py-1 bg-indigo-50 text-indigo-700 text-[10px] font-black rounded-lg border border-indigo-100 tracking-wide">
+                              <%= badge[:label] %> · +<%= badge[:points] %> pts
+                            </span>
+                          <% end %>
+                        </div>
+                      <% end %>
+                    </div>
                   </div>
                 </div>
-              </div>
-            <% end %>
+              <% end %>
+
+              <% affirmation_rows.each_with_index do |row, idx| %>
+                <div class="p-6 rounded-2xl bg-white border border-slate-100 hover:border-[var(--color-primary)]/20 hover:shadow-premium-sm transition-all group"
+                     data-answer-filter-target="row"
+                     data-category="affirmation"
+                     data-scored="true">
+                  <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-[10px] font-black text-slate-400 border border-slate-100">
+                      <%= @answers.size + idx + 1 %>
+                    </div>
+                    <div class="flex-1">
+                      <p class="text-slate-800 font-bold leading-relaxed mb-3">
+                        Affirmation validée pour <%= row[:label] %> : « <%= row[:text] %> »
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
           </div>
         <% else %>
           <%= render "shared/empty_state",

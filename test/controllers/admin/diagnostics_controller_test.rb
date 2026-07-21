@@ -31,10 +31,11 @@ class Admin::DiagnosticsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select ".bg-indigo-50", count: 0
+    assert_select "details", count: 0
     assert_select "p", text: /#{Regexp.escape(@disc_question.text)}/
   end
 
-  test "show renders the recap line, per-answer badge, and affirmation row for a fully scored diagnostic" do
+  test "show renders the score overview cards and affirmation row for a fully scored diagnostic" do
     @diagnostic.update!(score_data: {
       "dominant_disc_types"     => [ "D" ],
       "dominant_academic_field" => nil,
@@ -58,9 +59,11 @@ class Admin::DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     get admin_diagnostic_path(@diagnostic)
 
     assert_response :success
-    assert_select "div", text: /Métier 1 : 4 pts · Métier 2 : 0 pts/
+    assert_select "details", count: 2
+    assert_select "p", text: /DISC 3 · Intérêts 0 · Compétences 0/
     assert_select ".bg-indigo-50", text: /Métier 1 · \+3 pts/
     assert_select "p", text: /Affirmation validée pour Métier 1 : « a »/
+    assert_select "[data-category='affirmation'][data-scored='true']"
   end
 
   test "show renders a confirmed payment" do
@@ -70,5 +73,32 @@ class Admin::DiagnosticsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select ".bg-emerald-50", text: "confirmed"
+  end
+
+  test "show renders the answer filter bar with category data attributes on each row" do
+    @diagnostic.update!(score_data: {
+      "dominant_disc_types"     => [ "D" ],
+      "dominant_academic_field" => nil,
+      "top_career_ids" => [
+        {
+          "id" => @primary.id, "score" => 3,
+          "disc_match" => 3, "academic_field_match" => 0, "comp_match" => 0,
+          "matched_disc_types" => [ "D" ], "matched_skills" => {}
+        },
+        {
+          "id" => @secondary.id, "score" => 0,
+          "disc_match" => 0, "academic_field_match" => 0, "comp_match" => 0,
+          "matched_disc_types" => [], "matched_skills" => {}
+        }
+      ]
+    })
+
+    get admin_diagnostic_path(@diagnostic)
+
+    assert_response :success
+    assert_select "[data-controller='answer-filter']"
+    assert_select "[data-answer-filter-filter-param='disc']"
+    assert_select "[data-answer-filter-filter-param='scored']"
+    assert_select "[data-category='disc'][data-scored='true']"
   end
 end

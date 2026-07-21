@@ -1,0 +1,41 @@
+<%#
+  Usage: render "admin/diagnostics/score_overview", attribution: @attribution
+%>
+<% if attribution.available? %>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 animate-premium-in">
+    <% attribution.overview_cards.each do |card| %>
+      <div class="glass-card rounded-2xl p-6 shadow-premium <%= "opacity-70" unless card[:retained] %>">
+        <div class="flex items-start justify-between mb-4">
+          <div>
+            <div class="text-[10px] font-black uppercase text-slate-400 tracking-wide"><%= card[:label] %></div>
+            <div class="text-base font-bold text-slate-800 mt-1"><%= card[:career].title %></div>
+          </div>
+          <div class="text-2xl font-black text-[var(--color-primary)]"><%= card[:total] %></div>
+        </div>
+
+        <p class="text-[11px] font-semibold text-slate-400">
+          <%= card[:categories].map { |c| "#{c[:label]} #{c[:points]}" }.join(" · ") %>
+        </p>
+
+        <details class="mt-4">
+          <summary class="text-[10px] font-black text-[var(--color-primary)] cursor-pointer list-none">
+            Voir le détail ▾
+          </summary>
+          <dl class="mt-4 pt-4 border-t border-slate-100 space-y-2">
+            <% card[:categories].each do |c| %>
+              <div class="flex items-center justify-between text-xs">
+                <dt class="font-bold text-slate-500"><%= c[:label] %></dt>
+                <dd class="font-black text-slate-700"><%= c[:max] ? "#{c[:points]} / #{c[:max]}" : c[:points] %></dd>
+              </div>
+            <% end %>
+          </dl>
+          <% unless card[:has_affirmation_data] %>
+            <p class="mt-3 text-[10px] font-medium text-slate-400 italic">
+              Score de base, sans bonus affirmations (non proposées pour ce métier).
+            </p>
+          <% end %>
+        </details>
+      </div>
+    <% end %>
+  </div>
+<% end %>

@@ -12,17 +12,12 @@ module Diagnostics
       @attributions.any?
     end
 
-    def recap_line
-      return nil unless available?
-
-      @attributions.map { |a| "#{a.label} : #{final_score(a)} pts" }.join(" · ")
-    end
-
     def overview_cards
       @attributions.map do |attribution|
         {
           label:                attribution.label,
           career:               attribution.career,
+          retained:             attribution.retained,
           total:                final_score(attribution),
           categories:           category_breakdown(attribution),
           has_affirmation_data: attribution.affirmation.present?

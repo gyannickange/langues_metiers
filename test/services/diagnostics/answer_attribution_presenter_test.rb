@@ -69,10 +69,6 @@ class Diagnostics::AnswerAttributionPresenterTest < ActiveSupport::TestCase
     assert_not_includes labels, "Métier 2"
   end
 
-  test "recap_line shows each career's final score including affirmation bonus" do
-    assert_equal "Métier 1 : 15 pts · Métier 2 : 0 pts", @presenter.recap_line
-  end
-
   test "affirmation_rows lists each checked affirmation with its career label" do
     assert_equal [
       { label: "Métier 1", text: "a" },
@@ -88,7 +84,6 @@ class Diagnostics::AnswerAttributionPresenterTest < ActiveSupport::TestCase
 
     assert_not presenter.available?
     assert_empty presenter.badges_for(@disc_answer)
-    assert_nil presenter.recap_line
     assert_empty presenter.affirmation_rows
   end
 
@@ -110,6 +105,8 @@ class Diagnostics::AnswerAttributionPresenterTest < ActiveSupport::TestCase
     assert_equal third, third_card[:career]
     assert_equal 6, third_card[:total]
     assert_equal false, third_card[:has_affirmation_data]
+    assert_equal false, third_card[:retained]
+    assert presenter.overview_cards.first(2).all? { |c| c[:retained] }
   end
 
   test "overview_cards omits the 3rd candidate when only 2 candidates exist" do
