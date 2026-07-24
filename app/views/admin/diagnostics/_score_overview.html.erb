@@ -13,17 +13,17 @@
         </div>
         <div class="rounded-2xl border border-white/15 bg-white/10 px-5 py-4 text-sm text-white/85 lg:max-w-xs">
           <p class="font-bold text-white">À retenir</p>
-          <p class="mt-1 leading-5">DISC et intérêts sont des bonus forfaitaires. Les compétences sont comptées selon la réponse donnée.</p>
+          <p class="mt-1 leading-5">DISC et filière académique servent à filtrer les métiers en amont. Le score final ne combine que compétences et affirmations.</p>
         </div>
       </div>
     </div>
 
     <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Règles de calcul">
       <% [
-        ["DISC", "Bonus forfaitaire", "Une dimension dominante est comptée une seule fois par métier."],
-        ["Intérêts", "Bonus forfaitaire", "Le champ d’intérêt dominant est compté une seule fois."],
-        ["Compétences", "Points par réponse", "La valeur choisie, notamment de 1 à 5, contribue directement."],
-        ["Affirmations", "Bonus final", "Les validations ajoutées à la fin augmentent le score de base. "]
+        ["DISC", "Filtre en amont", "Sert à retenir ce métier parmi les candidats, ne compte pas dans le score final."],
+        ["Filière académique", "Filtre en amont", "Sert à retenir ce métier parmi les candidats, ne compte pas dans le score final."],
+        ["Compétences", "40% du score final", "Pourcentage des compétences requises que l’utilisateur a cochées."],
+        ["Affirmations", "60% du score final", "Moyenne normalisée des notes de 1 à 5 données aux affirmations du métier."]
       ].each do |title, label, description| %>
         <div class="rounded-2xl border border-slate-200 bg-white p-4">
           <p class="text-xs font-black uppercase tracking-wide text-slate-400"><%= title %></p>
@@ -33,9 +33,9 @@
       <% end %>
     </div>
 
-    <div class="grid gap-4 md:grid-cols-3">
+    <div class="grid gap-4 md:grid-cols-2">
       <% attribution.score_summary.each do |summary| %>
-        <article class="rounded-2xl border <%= summary[:retained] ? 'border-[var(--color-primary)]/40 bg-white' : 'border-slate-200 bg-slate-50' %> p-5 shadow-sm">
+        <article class="rounded-2xl border border-[var(--color-primary)]/40 bg-white p-5 shadow-sm">
           <div class="flex items-start justify-between gap-4">
             <div>
               <p class="text-xs font-black uppercase tracking-wide text-slate-400"><%= summary[:label] %></p>
@@ -49,18 +49,14 @@
 
           <div class="mt-5 grid grid-cols-2 gap-3 border-t border-slate-100 pt-4 text-xs">
             <div>
-              <p class="text-slate-400">Score de base</p>
+              <p class="text-slate-400">Compétences (40%)</p>
               <p class="mt-1 font-black text-slate-700"><%= summary[:base_score] %> pts</p>
             </div>
             <div>
-              <p class="text-slate-400">Bonus affirmations</p>
-              <p class="mt-1 font-black text-slate-700">+<%= summary[:bonus] %> pts</p>
+              <p class="text-slate-400">Affirmations (60%)</p>
+              <p class="mt-1 font-black text-slate-700"><%= summary[:bonus] %> pts</p>
             </div>
           </div>
-
-          <% unless summary[:retained] %>
-            <p class="mt-4 text-xs italic leading-5 text-slate-500">Score de base uniquement : aucune affirmation n’a été proposée pour ce métier.</p>
-          <% end %>
         </article>
       <% end %>
     </div>
@@ -96,9 +92,6 @@
                   </div>
                 <% end %>
               </div>
-              <% unless card[:has_affirmation_data] %>
-                <p class="mt-4 border-t border-slate-200 pt-3 text-xs italic leading-5 text-slate-500">Ce score est un score de base, sans bonus d’affirmations.</p>
-              <% end %>
             </div>
           </details>
         <% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_07_19_194500) do
+ActiveRecord::Schema[8.0].define(version: 2026_07_24_000004) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -103,6 +103,12 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_19_194500) do
     t.datetime "updated_at", null: false
     t.uuid "diagnostic_question_id"
     t.string "dimension_slug"
+    t.uuid "career_id"
+    t.integer "affirmation_index"
+    t.string "affirmation_text"
+    t.integer "effective_value"
+    t.index ["career_id"], name: "index_diagnostic_answers_on_career_id"
+    t.index ["diagnostic_id", "career_id", "affirmation_index"], name: "idx_diag_answers_on_diag_and_career_affirmation", unique: true, where: "(career_id IS NOT NULL)"
     t.index ["diagnostic_id", "diagnostic_question_id"], name: "idx_diag_answers_on_diag_and_diag_quest", unique: true, where: "(diagnostic_question_id IS NOT NULL)"
     t.index ["diagnostic_id"], name: "index_diagnostic_answers_on_diagnostic_id"
     t.index ["diagnostic_question_id"], name: "index_diagnostic_answers_on_diagnostic_question_id"
@@ -121,6 +127,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_19_194500) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "academic_field_slug"
+    t.boolean "reverse_scored", default: false, null: false
     t.index ["assessment_id", "kind", "position"], name: "idx_on_assessment_id_kind_position_16450dfe68"
     t.index ["assessment_id"], name: "index_diagnostic_questions_on_assessment_id"
   end
@@ -138,6 +145,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_19_194500) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "assessment_id"
+    t.jsonb "selected_skills", default: [], null: false
     t.index ["assessment_id"], name: "index_diagnostics_on_assessment_id"
     t.index ["status"], name: "index_diagnostics_on_status"
     t.index ["user_id"], name: "index_diagnostics_on_user_id"
@@ -383,6 +391,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_19_194500) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "categories_skills", "categories"
   add_foreign_key "categories_skills", "skills"
+  add_foreign_key "diagnostic_answers", "careers"
   add_foreign_key "diagnostic_answers", "diagnostic_questions"
   add_foreign_key "diagnostic_answers", "diagnostics"
   add_foreign_key "diagnostic_questions", "assessments"

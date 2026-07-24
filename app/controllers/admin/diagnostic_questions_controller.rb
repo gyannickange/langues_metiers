@@ -116,7 +116,7 @@ class Admin::DiagnosticQuestionsController < Admin::BaseController
   # (next_position_for) or the `reorder` action, never by direct params.
   def question_params
     params.require(:diagnostic_question).permit(
-      :kind, :text, :disc_type, :skill_slug, :skill_label, :academic_field_slug, :active
+      :kind, :text, :disc_type, :skill_slug, :skill_label, :academic_field_slug, :active, :reverse_scored
     )
   end
 
