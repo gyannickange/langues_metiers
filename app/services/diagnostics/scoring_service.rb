@@ -1,58 +1,86 @@
-# app/services/diagnostics/scoring_service.rb
 module Diagnostics
   class ScoringService
     class InsufficientCareersError < StandardError; end
 
-    def self.call(diagnostic, affirmation_counts = {})
-      new(diagnostic, affirmation_counts).call
+    SKILL_WEIGHT       = 0.4
+    AFFIRMATION_WEIGHT = 0.6
+
+    def self.call(diagnostic)
+      new(diagnostic).call
     end
 
-    def initialize(diagnostic, affirmation_counts)
-      @diagnostic         = diagnostic
-      @affirmation_counts = affirmation_counts
+    def initialize(diagnostic)
+      @diagnostic = diagnostic
     end
 
     def call
-      score_data      = @diagnostic.score_data.is_a?(Hash) ? @diagnostic.score_data : {}
-      top_career_data = score_data["top_career_ids"]
-      top_career_data = [] unless top_career_data.is_a?(Array)
-      top_career_data = top_career_data.select { |entry| entry.is_a?(Hash) && entry["id"].present? }
-      top_career_ids  = top_career_data.map { |entry| entry["id"] }
-      careers_by_id   = Career.where(id: top_career_ids).index_by { |c| c.id.to_s }
+      score_data = @diagnostic.score_data.is_a?(Hash) ? @diagnostic.score_data : {}
+      retained   = Array(score_data["retained_careers"]).select { |entry| entry.is_a?(Hash) && entry["career_id"].present? }
+      raise InsufficientCareersError, "At least two retained careers are required to complete a diagnostic" if retained.size < 2
 
-      affirmation_breakdown = {}
+      careers_by_id   = Career.where(id: retained.map { |e| e["career_id"] }).index_by { |c| c.id.to_s }
+      selected_skills = Array(@diagnostic.selected_skills)
 
-      adjusted = top_career_data.filter_map do |entry|
-        id_str    = entry["id"].to_s
-        career    = careers_by_id[id_str]
-        next unless career
+      scored = retained.filter_map { |entry| score_entry(entry, careers_by_id, selected_skills) }
+      raise InsufficientCareersError, "At least two scorable careers are required to complete a diagnostic" if scored.size < 2
 
-        affirmations = career.affirmations || []
-        raw_values    = Array(@affirmation_counts[id_str])
-        max_bonus     = affirmations.length
-        bonus         = [ raw_values.length, max_bonus ].min
-        checked_texts = raw_values.filter_map { |v| Integer(v, exception: false) }.filter_map { |i| affirmations[i] }
-
-        affirmation_breakdown[id_str] = {
-          "checked_affirmations" => checked_texts,
-          "bonus"                => bonus,
-          "max_bonus"            => max_bonus
-        }
-
-        { "id" => entry["id"], "score" => entry["score"].to_i + bonus }
-      end.uniq { |entry| entry["id"].to_s }.sort_by { |entry| -entry["score"] }
-
-      primary   = careers_by_id[adjusted.dig(0, "id").to_s]
-      secondary = careers_by_id[adjusted.dig(1, "id").to_s]
-      raise InsufficientCareersError, "At least two careers are required to complete a diagnostic" unless primary && secondary
+      ranked = scored.sort_by { |entry| tie_break_key(entry) }
+      primary_entry, secondary_entry = ranked.first(2)
 
       @diagnostic.update!(
-        primary_career:       primary,
-        complementary_career: secondary,
+        primary_career:       careers_by_id[primary_entry["career_id"].to_s],
+        complementary_career: careers_by_id[secondary_entry["career_id"].to_s],
         status:               :pending_payment,
         completed_at:         Time.current,
-        score_data:           score_data.merge("affirmation_breakdown" => affirmation_breakdown)
+        score_data:           score_data.merge("retained_careers" => scored)
       )
+    end
+
+    private
+
+    def score_entry(entry, careers_by_id, selected_skills)
+      career = careers_by_id[entry["career_id"].to_s]
+      return nil unless career
+
+      skill_score, missing_required_skills, matching_skills = skill_score_for(career, selected_skills)
+      affirmation_score = affirmation_score_for(career)
+      final_score = (SKILL_WEIGHT * skill_score) + (AFFIRMATION_WEIGHT * affirmation_score)
+
+      entry.merge(
+        "required_skills_snapshot" => career.required_skills,
+        "selected_matching_skills" => matching_skills,
+        "skill_score"               => skill_score.round(2),
+        "missing_required_skills"   => missing_required_skills,
+        "affirmation_score"         => affirmation_score.round(2),
+        "final_score"               => final_score.round(2)
+      )
+    end
+
+    def skill_score_for(career, selected_skills)
+      required = Array(career.required_skills)
+      return [ 0.0, true, [] ] if required.empty?
+
+      matching = required & selected_skills
+      [ (matching.size.to_f / required.size) * 100, false, matching ]
+    end
+
+    def affirmation_score_for(career)
+      values = @diagnostic.diagnostic_answers.where(career_id: career.id).pluck(:effective_value).compact
+      # A career with zero affirmations has an empty average (0), and normalize(0) would read as
+      # -25% (below the 1..5 scale's floor) — treat "nothing to score" as 0%, not a negative score.
+      return 0.0 if values.empty?
+
+      Diagnostics::LikertScoring.normalize(Diagnostics::LikertScoring.average(values))
+    end
+
+    def tie_break_key(entry)
+      [
+        -entry["final_score"],
+        -entry["affirmation_score"],
+        -entry["disc_match_count"].to_i,
+        -entry["academic_field_score"].to_f,
+        entry["career_id"].to_s
+      ]
     end
   end
 end

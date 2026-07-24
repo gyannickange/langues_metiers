@@ -66,28 +66,18 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     assert_select ".peer-focus-visible\\:ring-2", count: 5
   end
 
-  test "GET validation explains that payment is the next step" do
+  test "GET validation renders a Likert question per affirmation for each retained career" do
     sign_in @user
-    careers = 2.times.map do |index|
-      Career.create!(
-        title: "Métier #{index}",
-        status: :published,
-        affirmations: [ "Cette affirmation me décrit." ]
-      )
-    end
-    d = Diagnostic.create!(
-      user: @user,
-      status: :in_progress,
-      assessment: @assessment,
-      score_data: { "top_career_ids" => careers.map { |career| { "id" => career.id } } }
-    )
+    d, c1, c2 = diagnostic_with_retained_careers
 
     get validation_diagnostic_path(d)
 
     assert_response :success
     assert_select "fieldset", count: 2
     assert_select "input[type='submit'][value*='paiement']"
-    assert_select ".border-secondary-200", minimum: 2
+    assert_includes response.body, c1.title
+    assert_includes response.body, c2.title
+    assert_includes response.body, "Ça me ressemble."
   end
 
   test "GET results blocked for pending_payment diagnostic" do
@@ -158,12 +148,12 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
       assessment: @assessment,
       primary_career: career,
       score_data: {
-        "dominant_disc_types" => [ "D" ],
-        "dominant_academic_field" => "langues",
-        "top_career_ids" => [ { "id" => career.id, "score" => 5, "disc_match" => 0 } ]
+        "dominant_disc_types"      => [ "D" ],
+        "dominant_academic_fields" => [ "langues", "geo" ],
+        "retained_careers"         => [ { "career_id" => career.id, "final_score" => 80.0 } ]
       }
     )
-    d.diagnostic_answers.create!(diagnostic_question: question, dimension_slug: "langues", answer_value: "4", points_awarded: 4)
+    d.diagnostic_answers.create!(diagnostic_question: question, dimension_slug: "langues", answer_value: "4", points_awarded: 4, effective_value: 4)
 
     Diagnostics::GeneratePdfService.stub(:call, ->(_diagnostic) {}) do
       get results_diagnostic_path(d)
@@ -174,6 +164,7 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "Comment lire votre résultat"
     assert_includes response.body, "Plutôt moi"
     assert_select "p", text: /Les langues m'attirent\./
+    assert_includes response.body, "Votre intérêt pour Langues et Géographie"
   end
 
   test "GET pdf status reports whether the report is ready" do
@@ -297,17 +288,95 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to disc_diagnostic_path(d)
   end
 
-  test "POST submit_skills rejects missing answers before pre-scoring" do
+  test "POST submit_interest persists effective_value alongside points_awarded" do
     sign_in @user
-    @assessment.diagnostic_questions.create!(kind: :skill, text: "Q?", skill_slug: "analyse_donnees", position: 1)
+    q = @assessment.diagnostic_questions.create!(
+      kind: :interest, text: "Q?", academic_field_slug: "langues", position: 1
+    )
     d = Diagnostic.create!(user: @user, status: :in_progress, assessment: @assessment)
 
-    assert_no_difference "DiagnosticAnswer.count" do
-      post submit_skills_diagnostic_path(d), params: { answers: {} }
-    end
+    post submit_interest_diagnostic_path(d), params: { answers: { q.id => "4" } }
 
-    assert_redirected_to skills_diagnostic_path(d)
-    assert_equal({}, d.reload.score_data)
+    assert_equal 4, d.diagnostic_answers.last.effective_value
+  end
+
+  test "POST submit_disc persists an inverted effective_value for a reverse_scored question" do
+    sign_in @user
+    q = @assessment.diagnostic_questions.create!(
+      kind: :interest, text: "Q?", academic_field_slug: "langues", position: 1
+    )
+    reversed = @assessment.diagnostic_questions.create!(
+      kind: :disc, text: "Je déteste décider vite.", disc_type: "D", position: 2, reverse_scored: true
+    )
+    d = Diagnostic.create!(user: @user, status: :in_progress, assessment: @assessment)
+    d.diagnostic_answers.create!(diagnostic_question: q, dimension_slug: "langues", answer_value: "3", points_awarded: 3, effective_value: 3)
+    Career.create!(title: "Filler #{SecureRandom.hex(4)}", status: :published, academic_field_slug: "langues", disc_types: [ "D" ])
+    Career.create!(title: "Filler2 #{SecureRandom.hex(4)}", status: :published, academic_field_slug: "langues", disc_types: [ "D" ])
+
+    post submit_disc_diagnostic_path(d), params: { answers: { reversed.id => "4" } }
+
+    answer = d.diagnostic_answers.find_by(diagnostic_question: reversed)
+    assert_equal 4, answer.points_awarded
+    assert_equal 2, answer.effective_value
+  end
+
+  def diagnostic_with_retained_careers
+    AcademicField.find_or_create_by!(slug: "langues") { |f| f.name = "Langues"; f.position = 1 }
+    c1 = Career.create!(title: "Métier A #{SecureRandom.hex(4)}", status: :published, academic_field_slug: "langues", disc_types: [ "D" ], required_skills: [ "langues_etrangeres" ], affirmations: [ "Ça me ressemble." ])
+    c2 = Career.create!(title: "Métier B #{SecureRandom.hex(4)}", status: :published, academic_field_slug: "langues", disc_types: [ "D" ], required_skills: [ "numerique" ], affirmations: [ "Ça aussi." ])
+    d = Diagnostic.create!(
+      user: @user, status: :in_progress, assessment: @assessment,
+      score_data: {
+        "dominant_academic_fields" => [ "langues" ],
+        "dominant_disc_types"      => [ "D" ],
+        "retained_careers" => [
+          { "career_id" => c1.id, "academic_field_slug" => "langues", "academic_field_score" => 90.0, "matched_disc_types" => [ "D" ], "disc_match_count" => 1, "fallback" => false },
+          { "career_id" => c2.id, "academic_field_slug" => "langues", "academic_field_score" => 90.0, "matched_disc_types" => [ "D" ], "disc_match_count" => 1, "fallback" => false }
+        ]
+      }
+    )
+    [ d, c1, c2 ]
+  end
+
+  test "GET skills lists only the union of required_skills from the 2 retained careers" do
+    sign_in @user
+    d, _c1, _c2 = diagnostic_with_retained_careers
+
+    get skills_diagnostic_path(d)
+
+    assert_response :success
+    assert_select "input[type='checkbox'][value='langues_etrangeres']", count: 1
+    assert_select "input[type='checkbox'][value='numerique']", count: 1
+    assert_select "input[type='checkbox']", count: 2
+  end
+
+  test "GET skills redirects to disc when the pool hasn't been computed yet" do
+    sign_in @user
+    d = Diagnostic.create!(user: @user, status: :in_progress, assessment: @assessment, score_data: {})
+
+    get skills_diagnostic_path(d)
+
+    assert_redirected_to disc_diagnostic_path(d)
+  end
+
+  test "POST submit_skills persists sanitized selected_skills restricted to the allowed union" do
+    sign_in @user
+    d, _c1, _c2 = diagnostic_with_retained_careers
+
+    post submit_skills_diagnostic_path(d), params: { selected_skills: [ "numerique", "numerique", "", "bogus_slug" ] }
+
+    assert_equal [ "numerique" ], d.reload.selected_skills
+    assert_redirected_to validation_diagnostic_path(d)
+  end
+
+  test "POST submit_skills is idempotent across resubmissions" do
+    sign_in @user
+    d, _c1, _c2 = diagnostic_with_retained_careers
+
+    post submit_skills_diagnostic_path(d), params: { selected_skills: [ "numerique" ] }
+    post submit_skills_diagnostic_path(d), params: { selected_skills: [ "langues_etrangeres" ] }
+
+    assert_equal [ "langues_etrangeres" ], d.reload.selected_skills
   end
 
   test "GET validation redirects when score data is malformed" do
@@ -317,6 +386,48 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     get validation_diagnostic_path(d)
 
     assert_redirected_to skills_diagnostic_path(d)
+  end
+
+  test "POST submit_validation persists one DiagnosticAnswer per affirmation with a career snapshot" do
+    sign_in @user
+    d, c1, c2 = diagnostic_with_retained_careers
+
+    assert_difference "DiagnosticAnswer.count", 2 do
+      post submit_validation_diagnostic_path(d), params: {
+        affirmations: { c1.id => { "0" => "5" }, c2.id => { "0" => "3" } }
+      }
+    end
+
+    answer = d.diagnostic_answers.find_by(career: c1, affirmation_index: 0)
+    assert_equal "Ça me ressemble.", answer.affirmation_text
+    assert_equal "5", answer.answer_value
+    assert_equal 5, answer.points_awarded
+    assert_equal 5, answer.effective_value
+  end
+
+  test "POST submit_validation rejects incomplete affirmation ratings" do
+    sign_in @user
+    d, c1, _c2 = diagnostic_with_retained_careers
+
+    assert_no_difference "DiagnosticAnswer.count" do
+      post submit_validation_diagnostic_path(d), params: { affirmations: { c1.id => { "0" => "5" } } }
+    end
+
+    assert_redirected_to validation_diagnostic_path(d)
+  end
+
+  test "POST submit_validation is idempotent across resubmissions" do
+    sign_in @user
+    d, c1, c2 = diagnostic_with_retained_careers
+    params = { affirmations: { c1.id => { "0" => "5" }, c2.id => { "0" => "3" } } }
+
+    post submit_validation_diagnostic_path(d), params: params
+    assert_no_difference "DiagnosticAnswer.count" do
+      post submit_validation_diagnostic_path(d), params: { affirmations: { c1.id => { "0" => "2" }, c2.id => { "0" => "4" } } }
+    end
+
+    assert_equal 2, d.diagnostic_answers.find_by(career: c1, affirmation_index: 0).points_awarded
+    assert_equal 4, d.diagnostic_answers.find_by(career: c2, affirmation_index: 0).points_awarded
   end
 
   private

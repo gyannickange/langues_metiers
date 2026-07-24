@@ -36,33 +36,32 @@ class Admin::DiagnosticsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "show renders the score overview cards and affirmation row for a fully scored diagnostic" do
+    @diagnostic.diagnostic_answers.create!(career: @primary, affirmation_index: 0, affirmation_text: "a",
+                                            answer_value: "5", points_awarded: 5, effective_value: 5)
     @diagnostic.update!(score_data: {
-      "dominant_disc_types"     => [ "D" ],
-      "dominant_academic_field" => nil,
-      "top_career_ids" => [
+      "dominant_disc_types"      => [ "D" ],
+      "dominant_academic_fields" => [ "langues" ],
+      "retained_careers" => [
         {
-          "id" => @primary.id, "score" => 3,
-          "disc_match" => 3, "academic_field_match" => 0, "comp_match" => 0,
-          "matched_disc_types" => [ "D" ], "matched_skills" => {}
+          "career_id" => @primary.id, "academic_field_slug" => "langues", "academic_field_score" => 80.0,
+          "matched_disc_types" => [ "D" ], "disc_match_count" => 1, "fallback" => false,
+          "skill_score" => 100.0, "missing_required_skills" => false, "affirmation_score" => 100.0, "final_score" => 100.0
         },
         {
-          "id" => @secondary.id, "score" => 0,
-          "disc_match" => 0, "academic_field_match" => 0, "comp_match" => 0,
-          "matched_disc_types" => [], "matched_skills" => {}
+          "career_id" => @secondary.id, "academic_field_slug" => "geo", "academic_field_score" => 50.0,
+          "matched_disc_types" => [], "disc_match_count" => 0, "fallback" => true,
+          "skill_score" => 0.0, "missing_required_skills" => true, "affirmation_score" => 0.0, "final_score" => 0.0
         }
-      ],
-      "affirmation_breakdown" => {
-        @primary.id.to_s => { "checked_affirmations" => [ "a" ], "bonus" => 1, "max_bonus" => 2 }
-      }
+      ]
     })
 
     get admin_diagnostic_path(@diagnostic)
 
     assert_response :success
     assert_select "details", count: 2
-    assert_includes response.body, "Bonus forfaitaire DISC"
-    assert_select "p", text: /Score de base/
-    assert_includes response.body, "Métier 1 · « a »"
+    assert_includes response.body, "Filtre de personnalité"
+    assert_select "p", text: /Compétences \(40%\)/
+    assert_includes response.body, "Métier 1 · « a (5/5) »"
     assert_select "[data-category='affirmation'][data-scored='true']"
   end
 
@@ -77,18 +76,18 @@ class Admin::DiagnosticsControllerTest < ActionDispatch::IntegrationTest
 
   test "show renders the answer filter bar with category data attributes on each row" do
     @diagnostic.update!(score_data: {
-      "dominant_disc_types"     => [ "D" ],
-      "dominant_academic_field" => nil,
-      "top_career_ids" => [
+      "dominant_disc_types"      => [ "D" ],
+      "dominant_academic_fields" => [ "langues" ],
+      "retained_careers" => [
         {
-          "id" => @primary.id, "score" => 3,
-          "disc_match" => 3, "academic_field_match" => 0, "comp_match" => 0,
-          "matched_disc_types" => [ "D" ], "matched_skills" => {}
+          "career_id" => @primary.id, "academic_field_slug" => "langues", "academic_field_score" => 80.0,
+          "matched_disc_types" => [ "D" ], "disc_match_count" => 1, "fallback" => false,
+          "skill_score" => 100.0, "missing_required_skills" => false, "affirmation_score" => 100.0, "final_score" => 100.0
         },
         {
-          "id" => @secondary.id, "score" => 0,
-          "disc_match" => 0, "academic_field_match" => 0, "comp_match" => 0,
-          "matched_disc_types" => [], "matched_skills" => {}
+          "career_id" => @secondary.id, "academic_field_slug" => "geo", "academic_field_score" => 50.0,
+          "matched_disc_types" => [], "disc_match_count" => 0, "fallback" => true,
+          "skill_score" => 0.0, "missing_required_skills" => true, "affirmation_score" => 0.0, "final_score" => 0.0
         }
       ]
     })
@@ -107,17 +106,18 @@ class Admin::DiagnosticsControllerTest < ActionDispatch::IntegrationTest
 
   test "show exposes career filters and readable answer contributions" do
     @diagnostic.update!(score_data: {
-      "dominant_disc_types" => [ "D" ],
-      "top_career_ids" => [
+      "dominant_disc_types"      => [ "D" ],
+      "dominant_academic_fields" => [ "langues" ],
+      "retained_careers" => [
         {
-          "id" => @primary.id, "score" => 3,
-          "disc_match" => 3, "academic_field_match" => 0, "comp_match" => 0,
-          "matched_disc_types" => [ "D" ], "matched_skills" => {}
+          "career_id" => @primary.id, "academic_field_slug" => "langues", "academic_field_score" => 80.0,
+          "matched_disc_types" => [ "D" ], "disc_match_count" => 1, "fallback" => false,
+          "skill_score" => 100.0, "missing_required_skills" => false, "affirmation_score" => 100.0, "final_score" => 100.0
         },
         {
-          "id" => @secondary.id, "score" => 0,
-          "disc_match" => 0, "academic_field_match" => 0, "comp_match" => 0,
-          "matched_disc_types" => [], "matched_skills" => {}
+          "career_id" => @secondary.id, "academic_field_slug" => "geo", "academic_field_score" => 50.0,
+          "matched_disc_types" => [], "disc_match_count" => 0, "fallback" => true,
+          "skill_score" => 0.0, "missing_required_skills" => true, "affirmation_score" => 0.0, "final_score" => 0.0
         }
       ]
     })
@@ -126,8 +126,18 @@ class Admin::DiagnosticsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select "[data-answer-filter-filter-param='career-#{@primary.id}']"
-    assert_includes response.body, "dimension Dominant retenue"
-    assert_includes response.body, "Bonus forfaitaire DISC"
+    assert_includes response.body, "Type DISC Dominant retenu"
+    assert_includes response.body, "Filtre de personnalité"
     assert_includes response.body, "Choix de l’utilisateur"
+  end
+
+  test "show does not crash when the diagnostic has career-affirmation answers with no diagnostic_question" do
+    career = Career.create!(title: "Analyste #{SecureRandom.hex(4)}", status: :published, affirmations: [ "Ça me ressemble." ])
+    @diagnostic.diagnostic_answers.create!(career: career, affirmation_index: 0, affirmation_text: "Ça me ressemble.",
+                                            answer_value: "5", points_awarded: 5, effective_value: 5)
+
+    get admin_diagnostic_path(@diagnostic)
+
+    assert_response :success
   end
 end
