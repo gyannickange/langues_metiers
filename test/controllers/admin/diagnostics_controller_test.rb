@@ -32,7 +32,7 @@ class Admin::DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select ".bg-indigo-50", count: 0
     assert_select "details", count: 0
-    assert_select "p", text: /#{Regexp.escape(@disc_question.text)}/
+    assert_select "h4", text: /#{Regexp.escape(@disc_question.text)}/
   end
 
   test "show renders the score overview cards and affirmation row for a fully scored diagnostic" do
@@ -60,9 +60,9 @@ class Admin::DiagnosticsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select "details", count: 2
-    assert_select "p", text: /DISC 3 · Intérêts 0 · Compétences 0/
-    assert_select ".bg-indigo-50", text: /Métier 1 · \+3 pts/
-    assert_select "p", text: /Affirmation validée pour Métier 1 : « a »/
+    assert_includes response.body, "Bonus forfaitaire DISC"
+    assert_select "p", text: /Score de base/
+    assert_includes response.body, "Métier 1 · « a »"
     assert_select "[data-category='affirmation'][data-scored='true']"
   end
 
@@ -99,6 +99,35 @@ class Admin::DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     assert_select "[data-controller='answer-filter']"
     assert_select "[data-answer-filter-filter-param='disc']"
     assert_select "[data-answer-filter-filter-param='scored']"
+    assert_select "[data-answer-filter-filter-param='affirmation']"
+    assert_select "button[aria-pressed='true'][data-answer-filter-filter-param='all']"
+    assert_select "[data-answer-filter-target='empty']"
     assert_select "[data-category='disc'][data-scored='true']"
+  end
+
+  test "show exposes career filters and readable answer contributions" do
+    @diagnostic.update!(score_data: {
+      "dominant_disc_types" => [ "D" ],
+      "top_career_ids" => [
+        {
+          "id" => @primary.id, "score" => 3,
+          "disc_match" => 3, "academic_field_match" => 0, "comp_match" => 0,
+          "matched_disc_types" => [ "D" ], "matched_skills" => {}
+        },
+        {
+          "id" => @secondary.id, "score" => 0,
+          "disc_match" => 0, "academic_field_match" => 0, "comp_match" => 0,
+          "matched_disc_types" => [], "matched_skills" => {}
+        }
+      ]
+    })
+
+    get admin_diagnostic_path(@diagnostic)
+
+    assert_response :success
+    assert_select "[data-answer-filter-filter-param='career-#{@primary.id}']"
+    assert_includes response.body, "dimension Dominant retenue"
+    assert_includes response.body, "Bonus forfaitaire DISC"
+    assert_includes response.body, "Choix de l’utilisateur"
   end
 end

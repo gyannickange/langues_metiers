@@ -1,41 +1,108 @@
-<%#
-  Usage: render "admin/diagnostics/score_overview", attribution: @attribution
-%>
+<%# Usage: render "admin/diagnostics/score_overview", attribution: @attribution %>
 <% if attribution.available? %>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 animate-premium-in">
-    <% attribution.overview_cards.each do |card| %>
-      <div class="glass-card rounded-2xl p-6 shadow-premium <%= "opacity-70" unless card[:retained] %>">
-        <div class="flex items-start justify-between mb-4">
-          <div>
-            <div class="text-[10px] font-black uppercase text-slate-400 tracking-wide"><%= card[:label] %></div>
-            <div class="text-base font-bold text-slate-800 mt-1"><%= card[:career].title %></div>
-          </div>
-          <div class="text-2xl font-black text-[var(--color-primary)]"><%= card[:total] %></div>
+  <section class="space-y-6" aria-labelledby="score-overview-title">
+    <div class="rounded-3xl bg-[var(--color-secondary)] p-6 text-white shadow-sm sm:p-8">
+      <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <div class="max-w-2xl">
+          <p class="mb-2 text-xs font-bold uppercase tracking-wide text-[var(--color-primary)]">Audit du calcul</p>
+          <h2 id="score-overview-title" class="text-2xl font-bold">Pourquoi ces métiers ont-ils été proposés ?</h2>
+          <p class="mt-3 text-sm leading-6 text-white/75">
+            Les scores ci-dessous reconstituent la décision à partir des données enregistrées au moment du diagnostic.
+            Ils permettent de vérifier la logique du classement, pas de noter l’utilisateur.
+          </p>
         </div>
-
-        <p class="text-[11px] font-semibold text-slate-400">
-          <%= card[:categories].map { |c| "#{c[:label]} #{c[:points]}" }.join(" · ") %>
-        </p>
-
-        <details class="mt-4">
-          <summary class="text-[10px] font-black text-[var(--color-primary)] cursor-pointer list-none">
-            Voir le détail ▾
-          </summary>
-          <dl class="mt-4 pt-4 border-t border-slate-100 space-y-2">
-            <% card[:categories].each do |c| %>
-              <div class="flex items-center justify-between text-xs">
-                <dt class="font-bold text-slate-500"><%= c[:label] %></dt>
-                <dd class="font-black text-slate-700"><%= c[:max] ? "#{c[:points]} / #{c[:max]}" : c[:points] %></dd>
-              </div>
-            <% end %>
-          </dl>
-          <% unless card[:has_affirmation_data] %>
-            <p class="mt-3 text-[10px] font-medium text-slate-400 italic">
-              Score de base, sans bonus affirmations (non proposées pour ce métier).
-            </p>
-          <% end %>
-        </details>
+        <div class="rounded-2xl border border-white/15 bg-white/10 px-5 py-4 text-sm text-white/85 lg:max-w-xs">
+          <p class="font-bold text-white">À retenir</p>
+          <p class="mt-1 leading-5">DISC et intérêts sont des bonus forfaitaires. Les compétences sont comptées selon la réponse donnée.</p>
+        </div>
       </div>
-    <% end %>
-  </div>
+    </div>
+
+    <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Règles de calcul">
+      <% [
+        ["DISC", "Bonus forfaitaire", "Une dimension dominante est comptée une seule fois par métier."],
+        ["Intérêts", "Bonus forfaitaire", "Le champ d’intérêt dominant est compté une seule fois."],
+        ["Compétences", "Points par réponse", "La valeur choisie, notamment de 1 à 5, contribue directement."],
+        ["Affirmations", "Bonus final", "Les validations ajoutées à la fin augmentent le score de base. "]
+      ].each do |title, label, description| %>
+        <div class="rounded-2xl border border-slate-200 bg-white p-4">
+          <p class="text-xs font-black uppercase tracking-wide text-slate-400"><%= title %></p>
+          <p class="mt-2 text-sm font-bold text-slate-800"><%= label %></p>
+          <p class="mt-1 text-xs leading-5 text-slate-500"><%= description %></p>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="grid gap-4 md:grid-cols-3">
+      <% attribution.score_summary.each do |summary| %>
+        <article class="rounded-2xl border <%= summary[:retained] ? 'border-[var(--color-primary)]/40 bg-white' : 'border-slate-200 bg-slate-50' %> p-5 shadow-sm">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <p class="text-xs font-black uppercase tracking-wide text-slate-400"><%= summary[:label] %></p>
+              <h3 class="mt-1 text-lg font-bold text-slate-800"><%= summary[:career].title %></h3>
+            </div>
+            <div class="text-right">
+              <p class="text-3xl font-black text-[var(--color-secondary)]"><%= summary[:score] %></p>
+              <p class="text-[11px] font-semibold text-slate-400">points finaux</p>
+            </div>
+          </div>
+
+          <div class="mt-5 grid grid-cols-2 gap-3 border-t border-slate-100 pt-4 text-xs">
+            <div>
+              <p class="text-slate-400">Score de base</p>
+              <p class="mt-1 font-black text-slate-700"><%= summary[:base_score] %> pts</p>
+            </div>
+            <div>
+              <p class="text-slate-400">Bonus affirmations</p>
+              <p class="mt-1 font-black text-slate-700">+<%= summary[:bonus] %> pts</p>
+            </div>
+          </div>
+
+          <% unless summary[:retained] %>
+            <p class="mt-4 text-xs italic leading-5 text-slate-500">Score de base uniquement : aucune affirmation n’a été proposée pour ce métier.</p>
+          <% end %>
+        </article>
+      <% end %>
+    </div>
+
+    <div class="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h3 class="text-lg font-bold text-slate-800">Détail par métier</h3>
+          <p class="mt-1 text-sm text-slate-500">Ouvrez un métier pour voir exactement comment son score a été construit.</p>
+        </div>
+        <span class="hidden rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500 sm:inline-flex"><%= attribution.score_summary.size %> candidats</span>
+      </div>
+
+      <div class="mt-5 divide-y divide-slate-100">
+        <% attribution.overview_cards.each do |card| %>
+          <details class="group py-4 first:pt-0 last:pb-0">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 rounded-xl py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]">
+              <span class="min-w-0">
+                <span class="block text-xs font-black uppercase tracking-wide text-slate-400"><%= card[:label] %></span>
+                <span class="mt-1 block truncate font-bold text-slate-800"><%= card[:career].title %></span>
+              </span>
+              <span class="flex shrink-0 items-center gap-3">
+                <span class="text-sm font-black text-[var(--color-secondary)]"><%= card[:total] %> pts</span>
+                <span class="text-slate-400 transition-transform group-open:rotate-180" aria-hidden="true">⌄</span>
+              </span>
+            </summary>
+            <div class="mt-3 rounded-xl bg-slate-50 p-4">
+              <div class="space-y-3">
+                <% card[:categories].each do |category| %>
+                  <div class="flex items-center justify-between gap-4 text-sm">
+                    <span class="text-slate-600"><%= category[:label] %></span>
+                    <span class="font-black text-slate-800"><%= category[:max] ? "#{category[:points]} / #{category[:max]}" : "#{category[:points]} pts" %></span>
+                  </div>
+                <% end %>
+              </div>
+              <% unless card[:has_affirmation_data] %>
+                <p class="mt-4 border-t border-slate-200 pt-3 text-xs italic leading-5 text-slate-500">Ce score est un score de base, sans bonus d’affirmations.</p>
+              <% end %>
+            </div>
+          </details>
+        <% end %>
+      </div>
+    </div>
+  </section>
 <% end %>

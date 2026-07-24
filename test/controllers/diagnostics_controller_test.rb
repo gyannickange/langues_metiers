@@ -146,6 +146,36 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     assert_not_includes response.body, "Stratège de projet"
   end
 
+  test "GET results explains the recommendation and labels recorded Likert answers" do
+    sign_in @user
+    question = @assessment.diagnostic_questions.create!(
+      kind: :interest, text: "Les langues m'attirent.", academic_field_slug: "langues", position: 1
+    )
+    career = Career.create!(title: "Traducteur", status: :published, required_skills: [])
+    d = Diagnostic.create!(
+      user: @user,
+      status: :completed,
+      assessment: @assessment,
+      primary_career: career,
+      score_data: {
+        "dominant_disc_types" => [ "D" ],
+        "dominant_academic_field" => "langues",
+        "top_career_ids" => [ { "id" => career.id, "score" => 5, "disc_match" => 0 } ]
+      }
+    )
+    d.diagnostic_answers.create!(diagnostic_question: question, dimension_slug: "langues", answer_value: "4", points_awarded: 4)
+
+    Diagnostics::GeneratePdfService.stub(:call, ->(_diagnostic) {}) do
+      get results_diagnostic_path(d)
+    end
+
+    assert_response :success
+    assert_includes response.body, "Pourquoi ce métier vous correspond"
+    assert_includes response.body, "Comment lire votre résultat"
+    assert_includes response.body, "Plutôt moi"
+    assert_select "p", text: /Les langues m'attirent\./
+  end
+
   test "GET pdf status reports whether the report is ready" do
     sign_in @user
     d = Diagnostic.create!(user: @user, status: :completed, assessment: @assessment)

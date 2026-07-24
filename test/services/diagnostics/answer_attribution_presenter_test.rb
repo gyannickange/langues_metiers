@@ -53,15 +53,38 @@ class Diagnostics::AnswerAttributionPresenterTest < ActiveSupport::TestCase
   end
 
   test "badges the DISC answer for the career whose matched_disc_types include it" do
-    assert_equal [ { label: "Métier 1", points: 3 } ], @presenter.badges_for(@disc_answer)
+    badge = @presenter.badges_for(@disc_answer).sole
+    assert_equal "Métier 1", badge[:label]
+    assert_equal "Dimension Dominant retenue", badge[:text]
+    assert_match(/forfaitaire de 3 pts/, badge[:tooltip])
   end
 
   test "badges the interest answer for the career matching the dominant academic field" do
-    assert_equal [ { label: "Métier 1", points: 5 } ], @presenter.badges_for(@interest_answer)
+    badge = @presenter.badges_for(@interest_answer).sole
+    assert_equal "Métier 1", badge[:label]
+    assert_equal "Intérêt dominant retenu (Langues)", badge[:text]
+    assert_match(/forfaitaire de 5 pts/, badge[:tooltip])
   end
 
   test "badges the skill answer with the actual points for a career requiring that skill" do
-    assert_equal [ { label: "Métier 1", points: 5 } ], @presenter.badges_for(@skill_answer)
+    assert_equal [ { label: "Métier 1", text: "+5 pts", tooltip: nil } ], @presenter.badges_for(@skill_answer)
+  end
+
+  test "exposes an explicit contribution rule for each answer" do
+    disc_detail = @presenter.contribution_details_for(@disc_answer).sole
+    interest_detail = @presenter.contribution_details_for(@interest_answer).sole
+    skill_detail = @presenter.contribution_details_for(@skill_answer).sole
+
+    assert_equal :flat_bonus, disc_detail[:contribution_type]
+    assert_equal "Bonus forfaitaire DISC", disc_detail[:rule]
+    assert_equal :flat_bonus, interest_detail[:contribution_type]
+    assert_equal :per_answer, skill_detail[:contribution_type]
+    assert_equal "Points de réponse", skill_detail[:rule]
+  end
+
+  test "labels Likert answers for the audit view" do
+    assert_equal "Tout à fait moi", @presenter.answer_value_label(@skill_answer)
+    assert_equal "Compétence", @presenter.question_kind_label(@skill_question)
   end
 
   test "does not badge an answer for a career it doesn't match" do
@@ -71,8 +94,8 @@ class Diagnostics::AnswerAttributionPresenterTest < ActiveSupport::TestCase
 
   test "affirmation_rows lists each checked affirmation with its career label" do
     assert_equal [
-      { label: "Métier 1", text: "a" },
-      { label: "Métier 1", text: "b" }
+      { label: "Métier 1", text: "a", career_id: @primary.id },
+      { label: "Métier 1", text: "b", career_id: @primary.id }
     ], @presenter.affirmation_rows
   end
 
