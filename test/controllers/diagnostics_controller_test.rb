@@ -200,6 +200,36 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to interest_diagnostic_path(d)
   end
 
+  test "GET show resumes at validation once skills have been selected, instead of sending the user back to skills" do
+    sign_in @user
+    d, _c1, _c2 = diagnostic_with_retained_careers
+    d.update!(selected_skills: [ "numerique" ])
+
+    get diagnostic_path(d)
+
+    assert_redirected_to validation_diagnostic_path(d)
+  end
+
+  test "GET show resumes at validation when a career-affirmation answer already exists" do
+    sign_in @user
+    d, c1, _c2 = diagnostic_with_retained_careers
+    d.diagnostic_answers.create!(career: c1, affirmation_index: 0, affirmation_text: "Ça me ressemble.",
+                                  answer_value: "5", points_awarded: 5, effective_value: 5)
+
+    get diagnostic_path(d)
+
+    assert_redirected_to validation_diagnostic_path(d)
+  end
+
+  test "GET show resumes at skills once disc is answered but no skills are selected yet" do
+    sign_in @user
+    d, _c1, _c2 = diagnostic_with_retained_careers
+
+    get diagnostic_path(d)
+
+    assert_redirected_to skills_diagnostic_path(d)
+  end
+
   test "POST submit_interest rejects missing answers" do
     sign_in @user
     @assessment.diagnostic_questions.create!(
@@ -414,6 +444,21 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to validation_diagnostic_path(d)
+  end
+
+  test "POST submit_validation rolls back already-saved answers when a later rating is out of range" do
+    sign_in @user
+    d, c1, c2 = diagnostic_with_retained_careers
+
+    assert_no_difference "DiagnosticAnswer.count" do
+      post submit_validation_diagnostic_path(d), params: {
+        affirmations: { c1.id => { "0" => "5" }, c2.id => { "0" => "9" } }
+      }
+    end
+
+    assert_redirected_to validation_diagnostic_path(d)
+    assert_nil d.diagnostic_answers.find_by(career: c1, affirmation_index: 0),
+      "the c1 answer must not survive when a later career's rating is invalid"
   end
 
   test "POST submit_validation is idempotent across resubmissions" do

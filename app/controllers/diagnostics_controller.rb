@@ -153,11 +153,19 @@ class DiagnosticsController < ApplicationController
     end
     return redirect_to validation_diagnostic_path(@diagnostic), alert: "Veuillez répondre à toutes les affirmations." unless all_present
 
+    invalid_rating = false
     ActiveRecord::Base.transaction do
       careers.each do |career|
         career.affirmations.each_with_index do |text, index|
           value = Integer(ratings.dig(career.id.to_s, index.to_s), exception: false)
-          return redirect_to validation_diagnostic_path(@diagnostic), alert: "Veuillez répondre à toutes les affirmations." unless value&.between?(1, 5)
+          unless value&.between?(1, 5)
+            # A bare `return` here would exit submit_validation but NOT roll back this
+            # transaction (ActiveRecord only rolls back on a raised exception), silently
+            # committing whatever answers were already saved earlier in this loop.
+            # ActiveRecord::Rollback is the idiomatic way to abort without that leak.
+            invalid_rating = true
+            raise ActiveRecord::Rollback
+          end
 
           answer = @diagnostic.diagnostic_answers.find_or_initialize_by(career: career, affirmation_index: index)
           answer.assign_attributes(
@@ -170,6 +178,7 @@ class DiagnosticsController < ApplicationController
         end
       end
     end
+    return redirect_to validation_diagnostic_path(@diagnostic), alert: "Veuillez répondre à toutes les affirmations." if invalid_rating
 
     Diagnostics::ScoringService.call(@diagnostic)
     redirect_to pay_diagnostic_path(@diagnostic)
@@ -253,17 +262,21 @@ class DiagnosticsController < ApplicationController
     end
   end
 
+  # The skills/validation steps no longer create DiagnosticQuestion-linked answers (skills selections
+  # live on diagnostic.selected_skills; affirmation answers carry career_id, not diagnostic_question_id),
+  # so progress past the personality step can't be read off diagnostic_questions.kind — it's read off
+  # retained_careers/selected_skills/career-affirmation-answers instead.
   def resolve_in_progress_step(diagnostic)
+    return validation_diagnostic_path(diagnostic) if diagnostic.diagnostic_answers.where.not(career_id: nil).exists?
+    return validation_diagnostic_path(diagnostic) if diagnostic.selected_skills.present?
+    return skills_diagnostic_path(diagnostic) if retained_career_ids.size >= 2
+
     answered_kinds = diagnostic.diagnostic_answers
       .joins(:diagnostic_question)
       .distinct
       .pluck("diagnostic_questions.kind")
 
-    if answered_kinds.include?("skill")
-      validation_diagnostic_path(diagnostic)
-    elsif answered_kinds.include?("disc")
-      skills_diagnostic_path(diagnostic)
-    elsif answered_kinds.include?("interest")
+    if answered_kinds.include?("interest")
       disc_diagnostic_path(diagnostic)
     else
       interest_diagnostic_path(diagnostic)
