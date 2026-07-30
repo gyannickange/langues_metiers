@@ -10,19 +10,20 @@
 %>
 
 <% border_classes = local_assigns[:show_border] ? "border border-slate-100 hover:border-[var(--color-primary)]/20 hover:shadow-premium-sm transition-colors" : "" %>
-<div class="glass-card rounded-2xl p-6 shadow-premium animate-premium-in <%= border_classes %>">
-  <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
-    <div class="p-2 bg-[var(--color-primary)]/10 text-[var(--color-primary)] rounded-lg">
+<% tone_classes = local_assigns[:tone] == :highlight ? "bg-[var(--color-primary)]/[0.08] border-[var(--color-primary)]/30" : "" %>
+<div class="glass-card rounded-2xl p-5 shadow-premium animate-premium-in <%= border_classes %> <%= tone_classes %>">
+  <div class="mb-5 flex items-center gap-3 border-b border-slate-100 pb-4">
+    <div class="rounded-xl bg-[var(--color-primary)]/10 p-2 text-[var(--color-primary)]">
       <%= lucide_icon icon.to_s.gsub('_', '-'), class: "h-5 w-5" if icon %>
     </div>
-    <h3 class="text-lg font-display text-slate-800"><%= title %></h3>
+    <h3 class="text-base font-bold text-slate-800"><%= title %></h3>
   </div>
 
-  <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
+  <dl class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
     <% items.each do |item| %>
       <div class="space-y-1">
         <dt class="text-[10px] font-black uppercase text-slate-400"><%= item[:label] %></dt>
-        <dd class="text-sm font-medium text-slate-700"><%= item[:value] %></dd>
+        <dd class="break-words text-sm font-medium leading-5 text-slate-700"><%= item[:value] %></dd>
       </div>
     <% end %>
   </dl>
