@@ -12,17 +12,17 @@ class Admin::DashboardControllerTest < ActionDispatch::IntegrationTest
     get admin_root_path
     assert_response :success
 
-    travel 10.minutes do
+    travel 10.days do
       get admin_root_path
       assert_response :success
     end
   end
 
-  test "admin session expires after 30 minutes of inactivity" do
+  test "admin session expires after 30 days of inactivity" do
     get admin_root_path
     assert_response :success
 
-    travel 31.minutes do
+    travel 31.days do
       get admin_root_path
       assert_redirected_to new_user_session_path
       assert_equal "Session expirée, merci de vous reconnecter.", flash[:alert]
@@ -32,7 +32,7 @@ class Admin::DashboardControllerTest < ActionDispatch::IntegrationTest
   test "expired admin session is fully reset, not just redirected" do
     get admin_root_path
 
-    travel 31.minutes do
+    travel 31.days do
       get admin_root_path
       assert_redirected_to new_user_session_path
     end

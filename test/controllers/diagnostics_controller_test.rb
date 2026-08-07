@@ -155,7 +155,7 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     )
     d.diagnostic_answers.create!(diagnostic_question: question, dimension_slug: "langues", answer_value: "4", points_awarded: 4, effective_value: 4)
 
-    Diagnostics::GeneratePdfService.stub(:call, ->(_diagnostic) {}) do
+    Diagnostics::GeneratePdfService.stub(:call, ->(_diagnostic) { }) do
       get results_diagnostic_path(d)
     end
 
