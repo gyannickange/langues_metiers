@@ -9,8 +9,21 @@
     action_type: :secondary %>
 
 <div class="space-y-8">
-  <!-- Top Side: Detail Cards -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <!-- At-a-glance details: the payment status is intentionally first. -->
+  <div class="grid grid-cols-1 items-start gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <% if @diagnostic.payment %>
+      <%= render "shared/show_card",
+          title: "Paiement",
+          icon: :credit_card,
+          tone: :highlight,
+          show_border: true,
+          items: [
+            { label: "Statut", value: render("shared/badge", label: @diagnostic.payment.status, color: @diagnostic.payment.confirmed? ? :green : :orange) },
+            { label: "Montant", value: number_to_currency(@diagnostic.payment.amount_cents / 100, unit: "CFA ", precision: 0) },
+            { label: "Méthode", value: content_tag(:span, @diagnostic.payment_provider&.upcase || "—", class: "font-mono text-xs") }
+          ] %>
+    <% end %>
+
     <%= render "shared/show_card", 
         title: "Session",
         icon: :info,
@@ -160,20 +173,4 @@
     </div>
   </div>
 
-  <% if @diagnostic.payment %>
-    <!-- Footer Side: Paiement -->
-    <div class="mt-8">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <%= render "shared/show_card", 
-            title: "Paiement",
-            icon: :credit_card,
-            show_border: true,
-            items: [
-              { label: "Statut", value: render("shared/badge", label: @diagnostic.payment.status, color: @diagnostic.payment.confirmed? ? :green : :orange) },
-              { label: "Montant", value: number_to_currency(@diagnostic.payment.amount_cents / 100, unit: "CFA ", precision: 0) },
-              { label: "Méthode", value: content_tag(:span, @diagnostic.payment_provider&.upcase, class: "font-mono text-[10px]") }
-            ] %>
-      </div>
-    </div>
-  <% end %>
 </div>

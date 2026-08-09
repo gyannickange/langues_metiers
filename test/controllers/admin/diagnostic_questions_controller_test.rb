@@ -87,6 +87,15 @@ class Admin::DiagnosticQuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_content
   end
 
+  test "create persists reverse_scored when checked" do
+    assert_difference "DiagnosticQuestion.count", 1 do
+      post admin_assessment_diagnostic_questions_path(@assessment), params: {
+        diagnostic_question: { kind: "disc", text: "Je déteste décider vite.", active: true, disc_type: "D", reverse_scored: "1" }
+      }
+    end
+    assert @assessment.diagnostic_questions.order(:created_at).last.reverse_scored?
+  end
+
   test "skill question persists its label into options" do
     post admin_assessment_diagnostic_questions_path(@assessment), params: {
       diagnostic_question: {

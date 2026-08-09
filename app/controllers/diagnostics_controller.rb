@@ -47,7 +47,8 @@ class DiagnosticsController < ApplicationController
           diagnostic_question: question,
           dimension_slug:      question.academic_field_slug,
           answer_value:        value.to_s,
-          points_awarded:      value
+          points_awarded:      value,
+          effective_value:     Diagnostics::LikertScoring.effective_value(value, reverse_scored: question.reverse_scored?)
         )
       end
     end
@@ -68,21 +69,16 @@ class DiagnosticsController < ApplicationController
   end
 
   def skills
-    @questions = active_assessment.diagnostic_questions.skill.active.ordered
+    @careers = retained_career_records
+    return redirect_to disc_diagnostic_path(@diagnostic), alert: "Veuillez compléter les étapes précédentes." if @careers.size < 2
+
+    slugs = @careers.flat_map(&:required_skills).uniq
+    @skills = Skill.where(slug: slugs).order(:position)
   end
 
   def validation
-    top_ids = top_career_ids
-    if top_ids.empty?
-      redirect_to skills_diagnostic_path(@diagnostic), alert: "Veuillez compléter les étapes précédentes."
-      return
-    end
-
-    @top_careers = Career.where(id: top_ids).index_by(&:id).values_at(*top_ids).compact
-    if @top_careers.size < 2
-      redirect_to skills_diagnostic_path(@diagnostic), alert: "Veuillez compléter les étapes précédentes."
-      nil
-    end
+    @top_careers = retained_career_records
+    redirect_to skills_diagnostic_path(@diagnostic), alert: "Veuillez compléter les étapes précédentes." if @top_careers.size < 2
   end
 
   def submit_interest
@@ -97,9 +93,10 @@ class DiagnosticsController < ApplicationController
       answers.each do |question, value|
         answer = @diagnostic.diagnostic_answers.find_or_initialize_by(diagnostic_question: question)
         answer.assign_attributes(
-          dimension_slug: question.academic_field_slug,
-          answer_value:   value.to_s,
-          points_awarded: value
+          dimension_slug:   question.academic_field_slug,
+          answer_value:     value.to_s,
+          points_awarded:   value,
+          effective_value:  Diagnostics::LikertScoring.effective_value(value, reverse_scored: question.reverse_scored?)
         )
         answer.save!
       end
@@ -119,43 +116,71 @@ class DiagnosticsController < ApplicationController
       answers.each do |question, value|
         answer = @diagnostic.diagnostic_answers.find_or_initialize_by(diagnostic_question: question)
         answer.assign_attributes(
-          dimension_slug: question.disc_type,
-          answer_value:   value.to_s,
-          points_awarded: value
+          dimension_slug:   question.disc_type,
+          answer_value:     value.to_s,
+          points_awarded:   value,
+          effective_value:  Diagnostics::LikertScoring.effective_value(value, reverse_scored: question.reverse_scored?)
         )
         answer.save!
       end
     end
+
+    Diagnostics::PreScoringService.call(@diagnostic)
     redirect_to skills_diagnostic_path(@diagnostic)
+  rescue Diagnostics::PreScoringService::InsufficientCareersError
+    redirect_to interest_diagnostic_path(@diagnostic),
+      alert: "Cette combinaison de filières n'a pas encore assez de métiers disponibles. Réessayez ou contactez le support."
   end
 
   def submit_skills
-    questions = active_assessment.diagnostic_questions.skill.active.ordered
-    answers = valid_answers_for(questions) do |_question, value|
-      numeric_value = Integer(value, exception: false)
-      numeric_value if (1..5).include?(numeric_value)
-    end
-    return redirect_incomplete_answers(:skills) unless answers
+    careers = retained_career_records
+    return redirect_to disc_diagnostic_path(@diagnostic), alert: "Veuillez compléter les étapes précédentes." if careers.size < 2
 
-    ActiveRecord::Base.transaction do
-      answers.each do |question, value|
-        answer = @diagnostic.diagnostic_answers.find_or_initialize_by(diagnostic_question: question)
-        answer.assign_attributes(
-          dimension_slug: question.skill_slug,
-          answer_value:   value.to_s,
-          points_awarded: value
-        )
-        answer.save!
-      end
-    end
-    Diagnostics::PreScoringService.call(@diagnostic)
+    allowed = careers.flat_map(&:required_skills).uniq
+    selected = Array(params[:selected_skills]).map { |s| s.to_s.strip }.reject(&:blank?).uniq & allowed
+
+    @diagnostic.update!(selected_skills: selected)
     redirect_to validation_diagnostic_path(@diagnostic)
   end
 
   def submit_validation
-    known_ids = top_career_ids.map(&:to_s)
-    affirmation_counts = (params[:affirmations] || {}).to_unsafe_h.slice(*known_ids)
-    Diagnostics::ScoringService.call(@diagnostic, affirmation_counts)
+    careers = retained_career_records
+    return redirect_to skills_diagnostic_path(@diagnostic), alert: "Veuillez compléter les étapes précédentes." if careers.size < 2
+
+    ratings = params.fetch(:affirmations, {}).to_unsafe_h
+    all_present = careers.all? do |career|
+      career.affirmations.each_index.all? { |i| ratings.dig(career.id.to_s, i.to_s).present? }
+    end
+    return redirect_to validation_diagnostic_path(@diagnostic), alert: "Veuillez répondre à toutes les affirmations." unless all_present
+
+    invalid_rating = false
+    ActiveRecord::Base.transaction do
+      careers.each do |career|
+        career.affirmations.each_with_index do |text, index|
+          value = Integer(ratings.dig(career.id.to_s, index.to_s), exception: false)
+          unless value&.between?(1, 5)
+            # A bare `return` here would exit submit_validation but NOT roll back this
+            # transaction (ActiveRecord only rolls back on a raised exception), silently
+            # committing whatever answers were already saved earlier in this loop.
+            # ActiveRecord::Rollback is the idiomatic way to abort without that leak.
+            invalid_rating = true
+            raise ActiveRecord::Rollback
+          end
+
+          answer = @diagnostic.diagnostic_answers.find_or_initialize_by(career: career, affirmation_index: index)
+          answer.assign_attributes(
+            affirmation_text: text,
+            answer_value:     value.to_s,
+            points_awarded:   value,
+            effective_value:  Diagnostics::LikertScoring.effective_value(value, reverse_scored: false)
+          )
+          answer.save!
+        end
+      end
+    end
+    return redirect_to validation_diagnostic_path(@diagnostic), alert: "Veuillez répondre à toutes les affirmations." if invalid_rating
+
+    Diagnostics::ScoringService.call(@diagnostic)
     redirect_to pay_diagnostic_path(@diagnostic)
   rescue Diagnostics::ScoringService::InsufficientCareersError
     redirect_to skills_diagnostic_path(@diagnostic), alert: "Impossible de finaliser le diagnostic. Veuillez vérifier vos réponses."
@@ -237,17 +262,21 @@ class DiagnosticsController < ApplicationController
     end
   end
 
+  # The skills/validation steps no longer create DiagnosticQuestion-linked answers (skills selections
+  # live on diagnostic.selected_skills; affirmation answers carry career_id, not diagnostic_question_id),
+  # so progress past the personality step can't be read off diagnostic_questions.kind — it's read off
+  # retained_careers/selected_skills/career-affirmation-answers instead.
   def resolve_in_progress_step(diagnostic)
+    return validation_diagnostic_path(diagnostic) if diagnostic.diagnostic_answers.where.not(career_id: nil).exists?
+    return validation_diagnostic_path(diagnostic) if diagnostic.selected_skills.present?
+    return skills_diagnostic_path(diagnostic) if retained_career_ids.size >= 2
+
     answered_kinds = diagnostic.diagnostic_answers
       .joins(:diagnostic_question)
       .distinct
       .pluck("diagnostic_questions.kind")
 
-    if answered_kinds.include?("skill")
-      validation_diagnostic_path(diagnostic)
-    elsif answered_kinds.include?("disc")
-      skills_diagnostic_path(diagnostic)
-    elsif answered_kinds.include?("interest")
+    if answered_kinds.include?("interest")
       disc_diagnostic_path(diagnostic)
     else
       interest_diagnostic_path(diagnostic)
@@ -271,13 +300,19 @@ class DiagnosticsController < ApplicationController
     redirect_to public_send(:"#{step}_diagnostic_path", @diagnostic), alert: "Veuillez répondre à toutes les questions."
   end
 
-  def top_career_ids
+  def retained_career_ids
     score_data = @diagnostic.score_data
-    return [] unless score_data.is_a?(Hash) && score_data["top_career_ids"].is_a?(Array)
+    return [] unless score_data.is_a?(Hash) && score_data["retained_careers"].is_a?(Array)
 
-    score_data["top_career_ids"].filter_map do |entry|
-      entry.is_a?(Hash) ? entry["id"] : entry
-    end
+    score_data["retained_careers"].filter_map { |entry| entry["career_id"] if entry.is_a?(Hash) }
+  end
+
+  def retained_career_records
+    ids = retained_career_ids
+    return [] if ids.empty?
+
+    by_id = Career.where(id: ids).index_by(&:id)
+    ids.filter_map { |id| by_id[id] }
   end
 
   def payment_provider_param

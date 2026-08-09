@@ -64,11 +64,12 @@ module Diagnostics
         }
       end
 
-      if (field = academic_field_name(score_data["dominant_academic_field"]))
+      dominant_fields = Array(score_data["dominant_academic_fields"]).filter_map { |slug| academic_field_name(slug) }
+      if dominant_fields.any?
         factors << {
           key: :interest,
           title: "Vos centres d’intérêt",
-          text: "Votre intérêt pour le domaine « #{field} » a renforcé les métiers qui s’y rattachent."
+          text: "Votre intérêt pour #{dominant_fields.to_sentence} a orienté la sélection des métiers proposés."
         }
       end
 
@@ -81,12 +82,11 @@ module Diagnostics
         }
       end
 
-      checked_affirmations = Array(score_data.dig("affirmation_breakdown", primary&.id.to_s, "checked_affirmations"))
-      if checked_affirmations.any?
+      if diagnostic.diagnostic_answers.where(career_id: primary&.id).exists?
         factors << {
           key: :affirmations,
           title: "Votre validation finale",
-          text: "Vous avez également reconnu des situations qui vous correspondent dans ce métier."
+          text: "Vous avez également évalué des affirmations qui vous correspondent dans ce métier."
         }
       end
 
@@ -99,7 +99,8 @@ module Diagnostics
 
     def score_explanation_available?
       score_data = diagnostic.score_data
-      score_data.is_a?(Hash) && score_data["top_career_ids"].is_a?(Array) && score_data["top_career_ids"].any? { |entry| entry.is_a?(Hash) && entry.key?("disc_match") }
+      score_data.is_a?(Hash) && score_data["retained_careers"].is_a?(Array) &&
+        score_data["retained_careers"].any? { |entry| entry.is_a?(Hash) && entry.key?("final_score") }
     end
 
     def answer_summary

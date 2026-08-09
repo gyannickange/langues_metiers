@@ -89,4 +89,23 @@ class Admin::CareersControllerTest < ActionDispatch::IntegrationTest
 
     assert_select "h3", text: "Historique des modifications"
   end
+
+  test "edit warns when a published, diagnostic-eligible career has no required_skills" do
+    career = Career.create!(title: "Sans compétences #{SecureRandom.hex(4)}", status: :published,
+                             academic_field_slug: "langues", required_skills: [])
+
+    get edit_admin_career_path(career)
+
+    assert_response :success
+    assert_includes response.body, "aucune compétence requise renseignée"
+  end
+
+  test "edit does not warn when required_skills is present" do
+    career = Career.create!(title: "Avec compétences #{SecureRandom.hex(4)}", status: :published,
+                             academic_field_slug: "langues", required_skills: [ "numerique" ])
+
+    get edit_admin_career_path(career)
+
+    assert_not_includes response.body, "aucune compétence requise renseignée"
+  end
 end
